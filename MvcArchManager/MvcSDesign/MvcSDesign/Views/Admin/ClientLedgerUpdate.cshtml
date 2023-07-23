@@ -1,0 +1,439 @@
+﻿@{
+    ViewBag.Title = "Client Ledger Update";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <script src="~/angularjs/clientLedgerUpdate.js"></script>
+    <script type="text/javascript">
+
+
+        function IsNumber(e) {
+
+            var theEvent = event || window.event;
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+            var regex = /[0-9]|\./;
+
+            if (!regex.test(key)) {
+                theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
+            }
+        }
+    </script>
+
+</head>
+
+
+@*@using (@Html.BeginForm())
+    {
+    <body>
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="col-xl-12 text-left">
+                                    <span style="margin-left: 5px; font-family: Arial; font-size: 10pt; font-weight: bold; ">Client name : @ViewBag.clientName</span>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table align-middle datatable dt-responsive table-check nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 90%;">
+                                        <thead>
+                                            <tr class="bg-transparent">
+
+
+                                                <th style="width: 80px;">Project ID </th>
+                                                <th style="width: 80px;"> Date 	 </th>
+                                                <th style="width: 150px;"> Project Name  </th>
+                                                <th style="width: 150px;">Project Type </th>
+                                                <th style="width: 150px;">Package		</th>
+                                                <th style="width: 150px;">	Amount	</th>
+                                                <th style="width: 150px;">Received Amount	</th>
+                                                <th style="width: 150px;">	Balance	</th>
+                                                <th style="width: 150px;">	Remark</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+
+
+                                        <tbody>
+                                            <tr ng-repeat="item in clientLedger ">
+                                                <td>{{item.projectID}} </td>
+                                                <td>  {{item.dtstr}} </td>
+                                                <td> {{item.projectName }} </td>
+                                                <td>{{item.projectType}}  </td>
+                                                <td>{{item.package}}</td>
+                                                <td>
+                                                    {{item.amount}}
+                                                </td>
+                                                <td>
+                                                    {{item.receivedAmount}}
+
+                                                </td>
+                                                <td>
+                                                    {{item.balance}}
+                                                </td>
+
+
+                                                <td>  {{item.remark}} </td>
+                                                <td>
+                                                    <input type="button" value="Edit" class="btn btn-info" ng-click="UpdateLedger(item)" style=" margin-left: 10px; width: 70px; font-family: Arial; font-size: 10pt; background-color: #9ac8f5; " />
+
+
+                                                </td>
+
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="divID" class="popupAssign" ng-hide="finalizeWindow">
+                    <div class="modal-content" style="width:395px; height:300px;">
+
+
+                        <table style="margin-left: 10px; height: 230px; width: 395px; margin-top:-20px; ">
+                            <tr>
+                                <td style="width:100px">
+                                    <span style="font-family:Arial; font-size:10pt;  ">Project ID</span>
+                                </td>
+                                <td style="width:250px">
+                                    <input type="text" ng-model="projectID" class="form-control" readonly style=" width: 225px; height: 30px; font-family: Arial; font-size: 10pt; background-color: #87CEEB; " />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <span style="font-family:Arial; font-size:10pt;    ">Project Amount</span>
+                                </td>
+                                <td>
+                                    <input type="text" ng-model="amount" class="form-control" readonly style=" width: 225px; height: 30px; font-family: Arial; font-size: 10pt; background-color: #87CEEB; " />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span style="font-family:Arial; font-size:10pt;    ">Received Amount</span>
+                                </td>
+                                <td>
+                                    <input type="text" ng-model="receivedAmount" class="form-control" readonly style=" width: 225px; height: 30px; font-family: Arial; font-size: 10pt; background-color: #87CEEB; " />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span style="font-family:Arial; font-size:10pt;    ">New Amount</span>
+                                </td>
+                                <td>
+                                    <input type="text" ng-model="newAmount" class="form-control" onkeypress="return IsNumber();" style=" width: 225px; height: 30px; font-family: Arial; font-size: 10pt; " />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span style="font-family:Arial; font-size:10pt;    ">Remark</span>
+                                </td>
+                                <td>
+                                    <input type="text" ng-model="remark" class="form-control" style=" width: 225px; height: 30px; font-family: Arial; font-size: 10pt; " />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <table style="margin-left:75px;">
+                                        <tr>
+                                            <td>
+                                                <input type="button" value="Close" ng-click="CloseAssignWindow()" class="btn btn-info" style=" width: 70px; height:28px; font-family: Arial; font-size: 8pt;background-color: #9ac8f5;  " />
+                                            </td>
+                                            <td style="width:10px;"></td>
+                                            <td>
+                                                <input type="button" value="Submit" ng-click="Save()" class="btn btn-info" style="  width:70px;height:28px; font-family:Arial; font-size:8pt; background-color: #9ac8f5;" />
+                                            </td>
+
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel-group">
+                    <div class="panel panel-primary" style="margin-left: 50px; width:1100px; height:700px;">
+                        <div class="panel-heading" style="font-family: Arial; font-size: 12pt;">Client Ledger Update    </div>
+                        <div class="panel-body" style="margin-top:-10px">
+
+
+                            <div style="margin-left:0px; padding: 0; border-collapse: collapse; width:1070px; height: 550px; overflow: hidden; ">
+                                <table class="table table-responsive table-bordered" style="margin-left:0px; margin-top:0px; padding: 0; border-collapse: collapse; width:1200px; text-align: left; ">
+                                    <thead>
+                                        <tr>
+
+                                            <th style="background-color:#1B1B1E;color:white; width:70px;">
+                                                <span style="margin-left:10px;font-family:Arial; font-size:10pt;  ">Project ID</span>
+                                            </th>
+                                            <th style="background-color:#1B1B1E;color:white; width:90px;">
+                                                <span style="margin-left:10px; font-family:Arial; font-size:10pt;  ">Date</span>
+                                            </th>
+                                            <th style="background-color:#1B1B1E;color:white; width:150px;">
+                                                <span style="margin-left:10px;font-family:Arial; font-size:10pt; ">Project Name</span>
+                                            </th>
+                                            <th style="background-color:#1B1B1E;color:white; width:100px;">
+                                                <span style="margin-left:10px;font-family:Arial; font-size:10pt; ">Project Type</span>
+                                            </th>
+                                            <th style="background-color:#1B1B1E;color:white; width:100px;">
+                                                <span style="margin-left:10px;font-family:Arial; font-size:10pt; ">Package</span>
+                                            </th>
+
+                                            <th style="background-color:#1B1B1E;color:white; width:100px;">
+                                                <span style="margin-left:10px;font-family:Arial; font-size:10pt; ">Amount</span>
+                                            </th>
+                                            <th style="background-color:#1B1B1E;color:white; width:80px;">
+                                                <span style="margin-left:10px;font-family:Arial; font-size:10pt; ">Received Amount</span>
+                                            </th>
+
+                                             <th style="background-color:#1B1B1E;color:white; width:100px;">
+                                                <span style="margin-left:10px; font-family:Arial; font-size:10pt;  ">Balance</span>
+                                            </th>
+                                            <th style="background-color:#1B1B1E;color:white; width:150px;">
+                                                <span style="margin-left:10px; font-family:Arial; font-size:10pt;  ">Remark</span>
+                                            </th>
+
+                                            <th style="background-color:#1B1B1E;color:white; width:60px;">
+                                                <span style="margin-left:10px; font-family:Arial; font-size:10pt;">Update</span>
+                                            </th>
+                                            <th>
+
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+
+                                    <tr ng-repeat="item in ledgerList">
+
+                                        <td>
+                                            <span style="font-family:Arial; font-size:10pt;">  {{item.projectID}}  </span>
+                                        </td>
+                                        <td>
+                                            <span style="font-family:Arial; font-size:10pt;">  {{item.dtstr}}  </span>
+                                        </td>
+                                        <td>
+                                            <span style="font-family:Arial; font-size:10pt;">  {{item.projectName }}  </span>
+                                        </td>
+                                        <td>
+                                            <span style="font-family:Arial; font-size:10pt;"> {{item.projectType}} </span>
+                                        </td>
+                                        <td>
+                                            <span style="font-family:Arial; font-size:10pt;"> {{item.package}} </span>
+                                        </td>
+
+                                        <td>
+                                            <span style="font-family:Arial; font-size:10pt;"> {{item.amount}} </span>
+                                        </td>
+                                        <td>
+                                            <span style="font-family:Arial; font-size:10pt;"> {{item.receivedAmount}} </span>
+                                        </td>
+
+                                         <td>
+                                            <span style="font-family:Arial; font-size:10pt;"> {{item.balance}}</span>
+
+                                        </td>
+                                        <td>
+                                            <span style="font-family:Arial; font-size:10pt;">{{item.remark}}</span>
+                                        </td>
+                                        <td>
+                                            <input type="button" value="Edit" class="btn btn-info" ng-click="UpdateLedger(item)" style=" margin-left: 10px; width: 70px; font-family: Arial; font-size: 10pt; background-color: #9ac8f5; " />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </body>
+       }
+    </html>*@
+@using (Html.BeginForm())
+{
+
+    <body>
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+
+                <div class="page-content">
+                      
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                     
+                                    <div class="table-responsive">
+                                        <table class="table align-middle datatable dt-responsive table-bordered nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+                                            <thead>
+                                                <tr class="bg-transparent">
+                                                     
+                                                    <th>
+                                                        Project ID
+                                                    </th>
+                                                    <th>
+                                                       Date
+                                                    </th>
+                                                    <th>
+                                                        Project Name
+                                                    </th>
+                                                    <th>
+                                                        Project Type
+                                                    </th>
+                                                    <th>
+                                                       Package
+                                                    </th>
+
+                                                    <th>
+                                                       Amount
+                                                    </th>
+                                                    <th>
+                                                         Received Amount 
+                                                    </th>
+
+                                                    <th>
+                                                       Balance
+                                                    </th>
+                                                    <th>
+                                                        Remark
+                                                    </th>
+
+                                                    <th>
+                                                        Action
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item in ledgerList">
+
+                                                    <td>
+                                                         {{item.projectID}} 
+                                                    </td>
+                                                    <td>
+                                                         {{item.dtstr}} 
+                                                    </td>
+                                                    <td>
+                                                        {{item.projectName }}  
+                                                    </td>
+                                                    <td>
+                                                       {{item.projectType}} 
+                                                    </td>
+                                                    <td>
+                                                       {{item.package}} 
+                                                    </td>
+
+                                                    <td>
+                                                         {{item.amount}} 
+                                                    </td>
+                                                    <td>
+                                                         {{item.receivedAmount}} 
+                                                    </td>
+
+                                                    <td>
+                                                        {{item.balance}}
+
+                                                    </td>
+                                                    <td>
+                                                       {{item.remark}}
+                                                    </td>
+                                                    <td>
+                                                        <input type="button" value="Show"class="btn btn-primary waves-effect waves-light"   ng-click="UpdateLedger(item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2"   />
+                                                    </td>
+                                                    
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      
+                    <div class="modal fade bs-example-modal-center2" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Ledger Update</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div>
+                                                <form id="pristine-valid-example" novalidate method="post">
+                                                     
+                                                    <div class="row">
+                                                        <div class="col-xl-6 col-md-6">
+                                                            <div class="form-group mb-3">
+                                                                <label>Project ID	 </label>
+                                                                <input type="text" ng-model="projectID" class="form-control" readonly />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-6 col-md-6">
+                                                            <div class="form-group mb-3">
+                                                                <label>Project Amount</label>
+                                                                <input type="text" ng-model="amount" class="form-control"  readonly />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-6 col-md-6">
+                                                            <div class="form-group mb-3">
+                                                                <label>Received Amount</label>
+                                                                <input type="text" ng-model="receivedAmount" class="form-control" onkeypress="return IsNumber();" placeholder="Received Amount" readonly/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-6 col-md-6">
+                                                            <div class="form-group mb-3">
+                                                                <label>New Amount</label>
+                                                                <input type="text" ng-model="newAmount" class="form-control" onkeypress="return IsNumber();" placeholder="New Amount  " />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-6 col-md-6">
+                                                            <div class="form-group mb-3">
+                                                                <label>Remark</label>
+                                                                <input type="text" ng-model="txtRemark" class="form-control" onkeypress="return IsNumber();" placeholder="Remark  " />
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" ng-click="Save()" class="btn btn-primary waves-effect waves-light">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+}
+
+</html>
+
+

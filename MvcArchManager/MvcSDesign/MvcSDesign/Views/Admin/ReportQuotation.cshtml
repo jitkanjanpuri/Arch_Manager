@@ -1,0 +1,221 @@
+﻿@{
+    ViewBag.Title = "ReportQuotation";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <script src="~/angularjs/ReportQuotation.js"></script>
+
+
+    <script type="text/javascript">
+
+        function IsNumber(e) {
+
+            var theEvent = event || window.event;
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+            var regex = /[0-9]|\./;
+
+            if (!regex.test(key)) {
+                theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
+            }
+        }
+
+    </script>
+</head>
+
+
+@using (Html.BeginForm())
+
+{
+<body>
+
+    <div ng-app="myApp">
+        <div ng-controller="myController">
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <a href="@Url.Action("ReportClientLedger", "Admin")" class="btn btn-primary"><span>Client Ledger</span></a>
+                                <a href="@Url.Action("ReportClientReceive", "Admin")" class="btn btn-primary"><span>Client Receive </span></a>
+                                <a href="@Url.Action("ReportDesignerLedger", "Admin")" class="btn btn-primary"><span>Desinger</span></a>
+                                <a href="@Url.Action("ReportQuotation", "Admin")" class="btn btn-primary"><span> Quotation  </span></a>
+                                <a href="@Url.Action("ReportMonthQuotation", "Admin")" class="btn btn-primary"><span> Month Quotation </span></a>
+                                @*<a href="@Url.Action("ReportBalanceAdjust", "Admin")" class="btn btn-primary"><span> Balance Adjust  </span></a>*@
+                                <a href="@Url.Action("ReportSiteVisit", "Admin")" class="btn btn-primary"><span> Site Visit   </span></a>
+                                <a href="@Url.Action("ReportProjectHistory", "Admin")" class="btn btn-primary"><span> Project History  </span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0 font-size-18">Quotation Report </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-3 col-md-2">
+                            <div class="form-group mb-3">
+
+                                <label>From Date   </label>
+
+                                <div class="input-group">
+                                    <input type="date" id="fromStart" class="form-control" ng-model="fromStart">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-2">
+                            <div class="form-group mb-3">
+
+                                <label>To Date   </label>
+
+                                <div class="input-group">
+                                    <input type="date" id="toEnd" class="form-control" ng-model="toEnd">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-xl-2 col-md-2">
+                            <div class="form-group mb-2">
+                                <label><input type="radio" ng-model="quotationValue" class="form-check-input" name="quotation" value="projectType" checked="checked" /> Project Type</label>
+                                <select class="form-control" ng-model="ptype" ng-options="item for item in arrProjectType" ></select> 
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-2">
+                            <div class="form-group mb-2">
+                                <label><input type="radio" ng-model="quotationValue" class="form-check-input" value="projectID" name="quotation" /> Project ID</label>
+                                <input class="form-control" ng-model="txtProjectID" onkeypress="return IsNumber();">
+
+                            </div>
+                        </div>
+
+                         <div class="col-xl-2 col-md-2">
+                                <div class="form-group mb-3">
+                                    <label><input type="radio" ng-model="quotationValue" value="clientName" name="quotation" class="form-check-input" />Client name </label>
+                                    <input class="form-control" ng-model="txtName">
+
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-2">
+                                <div class="form-group mb-3">
+                                    <label> . </label>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-primary" ng-click="SearchQuotation()">Search</button>
+                                    </div>
+                                </div>
+                            </div> 
+                    </div>
+
+                    <div class="text-center" ng-hide="loading">
+                        <button type="button" class="btn btn-dark waves-effect waves-light">
+                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                        </button>
+                    </div>
+                    <div class="text-center ">
+                        <span class="text-danger text-center font-size:16  " style="">{{searchdmsg}}</span>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Quotation Report</h4>
+
+                                </div>
+                                <div class="card-body">
+                                    <div style="display: flex; justify-content: flex-end">
+                                        <span class=" text-right font-size:20; font-weight-bold; " style=" margin-right:100px; font-weight:bold">Total amount  {{totalAmount}}</span>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered mb-0">
+
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Project ID</th>
+                                                    <th>Client name</th>
+                                                    <th>Project Type</th>
+                                                    <th>Package</th>
+                                                    <th>Plot size</th>
+                                                    <th>Level</th>
+
+                                                    <th>Amount</th>
+                                                    <th>Remark</th>
+                                                    <th>Action </th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr ng-repeat="item in quotationlist">
+                                                    <td>
+                                                        <span> {{item.sno}}  </span>
+                                                    </td>
+                                                    <td>
+                                                        <span> {{item.projectID}}  </span>
+                                                    </td>
+
+                                                    <td>
+                                                        <span>  {{item.clientName}}  </span>
+                                                    </td>
+                                                    <td>
+                                                        <span>  {{item.projectType }}  </span>
+                                                    </td>
+                                                    <td>
+                                                        <span> {{item.package}} </span>
+                                                    </td>
+                                                    <td>
+                                                        <span> {{item.plotSize}} </span>
+                                                    </td>
+                                                    <td>
+                                                        <span> {{item.projectLevel}} </span>
+                                                    </td>
+                                                    <td>
+                                                        <span> {{item.amount}} </span>
+                                                    </td>
+                                                    <td>
+                                                        <span> {{item.remark}}</span>
+                                                    </td>
+                                                    <td>
+
+                                                        <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="PdfOpen(item.projectID , item.projectType )">
+                                                            @*<i class="mdi mdi-download d-block font-size-16"></i>*@ PDF
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="QuotationSend(item.projectID , item.projectType)">
+                                                            @*<i class="mdi mdi-upload d-block font-size-16"></i>*@ Send
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="text-center ">
+                                    <span class="text-danger text-center font-size:16  " style="">{{recordmsg}}</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+}
+</html>

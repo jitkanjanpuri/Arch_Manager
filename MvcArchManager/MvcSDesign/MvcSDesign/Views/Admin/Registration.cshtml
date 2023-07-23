@@ -1,0 +1,224 @@
+﻿@model MvcSDesign.Models.staff
+
+  
+@{
+    ViewBag.Title = "Designer";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+
+
+}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+
+    <script type="text/javascript">
+
+        function Validation() {
+            var name = document.getElementById("name").value;
+            var emailID = document.getElementById("emailID").value;
+            var city = document.getElementById("city").value;
+            var mobile = document.getElementById("mobile").value;
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            document.getElementById("lblError").innerText = "";
+
+
+            if (name.trim().length == 0) {
+                document.getElementById("lblError").innerText = "Enter Designer name";
+                document.getElementById("name").focus();
+                return false;
+            }
+            else if (city.trim().length == 0) {
+                document.getElementById("lblError").innerText = "Enter city name";
+                document.getElementById("city").focus();
+                return false;
+            }
+            else if (mobile.trim().length == 0) {
+                document.getElementById("lblError").innerText = "Enter mobile no";
+                document.getElementById("mobile").focus();
+                return false;
+            }
+            else if (validateEmail(emailID) == false) {
+                document.getElementById("lblError").innerText = "Invalid email ID";
+                document.getElementById("emailID").focus();
+                return false;
+            }
+
+            else if (username.trim().length == 0) {
+                document.getElementById("lblError").innerText = "Please enter user name ";
+                document.getElementById("username").focus();
+                return false;
+            }
+            else if (username.trim().length < 5) {
+                document.getElementById("lblError").innerText = "User name must be more than 4 character ";
+                document.getElementById("username").focus();
+                return false;
+            }
+
+            else if (password.trim().length == 0) {
+                document.getElementById("lblError").innerText = "Please enter password ";
+                document.getElementById("password").focus();
+                return false;
+            }
+            else if (password.trim().length < 5) {
+                document.getElementById("lblError").innerText = "Password must be more than 4 character ";
+                document.getElementById("username").focus();
+                return false;
+            }
+            return true;
+        }
+        function validateEmail(email) {
+            var regex = /^([a-zA-Z0-9_.+-])+\@@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            return regex.test(email);
+        }
+
+        function IsNumber(e) {
+
+            var theEvent = event || window.event;
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+            var regex = /[0-9]|\./;
+
+            if (!regex.test(key)) {
+                theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
+            }
+        }
+    </script>
+
+</head>
+
+@using (Html.BeginForm("Registration", "Admin", FormMethod.Post))
+{
+    <body>
+
+
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <a href="@Url.Action("CompanyProfile", "Admin")" class="btn btn-primary"><span>Company Profile</span></a>
+                            <a href="@Url.Action("Index", "Client")" class="btn btn-primary"><span>Client</span></a>
+                            <a href="@Url.Action("ShowClient", "Client")" class="btn btn-primary"><span>Client Show </span></a>
+                            <a href="@Url.Action("Registration", "Admin")" class="btn btn-primary"><span>Staff</span></a>
+                            <a href="@Url.Action("ShowStaff", "Admin")" class="btn btn-primary"><span>Staff Show</span></a>
+
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            <h4 class="mb-sm-0 font-size-18">Staff</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div>
+                                    <div class="row">
+
+                                        <div class="col-xl-6 col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label>Name </label>
+                                                @Html.TextBoxFor(model => model.name, new { @class = "form-control", style = "", placeholder = "Name" })
+                                                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label>Designation	</label>
+                                                @Html.TextBoxFor(model => model.designation, new { @class = "form-control", placeholder = "Designation" })
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label>Address  </label>
+                                                @Html.TextBoxFor(model => model.address, new { @class = "form-control", placeholder = "Addresss" })
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-xl-4 col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label> City   </label>
+                                                @Html.TextBoxFor(model => model.city, new { @class = "form-control", placeholder = " Father Name" })
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="col-xl-4 col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label>Mobile Number </label>
+                                                @Html.TextBoxFor(model => model.mobile, new { @class = "form-control", @maxlength = "10",  style = "", @onkeypress = "IsNumber()", placeholder = "Mobile Number" })
+                                                @Html.ValidationMessageFor(model => model.mobile, "", new { @class = "text-danger" })
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-4 col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label> Phone  </label>
+                                                @Html.TextBoxFor(model => model.phone, new { @class = "form-control", @onkeypress = "PhoneIsNumber", placeholder = "Phone Number" })
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label> Email ID  </label>
+                                                @Html.TextBoxFor(model => model.emailID, new { @class = "form-control", placeholder = "Email ID " })
+                                                @Html.ValidationMessageFor(model => model.emailID, "", new { @class = "text-danger" })
+
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label> User name  </label>
+                                                @Html.TextBoxFor(model => model.username, new { @class = "form-control", placeholder = "user name" })
+                                                @Html.ValidationMessageFor(model => model.emailID, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label> Password  </label>
+                                                @Html.TextBoxFor(model => model.password, new { @class = "form-control", placeholder = "Password " })
+                                                @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label id="lblError" class="text-danger"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary" onclick="return Validation();">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+        @if (ViewBag.message == "success")
+        {
+        <script type="text/javascript">
+            window.onload = function () {
+                alert("Data successfully saved");
+            }
+        </script>
+        }
+    </body>
+}
+</html>
+

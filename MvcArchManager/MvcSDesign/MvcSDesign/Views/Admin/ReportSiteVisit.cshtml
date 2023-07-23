@@ -1,0 +1,258 @@
+﻿ 
+@{
+    ViewBag.Title = "Report Site Visit";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <script src="~/angularjs/ReportQuotation.js"></script>
+
+
+    <script type="text/javascript">
+
+        function IsNumber(e) {
+
+            var theEvent = event || window.event;
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+            var regex = /[0-9]|\./;
+
+            if (!regex.test(key)) {
+                theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
+            }
+        }
+
+    </script>
+</head>
+
+
+@using (Html.BeginForm())
+
+{
+    <body>
+
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <div class="page-content">
+                    <div class="container-fluid">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <a href="@Url.Action("ReportClientLedger", "Admin")" class="btn btn-primary"><span>Client Ledger</span></a>
+                                    <a href="@Url.Action("ReportClientReceive", "Admin")" class="btn btn-primary"><span>Client Receive </span></a>
+                                    <a href="@Url.Action("ReportDesignerLedger", "Admin")" class="btn btn-primary"><span>Desinger</span></a>
+                                    <a href="@Url.Action("ReportQuotation", "Admin")" class="btn btn-primary"><span> Quotation  </span></a>
+                                    <a href="@Url.Action("ReportMonthQuotation", "Admin")" class="btn btn-primary"><span> Month Quotation </span></a>
+                                    @*<a href="@Url.Action("ReportBalanceAdjust", "Admin")" class="btn btn-primary"><span> Balance Adjust  </span></a>*@
+                                    <a href="@Url.Action("ReportSiteVisit", "Admin")" class="btn btn-primary"><span> Site Visit   </span></a>
+                                    <a href="@Url.Action("ReportProjectHistory", "Admin")" class="btn btn-primary"><span> Project History  </span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0 font-size-18">Site Visit Report </h4>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        <div class="row">
+                            
+                            <div class="col-xl-2 col-md-2">
+                                <div class="form-group mb-2">
+                                    @*<label><input type="radio" ng-model="quotationValue" class="form-check-input" value="projectID" name="quotation" /> Project ID</label>*@
+                                    <label> Project ID</label>
+                                    <input class="form-control" ng-model="txtProjectID" onkeypress="return IsNumber();">
+
+                                </div>
+                            </div>
+
+                            @*<div class="col-xl-2 col-md-2">
+                                <div class="form-group mb-3">
+                                    <label><input type="radio" ng-model="quotationValue" value="clientName" name="quotation" class="form-check-input" />Client name </label>
+                                    <input class="form-control" ng-model="txtName">
+
+                                </div>
+                            </div>*@
+                            <div class="col-xl-2 col-md-2">
+                                <div class="form-group mb-3">
+                                    <label> . </label>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-primary" ng-click="SearchQuotation()">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center" ng-hide="loading">
+                            <button type="button" class="btn btn-dark waves-effect waves-light">
+                                <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                            </button>
+                        </div>
+                        <div class="text-center ">
+                            <span class="text-danger text-center font-size:16  " style="">{{searchdmsg}}</span>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Quotation Report</h4>
+
+                                    </div>
+                                    <div class="card-body">
+                                        <div style="display: flex; justify-content: flex-end">
+                                            <span class=" text-right font-size:20; font-weight-bold; " style=" margin-right:100px; font-weight:bold">Total amount  {{totalAmount}}</span>
+                                        </div>
+                                        <div class="table-responsive">
+                                            @*<table class="table table-bordered mb-0">
+
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Project ID</th>
+                    <th>Client name</th>
+                    <th>Project Type</th>
+                    <th>Package</th>
+                    <th>Plot size</th>
+                    <th>Level</th>
+
+                    <th>Amount</th>
+                    <th>Remark</th>
+                    <th>Action </th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr ng-repeat="item in quotationlist">
+                    <td>
+                        <span> {{item.sno}}  </span>
+                    </td>
+                    <td>
+                        <span> {{item.projectID}}  </span>
+                    </td>
+
+                    <td>
+                        <span>  {{item.clientName}}  </span>
+                    </td>
+                    <td>
+                        <span>  {{item.projectType }}  </span>
+                    </td>
+                    <td>
+                        <span> {{item.package}} </span>
+                    </td>
+                    <td>
+                        <span> {{item.plotSize}} </span>
+                    </td>
+                    <td>
+                        <span> {{item.projectLevel}} </span>
+                    </td>
+                    <td>
+                        <span> {{item.amount}} </span>
+                    </td>
+                    <td>
+                        <span> {{item.remark}}</span>
+                    </td>
+                    <td>
+
+                        <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="PdfOpen(item.projectID , item.projectType )">
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="QuotationSend(item.projectID , item.projectType)">
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>*@
+
+                                            <table class="table align-middle datatable dt-responsive table-bordered  nowrap" style=" border: 1px solid black; border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+                                                <thead>
+                                                    <tr class="bg-transparent">
+
+                                                        <th style="">  Sno  </th>
+                                                        <th style="">  Project ID </th>
+
+                                                        <th>Name </th>
+                                                        <th>Project Type</th>
+                                                        <th>Category </th>
+                                                        <th>Package</th>
+                                                        <th>Plot size	</th>
+                                                        <th>Level</th>
+                                                         
+                                                        <th>Remark</th>
+                                                        <th>Site photo Download</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    <tr>
+                                                        <td>
+                                                            <span style="color:black "> 1 </span>
+                                                        </td>
+                                                        <td>
+                                                            <span style="color: black ">  1025  </span>
+                                                        </td>
+                                                        <td>
+                                                            <span style="color: black ">  Xyz  </span>
+                                                        </td>
+                                                        <td>
+                                                            <span style="color: black ">  Structure Drawing  </span>
+                                                        </td>
+                                                        <td>
+                                                            <span style="color: black ">Center Line Plan </span>
+                                                        </td>
+                                                        <td>
+                                                            <span style="color: black "> II </span>
+                                                        </td>
+                                                        <td>
+                                                            <span style="color: black "> 25X50 </span>
+                                                        </td>
+                                                        <td>
+                                                            <span style="color: black "> G+2</span>
+                                                        </td>
+
+                                                        <td>
+                                                            <span style="color: black ">Abc</span>
+                                                        </td>
+                                                        
+
+
+                                                         
+                                                        <td style=" background-color:{{item.rowcolor}}">
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="EditCurWorking( item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2">
+                                                                @*<i class="mdi mdi-pencil d-block font-size-16"></i>*@ Site Photo Download
+                                                            </button>
+                                                        </td>
+
+                                                    </tr>
+                                                  </tbody> 
+                                              </table> 
+                                        </div>
+                                    </div>
+                                    <div class="text-center ">
+                                        <span class="text-danger text-center font-size:16  " style="">{{recordmsg}}</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+}
+</html>

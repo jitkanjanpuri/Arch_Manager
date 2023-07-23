@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SDesignModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tblAmountReceive">
+    <Key>
+      <PropertyRef Name="amountReceiveID" />
+    </Key>
+    <Property Name="amountReceiveID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="dt" Type="datetime" Nullable="false" />
+    <Property Name="clientID" Type="int" Nullable="false" />
+    <Property Name="amount" Type="int" Nullable="false" />
+    <Property Name="remark" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="tblClient">
+    <Key>
+      <PropertyRef Name="clientID" />
+    </Key>
+    <Property Name="clientID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="clientName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="orgName" Type="varchar" MaxLength="200" />
+    <Property Name="address" Type="varchar" MaxLength="300" />
+    <Property Name="city" Type="varchar" MaxLength="100" />
+    <Property Name="state" Type="varchar" MaxLength="100" />
+    <Property Name="phone" Type="varchar" MaxLength="100" />
+    <Property Name="mobile" Type="varchar" MaxLength="100" />
+    <Property Name="emailID" Type="varchar" MaxLength="100" />
+    <Property Name="remark" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="tblClientLedger">
+    <Key>
+      <PropertyRef Name="clientLadgerID" />
+    </Key>
+    <Property Name="clientLadgerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="dt" Type="datetime" Nullable="false" />
+    <Property Name="clientID" Type="int" Nullable="false" />
+    <Property Name="projectID" Type="int" Nullable="false" />
+    <Property Name="prjAmount" Type="int" Nullable="false" />
+    <Property Name="receivedAmount" Type="int" Nullable="false" />
+    <Property Name="balance" Type="int" Nullable="false" />
+    <Property Name="remark" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="oldBalance" Type="int" />
+    <Property Name="adjustBalance" Type="int" />
+  </EntityType>
+  <EntityType Name="tblCompanyProfile">
+    <Key>
+      <PropertyRef Name="companyID" />
+    </Key>
+    <Property Name="companyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="orgName" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="gstNo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="address" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="city" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="state" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="pincode" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="mobileno" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="phoneno" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="emailID" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblGmailAccount">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="gmailID" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="pwd" Type="varchar" MaxLength="150" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblOperation">
+    <Key>
+      <PropertyRef Name="operationID" />
+    </Key>
+    <Property Name="operationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="dt" Type="datetime" Nullable="false" />
+    <Property Name="projectID" Type="int" Nullable="false" />
+    <Property Name="staffID" Type="int" Nullable="false" />
+    <Property Name="designerAmount" Type="int" />
+    <Property Name="status" Type="varchar" MaxLength="50" />
+    <Property Name="remark" Type="varchar" MaxLength="50" />
+    <Property Name="payStatus" Type="varchar" MaxLength="30" />
+    <Property Name="projectCategory" Type="varchar" MaxLength="80" />
+  </EntityType>
+  <EntityType Name="tblProfile">
+    <Key>
+      <PropertyRef Name="profileID" />
+    </Key>
+    <Property Name="profileID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="companyName" Type="varchar" MaxLength="250" />
+    <Property Name="profession" Type="varchar" MaxLength="50" />
+    <Property Name="mobileno" Type="varchar" MaxLength="50" />
+    <Property Name="emailID" Type="varchar" MaxLength="50" />
+    <Property Name="password" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblProjectDetail">
+    <Key>
+      <PropertyRef Name="projectID" />
+    </Key>
+    <Property Name="projectID" Type="int" Nullable="false" />
+    <Property Name="dt" Type="datetime" Nullable="false" />
+    <Property Name="clientID" Type="int" Nullable="false" />
+    <Property Name="projectType" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="projectLevel" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="package" Type="varchar" MaxLength="30" />
+    <Property Name="plotSize" Type="varchar" MaxLength="50" />
+    <Property Name="amount" Type="int" Nullable="false" />
+    <Property Name="status" Type="varchar" MaxLength="20" />
+    <Property Name="remark" Type="varchar" MaxLength="100" />
+    <Property Name="projectname" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="tblStaff">
+    <Key>
+      <PropertyRef Name="staffID" />
+    </Key>
+    <Property Name="staffID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="designation" Type="varchar" MaxLength="100" />
+    <Property Name="address" Type="varchar" MaxLength="200" />
+    <Property Name="city" Type="varchar" MaxLength="100" />
+    <Property Name="dist" Type="varchar" MaxLength="100" />
+    <Property Name="phone" Type="varchar" MaxLength="50" />
+    <Property Name="mobile" Type="varchar" MaxLength="50" />
+    <Property Name="emailID" Type="varchar" MaxLength="50" />
+    <Property Name="rolltype" Type="varchar" MaxLength="50" />
+    <Property Name="username" Type="varchar" MaxLength="50" />
+    <Property Name="password" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblStaffLedger">
+    <Key>
+      <PropertyRef Name="staffLedgerID" />
+    </Key>
+    <Property Name="staffLedgerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="dt" Type="datetime" Nullable="false" />
+    <Property Name="staffID" Type="int" Nullable="false" />
+    <Property Name="projectID" Type="int" Nullable="false" />
+    <Property Name="prjAmount" Type="int" Nullable="false" />
+    <Property Name="paidAmount" Type="int" Nullable="false" />
+    <Property Name="balance" Type="int" Nullable="false" />
+    <Property Name="remark" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="tblStaffPaid">
+    <Key>
+      <PropertyRef Name="staffPaidID" />
+    </Key>
+    <Property Name="staffPaidID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="dt" Type="datetime" Nullable="false" />
+    <Property Name="staffID" Type="int" Nullable="false" />
+    <Property Name="amount" Type="int" Nullable="false" />
+    <Property Name="remark" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="tblStatus">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="status" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_tblAmountReceive_clientID">
+    <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
+    <End Role="tblAmountReceive" Type="Self.tblAmountReceive" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblClient">
+        <PropertyRef Name="clientID" />
+      </Principal>
+      <Dependent Role="tblAmountReceive">
+        <PropertyRef Name="clientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblClientLadger_clientID">
+    <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
+    <End Role="tblClientLedger" Type="Self.tblClientLedger" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblClient">
+        <PropertyRef Name="clientID" />
+      </Principal>
+      <Dependent Role="tblClientLedger">
+        <PropertyRef Name="clientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblOperation_projectID">
+    <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
+    <End Role="tblOperation" Type="Self.tblOperation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProjectDetail">
+        <PropertyRef Name="projectID" />
+      </Principal>
+      <Dependent Role="tblOperation">
+        <PropertyRef Name="projectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblOperation_staffID">
+    <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
+    <End Role="tblOperation" Type="Self.tblOperation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblStaff">
+        <PropertyRef Name="staffID" />
+      </Principal>
+      <Dependent Role="tblOperation">
+        <PropertyRef Name="staffID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblProjectDetail_ClientID">
+    <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
+    <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblClient">
+        <PropertyRef Name="clientID" />
+      </Principal>
+      <Dependent Role="tblProjectDetail">
+        <PropertyRef Name="clientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblStaffLedger_staffID">
+    <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
+    <End Role="tblStaffLedger" Type="Self.tblStaffLedger" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblStaff">
+        <PropertyRef Name="staffID" />
+      </Principal>
+      <Dependent Role="tblStaffLedger">
+        <PropertyRef Name="staffID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblStaffPaid_staffID">
+    <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
+    <End Role="tblStaffPaid" Type="Self.tblStaffPaid" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblStaff">
+        <PropertyRef Name="staffID" />
+      </Principal>
+      <Dependent Role="tblStaffPaid">
+        <PropertyRef Name="staffID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SDesignModelStoreContainer">
+    <EntitySet Name="tblAmountReceive" EntityType="Self.tblAmountReceive" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblClient" EntityType="Self.tblClient" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblClientLedger" EntityType="Self.tblClientLedger" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblCompanyProfile" EntityType="Self.tblCompanyProfile" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblGmailAccount" EntityType="Self.tblGmailAccount" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblOperation" EntityType="Self.tblOperation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblProfile" EntityType="Self.tblProfile" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblProjectDetail" EntityType="Self.tblProjectDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblStaff" EntityType="Self.tblStaff" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblStaffLedger" EntityType="Self.tblStaffLedger" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblStaffPaid" EntityType="Self.tblStaffPaid" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblStatus" EntityType="Self.tblStatus" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_tblAmountReceive_clientID" Association="Self.FK_tblAmountReceive_clientID">
+      <End Role="tblClient" EntitySet="tblClient" />
+      <End Role="tblAmountReceive" EntitySet="tblAmountReceive" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblClientLadger_clientID" Association="Self.FK_tblClientLadger_clientID">
+      <End Role="tblClient" EntitySet="tblClient" />
+      <End Role="tblClientLedger" EntitySet="tblClientLedger" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblOperation_projectID" Association="Self.FK_tblOperation_projectID">
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+      <End Role="tblOperation" EntitySet="tblOperation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblOperation_staffID" Association="Self.FK_tblOperation_staffID">
+      <End Role="tblStaff" EntitySet="tblStaff" />
+      <End Role="tblOperation" EntitySet="tblOperation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblProjectDetail_ClientID" Association="Self.FK_tblProjectDetail_ClientID">
+      <End Role="tblClient" EntitySet="tblClient" />
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblStaffLedger_staffID" Association="Self.FK_tblStaffLedger_staffID">
+      <End Role="tblStaff" EntitySet="tblStaff" />
+      <End Role="tblStaffLedger" EntitySet="tblStaffLedger" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblStaffPaid_staffID" Association="Self.FK_tblStaffPaid_staffID">
+      <End Role="tblStaff" EntitySet="tblStaff" />
+      <End Role="tblStaffPaid" EntitySet="tblStaffPaid" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

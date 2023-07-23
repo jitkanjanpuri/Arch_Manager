@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SDesignModelStoreContainer" CdmEntityContainer="SDesignEntities">
+    <EntitySetMapping Name="tblAmountReceive">
+      <EntityTypeMapping TypeName="SDesignModel.tblAmountReceive">
+        <MappingFragment StoreEntitySet="tblAmountReceive">
+          <ScalarProperty Name="amountReceiveID" ColumnName="amountReceiveID" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="clientID" ColumnName="clientID" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblClient">
+      <EntityTypeMapping TypeName="SDesignModel.tblClient">
+        <MappingFragment StoreEntitySet="tblClient">
+          <ScalarProperty Name="clientID" ColumnName="clientID" />
+          <ScalarProperty Name="clientName" ColumnName="clientName" />
+          <ScalarProperty Name="orgName" ColumnName="orgName" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="mobile" ColumnName="mobile" />
+          <ScalarProperty Name="emailID" ColumnName="emailID" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblProjectDetail">
+      <EntityTypeMapping TypeName="SDesignModel.tblProjectDetail">
+        <MappingFragment StoreEntitySet="tblProjectDetail">
+          <ScalarProperty Name="projectname" ColumnName="projectname" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="clientID" ColumnName="clientID" />
+          <ScalarProperty Name="projectType" ColumnName="projectType" />
+          <ScalarProperty Name="projectLevel" ColumnName="projectLevel" />
+          <ScalarProperty Name="package" ColumnName="package" />
+          <ScalarProperty Name="plotSize" ColumnName="plotSize" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblStaff">
+      <EntityTypeMapping TypeName="SDesignModel.tblStaff">
+        <MappingFragment StoreEntitySet="tblStaff">
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="rolltype" ColumnName="rolltype" />
+          <ScalarProperty Name="emailID" ColumnName="emailID" />
+          <ScalarProperty Name="mobile" ColumnName="mobile" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="dist" ColumnName="dist" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="designation" ColumnName="designation" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="staffID" ColumnName="staffID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblStaffPaid">
+      <EntityTypeMapping TypeName="SDesignModel.tblStaffPaid">
+        <MappingFragment StoreEntitySet="tblStaffPaid">
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="staffID" ColumnName="staffID" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="staffPaidID" ColumnName="staffPaidID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblStaffLedger">
+      <EntityTypeMapping TypeName="SDesignModel.tblStaffLedger">
+        <MappingFragment StoreEntitySet="tblStaffLedger">
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="balance" ColumnName="balance" />
+          <ScalarProperty Name="paidAmount" ColumnName="paidAmount" />
+          <ScalarProperty Name="prjAmount" ColumnName="prjAmount" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="staffID" ColumnName="staffID" />
+          <ScalarProperty Name="staffLedgerID" ColumnName="staffLedgerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblProfile">
+      <EntityTypeMapping TypeName="SDesignModel.tblProfile">
+        <MappingFragment StoreEntitySet="tblProfile">
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="emailID" ColumnName="emailID" />
+          <ScalarProperty Name="mobileno" ColumnName="mobileno" />
+          <ScalarProperty Name="profession" ColumnName="profession" />
+          <ScalarProperty Name="companyName" ColumnName="companyName" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="profileID" ColumnName="profileID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblClientLedger">
+      <EntityTypeMapping TypeName="SDesignModel.tblClientLedger">
+        <MappingFragment StoreEntitySet="tblClientLedger">
+          <ScalarProperty Name="adjustBalance" ColumnName="adjustBalance" />
+          <ScalarProperty Name="oldBalance" ColumnName="oldBalance" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="balance" ColumnName="balance" />
+          <ScalarProperty Name="receivedAmount" ColumnName="receivedAmount" />
+          <ScalarProperty Name="prjAmount" ColumnName="prjAmount" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="clientID" ColumnName="clientID" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="clientLadgerID" ColumnName="clientLadgerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblCompanyProfile">
+      <EntityTypeMapping TypeName="SDesignModel.tblCompanyProfile">
+        <MappingFragment StoreEntitySet="tblCompanyProfile">
+          <ScalarProperty Name="emailID" ColumnName="emailID" />
+          <ScalarProperty Name="phoneno" ColumnName="phoneno" />
+          <ScalarProperty Name="mobileno" ColumnName="mobileno" />
+          <ScalarProperty Name="pincode" ColumnName="pincode" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="gstNo" ColumnName="gstNo" />
+          <ScalarProperty Name="orgName" ColumnName="orgName" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblGmailAccount">
+      <EntityTypeMapping TypeName="SDesignModel.tblGmailAccount">
+        <MappingFragment StoreEntitySet="tblGmailAccount">
+          <ScalarProperty Name="pwd" ColumnName="pwd" />
+          <ScalarProperty Name="gmailID" ColumnName="gmailID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

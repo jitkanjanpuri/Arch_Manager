@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SDesignModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tblAmountReceive">
+    <Key>
+      <PropertyRef Name="amountReceiveID" />
+    </Key>
+    <Property Name="amountReceiveID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="clientID" Type="Int32" Nullable="false" />
+    <Property Name="amount" Type="Int32" Nullable="false" />
+    <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblClient" Relationship="Self.FK_tblAmountReceive_clientID" FromRole="tblAmountReceive" ToRole="tblClient" />
+  </EntityType>
+  <EntityType Name="tblClient">
+    <Key>
+      <PropertyRef Name="clientID" />
+    </Key>
+    <Property Name="clientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="clientName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="orgName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="address" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="city" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="state" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="phone" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="emailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblAmountReceive" Relationship="Self.FK_tblAmountReceive_clientID" FromRole="tblClient" ToRole="tblAmountReceive" />
+    <NavigationProperty Name="tblProjectDetail" Relationship="Self.FK_tblProjectDetail_ClientID" FromRole="tblClient" ToRole="tblProjectDetail" />
+    <NavigationProperty Name="tblClientLadger" Relationship="SDesignModel.FK_tblClientLadger_clientID" FromRole="tblClient" ToRole="tblClientLadger" />
+  </EntityType>
+  <EntityType Name="tblOperation">
+    <Key>
+      <PropertyRef Name="operationID" />
+    </Key>
+    <Property Name="operationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="projectID" Type="Int32" Nullable="false" />
+    <Property Name="staffID" Type="Int32" Nullable="false" />
+    <Property Name="designerAmount" Type="Int32" />
+    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="remark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="payStatus" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="tblProjectDetail" Relationship="Self.FK_tblOperation_projectID" FromRole="tblOperation" ToRole="tblProjectDetail" />
+    <NavigationProperty Name="tblStaff" Relationship="SDesignModel.FK_tblOperation_staffID1" FromRole="tblOperation" ToRole="tblStaff" />
+    <Property Name="projectCategory" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblProjectDetail">
+    <Key>
+      <PropertyRef Name="projectID" />
+    </Key>
+    <Property Name="projectID" Type="Int32" Nullable="false" />
+    <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="clientID" Type="Int32" Nullable="false" />
+    <Property Name="projectType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="projectLevel" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="package" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="plotSize" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="amount" Type="Int32" Nullable="false" />
+    <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblClient" Relationship="Self.FK_tblProjectDetail_ClientID" FromRole="tblProjectDetail" ToRole="tblClient" />
+    <NavigationProperty Name="tblOperation" Relationship="Self.FK_tblOperation_projectID" FromRole="tblProjectDetail" ToRole="tblOperation" />
+    <Property Name="projectname" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblInteriorProjectDetail" Relationship="SDesignModel.FK_tblInteriorProjectDetail_projectID" FromRole="tblProjectDetail" ToRole="tblInteriorProjectDetail" />
+  </EntityType>
+  <Association Name="FK_tblAmountReceive_clientID">
+    <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
+    <End Role="tblAmountReceive" Type="Self.tblAmountReceive" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblClient">
+        <PropertyRef Name="clientID" />
+      </Principal>
+      <Dependent Role="tblAmountReceive">
+        <PropertyRef Name="clientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblProjectDetail_ClientID">
+    <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
+    <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblClient">
+        <PropertyRef Name="clientID" />
+      </Principal>
+      <Dependent Role="tblProjectDetail">
+        <PropertyRef Name="clientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblOperation_projectID">
+    <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
+    <End Role="tblOperation" Type="Self.tblOperation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProjectDetail">
+        <PropertyRef Name="projectID" />
+      </Principal>
+      <Dependent Role="tblOperation">
+        <PropertyRef Name="projectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SDesignEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tblAmountReceive" EntityType="Self.tblAmountReceive" />
+    <EntitySet Name="tblClient" EntityType="Self.tblClient" />
+    <EntitySet Name="tblOperation" EntityType="Self.tblOperation" />
+    <EntitySet Name="tblProjectDetail" EntityType="Self.tblProjectDetail" />
+    <AssociationSet Name="FK_tblAmountReceive_clientID" Association="Self.FK_tblAmountReceive_clientID">
+      <End Role="tblClient" EntitySet="tblClient" />
+      <End Role="tblAmountReceive" EntitySet="tblAmountReceive" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblProjectDetail_ClientID" Association="Self.FK_tblProjectDetail_ClientID">
+      <End Role="tblClient" EntitySet="tblClient" />
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblOperation_projectID" Association="Self.FK_tblOperation_projectID">
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+      <End Role="tblOperation" EntitySet="tblOperation" />
+    </AssociationSet>
+    <EntitySet Name="tblStaff" EntityType="SDesignModel.tblStaff" />
+    <AssociationSet Name="FK_tblOperation_staffID1" Association="SDesignModel.FK_tblOperation_staffID1">
+      <End Role="tblStaff" EntitySet="tblStaff" />
+      <End Role="tblOperation" EntitySet="tblOperation" />
+    </AssociationSet>
+    <EntitySet Name="tblInteriorProjectDetail" EntityType="SDesignModel.tblInteriorProjectDetail" />
+    <AssociationSet Name="FK_tblInteriorProjectDetail_projectID" Association="SDesignModel.FK_tblInteriorProjectDetail_projectID">
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+      <End Role="tblInteriorProjectDetail" EntitySet="tblInteriorProjectDetail" />
+    </AssociationSet>
+    <EntitySet Name="tblStaffPaid" EntityType="SDesignModel.tblStaffPaid" />
+    <AssociationSet Name="FK_tblStaffPaid_staffID" Association="SDesignModel.FK_tblStaffPaid_staffID">
+      <End Role="tblStaff" EntitySet="tblStaff" />
+      <End Role="tblStaffPaid" EntitySet="tblStaffPaid" />
+    </AssociationSet>
+    <EntitySet Name="tblClientLadger" EntityType="SDesignModel.tblClientLadger" />
+    <AssociationSet Name="FK_tblClientLadger_clientID" Association="SDesignModel.FK_tblClientLadger_clientID">
+      <End Role="tblClient" EntitySet="tblClient" />
+      <End Role="tblClientLadger" EntitySet="tblClientLadger" />
+    </AssociationSet>
+    <EntitySet Name="tblStaffLedger" EntityType="SDesignModel.tblStaffLedger" />
+    <AssociationSet Name="FK_tblStaffLedger_staffID" Association="SDesignModel.FK_tblStaffLedger_staffID">
+      <End Role="tblStaff" EntitySet="tblStaff" />
+      <End Role="tblStaffLedger" EntitySet="tblStaffLedger" />
+    </AssociationSet>
+    <EntitySet Name="tblStatus" EntityType="SDesignModel.tblStatus" />
+    <EntitySet Name="tblRegistration" EntityType="SDesignModel.tblRegistration" />
+    <EntitySet Name="tblProfile" EntityType="SDesignModel.tblProfile" />
+    <EntitySet Name="tblGmailAccount" EntityType="SDesignModel.tblGmailAccount" />
+  </EntityContainer>
+  <EntityType Name="tblStaff">
+    <Key>
+      <PropertyRef Name="staffID" />
+    </Key>
+    <Property Name="staffID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="designation" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="city" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="dist" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="emailID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblOperation" Relationship="SDesignModel.FK_tblOperation_staffID1" FromRole="tblStaff" ToRole="tblOperation" />
+    <Property Name="rolltype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblStaffPaid" Relationship="SDesignModel.FK_tblStaffPaid_staffID" FromRole="tblStaff" ToRole="tblStaffPaid" />
+    <NavigationProperty Name="tblStaffLedger" Relationship="SDesignModel.FK_tblStaffLedger_staffID" FromRole="tblStaff" ToRole="tblStaffLedger" />
+  </EntityType>
+  <Association Name="FK_tblOperation_staffID1">
+    <End Type="SDesignModel.tblStaff" Role="tblStaff" Multiplicity="1" />
+    <End Type="SDesignModel.tblOperation" Role="tblOperation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblStaff">
+        <PropertyRef Name="staffID" />
+      </Principal>
+      <Dependent Role="tblOperation">
+        <PropertyRef Name="staffID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="tblInteriorProjectDetail">
+    <Key>
+      <PropertyRef Name="interiorID" />
+    </Key>
+    <Property Name="interiorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="projectID" Type="Int32" Nullable="false" />
+    <Property Name="projectDetails" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="particulars" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="unit" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="amount" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tblProjectDetail" Relationship="SDesignModel.FK_tblInteriorProjectDetail_projectID" FromRole="tblInteriorProjectDetail" ToRole="tblProjectDetail" />
+  </EntityType>
+  <Association Name="FK_tblInteriorProjectDetail_projectID">
+    <End Type="SDesignModel.tblProjectDetail" Role="tblProjectDetail" Multiplicity="1" />
+    <End Type="SDesignModel.tblInteriorProjectDetail" Role="tblInteriorProjectDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProjectDetail">
+        <PropertyRef Name="projectID" />
+      </Principal>
+      <Dependent Role="tblInteriorProjectDetail">
+        <PropertyRef Name="projectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="tblStaffPaid">
+    <Key>
+      <PropertyRef Name="staffPaidID" />
+    </Key>
+    <Property Name="staffPaidID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="staffID" Type="Int32" Nullable="false" />
+    <Property Name="amount" Type="Int32" Nullable="false" />
+    <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblStaff" Relationship="SDesignModel.FK_tblStaffPaid_staffID" FromRole="tblStaffPaid" ToRole="tblStaff" />
+  </EntityType>
+  <Association Name="FK_tblStaffPaid_staffID">
+    <End Type="SDesignModel.tblStaff" Role="tblStaff" Multiplicity="1" />
+    <End Type="SDesignModel.tblStaffPaid" Role="tblStaffPaid" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblStaff">
+        <PropertyRef Name="staffID" />
+      </Principal>
+      <Dependent Role="tblStaffPaid">
+        <PropertyRef Name="staffID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="tblClientLadger">
+    <Key>
+      <PropertyRef Name="clientLadgerID" />
+    </Key>
+    <Property Name="clientLadgerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="clientID" Type="Int32" Nullable="false" />
+    <Property Name="projectID" Type="Int32" Nullable="false" />
+    <Property Name="prjAmount" Type="Int32" Nullable="false" />
+    <Property Name="receivedAmount" Type="Int32" Nullable="false" />
+    <Property Name="balance" Type="Int32" Nullable="false" />
+    <Property Name="remark" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblClient" Relationship="SDesignModel.FK_tblClientLadger_clientID" FromRole="tblClientLadger" ToRole="tblClient" />
+    <Property Name="oldBalance" Type="Int32" />
+    <Property Name="adjustBalance" Type="Int32" />
+  </EntityType>
+  <Association Name="FK_tblClientLadger_clientID">
+    <End Type="SDesignModel.tblClient" Role="tblClient" Multiplicity="1" />
+    <End Type="SDesignModel.tblClientLadger" Role="tblClientLadger" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblClient">
+        <PropertyRef Name="clientID" />
+      </Principal>
+      <Dependent Role="tblClientLadger">
+        <PropertyRef Name="clientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="tblStaffLedger">
+    <Key>
+      <PropertyRef Name="staffLedgerID" />
+    </Key>
+    <Property Name="staffLedgerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="staffID" Type="Int32" Nullable="false" />
+    <Property Name="projectID" Type="Int32" Nullable="false" />
+    <Property Name="prjAmount" Type="Int32" Nullable="false" />
+    <Property Name="paidAmount" Type="Int32" Nullable="false" />
+    <Property Name="balance" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tblStaff" Relationship="SDesignModel.FK_tblStaffLedger_staffID" FromRole="tblStaffLedger" ToRole="tblStaff" />
+    <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK_tblStaffLedger_staffID">
+    <End Type="SDesignModel.tblStaff" Role="tblStaff" Multiplicity="1" />
+    <End Type="SDesignModel.tblStaffLedger" Role="tblStaffLedger" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblStaff">
+        <PropertyRef Name="staffID" />
+      </Principal>
+      <Dependent Role="tblStaffLedger">
+        <PropertyRef Name="staffID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="tblStatus">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="status" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblRegistration">
+    <Key>
+      <PropertyRef Name="registrationID" />
+    </Key>
+    <Property Name="registrationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="companyName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="profession" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="mobileno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="emailID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblProfile">
+    <Key>
+      <PropertyRef Name="profileID" />
+    </Key>
+    <Property Name="profileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="companyName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="profession" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="mobileno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="emailID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblGmailAccount">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="gmailID" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="pwd" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+  </EntityType>
+</Schema>

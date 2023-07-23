@@ -1,0 +1,625 @@
+﻿ 
+@{
+    ViewBag.Title = "Quotation";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="~/Content/jquery.CongelarFilaColumna.js"></script>
+
+    <script src="~/angularjs/quotation1.js"></script>
+
+    <script type="text/javascript">
+
+        function Validation() {
+
+            var cid = document.getElementById("txtCID").value;
+            var pname = document.getElementById("txtProjectName").value;
+            var amount = document.getElementById("txtAmount").value;
+            var plotsize = document.getElementById("txtPlotSize").value;
+
+
+            if (cid.length == 0) {
+                alert("Please select client for quotation");
+                return false;
+            }
+            else if ((pname.length == 0) || (pname.trim() == "0")) {
+                alert("Please enter project name");
+                return false;
+            }
+            else if ((plotsize.length == 0) || (plotsize.trim() == "0")) {
+                alert("Please enter plot size");
+                return false;
+            }
+            else if ((amount.length == 0) || (amount.trim() == "0")) {
+                alert("Please enter amount");
+                return false;
+            }
+            //var ch = confirm("Do you want to send quotation to client ?");
+            //document.getElementById("txtQuotation").value = ch;
+
+            return true;
+
+        }
+
+        function IsNumber(e) {
+
+            var theEvent = event || window.event;
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+            var regex = /[0-9]|\./;
+
+            if (!regex.test(key)) {
+                theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
+            }
+        }
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var rowCount = 1
+            $(document).on("click", ".classAdd", function () { //on is used for getting click event for dynamically created buttons
+                var cnt = 0;
+                var row = $('.data-contact-person').length;
+
+                cnt = 1;
+                var flag = false;
+
+                $('.projectDetails').each(function () {
+                    if (cnt == row) {
+                        var ch = $(this).val();
+                        if ((ch.length == 0) || (ch == "")) {
+                            $(this).focus();
+                            flag = true;
+                        }
+                    }
+                    cnt++;
+                });
+
+
+                if (flag) return;
+
+
+                // get unit textbox value and check is either empty or not
+                cnt = 1;
+                flag = false;
+                $('.unit').each(function () {
+                    if (cnt == row) {
+                        var ch = $(this).val();
+                        if ((ch.length == 0) || (ch == "")) {
+                            $(this).focus();
+                            flag = true;
+                        }
+                    }
+                    cnt++;
+                });
+
+                if (flag) return;
+
+                // get amount textbox value and check is either empty or not
+                cnt = 1;
+                flag = false;
+                $('.amount').each(function () {
+                    if (cnt == row) {
+                        var ch = $(this).val();
+                        if ((ch.length == 0) || (ch == "")) {
+                            $(this).focus();
+                            flag = true;
+                        }
+                    }
+                    cnt++;
+                });
+
+                if (flag) return;
+
+                var optValues = "<option value='3D View only' selected>3D View only</option> <option value='Interior Wall elevation and 3D view'>Interior Wall elevation and 3D view</option>";
+
+                var contactdiv = '<tr class="data-contact-person">' +
+                    ' <td><input type="text" id="projectDetails' + rowCount + '"  name="projectDetails' + rowCount + '" class="form-control projectDetails"  </td>' +
+                    '<td> <select id="particular' + rowCount + '"  name="particular' + rowCount + '" class="form-control particular" >' + optValues + '</select>  </td>' +
+                    ' <td><input type="text" id="unit' + rowCount + '"  name="unit' + rowCount + '" class="form-control unit" /></td>' +
+                    ' <td><input type="text" id="amount' + rowCount + '"  name="amount' + rowCount + '" class="form-control amount" onkeypress="return isNumberKey(event)" /></td>' +
+                    ' <td><button type="button" id="btnAdd" class="btn btn-xs btn-primary classAdd">+</button> </td>' +
+                    ' <td><button type="button" id="btnDelete" class="deleteContact btn btn-danger waves-effect waves-light"><i class=" bx bx-x"></i></button></td>' +
+                    '</tr>';
+
+
+                $('#maintable').append(contactdiv); // Adding these controls to Main table class
+
+
+                $('#projectDetails' + rowCount).focus();
+                rowCount++;// increase row no for more add new row
+            });
+
+            $(document).on("click", ".deleteContact", function () {
+                rowCount++;
+                $(this).closest("tr").remove(); // closest used to remove the respective 'tr' in which I have my controls
+            });
+
+            function getAllEmpData() {
+                var data = [];
+                $('tr.data-contact-person').each(function () {
+
+                    var projectDetails = $(this).find('.projectDetails').val();
+                    var particular = $(this).find('.particular').val();
+                    var unit = $(this).find('.unit').val();
+                    var amount = $(this).find('.amount').val();
+
+
+                    if ((projectDetails.length != 0) && (particular.length != 0) && (unit.length != 0) && (amount.length != 0)) {
+                        var alldata = {
+                            'projectDetails': projectDetails,
+                            'particular': particular,
+                            'unit': unit,
+                            'amount': amount
+                        }
+                        data.push(alldata);
+                    }
+                });
+                console.log(data);
+                return data;
+            }
+
+            $("#btnInteriorSubmit").click(function () {
+
+
+
+                var data = JSON.stringify(getAllEmpData());
+                var cid = $("#txtInteriorCID").val();
+                var area = $("#txtArea").val();
+                var projectname = $("#txtInteriorProjectName").val();
+
+                if ((cid == "") || (cid.length == 0)) {
+                    alert(" Please select client name");
+                    return;
+                }
+                else if ((projectname == "") || (projectname.length == 0)) {
+                    alert(" Please enter project name");
+                    $("#txtInteriorProjectName").focus();
+                    return;
+                }
+                else if ((area == "") || (area.length == 0)) {
+                    alert(" Please enter area");
+                    $("#txtArea").focus();
+                    return;
+                }
+
+
+                if (data.length <= 2) {
+                    alert("Please enter item, at least a row require for submit data");
+                    return;
+                }
+                //  data: JSON.stringify({ 'cid': cid, 'cname': cname, 'emailID': emailID, 'citystate': citystate, 'projectname': projectname, 'area': area, 'empdata': data }),
+
+                document.body.style.cursor = 'wait';
+                $.ajax({
+                    url: '/Client/SaveInteriorQuotation',
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({ 'cid': cid, 'projectname': projectname, 'area': area, 'empdata': data }),
+                    success: function () {
+                        alert("Mail sent");
+                        window.location.reload();
+                    },
+                    error: function () {
+                        alert("Mail sent");
+                        window.location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+
+
+    <script type="text/javascript">
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+
+            return true;
+        }
+
+
+
+        function closeWin() {
+            window.close();
+        }
+
+
+    </script>
+
+
+    <script type="text/javascript">
+        $("#btnSendMessage").click(function () {
+
+
+            var vararea = $("#txtArea").val();
+            var varpid = $("#lblPID").text();
+
+            if (vararea == "" || vararea.length == 0) {
+                alert("Please enter Area value");
+
+            }
+
+            $.ajax({
+                url: "/Request/InteriorCostEstimate",
+                type: "POST",
+                data: { pid: varpid, area: vararea },
+                success: function (result) {
+                    if (result == "") {
+                        alert("Interior project successfully estimated");
+                        window.close();
+                    }
+                    else {
+                        alert(result);
+                    }
+                },
+
+                error: function (err) {
+                    alert(err);
+                }
+            });
+
+        });
+
+
+        /**/</script>
+
+</head>
+@using (@Html.BeginForm("Quotation", "Client", FormMethod.Post))
+{
+    <body>
+
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+
+                <div class="page-content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0 font-size-18">Generate Quotation </h4>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+
+
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6">
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" ng-model="txtName" placeholder="Name" required data-pristine-required-message="Please enter a client name" />
+                                </div>
+                                <div class="form-group mb-3">
+                                    <span class="text-danger">{{err}}</span>
+                                </div>
+                            </div>
+                            <div class="text-center" ng-hide="loading">
+                                <button type="button" class="btn btn-dark waves-effect waves-light">
+                                    <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                                </button>
+                            </div>
+                            <div class="col-xl-1 col-md-6">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary" ng-click="Search()">Search</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                        </div>
+                                        <!-- end row -->
+
+                                        <div class="table-responsive">
+                                            <table class="table align-middle datatable dt-responsive table-check nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+                                                <thead>
+                                                    <tr class="bg-transparent">
+
+                                                        <th style="width: 120px;">CID  </th>
+                                                        <th>Name </th>
+                                                        <th>Mobile Number</th>
+                                                        <th>City  </th>
+                                                        <th>Email </th>
+                                                        <th></th>
+                                                        @*<th></th>*@
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    <tr ng-repeat="item  in recordlist">
+                                                        <td style=""> {{item.clientID}}</td>
+                                                        <td style=""> {{item.clientName}}</td>
+                                                        <td style="">  {{item.mobile}}</td>
+                                                        <td style="">  {{item.city}} </td>
+                                                        <td style="">  {{item.emailID}} </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" ng-click="SetClientID(item.clientID, item.clientName)" data-bs-target=".bs-example-modal-center">Generate</button>
+                                                        </td>
+                                                        @*<td>
+            <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" ng-click="SetClientID(item.clientID, item.clientName)" data-bs-target=".bs-example-modal-center">Exterior</button>
+        </td>
+        <td>
+            <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" ng-click="SetClientID(item.clientID, item.clientName)" data-bs-target="#exampleModalFullscreen">Interior</button>
+
+        </td>*@
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- end table responsive -->
+
+
+                                        <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Exterior Quotation</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div>
+
+                                                                    <div class="row">
+                                                                        <div class="col-xl-6 col-md-6">
+                                                                            <div class="form-group mb-3">
+                                                                                <label>CID </label><br />
+                                                                                <input type="text" class="form-control" id="txtCID" name="txtCID" readonly />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-xl-6 col-md-6">
+                                                                            <div class="form-group mb-3">
+                                                                                <label>Client name </label>
+                                                                                <input type="text" class="form-control" id="txtExteriorCName" name="txtExteriorCName" readonly />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-xl-6 col-md-6">
+                                                                            <div class="form-group mb-3">
+                                                                                <label>Project Name </label>
+                                                                                <input type="text" class="form-control" id="txtProjectName" name="txtProjectName" style="" />
+                                                                            </div>
+                                                                        </div>
+                                                                        @*<div class="col-xl-6 col-md-6">
+                                                                            <div class="form-group mb-3">
+                                                                                <label>Project Type </label>
+                                                                                <select class="form-control" id="ddlProjectType" name="ddlProjectType" style="">
+                                                                                    <option value="Exterior">Exterior</option>
+                                                                                    <option value="3D_Floor">3D Floor</option>
+                                                                                    <option value="Structure">Structure</option>
+                                                                                    <option value="Planning">Planning</option>
+                                                                                    <option value="Walkthrough">Walkthrough</option>
+                                                                                    <option value="Bird_Eye_View">Bird Eye View</option>
+                                                                                    <option value="Interactive_View(Exterior)	">Interactive View(Exterior)</option>
+                                                                                    <option value="Interactive_View(Interior)	">Interactive View(Interior)</option>
+
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>*@
+                                                                        @*<div class="col-xl-6 col-md-6">
+                                                                            <div class="form-group mb-3">
+                                                                                <label>Package  </label>
+                                                                                <select class="form-control" id="ddlPackage" name="ddlPackage" style="">
+                                                                                    <option value="1">2D Elevation</option>
+                                                                                    <option value="1">3D View</option>
+                                                                                    <option value="2">One 2D Elevation , One 3D  View</option>
+                                                                                    <option value="3">Two 2D Elevation, Two 3D View</option>
+
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>*@
+                                                                        <div class="col-xl-6 col-md-6">
+                                                                            <div class="form-group mb-3">
+                                                                                <label> Level </label>
+                                                                                <select class="form-control" id="ddlLevel" name="ddlLevel" style="">
+                                                                                    <option value="Ground">Ground</option>
+                                                                                    <option value="G+1">G+1 </option>
+                                                                                    <option value="G+2">G+2</option>
+                                                                                    <option value="G+3">G+3</option>
+                                                                                    <option value="G+4">G+4 </option>
+                                                                                    <option value="G+5">G+5</option>
+                                                                                    <option value="G+6">G+6</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-xl-6 col-md-6">
+                                                                            <div class="form-group mb-3">
+                                                                                <label>Plot size</label>
+                                                                                <input type="text" class="form-control" id="txtPlotSize" name="txtPlotSize" style="" />
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-xl-6 col-md-6">
+                                                                            <div class="form-group mb-3">
+                                                                                <label>Amount </label>
+                                                                                <input type="text" class="form-control" id="txtAmount" name="txtAmount" onkeypress="return IsNumber();" style="" />
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-xl-12 col-md-6">
+                                                                            <div class="form-group mb-3">
+                                                                                <label>Comment </label>
+                                                                                <textarea id="comment" class="form-control" name="comment" rows="2" cols="35"></textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- end row -->
+                                                                    <div class="form-group">
+                                                                        <input type="submit" value="Submit" id="btnSubmit" onclick="return Validation();" class="btn btn-primary" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="exampleModalFullscreen" class="modal fade" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-fullscreen">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalFullscreenLabel">Interior Quotation</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div>
+                                                                    <input type="hidden" />
+                                                                    <div class="card-body">
+                                                                        <div class="row">
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="row">
+                                                                                <div class="col-lg-2">
+                                                                                    <div>
+                                                                                        <form>
+                                                                                            <div class="row mb-4">
+                                                                                                <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">CID </label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    <input type="text" class="form-control" id="txtInteriorCID" readonly>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-2">
+                                                                                    <div>
+                                                                                        <form>
+                                                                                            <div class="row mb-4">
+                                                                                                <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Name </label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    <input type="text" class="form-control" id="txtInteriorName" readonly>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-4">
+                                                                                    <div>
+                                                                                        <form>
+                                                                                            <div class="row mb-4">
+                                                                                                <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Project Name </label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    <input type="text" class="form-control" id="txtInteriorProjectName" placeholder="Project Name">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-4 ms-lg-auto">
+                                                                                    <div class="mt-4 mt-lg-0">
+
+
+                                                                                        <form>
+                                                                                            <div class="row mb-4">
+                                                                                                <div class="col-sm-3">
+
+                                                                                                </div>
+                                                                                                <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Area in Sq feet  </label>
+                                                                                                <div class="col-sm-6">
+                                                                                                    <input type="text" class="form-control" id="txtArea" value="0" onkeypress="return isNumberKey(event)" placeholder="Area in sq feet">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-xl-12">
+                                                                        <div class="card-body">
+                                                                            <div class="table-responsive">
+                                                                                <table class="table mb-0" id="maintable">
+
+                                                                                    <thead class="table-light">
+                                                                                        <tr>
+
+                                                                                            <th>Project Details </th>
+                                                                                            <th>Particular </th>
+                                                                                            <th>Unit/size</th>
+                                                                                            <th>Amount</th>
+
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr class="data-contact-person">
+
+                                                                                            <td style="width:350px;">
+                                                                                                <input type="text" id="projectDetails" name="projectDetails" class="form-control projectDetails" />
+
+                                                                                            </td>
+                                                                                            <td style="width:350px;">
+                                                                                                <select class="form-select particular">
+                                                                                                    <option> 3D View only </option>
+                                                                                                    <option>Interior Wall elevation and 3D view </option>
+                                                                                                </select>
+
+                                                                                            </td>
+                                                                                            <td style="width:350px;">
+                                                                                                <input type="text" id="unit" name="unit" class="form-control unit" />
+                                                                                            </td>
+
+                                                                                            <td style="width:350px;">
+                                                                                                <input type="text" id="amount" name="amount" class="form-control amount" onkeypress="return isNumberKey(event)" />
+                                                                                            </td>
+
+                                                                                            <td>
+                                                                                                <button type="button" id="btnAdd" class="btn btn-primary waves-effect waves-light classAdd"><i class=" bx bx-plus"></i> </button>
+
+
+                                                                                            </td>
+                                                                                        </tr>
+
+                                                                                    </tbody>
+                                                                                </table>
+
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" id="btnInteriorSubmit" class="btn btn-primary waves-effect waves-light">Submit</button>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+}
+</html>

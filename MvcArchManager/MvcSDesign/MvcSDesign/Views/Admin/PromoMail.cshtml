@@ -1,0 +1,186 @@
+﻿@model MvcSDesign.Models.quotation
+@{
+    ViewBag.Title = "PromoMail";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<br />
+<h2></h2>
+
+ 
+<script src="~/angularjs/promoMail1.js"></script>
+
+ 
+ <br />
+<br />
+<h2 style="font-family:Arial; font-size:18pt;margin-left:50px">Promo Mail</h2>
+
+
+@using (@Html.BeginForm())
+{
+    <div ng-app="myApp">
+        <div ng-controller="myController" style="background-color:#f0f7fa">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <a href="@Url.Action("PromoMail", "Admin")" class="btn btn-primary"><span>Promo Mail</span></a>
+                        <a href="@Url.Action("Quotation", "Client")" class="btn btn-primary"><span>Quotation </span></a>
+                        <a href="@Url.Action("ProjectManagement", "Admin")" class="btn btn-primary"><span>Prj Management </span></a>
+                        <a href="@Url.Action("Operation", "Admin")" class="btn btn-primary"><span> Operation  </span></a>
+                        <a href="@Url.Action("CurrentWorking", "Admin")" class="btn btn-primary"><span> Current working  </span></a>
+                    </div>
+                </div>
+            </div>
+            <br />
+
+            <h3> Under construction</h3>
+
+            @*<div id="divID" class="popupAssign" ng-hide="composeWindow">
+            <div class="modal-content" style="width:600px; height:520px;">
+
+                <div class="panel panel-default">
+                    <div class="panel panel-heading "> <span style="font-family:Arial; font-size:12pt;  ">Promo Mail</span></div>
+                    <div class="panel-body">
+
+
+                        <table style="margin-left: 1px; height: 450px; width: 500px; margin-top: -18px; ">
+                            <tr>
+                                <td style="width:50px">
+                                    <span style="font-family:Arial; font-size:10pt;  ">Subject</span>
+                                </td>
+                                <td style="width:500px">
+                                    <input type="text" ng-model="txtSubject" class="form-control" style=" width: 500px; height: 35px; font-family: Arial; font-size: 12pt;  " />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span style="font-family:Arial; font-size:10pt; "></span>
+                                </td>
+                                <td>
+                                    <textarea ng-model="message" rows="10" cols="30" placeholder="Message" style=" width: 500px; height: 350px;font-family:Arial; font-size:12pt;"></textarea>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <table style="margin-left:100px;width:405px">
+                                        <tr>
+                                            <td style="width:280px;">
+                                            </td>
+                                            <td>
+                                                <input type="button" value="Close" ng-click="CloseCompose()" class="btn btn-info" style=" width: 70px;  height:28px; font-family: Arial; font-size:10pt;background-color: #9ac8f5;  " />
+                                            </td>
+
+                                            <td>
+                                                <input type="button" value="Send" ng-click="SendMail()" class="btn btn-info" style="  width:70px;height:28px; font-family:Arial; font-size:10pt; background-color: #9ac8f5;" />
+                                            </td>
+
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="panel-group">
+            <div class="panel panel-primary" style="margin-left: 50px; width:1000px; height:670px;">
+                <div class="panel-heading" style="font-family: Arial; font-size: 12pt;">Criteria </div>
+                <div class="panel-body" style="margin-top:-10px">
+                    <table style="margin-left: 30px;width:92%">
+                        <tr>
+
+                            <td style="width:100px">
+                                <span style="height:30px;font-family:Museo Sans 300 ;font-size:10pt; color:black"> Client name</span>
+                            </td>
+                            <td style="width:200px">
+                                <input type="text" ng-model="txtCName" class="form-control" value="" style="width:200px;height:35px; font-family:Arial; font-size:10pt" />
+                            </td>
+                            <td style="width:50px;">
+                            </td>
+                            <td style="width:20px">
+                                <span style="height:30px;font-family:Museo Sans 300 ;font-size:10pt; color:black; text-align:right"> City</span>
+                            </td>
+                            <td style="width:200px">
+                                <input type="text" ng-model="txtCity" class="form-control" value="" style="width:200px;height:35px; font-family:Arial; font-size:10pt" />
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-info" ng-click="ShowClient()" style="width:90px; font-family: Arial; font-size: 10pt;  ">
+                                    <span class="glyphicon glyphicon-search"></span> Search
+                                </button>
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-info" value="Compose" ng-click="ShowComposeWindow()" style="width:80px; font-family: Arial; font-size: 10pt;  " />
+                            </td>
+                            <td>
+                                @Html.ActionLink("Add Account", "CreateGmailAccount", "Admin", new { @class = "btn btn-info", style = "width:100px; height : 30px; font-family: Arial; font-size: 10pt;" })
+                            </td>
+
+
+
+                        </tr>
+                    </table>
+                    <br />
+
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div style="margin-left:4px;height: 520px; width: 900px; border:1px ; overflow:scroll">
+                                <table style="margin-left:2px; height: 500px; width: 850px;  " class="table table-striped">
+                                    <thead>
+                                        <tr style="font-family:Arial; height: 30px;     border: solid 1px #659EC7;">
+
+                                            <th style="width:50px;">
+                                                <input type="checkbox" class="form-control" style="width:14px;height:15px; vertical-align:middle;text-align:center" ng-click="toggleAll()" ng-model="isAllSelected" />
+                                            </th>
+                                            <th style="width:250px; font-family:Arial;font-size:11pt;">&nbsp;&nbsp; Client Name</th>
+                                            <th style="width:100px;font-family:Arial;font-size:11pt;">City </th>
+                                            <th style="width:200px;font-family:Arial;font-size:11pt;">State </th>
+                                            <th style="width:100px;font-family:Arial;font-size:11pt;">Mobile</th>
+                                            <th style="width:100px;font-family:Arial;font-size:11pt;">Email ID</th>
+
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in clist ">
+
+
+                                            <td>
+                                                <input type="checkbox" class="form-control" style="width:14px;height:15px; vertical-align:middle;text-align:center"   value="{{item.clientID}}" ng-model="item.selected" />
+                                            </td>
+                                            <td> <span style=" font-family: Arial; font-size: 10pt; color: black;">&nbsp;&nbsp;{{item.clientName}} </span></td>
+                                            <td> <span style=" font-family: Arial; font-size: 10pt; color: black;">{{item.city}} </span></td>
+                                            <td> <span style=" font-family: Arial; font-size: 10pt; color: black;"> {{item.state}}  </span></td>
+                                            <td> <span style=" font-family: Arial; font-size: 10pt; color: black;"> {{item.mobile }}  </span></td>
+                                            <td> <span style=" font-family: Arial; font-size: 10pt; color: black;"> {{item.emailID }}  </span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>*@
+        </div>
+    </div>
+
+
+
+
+
+
+
+}
+
+
+
+
+
