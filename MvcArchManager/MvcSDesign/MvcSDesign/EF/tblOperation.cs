@@ -16,13 +16,13 @@ namespace MvcSDesign.EF
     {
         public int operationID { get; set; }
         public System.DateTime dt { get; set; }
-        public int projectID { get; set; }
         public int staffID { get; set; }
         public Nullable<int> designerAmount { get; set; }
         public string status { get; set; }
         public string remark { get; set; }
         public string payStatus { get; set; }
         public string projectCategory { get; set; }
+        public long projectID { get; set; }
     
         public virtual tblProjectDetail tblProjectDetail { get; set; }
         public virtual tblStaff tblStaff { get; set; }

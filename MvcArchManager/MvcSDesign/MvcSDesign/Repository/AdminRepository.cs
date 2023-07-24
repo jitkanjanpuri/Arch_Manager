@@ -50,10 +50,10 @@ namespace MvcSDesign.Repository
                     obj.state = model.state.Trim();
                     obj.pincode = model.pincode;
                     obj.mobileno = model.mobile.Trim();
-                    obj.phoneno = model.phone==null ?"-":model.phone;
+                    obj.phoneno = model.phone == null ? "-" : model.phone;
                     obj.emailID = model.emailID.Trim();
                     _dbContext.tblCompanyProfiles.Add(obj);
-                  }
+                }
                 else
                 {
                     rec.name = model.name.Trim();
@@ -84,7 +84,7 @@ namespace MvcSDesign.Repository
                 if (rec == null)
                     return null;
 
-                obj.name  = rec.name.Trim();
+                obj.name = rec.name.Trim();
                 obj.orgName = rec.orgName.Trim();
                 obj.gstNo = rec.gstNo.Trim();
                 obj.address = rec.address.Trim();
@@ -100,30 +100,13 @@ namespace MvcSDesign.Repository
             return obj;
         }
 
-
-        //public void SaveStatus(string ch)
-        //{
-        //    try
-        //    {
-        //        tblStatus obj = new tblStatus();
-        //        obj.status = ch;
-
-        //        _dbcontext.tblStatus.Add(obj);
-        //        _dbcontext.SaveChanges();
-
-
-        //    }
-        //    catch (Exception ex) { }
-        //}
-
-
+       
         public bool DesignerEmailValidation(string mailID)
         {
             bool flag = true;
             try
             {
                 tblStaff obj = _dbContext.tblStaffs.SingleOrDefault(x => x.emailID == mailID);
-
                 string ch = obj.name;
                 flag = false;
             }
@@ -168,8 +151,6 @@ namespace MvcSDesign.Repository
                 obj.name = rec.name;
                 obj.rolltype = rec.rolltype;
                 obj.staffID = rec.staffID;
-
-
 
             }
             catch (Exception ex) { }
@@ -274,7 +255,7 @@ namespace MvcSDesign.Repository
            catch (Exception ex) { return ex.Message; }
            return "";
        }
-       public string UpdateQuotation(int pid, int famount)
+       public string UpdateQuotation(int pid, int famount,  string projectlocation)
        {
             using (var context = new ArchManagerDBEntities())
             {
@@ -288,7 +269,9 @@ namespace MvcSDesign.Repository
                         pd.dt = DateTime.Now;
                         pd.amount = famount;
                         pd.status = "estimated";
+                        pd.projectlocation = projectlocation;
                         cid = pd.clientID;
+
 
                         context.Entry(pd).State = System.Data.Entity.EntityState.Modified;
                         context.SaveChanges();
@@ -312,8 +295,6 @@ namespace MvcSDesign.Repository
                         context.SaveChanges();
 
                         dbTransaction.Commit();
-
-
                     }
                     catch (Exception ex)
                     {
@@ -610,12 +591,9 @@ namespace MvcSDesign.Repository
                         });
                         i++;
                     }
+                   }
                 }
-            }
             catch (Exception ex) { }
-
-
-            //});
             return prjlist;
         }
 
@@ -658,7 +636,7 @@ namespace MvcSDesign.Repository
                     prjlist.Add(new operation
                     {
                         sno = i,
-                        projectID = item.projectID,
+                       // projectID = item.projectID,
                         projectType = item.projectType,
                         package = item.package,
                         projectLevel = item.projectLevel,
@@ -770,7 +748,6 @@ namespace MvcSDesign.Repository
 
         public string CurrentWorkingRemarkUpdate(int opID, string remark)
         {
-
             try
             {
                 var rec = _dbContext.tblOperations.Where(x => (x.operationID == opID)).FirstOrDefault();
@@ -912,68 +889,68 @@ namespace MvcSDesign.Repository
 
         public string SavePayDesigner(int sid, int amount, string remark)
         {
-            using (var context = new ArchManagerDBEntities())
-            {
-                using (var dbTransaction = context.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        tblStaffPaid obj = new tblStaffPaid();
-                        tblStaffLedger sl = new tblStaffLedger();
-                        int balance = 0;
+            //using (var context = new ArchManagerDBEntities())
+            //{
+            //    using (var dbTransaction = context.Database.BeginTransaction())
+            //    {
+            //        try
+            //        {
+            //            tblStaffPaid obj = new tblStaffPaid();
+            //            tblStaffLedger sl = new tblStaffLedger();
+            //            int balance = 0;
 
-                        if ((remark == null) || (remark.Trim() == "")) remark = "-";
-                        obj.dt = DateTime.Now;
-                        obj.staffID = sid;
-                        obj.amount = amount;
-                        obj.remark = remark.Trim();
+            //            if ((remark == null) || (remark.Trim() == "")) remark = "-";
+            //            obj.dt = DateTime.Now;
+            //            obj.staffID = sid;
+            //            obj.amount = amount;
+            //            obj.remark = remark.Trim();
 
 
 
-                        context.tblStaffPaids.Add(obj);
-                        context.SaveChanges();
+            //            context.tblStaffPaids.Add(obj);
+            //            context.SaveChanges();
 
-                        try
-                        {
-                            tblStaffLedger cl = context.tblStaffLedgers.Where(x => x.staffID == sid).OrderByDescending(x => x.staffLedgerID).First();
-                            balance = cl.balance;
-                        }
-                        catch (Exception ex) { }
+            //            try
+            //            {
+            //                tblStaffLedger cl = context.tblStaffLedgers.Where(x => x.staffID == sid).OrderByDescending(x => x.staffLedgerID).First();
+            //                balance = cl.balance;
+            //            }
+            //            catch (Exception ex) { }
 
-                        sl.dt = DateTime.Now;
-                        sl.staffID = sid;
-                        sl.projectID = 0;
-                        sl.prjAmount = 0;
-                        sl.paidAmount = amount;
-                        if (balance > 0)
-                            sl.balance = balance - amount;
-                        else
-                            sl.balance = -amount;
+            //            sl.dt = DateTime.Now;
+            //            sl.staffID = sid;
+            //            sl.projectID = 0;
+            //            sl.prjAmount = 0;
+            //            sl.paidAmount = amount;
+            //            if (balance > 0)
+            //                sl.balance = balance - amount;
+            //            else
+            //                sl.balance = -amount;
 
-                        sl.remark = remark.Trim();
+            //            sl.remark = remark.Trim();
 
-                        context.tblStaffLedgers.Add(sl);
-                        context.SaveChanges();
+            //            context.tblStaffLedgers.Add(sl);
+            //            context.SaveChanges();
 
-                        dbTransaction.Commit();
+            //            dbTransaction.Commit();
 
-                    }
-                    catch (Exception ex)
-                    {
-                        dbTransaction.Rollback();
-                        return ex.Message;
-                    }
-                }
-            }
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            dbTransaction.Rollback();
+            //            return ex.Message;
+            //        }
+            //    }
+            //}
             return "";
         }
         public string QuotationDelete(int projectID)
         {
             try
             {
-                var dl = _dbContext.tblProjectDetails.Find(projectID);
-                _dbContext.tblProjectDetails.Remove(dl);
-                _dbContext.SaveChanges();
+                //var dl = _dbContext.tblProjectDetails.Find(projectID);
+                //_dbContext.tblProjectDetails.Remove(dl);
+                //_dbContext.SaveChanges();
 
             }
             catch (Exception ex) { return ex.Message; }
@@ -993,79 +970,79 @@ namespace MvcSDesign.Repository
                 {
 
 
-                    var query = from cl in _dbContext.tblClients
-                                orderby (cl.clientName)
-                                select new
-                                {
-                                    clientID = cl.clientID,
-                                    clientName = cl.clientName,
-                                    city = cl.city,
-                                    state = cl.state
-                                };
+                    //var query = from cl in _dbContext.tblClients
+                    //            orderby (cl.clientName)
+                    //            select new
+                    //            {
+                    //                clientID = cl.clientID,
+                    //                clientName = cl.clientName,
+                    //                city = cl.city,
+                    //                state = cl.state
+                    //            };
 
 
 
-                    foreach (var item in query)
-                    {
-                        balance = 0;
-                        try
-                        {
-                            tblClientLedger cl = _dbContext.tblClientLedgers.Where(x => x.clientID == item.clientID).OrderByDescending(x => x.clientLadgerID).First();
-                            balance = cl.balance;
-                        }
-                        catch (Exception ex) { }
+                    //foreach (var item in query)
+                    //{
+                    //    balance = 0;
+                    //    try
+                    //    {
+                    //        tblClientLedger cl = _dbContext.tblClientLedgers.Where(x => x.clientID == item.clientID).OrderByDescending(x => x.clientLadgerID).First();
+                    //        balance = cl.balance;
+                    //    }
+                    //    catch (Exception ex) { }
 
-                        if (balance != 0)
-                        {
-                            obj.Add(new client
-                            {
-                                sno = i,
-                                clientID = item.clientID,
-                                clientName = item.clientName,
-                                city = item.city,
-                                state = item.state,
-                                mobile = balance.ToString()
-                            });
-                            i++;
-                        }
-                    }
+                    //    if (balance != 0)
+                    //    {
+                    //        obj.Add(new client
+                    //        {
+                    //            sno = i,
+                    //            clientID = item.clientID,
+                    //            clientName = item.clientName,
+                    //            city = item.city,
+                    //            state = item.state,
+                    //            mobile = balance.ToString()
+                    //        });
+                    //        i++;
+                    //    }
+                    //}
                 }
                 else
                 {
 
-                    var query = from cl in _dbContext.tblClients
-                                where (cl.clientName.Contains(cname.Trim()))
-                                orderby (cl.clientName)
-                                select new
-                                {
-                                    clientID = cl.clientID,
-                                    clientName = cl.clientName,
-                                    city = cl.city,
-                                    state = cl.state
-                                };
+                    //var query = from cl in _dbContext.tblClients
+                    //            where (cl.clientName.Contains(cname.Trim()))
+                    //            orderby (cl.clientName)
+                    //            select new
+                    //            {
+                    //                clientID = cl.clientID,
+                    //                clientName = cl.clientName,
+                    //                city = cl.city,
+                    //                state = cl.state
+                    //            };
 
-                    foreach (var item in query)
-                    {
-                        balance = 0;
-                        try
-                        {
-                            tblClientLedger cl = _dbContext.tblClientLedgers.Where(x => x.clientID == item.clientID).OrderByDescending(x => x.clientLadgerID).First();
-                            balance = cl.balance;
-                        }
-                        catch (Exception ex) { }
+                    //foreach (var item in query)
+                    //{
+                    //    balance = 0;
+                    //    try
+                    //    {
+                    //        tblClientLedger cl = _dbContext.tblClientLedgers.Where(x => x.clientID == item.clientID).OrderByDescending(x => x.clientLadgerID).First();
+                    //        balance = cl.balance;
+                    //    }
+                    //    catch (Exception ex) { }
 
-                        obj.Add(new client
-                        {
-                            sno = i,
-                            clientID = item.clientID,
-                            clientName = item.clientName,
-                            city = item.city,
-                            state = item.state,
-                            mobile = balance.ToString()
-                        });
-                        i++;
+                    //    obj.Add(new client
+                    //    {
+                    //        sno = i,
+                    //        clientID = item.clientID,
+                    //        clientName = item.clientName,
+                    //        city = item.city,
+                    //        state = item.state,
+                    //        mobile = balance.ToString()
+                    //    });
+                    //    i++;
 
-                    }
+                    //}
                 }
             }
             catch (Exception ex) { }
@@ -1084,24 +1061,24 @@ namespace MvcSDesign.Repository
                 DateTime dt1 = DateTime.Parse(fromDt, cinfo);
 
 
-                obj = (from cl in _dbContext.tblClientLedgers
-                       join pd in _dbContext.tblProjectDetails on cl.projectID equals pd.projectID into pdetail
-                       from pd in pdetail.DefaultIfEmpty()
-                       where ((cl.dt >= dt1) && (cl.clientID == clientID))
-                       select new operation
-                       {
-                           clientLedgerID = cl.clientLadgerID,
-                           clientID = cl.clientID,
-                           projectID = (pd == null ? 0 : pd.projectID),
-                           dtstr = cl.dt.Day.ToString() + "-" + cl.dt.Month.ToString() + "-" + cl.dt.Year.ToString(),
-                           projectName = pd.projectname,
-                           projectType = pd.projectType,
-                           package = pd.package,
-                           amount = cl.prjAmount,
-                           receivedAmount = (cl.receivedAmount == null ? 0 : cl.receivedAmount),
-                           balance = cl.balance,
-                           remark = cl.remark
-                       }).ToList();
+                //obj = (from cl in _dbContext.tblClientLedgers
+                //       join pd in _dbContext.tblProjectDetails on cl.projectID equals pd.projectID into pdetail
+                //       from pd in pdetail.DefaultIfEmpty()
+                //       where ((cl.dt >= dt1) && (cl.clientID == clientID))
+                //       select new operation
+                //       {
+                //           clientLedgerID = cl.clientLadgerID,
+                //           clientID = cl.clientID,
+                //           projectID = (pd == null ? 0 : pd.projectID),
+                //           dtstr = cl.dt.Day.ToString() + "-" + cl.dt.Month.ToString() + "-" + cl.dt.Year.ToString(),
+                //           projectName = pd.projectname,
+                //           projectType = pd.projectType,
+                //           package = pd.package,
+                //           amount = cl.prjAmount,
+                //           receivedAmount = (cl.receivedAmount == null ? 0 : cl.receivedAmount),
+                //           balance = cl.balance,
+                //           remark = cl.remark
+                //       }).ToList();
 
 
 
@@ -1123,63 +1100,63 @@ namespace MvcSDesign.Repository
                 dt2 = dt2.AddDays(1);
                 DataRow dr;
 
-                var query = from cl in _dbContext.tblClientLedgers
-                            join pd in _dbContext.tblProjectDetails on cl.projectID equals pd.projectID into pdetail
-                            from pd in pdetail.DefaultIfEmpty()
-                            where ((cl.dt >= dt1) && (cl.dt <= dt2) && (cl.clientID == clientID))
-                            select new
-                            {
-                                clientID = cl.clientID,
+                //var query = from cl in _dbContext.tblClientLedgers
+                //            join pd in _dbContext.tblProjectDetails on cl.projectID equals pd.projectID into pdetail
+                //            from pd in pdetail.DefaultIfEmpty()
+                //            where ((cl.dt >= dt1) && (cl.dt <= dt2) && (cl.clientID == clientID))
+                //            select new
+                //            {
+                //                clientID = cl.clientID,
 
-                                projectID = (pd == null ? 0 : pd.projectID),
-                                dt = cl.dt,
-                                projectname = pd.projectname,
-                                projectType = pd.projectType,
-                                package = pd.package,
-                                amount = cl.prjAmount,
-                                receive = cl.receivedAmount,
-                                balance = cl.balance,
-                                remark = cl.remark
-                            };
+                //                projectID = (pd == null ? 0 : pd.projectID),
+                //                dt = cl.dt,
+                //                projectname = pd.projectname,
+                //                projectType = pd.projectType,
+                //                package = pd.package,
+                //                amount = cl.prjAmount,
+                //                receive = cl.receivedAmount,
+                //                balance = cl.balance,
+                //                remark = cl.remark
+                //            };
 
-                clientDetailRecord = new DataTable();
-                clientDetailRecord.Columns.Add("projectID");
-                clientDetailRecord.Columns.Add("dt");
-                clientDetailRecord.Columns.Add("pname");
-                clientDetailRecord.Columns.Add("ptype");
-                clientDetailRecord.Columns.Add("package");
-                clientDetailRecord.Columns.Add("amount");
-                clientDetailRecord.Columns.Add("receive");
-                clientDetailRecord.Columns.Add("balance");
-                clientDetailRecord.Columns.Add("remark");
-                foreach (var item in query)
-                {
-                    dr = clientDetailRecord.NewRow();
-                    obj.Add(new operation
-                    {
-                        projectID = item.projectID,
-                        status = item.dt.ToString("dd-MMM-yyyy"),
-                        projectName = item.projectname,
-                        projectType = item.projectType,
-                        package = item.package,
-                        amount = item.amount,
-                        receivedAmount = item.receive,
-                        balance = item.balance,
-                        remark = item.remark
+                //clientDetailRecord = new DataTable();
+                //clientDetailRecord.Columns.Add("projectID");
+                //clientDetailRecord.Columns.Add("dt");
+                //clientDetailRecord.Columns.Add("pname");
+                //clientDetailRecord.Columns.Add("ptype");
+                //clientDetailRecord.Columns.Add("package");
+                //clientDetailRecord.Columns.Add("amount");
+                //clientDetailRecord.Columns.Add("receive");
+                //clientDetailRecord.Columns.Add("balance");
+                //clientDetailRecord.Columns.Add("remark");
+                //foreach (var item in query)
+                //{
+                //    dr = clientDetailRecord.NewRow();
+                //    obj.Add(new operation
+                //    {
+                //        projectID = item.projectID,
+                //        status = item.dt.ToString("dd-MMM-yyyy"),
+                //        projectName = item.projectname,
+                //        projectType = item.projectType,
+                //        package = item.package,
+                //        amount = item.amount,
+                //        receivedAmount = item.receive,
+                //        balance = item.balance,
+                //        remark = item.remark
 
 
-                    });
-                    dr[0] = item.projectID;
-                    dr[1] = item.dt;
-                    dr[2] = item.projectname;
-                    dr[3] = item.projectType;
-                    dr[4] = item.package;
-                    dr[5] = item.amount;
-                    dr[6] = item.receive;
-                    dr[7] = item.balance;
-                    dr[8] = item.remark;
-                    clientDetailRecord.Rows.Add(dr);
-                }
+                //    });
+                //    dr[0] = item.projectID;
+                //    dr[1] = item.dt;
+                //    dr[2] = item.projectname;
+                //    dr[3] = item.projectType;
+                //    dr[4] = item.package;
+                //    dr[5] = item.amount;
+                //    dr[6] = item.receive;
+                //    dr[7] = item.balance;
+                //    dr[8] = item.remark;
+                //    clientDetailRecord.Rows.Add(dr);
+                //}
 
 
 
@@ -1517,8 +1494,6 @@ namespace MvcSDesign.Repository
                 {
                     obj = obj.OrderByDescending(x => x.sno).Take(3).ToList();
                 }
-
-
             }
             catch (System.Exception ex) { }
 
@@ -1537,8 +1512,6 @@ namespace MvcSDesign.Repository
                 DateTime dt1 = dt2.AddDays(-9);
 
                 dt2 = DateTime.Today.AddDays(1);
-
-
                 lst = (from p in _dbContext.tblProjectDetails
                        where ((p.dt >= dt1) && (p.dt <= dt2))
                        group p by p.projectType into g
@@ -1547,10 +1520,6 @@ namespace MvcSDesign.Repository
                            sno = g.Count(),
                            projectType = g.Key
                        }).ToList();
-
-
-
-
             }
             catch (Exception ex) { }
 
@@ -1583,48 +1552,48 @@ namespace MvcSDesign.Repository
         public IEnumerable<operation> RptDesignerLedgerDetail(int sid, string fromDt, string toDt)
         {
             List<operation> obj = new List<operation>();
-        //    try
-        //    {
+            try
+            {
 
-        //        CultureInfo cinfo = new CultureInfo("en-US");
-        //        DateTime dt1 = DateTime.Parse(fromDt, cinfo);
-        //        DateTime dt2 = DateTime.Parse(toDt, cinfo);
-        //        dt2 = dt2.AddDays(1);
-        //        var query = from sl in _dbContext.tblStaffLedger
-        //                    join pd in _dbContext.tblProjectDetail on sl.projectID equals pd.projectID into pdetail
-        //                    from pd in pdetail.DefaultIfEmpty()
-        //                    where ((sl.staffID == sid) && ((sl.dt >= dt1) && (sl.dt <= dt2)))
-        //                    select new
-        //                    {
-        //                        projectID = sl.projectID,
-        //                        dt = sl.dt,
-        //                        prjName = pd.projectname,
-        //                        projectType = pd.projectType,
-        //                        package = pd.package,
-        //                        prjAmount = sl.prjAmount,
-        //                        paidAmount = sl.paidAmount,
-        //                        balance = sl.balance,
-        //                    };
+                CultureInfo cinfo = new CultureInfo("en-US");
+                DateTime dt1 = DateTime.Parse(fromDt, cinfo);
+                DateTime dt2 = DateTime.Parse(toDt, cinfo);
+                dt2 = dt2.AddDays(1);
+                var query = from sl in _dbContext.tblStaffLedgers
+                            join pd in _dbContext.tblProjectDetails on sl.projectID equals pd.projectID into pdetail
+                            from pd in pdetail.DefaultIfEmpty()
+                            where ((sl.staffID == sid) && ((sl.dt >= dt1) && (sl.dt <= dt2)))
+                            select new
+                            {
+                                projectID = sl.projectID,
+                                dt = sl.dt,
+                                prjName = pd.projectname,
+                                projectType = pd.projectType,
+                                package = pd.package,
+                                prjAmount = sl.prjAmount,
+                                paidAmount = sl.paidAmount,
+                                balance = sl.balance,
+                            };
 
 
-        //        foreach (var item in query)
-        //        {
+                foreach (var item in query)
+                {
 
-        //            obj.Add(new operation
-        //            {
-        //                projectID = item.projectID,
-        //                status = item.dt.ToString("dd-MMM-yyyy"),
-        //                projectName = item.prjName,
-        //                projectType = item.projectType,
-        //                package = item.package,
-        //                amount = item.prjAmount,
-        //                paidAmount = item.paidAmount,
-        //                balance = item.balance
-        //            });
-        //        }
+                    obj.Add(new operation
+                    {
+                        projectID = item.projectID,
+                        status = item.dt.ToString("dd-MMM-yyyy"),
+                        projectName = item.prjName,
+                        projectType = item.projectType,
+                        package = item.package,
+                        amount = item.prjAmount,
+                        paidAmount = item.paidAmount,
+                        balance = item.balance
+                    });
+                }
 
-        //    }
-        //    catch (Exception ex) { }
+            }
+            catch (Exception ex) { }
 
 
             return obj;
@@ -1925,13 +1894,13 @@ namespace MvcSDesign.Repository
             GMail obj = new GMail();
             try
             {
-                var res = _dbContext.tblGmailAccounts.OrderBy(x => x.gmailID).FirstOrDefault();
+                //var res = _dbContext.tblGmailAccounts.OrderBy(x => x.gmailID).FirstOrDefault();
 
-                if (res != null)
-                {
-                    obj.gmailID = res.gmailID;
-                    obj.pwd = res.pwd;
-                }
+                //if (res != null)
+                //{
+                //    obj.gmailID = res.gmailID;
+                //    obj.pwd = res.pwd;
+                //}
 
             }
             catch (Exception ex) { }

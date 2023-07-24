@@ -20,7 +20,7 @@ namespace MvcSDesign.Repository
         void InsertRegistration(staff st);
         string RegistrationUpdate(staff obj);
         string RegistrationDelete(int staffID);
-        IEnumerable<tblStaff> SearchRegistration(string name);
+        //IEnumerable<tblStaff> SearchRegistration(string name);
 
 
         //Dashboard
@@ -33,7 +33,7 @@ namespace MvcSDesign.Repository
 
         // Quotation
         IEnumerable<operation> getProjectQuotation();
-        string UpdateQuotation(int pid, int famount);
+        string UpdateQuotation(int pid, int famount, string projectlocation);
         string QuotationDelete(int projectID);
         IEnumerable<tblStaff> getOperationDesigner();
         IEnumerable<operation> getProjectAssign();

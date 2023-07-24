@@ -204,56 +204,59 @@
     <Compile Include="Controllers\DesignerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="EF\ArchManagerModel.Context.cs">
+    <Compile Include="EF\ArchManagerEDM.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ArchManagerModel.Context.tt</DependentUpon>
+      <DependentUpon>ArchManagerEDM.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\ArchManagerModel.cs">
+    <Compile Include="EF\ArchManagerEDM.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ArchManagerModel.tt</DependentUpon>
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\ArchManagerModel.Designer.cs">
+    <Compile Include="EF\ArchManagerEDM.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ArchManagerModel.edmx</DependentUpon>
+      <DependentUpon>ArchManagerEDM.edmx</DependentUpon>
     </Compile>
     <Compile Include="EF\tblAmountReceive.cs">
-      <DependentUpon>ArchManagerModel.tt</DependentUpon>
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblClient.cs">
-      <DependentUpon>ArchManagerModel.tt</DependentUpon>
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblClientLedger.cs">
-      <DependentUpon>ArchManagerModel.tt</DependentUpon>
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblCompanyProfile.cs">
-      <DependentUpon>ArchManagerModel.tt</DependentUpon>
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblGmailAccount.cs">
-      <DependentUpon>ArchManagerModel.tt</DependentUpon>
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblOperation.cs">
-      <DependentUpon>ArchManagerModel.tt</DependentUpon>
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\tblPRF.cs">
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblProfile.cs">
-      <DependentUpon>ArchManagerModel.tt</DependentUpon>
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblProjectDetail.cs">
-      <DependentUpon>ArchManagerModel.tt</DependentUpon>
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblStaff.cs">
-      <DependentUpon>ArchManagerModel.tt</DependentUpon>
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblStaffLedger.cs">
-      <DependentUpon>ArchManagerModel.tt</DependentUpon>
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblStaffPaid.cs">
-      <DependentUpon>ArchManagerModel.tt</DependentUpon>
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblStatu.cs">
-      <DependentUpon>ArchManagerModel.tt</DependentUpon>
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="Filters\AdminFilter.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -1683,15 +1686,15 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="dirPagination.js" />
     <Content Include="dtpicker.js" />
-    <Content Include="EF\ArchManagerModel.Context.tt">
+    <Content Include="EF\ArchManagerEDM.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ArchManagerModel.edmx</DependentUpon>
-      <LastGenOutput>ArchManagerModel.Context.cs</LastGenOutput>
+      <DependentUpon>ArchManagerEDM.edmx</DependentUpon>
+      <LastGenOutput>ArchManagerEDM.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="EF\ArchManagerModel.tt">
+    <Content Include="EF\ArchManagerEDM.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ArchManagerModel.edmx</DependentUpon>
-      <LastGenOutput>ArchManagerModel.cs</LastGenOutput>
+      <DependentUpon>ArchManagerEDM.edmx</DependentUpon>
+      <LastGenOutput>ArchManagerEDM.cs</LastGenOutput>
     </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -1850,12 +1853,12 @@
     <Content Include="assets\libs\twitter-bootstrap-wizard\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="assets\libs\twitter-bootstrap-wizard\bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="assets\libs\wnumb\LICENSE.MD" />
-    <EntityDeploy Include="EF\ArchManagerModel.edmx">
+    <EntityDeploy Include="EF\ArchManagerEDM.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ArchManagerModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>ArchManagerEDM.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="EF\ArchManagerModel.edmx.diagram">
-      <DependentUpon>ArchManagerModel.edmx</DependentUpon>
+    <Content Include="EF\ArchManagerEDM.edmx.diagram">
+      <DependentUpon>ArchManagerEDM.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\IISProfile.pubxml" />
     <None Include="Properties\PublishProfiles\MvcDesigner.pubxml" />
@@ -4530,6 +4533,7 @@
     <Content Include="Views\Admin\CompanyProfile.cshtml" />
     <Content Include="Views\Admin\ReportProjectHistory.cshtml" />
     <Content Include="Views\Admin\Test.cshtml" />
+    <Content Include="Views\Admin\PRF.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4565,7 +4569,7 @@
     <Folder Include="assets\libs\twitter-bootstrap-wizard\examples\" />
     <Folder Include="Images\logoimage\" />
     <Folder Include="PDF_Files\ClientlLedger\" />
-    <Folder Include="ProjectUpload\" />
+    <Folder Include="ProjectLocation\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

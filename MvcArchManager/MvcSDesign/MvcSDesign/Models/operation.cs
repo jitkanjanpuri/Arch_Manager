@@ -15,7 +15,7 @@ namespace MvcSDesign.Models
         public string dtstr { get; set; }
         public int sno { get; set; }
         public int clientID { get; set; }
-        public int projectID { get; set; }
+        public long projectID { get; set; }
         public string clientName { get; set; }
         public string designerName { get; set; }
         public string projectName { get; set; }

@@ -32,9 +32,11 @@ namespace MvcSDesign.EF
         public string mobile { get; set; }
         public string emailID { get; set; }
         public string remark { get; set; }
+        public int companyID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblAmountReceive> tblAmountReceives { get; set; }
+        public virtual tblCompanyProfile tblCompanyProfile { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblClientLedger> tblClientLedgers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

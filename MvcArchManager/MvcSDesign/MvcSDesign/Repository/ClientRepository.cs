@@ -23,7 +23,7 @@ namespace MvcSDesign.Repository
             _dbContext = dEntity;
         }
 
-        
+
 
         public  void InsertData(client cnt)
         {
@@ -44,9 +44,9 @@ namespace MvcSDesign.Repository
             }
             catch (Exception ex) { }
         }
-        public int InsertQuotation(quotation qtn)
+        public long InsertQuotation(quotation qtn)
         {
-            int pid = 0;
+            long pid = 0;
             try
             {
                 tblProjectDetail obj = new tblProjectDetail();
@@ -70,92 +70,10 @@ namespace MvcSDesign.Repository
             return pid;
         }
 
-
-        //public void SaveStatus(string ch)
-        //{
-        //    try
-        //    {
-        //        tblStatus obj = new tblStatus();
-        //        obj.status = ch;
-
-        //        _dbContext.tblStatus.Add(obj);
-        //        _dbContext.SaveChanges();
-        //    }
-        //    catch (Exception ex) { }
-
-        //}
-
-
-        public string InsertInteriorQuotation(operation obj, string empdata, ref int pid , ref DataTable dt)
+         
+        public long getProjectID()
         {
-            //using (var context = new SDesignEntities())
-            //{
-            //    using (var dbTransaction = context.Database.BeginTransaction())
-            //    {
-            //        try
-            //        {
-                        //    tblProjectDetail objPD = new tblProjectDetail();
-                        //    tblInteriorProjectDetail objInterior = new tblInteriorProjectDetail();
-                        //    pid = getProjectID();
-                        //    DataRow dr;
-                        //    var serializeData = JsonConvert.DeserializeObject<List<InteriorProject>>(empdata);
-
-                        //    int amount = 0;
-                        //    foreach (var data in serializeData)
-                        //    {
-                        //        amount += data.amount;
-                        //    }
-                        //    objPD.projectID = pid;
-                        //    objPD.clientID = obj.clientID;
-                        //    objPD.dt = DateTime.Now;
-                        //    objPD.projectname = obj.projectName.Trim();
-                        //    objPD.projectType = "Interior";
-                        //    objPD.projectLevel = obj.projectLevel.Trim();
-                        //    objPD.package = "-";
-                        //    objPD.plotSize = obj.plotSize;
-                        //    objPD.amount = amount;
-                        //    objPD.status = "request";
-
-                        //    context.tblProjectDetail.Add(objPD);
-                        //    context.SaveChanges();
-
-                        //    foreach (var data in serializeData)
-                        //    {
-                        //        objInterior.projectID = pid;
-                        //        objInterior.projectDetails = data.projectDetails.Trim();
-                        //        objInterior.particulars = data.particular.Trim();
-                        //        objInterior.unit = data.unit.Trim();
-                        //        objInterior.amount = data.amount;
-
-                        //        context.tblInteriorProjectDetail.Add(objInterior);
-                        //        context.SaveChanges();
-
-                        //        amount += data.amount;
-                        //        dr = dt.NewRow();
-                        //        dr[0] = data.projectDetails;
-                        //        dr[1] = data.particular;
-                        //        dr[2] = data.unit;
-                        //        dr[3] = data.amount;
-
-                        //        dt.Rows.Add(dr);
-
-                        //    }
-                        //    dbTransaction.Commit();
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            dbTransaction.Rollback();
-            //            return ex.Message;
-            //        }
-            //    }
-
-
-            //}
-            return "";
-        }
-        public int getProjectID()
-        {
-            int projectID = 1000;
+            long projectID = 1000;
              
             try
             {
@@ -253,7 +171,7 @@ namespace MvcSDesign.Repository
             try
             {
                 var res = _dbContext.tblClients.Where(x => x.clientName == name).FirstOrDefault();
-                if(res != null)
+                if (res != null)
                 {
                     return "Client name already exist";
                 }
@@ -282,7 +200,7 @@ namespace MvcSDesign.Repository
         {
             return _dbContext.tblClients.Where(s => s.clientName.Contains(name)).ToList();
         }
-         
+
         public IEnumerable<tblClient> getAll()
         {
             return _dbContext.tblClients.ToList().OrderBy(x => x.clientName);
@@ -291,59 +209,57 @@ namespace MvcSDesign.Repository
         public IEnumerable<client> getClient_PromMail(string name, string city)
         {
 
-            
-
             List<client> clist = new List<client>();
             try
             {
                
                 if ((name != null) && (city != null))
                 {
-                    //var varlist = (from cl in _dbContext.tblClient
-                    //               where ((cl.clientName.Contains(name)) && (cl.city.Contains(city)))
-                    //               select new client
-                    //               {
-                    //                   clientID = cl.clientID,
-                    //                   clientName = cl.clientName,
-                    //                   city = cl.city,
-                    //                   state = cl.state,
-                    //                   mobile = cl.mobile,
-                    //                   emailID = cl.mobile
-                    //               }).ToList();
+                    var varlist = (from cl in _dbContext.tblClients
+                                   where ((cl.clientName.Contains(name)) && (cl.city.Contains(city)))
+                                   select new client
+                                   {
+                                       clientID = cl.clientID,
+                                       clientName = cl.clientName,
+                                       city = cl.city,
+                                       state = cl.state,
+                                       mobile = cl.mobile,
+                                       emailID = cl.mobile
+                                   }).ToList();
 
-                    //clist = varlist.ToList();
+                    clist = varlist.ToList();
                 }
                 else if (name != null)
                 {
-                    //var varlist = (from cl in _dbContext.tblClient
-                    //               where (cl.clientName.Contains(name))  
-                    //               select new client
-                    //               {
-                    //                   clientID = cl.clientID,
-                    //                   clientName = cl.clientName,
-                    //                   city = cl.city,
-                    //                   state = cl.state,
-                    //                   mobile = cl.mobile,
-                    //                   emailID = cl.mobile
-                    //               }).ToList();
+                    var varlist = (from cl in _dbContext.tblClients
+                                   where (cl.clientName.Contains(name))
+                                   select new client
+                                   {
+                                       clientID = cl.clientID,
+                                       clientName = cl.clientName,
+                                       city = cl.city,
+                                       state = cl.state,
+                                       mobile = cl.mobile,
+                                       emailID = cl.mobile
+                                   }).ToList();
 
-                    //clist = varlist.ToList();
+                    clist = varlist.ToList();
                 }
                 else if (city != null)
                 {
-                    //var varlist = (from cl in _dbContext.tblClient
-                    //               where (cl.city.Contains(city))
-                    //               select new client
-                    //               {
-                    //                   clientID = cl.clientID,
-                    //                   clientName = cl.clientName,
-                    //                   city = cl.city,
-                    //                   state = cl.state,
-                    //                   mobile = cl.mobile,
-                    //                   emailID = cl.mobile
-                    //               }).ToList();
+                    var varlist = (from cl in _dbContext.tblClients
+                                   where (cl.city.Contains(city))
+                                   select new client
+                                   {
+                                       clientID = cl.clientID,
+                                       clientName = cl.clientName,
+                                       city = cl.city,
+                                       state = cl.state,
+                                       mobile = cl.mobile,
+                                       emailID = cl.mobile
+                                   }).ToList();
 
-                    //clist = varlist.ToList();
+                    clist = varlist.ToList();
                 }
 
             }
@@ -374,10 +290,7 @@ namespace MvcSDesign.Repository
                 }
             }
             catch (Exception ex) { }
-
-
-
-            return clist;
+           return clist;
         }
 
         public string Update(client cnt)
@@ -521,9 +434,6 @@ namespace MvcSDesign.Repository
                         i++;
                     }
                 }
-
-
-               
             }
             catch (Exception ex) { }
 
@@ -556,8 +466,6 @@ namespace MvcSDesign.Repository
             List<operation> reqlist = new List<operation>();
             try
             {
-
-
                 var prj = from pd in _dbContext.tblProjectDetails
                           join cl in _dbContext.tblClients
                           on pd.clientID equals cl.clientID
@@ -588,41 +496,33 @@ namespace MvcSDesign.Repository
 
                 //rowcolor = for city
                 foreach (var item in prj)
-                            {
-                                reqlist.Add(new operation
-                                {
-                                    dt = item.dt,
-                                    clientID = item.clientid,
-                                    clientName = item.clientname,
-                                    status = item.emailID,
-                                    designerName = item.address,
-                                    rowcolor = item.city,
-                                    projectID = item.projectID,
-                                    projectName = item.projectname,
-                                    projectType = item.projectType,
-                                    package = item.package,
-                                    projectLevel = item.projectLevel,
-                                    plotSize = item.plotSize,
-                                    amount = item.amount,
-                                    remark = item.remark
+                {
+                    reqlist.Add(new operation
+                    {
+                        dt = item.dt,
+                        clientID = item.clientid,
+                        clientName = item.clientname,
+                        status = item.emailID,
+                        designerName = item.address,
+                        rowcolor = item.city,
+                        projectID = item.projectID,
+                        projectName = item.projectname,
+                        projectType = item.projectType,
+                        package = item.package,
+                        projectLevel = item.projectLevel,
+                        plotSize = item.plotSize,
+                        amount = item.amount,
+                        remark = item.remark
 
-                                });
+                    });
 
-                            }
+                }
 
             }
             catch (Exception ex) { }
             return reqlist.ToList();
         }
-
-
-        //public IEnumerable<tblInteriorProjectDetail> getInteriorProjectDetail(int projectID)
-        //{
-        //    return _dbContext.tblInteriorProjectDetail.Where(x=>x.projectID == projectID).ToList().OrderBy(x => x.interiorID);
-        //}
-
-
-
+         
       
     }
 }

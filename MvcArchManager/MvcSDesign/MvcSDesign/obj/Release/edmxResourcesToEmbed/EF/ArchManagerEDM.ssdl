@@ -84,7 +84,6 @@
       <PropertyRef Name="prfID" />
     </Key>
     <Property Name="prfID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="projectID" Type="bigint" Nullable="false" />
     <Property Name="workingStatus" Type="nvarchar" MaxLength="500" />
     <Property Name="slabdetail" Type="nvarchar" MaxLength="200" />
     <Property Name="slabheight" Type="nvarchar" MaxLength="200" />
@@ -102,6 +101,7 @@
     <Property Name="doorlintel" Type="nvarchar" MaxLength="100" />
     <Property Name="windowsill" Type="nvarchar" MaxLength="100" />
     <Property Name="windowlintel" Type="nvarchar" MaxLength="100" />
+    <Property Name="projectID" Type="bigint" Nullable="false" />
   </EntityType>
   <EntityType Name="tblProfile">
     <Key>
@@ -203,18 +203,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__tblPRF__projectI__60A75C0F">
-    <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
-    <End Role="tblPRF" Type="Self.tblPRF" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tblProjectDetail">
-        <PropertyRef Name="projectID" />
-      </Principal>
-      <Dependent Role="tblPRF">
-        <PropertyRef Name="projectID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_tblAmountReceive_clientID">
     <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
     <End Role="tblAmountReceive" Type="Self.tblAmountReceive" Multiplicity="*" />
@@ -248,6 +236,18 @@
       </Principal>
       <Dependent Role="tblOperation">
         <PropertyRef Name="staffID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblPRF_projectDetail_projectID">
+    <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
+    <End Role="tblPRF" Type="Self.tblPRF" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProjectDetail">
+        <PropertyRef Name="projectID" />
+      </Principal>
+      <Dependent Role="tblPRF">
+        <PropertyRef Name="projectID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -309,10 +309,6 @@
       <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
       <End Role="tblOperation" EntitySet="tblOperation" />
     </AssociationSet>
-    <AssociationSet Name="FK__tblPRF__projectI__60A75C0F" Association="Self.FK__tblPRF__projectI__60A75C0F">
-      <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
-      <End Role="tblPRF" EntitySet="tblPRF" />
-    </AssociationSet>
     <AssociationSet Name="FK_tblAmountReceive_clientID" Association="Self.FK_tblAmountReceive_clientID">
       <End Role="tblClient" EntitySet="tblClient" />
       <End Role="tblAmountReceive" EntitySet="tblAmountReceive" />
@@ -324,6 +320,10 @@
     <AssociationSet Name="FK_tblOperation_staffID" Association="Self.FK_tblOperation_staffID">
       <End Role="tblStaff" EntitySet="tblStaff" />
       <End Role="tblOperation" EntitySet="tblOperation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblPRF_projectDetail_projectID" Association="Self.FK_tblPRF_projectDetail_projectID">
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+      <End Role="tblPRF" EntitySet="tblPRF" />
     </AssociationSet>
     <AssociationSet Name="FK_tblProjectDetail_ClientID" Association="Self.FK_tblProjectDetail_ClientID">
       <End Role="tblClient" EntitySet="tblClient" />

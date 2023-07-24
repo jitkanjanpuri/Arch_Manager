@@ -45,7 +45,7 @@ app.controller("myController", function ($scope, $http, cw) {
     $scope.GetSubcategory = function(item)
     {
         if ($scope.category == "Presentation Drawing") {
-            $scope.projectCategory = ["Presentation Drawing", "Structure Drawing", "Ground Floor Drawing", "First Floor Drawing", "Second Floor Drawing"]
+            $scope.projectCategory = ["Furniture Layout", "Structure Drawing", "Ground Floor Drawing", "First Floor Drawing", "Second Floor Drawing"]
             $scope.category = $scope.projectCategory[0];
         }
         else if ($scope.category == "Structure Drawing") {

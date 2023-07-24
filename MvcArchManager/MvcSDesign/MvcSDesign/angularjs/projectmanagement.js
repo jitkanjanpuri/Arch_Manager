@@ -1,14 +1,15 @@
 ﻿var app = angular.module("myApp", [])
 app.controller('myController', function ($scope, $http, projectlist, $window) {
-
+    var clientID = 0;
     $scope.loading = true;
     $scope.pdfPreviewWindow = true;
     projectlist.getRecord().then(function (d) {
         $scope.projectquotationlist = d.data;
     },
-      function () {
-          alert('Failed'); // Failed
-      });
+      //function () {
+      //    alert('Failed'); // Failed
+      //  }
+    );
 
     function ShowQuotation() {
         $http({
@@ -26,10 +27,11 @@ app.controller('myController', function ($scope, $http, projectlist, $window) {
         });
     }
 
-    $scope.ShowPanel = function (pid, cname, amount) {
-        $scope.projectID = pid;
-        $scope.clientName = cname;
-        $scope.amount = amount;
+    $scope.ShowPanel = function (item) {
+        clientid = item.clientid;
+        $scope.projectID = item.projectID;
+        $scope.clientName = item.clientName;
+        $scope.amount = item.amount;
         $scope.finalAmount = 0;
     }
     
@@ -52,6 +54,7 @@ app.controller('myController', function ($scope, $http, projectlist, $window) {
             method: 'POST',
             dataType: 'json',
             params: {
+                clientid: clientid,
                 projectID: varpid,
                 finalAmount: varfamount
             },

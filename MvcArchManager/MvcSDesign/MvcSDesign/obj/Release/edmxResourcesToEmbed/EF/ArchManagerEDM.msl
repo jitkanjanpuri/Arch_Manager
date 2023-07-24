@@ -15,7 +15,6 @@
     <EntitySetMapping Name="tblClients">
       <EntityTypeMapping TypeName="ArchManagerDBModel.tblClient">
         <MappingFragment StoreEntitySet="tblClient">
-          <ScalarProperty Name="companyID" ColumnName="companyID" />
           <ScalarProperty Name="clientID" ColumnName="clientID" />
           <ScalarProperty Name="clientName" ColumnName="clientName" />
           <ScalarProperty Name="orgName" ColumnName="orgName" />
@@ -26,6 +25,7 @@
           <ScalarProperty Name="mobile" ColumnName="mobile" />
           <ScalarProperty Name="emailID" ColumnName="emailID" />
           <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -76,13 +76,38 @@
         <MappingFragment StoreEntitySet="tblOperation">
           <ScalarProperty Name="operationID" ColumnName="operationID" />
           <ScalarProperty Name="dt" ColumnName="dt" />
-          <ScalarProperty Name="projectID" ColumnName="projectID" />
           <ScalarProperty Name="staffID" ColumnName="staffID" />
           <ScalarProperty Name="designerAmount" ColumnName="designerAmount" />
           <ScalarProperty Name="status" ColumnName="status" />
           <ScalarProperty Name="remark" ColumnName="remark" />
           <ScalarProperty Name="payStatus" ColumnName="payStatus" />
           <ScalarProperty Name="projectCategory" ColumnName="projectCategory" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblPRFs">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblPRF">
+        <MappingFragment StoreEntitySet="tblPRF">
+          <ScalarProperty Name="prfID" ColumnName="prfID" />
+          <ScalarProperty Name="workingStatus" ColumnName="workingStatus" />
+          <ScalarProperty Name="slabdetail" ColumnName="slabdetail" />
+          <ScalarProperty Name="slabheight" ColumnName="slabheight" />
+          <ScalarProperty Name="plinthheight" ColumnName="plinthheight" />
+          <ScalarProperty Name="porchheight" ColumnName="porchheight" />
+          <ScalarProperty Name="elevationpattern" ColumnName="elevationpattern" />
+          <ScalarProperty Name="totalfloor" ColumnName="totalfloor" />
+          <ScalarProperty Name="towerroom" ColumnName="towerroom" />
+          <ScalarProperty Name="cornerplotplan" ColumnName="cornerplotplan" />
+          <ScalarProperty Name="plotside" ColumnName="plotside" />
+          <ScalarProperty Name="boundrywall" ColumnName="boundrywall" />
+          <ScalarProperty Name="pencilsketch" ColumnName="pencilsketch" />
+          <ScalarProperty Name="colorcombination" ColumnName="colorcombination" />
+          <ScalarProperty Name="anyother" ColumnName="anyother" />
+          <ScalarProperty Name="doorlintel" ColumnName="doorlintel" />
+          <ScalarProperty Name="windowsill" ColumnName="windowsill" />
+          <ScalarProperty Name="windowlintel" ColumnName="windowlintel" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -102,7 +127,6 @@
     <EntitySetMapping Name="tblProjectDetails">
       <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectDetail">
         <MappingFragment StoreEntitySet="tblProjectDetail">
-          <ScalarProperty Name="projectlocation" ColumnName="projectlocation" />
           <ScalarProperty Name="projectID" ColumnName="projectID" />
           <ScalarProperty Name="dt" ColumnName="dt" />
           <ScalarProperty Name="clientID" ColumnName="clientID" />
@@ -114,6 +138,7 @@
           <ScalarProperty Name="status" ColumnName="status" />
           <ScalarProperty Name="remark" ColumnName="remark" />
           <ScalarProperty Name="projectname" ColumnName="projectname" />
+          <ScalarProperty Name="projectlocation" ColumnName="projectlocation" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -165,31 +190,6 @@
         <MappingFragment StoreEntitySet="tblStatus">
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="status" ColumnName="status" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="tblPRFs">
-      <EntityTypeMapping TypeName="ArchManagerDBModel.tblPRF">
-        <MappingFragment StoreEntitySet="tblPRF">
-          <ScalarProperty Name="windowlintel" ColumnName="windowlintel" />
-          <ScalarProperty Name="windowsill" ColumnName="windowsill" />
-          <ScalarProperty Name="doorlintel" ColumnName="doorlintel" />
-          <ScalarProperty Name="anyother" ColumnName="anyother" />
-          <ScalarProperty Name="colorcombination" ColumnName="colorcombination" />
-          <ScalarProperty Name="pencilsketch" ColumnName="pencilsketch" />
-          <ScalarProperty Name="boundrywall" ColumnName="boundrywall" />
-          <ScalarProperty Name="plotside" ColumnName="plotside" />
-          <ScalarProperty Name="cornerplotplan" ColumnName="cornerplotplan" />
-          <ScalarProperty Name="towerroom" ColumnName="towerroom" />
-          <ScalarProperty Name="totalfloor" ColumnName="totalfloor" />
-          <ScalarProperty Name="elevationpattern" ColumnName="elevationpattern" />
-          <ScalarProperty Name="porchheight" ColumnName="porchheight" />
-          <ScalarProperty Name="plinthheight" ColumnName="plinthheight" />
-          <ScalarProperty Name="slabheight" ColumnName="slabheight" />
-          <ScalarProperty Name="slabdetail" ColumnName="slabdetail" />
-          <ScalarProperty Name="workingStatus" ColumnName="workingStatus" />
-          <ScalarProperty Name="projectID" ColumnName="projectID" />
-          <ScalarProperty Name="prfID" ColumnName="prfID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

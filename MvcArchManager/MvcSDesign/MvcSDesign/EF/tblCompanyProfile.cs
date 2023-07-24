@@ -14,6 +14,12 @@ namespace MvcSDesign.EF
     
     public partial class tblCompanyProfile
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public tblCompanyProfile()
+        {
+            this.tblClients = new HashSet<tblClient>();
+        }
+    
         public int companyID { get; set; }
         public string name { get; set; }
         public string orgName { get; set; }
@@ -25,5 +31,8 @@ namespace MvcSDesign.EF
         public string mobileno { get; set; }
         public string phoneno { get; set; }
         public string emailID { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblClient> tblClients { get; set; }
     }
 }

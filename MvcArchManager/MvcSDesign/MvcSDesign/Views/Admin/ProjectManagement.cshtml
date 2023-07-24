@@ -9,7 +9,7 @@
 <html lang="en">
 
 <head>
-    <script src="~/angularjs/projectmanagement.js"></script>
+    <script src="~/angularjs/projectmanagement1.js"></script>
     <script type="text/javascript">
 
         function IsNumber(e) {
@@ -39,6 +39,7 @@
                                 <div class="form-group">
                                     <a href="@Url.Action("Quotation", "Client")" class="btn btn-primary"><span>Quotation </span></a>
                                     <a href="@Url.Action("ProjectManagement", "Admin")" class="btn btn-primary"><span>Prj Management </span></a>
+                                    <a href="@Url.Action("PRF", "Admin")" class="btn btn-primary"><span>PRF</span></a>
                                     <a href="@Url.Action("Operation", "Admin")" class="btn btn-primary"><span> Operation  </span></a>
                                     <a href="@Url.Action("SiteVisit", "Admin")" class="btn btn-primary"><span>Site Visit </span></a>
                                     <a href="@Url.Action("CurrentWorking", "Admin")" class="btn btn-primary"><span> Current working  </span></a>
@@ -124,7 +125,7 @@
                                                             </button>
                                                         </td>
                                                         <td>
-                                                            <button type="button" class="btn btn-success waves-effect waves-light w-sm" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2" ng-click="ShowPanel(item.projectID , item.clientName, item.amount)">
+                                                            <button type="button" class="btn btn-success waves-effect waves-light w-sm" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2" ng-click="ShowPanel(item)">
                                                                 Confirm
                                                             </button>
                                                         </td>

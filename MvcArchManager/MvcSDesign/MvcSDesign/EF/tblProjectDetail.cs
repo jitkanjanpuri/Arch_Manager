@@ -18,9 +18,10 @@ namespace MvcSDesign.EF
         public tblProjectDetail()
         {
             this.tblOperations = new HashSet<tblOperation>();
+            this.tblPRFs = new HashSet<tblPRF>();
         }
     
-        public int projectID { get; set; }
+        public long projectID { get; set; }
         public System.DateTime dt { get; set; }
         public int clientID { get; set; }
         public string projectType { get; set; }
@@ -31,9 +32,12 @@ namespace MvcSDesign.EF
         public string status { get; set; }
         public string remark { get; set; }
         public string projectname { get; set; }
+        public string projectlocation { get; set; }
     
         public virtual tblClient tblClient { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblOperation> tblOperations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblPRF> tblPRFs { get; set; }
     }
 }

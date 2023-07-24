@@ -31,6 +31,7 @@ namespace MvcSDesign.EF
         public virtual DbSet<tblCompanyProfile> tblCompanyProfiles { get; set; }
         public virtual DbSet<tblGmailAccount> tblGmailAccounts { get; set; }
         public virtual DbSet<tblOperation> tblOperations { get; set; }
+        public virtual DbSet<tblPRF> tblPRFs { get; set; }
         public virtual DbSet<tblProfile> tblProfiles { get; set; }
         public virtual DbSet<tblProjectDetail> tblProjectDetails { get; set; }
         public virtual DbSet<tblStaff> tblStaffs { get; set; }

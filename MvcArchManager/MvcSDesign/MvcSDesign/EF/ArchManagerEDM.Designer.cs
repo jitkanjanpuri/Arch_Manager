@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'F:\Development\Web sites\MvcArchManager\MvcSDesign\MvcSDesign\EF\ArchManagerModel.edmx'. 
+﻿// T4 code generation is enabled for model 'F:\Development\Web sites\GitHub\Arch Manager\Arch_Manager\MvcArchManager\MvcSDesign\MvcSDesign\EF\ArchManagerEDM.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

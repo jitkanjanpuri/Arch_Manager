@@ -157,18 +157,15 @@ namespace MvcSDesign.Controllers
             List<SelectListItem> obj = new List<SelectListItem>();
             try
             {
-                var lst = IClnt.getAll();
-                foreach (var item in lst)
-                {
-                    obj.Add(new SelectListItem
-                    {
-                        Text = item.clientName,
-                        Value = item.clientID.ToString()
-                    });
-                }
-
-
-
+                //var lst = IClnt.getAll();
+                //foreach (var item in lst)
+                //{
+                //    obj.Add(new SelectListItem
+                //    {
+                //        Text = item.clientName,
+                //        Value = item.clientID.ToString()
+                //    });
+                //}
             }
             catch (Exception ex) { }
             return Json(obj, JsonRequestBehavior.AllowGet);
@@ -185,47 +182,47 @@ namespace MvcSDesign.Controllers
         {
             if (name == null || name.Trim() == "") name = "";
             if (cityname == null || cityname.Trim() == "") cityname = "";
-            List<tblClient> obj = new List<tblClient>();
-            var lst = IClnt.SearchByName(chkName, name, chkcity, cityname);
-            int i = 1;
-            foreach (var item in lst)
-            {
-                obj.Add(new tblClient
-                {
-                    clientID = item.clientID,
-                    clientName = item.clientName,
-                    orgName = item.orgName,
-                    address = item.address,
-                    city = item.city,
-                    mobile = item.mobile,
-                    phone = item.phone,
-                    emailID = item.emailID,
-                    state = item.state
+            //List<tblClient> obj = new List<tblClient>();
+            //var lst = IClnt.SearchByName(chkName, name, chkcity, cityname);
+            //int i = 1;
+            //foreach (var item in lst)
+            //{
+            //    obj.Add(new tblClient
+            //    {
+            //        clientID = item.clientID,
+            //        clientName = item.clientName,
+            //        orgName = item.orgName,
+            //        address = item.address,
+            //        city = item.city,
+            //        mobile = item.mobile,
+            //        phone = item.phone,
+            //        emailID = item.emailID,
+            //        state = item.state
 
-                });
-                i++;
-            }
+            //    });
+            //    i++;
+            //}
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult AllClient(string name)
         {
-            var lst = IClnt.getAll();
-            List<tblClient> obj = new List<tblClient>();
-            foreach (var item in lst)
-            {
-                obj.Add(new tblClient
-                {
-                    clientID = item.clientID,
-                    clientName = item.clientName,
-                    orgName = item.orgName,
-                    address = item.address,
-                    city = item.city,
-                    mobile = item.mobile,
-                    phone = item.phone,
-                    emailID = item.emailID
-                });
-            }
+            //var lst = IClnt.getAll();
+            //List<tblClient> obj = new List<tblClient>();
+            //foreach (var item in lst)
+            //{
+            //    obj.Add(new tblClient
+            //    {
+            //        clientID = item.clientID,
+            //        clientName = item.clientName,
+            //        orgName = item.orgName,
+            //        address = item.address,
+            //        city = item.city,
+            //        mobile = item.mobile,
+            //        phone = item.phone,
+            //        emailID = item.emailID
+            //    });
+            //}
 
             return Json(obj, JsonRequestBehavior.AllowGet);
 
@@ -458,7 +455,7 @@ namespace MvcSDesign.Controllers
                 obj.dt = DateTime.Today;
                 obj.remark = remark == null ? "" : remark.Trim();
 
-                int pid = IClnt.InsertQuotation(obj);
+                long pid = IClnt.InsertQuotation(obj);
                 //SendQuotation(obj, pid);
                 ViewBag.Message = " Quotation successfully generated , project ID is " + pid;
             }
@@ -673,9 +670,6 @@ namespace MvcSDesign.Controllers
             para1.Alignment = Element.ALIGN_LEFT;
             para1.SetLeading(0.0F, 1.0F);
 
-            //ph1 = new Phrase(Environment.NewLine);
-            //para1.Add(ph1);
-
             pdfcell = null;
             table1 = new PdfPTable(2);
             int[] cellWidthPercentage = new int[] {50,50};
@@ -792,8 +786,6 @@ namespace MvcSDesign.Controllers
             pdfcell.Border = 0;
              
             table1.AddCell(pdfcell);
-
-
 
             pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
@@ -1036,18 +1028,8 @@ namespace MvcSDesign.Controllers
 
             jpg.Alignment = iTextSharp.text.Image.ALIGN_RIGHT;
             jpg.ScaleToFit(90.0F, 90.0F);
-            jpg.SetAbsolutePosition(doc.PageSize.Width-570, 735.0F);
+            jpg.SetAbsolutePosition(doc.PageSize.Width-560, 740.0F);
             doc.Add(jpg);
-
-            //jpg = iTextSharp.text.Image.GetInstance(HostingEnvironment.MapPath("~//Images//logoname.jpeg"));
-
-            //jpg.Alignment = iTextSharp.text.Image.ALIGN_RIGHT;
-            //jpg.ScaleToFit(100.0F, 100.0F);
-            //jpg.SetAbsolutePosition(doc.PageSize.Width - 143, 783.0F);
-            //doc.Add(jpg);
-
-
-
 
             doc.Add(para1);
             doc.Close();

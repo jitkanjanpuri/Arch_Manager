@@ -1,14 +1,16 @@
 ﻿var app = angular.module("myApp", [])
-app.controller('myController', function ($scope, $http, projectlist) {
-
-    $scope.finalizeWindow = true;
+app.controller('myController', function ($scope, $http, projectlist, $window) {
+    var clientID = 0;
+    var projectLevel = "";
+    $scope.loading = true;
     $scope.pdfPreviewWindow = true;
     projectlist.getRecord().then(function (d) {
         $scope.projectquotationlist = d.data;
     },
-      function () {
-          alert('Failed'); // Failed
-      });
+        //function () {
+        //    alert('Failed'); // Failed
+        //  }
+    );
 
     function ShowQuotation() {
         $http({
@@ -26,28 +28,15 @@ app.controller('myController', function ($scope, $http, projectlist) {
         });
     }
 
-    $scope.ShowPanel = function (pid, cname, amount) {
-        $scope.finalizeWindow = false;
-        $scope.projectID = pid;
-        $scope.clientName = cname;
-        $scope.amount = amount;
+    $scope.ShowPanel = function (item) {
+        clientID = item.clientID;
+        projectLevel = item.projectLevel;
+        $scope.projectID = item.projectID;
+        $scope.clientName = item.clientName;
+        $scope.amount = item.amount;
         $scope.finalAmount = 0;
     }
-    $scope.CloseAssignWindow = function () {
-        ResetValue();
-    }
 
-    $scope.closePdfPreviewWindow = function () {
-        $scope.pdfPreviewWindow = true;
-    }
-
-    function ResetValue() {
-        $scope.finalizeWindow = true;
-        $scope.projectID = 0;
-        $scope.clientName = "";
-        $scope.amount = 0;
-        $scope.finalAmount = 0;
-    }
 
     $scope.UpdateQuotation = function () {
 
@@ -67,6 +56,8 @@ app.controller('myController', function ($scope, $http, projectlist) {
             method: 'POST',
             dataType: 'json',
             params: {
+                clientid: clientID,
+                level: projectLevel,
                 projectID: varpid,
                 finalAmount: varfamount
             },
@@ -74,11 +65,7 @@ app.controller('myController', function ($scope, $http, projectlist) {
         }).then(function (d) {
 
             if (d.data == "success") {
-                alert(" Quotation's finalize amount successfully saved");
-                ResetValue();
-
-                ShowQuotation();
-
+                location.reload();
                 return;
             }
             else {
@@ -91,63 +78,72 @@ app.controller('myController', function ($scope, $http, projectlist) {
         });
     }
 
-    $scope.QuotationDelete = function (pid) {
-        var con = confirm("Do you want to delete project " + pid + " ?");
-        if (con) {
-            $.ajax({
-                url: "/Admin/QuotationDelete",
-                type: "GET",
-                data: { projectID: pid },
-                success: function (d) {
-                    if (d == "") {
-                        alert("Project successfully deleted");
-                        ShowQuotation();
-                    }
-                    else
-                        alert("Error :" + d);
+    $scope.ShowDeleteModel = function (id) {
 
-                    return false;
-                },
-                error: function () {
-                    alert("Error ");
-                }
-            });
-        }
+        $scope.projectID = id;
     }
 
-    $scope.PdfOpen = function (varpid) {
 
+    $scope.QuotationDelete = function () {
+        $.ajax({
+            url: "/Admin/QuotationDelete",
+            type: "GET",
+            data: { projectID: $scope.projectID },
+            success: function (d) {
+                if (d == "") {
+                    alert("Project successfully deleted");
+                    ShowQuotation();
+                }
+                else {
+                    alert("Error :" + d);
+                    location.reload();
+                }
+                return false;
+            },
+            error: function () {
+                alert("Error ");
+            }
+        });
+
+    }
+
+    $scope.PdfOpen = function (varpid, varprojectType) {
+        $scope.loading = false;
         $http({
             url: "/Client/ShowQuotationPdf",
             dataType: 'json',
             method: 'POST',
             params: {
-                pid: varpid
+                pid: varpid,
+                projectType: varprojectType
             },
             contentType: "application/json; charaset=utf-8"
         }).then(function (d) {
-            $scope.pdfPreviewWindow = false;
-            var ch = "../PDF_Files/" + d.data;
-            $scope.pdfFilePath = ch;
+            $scope.loading = true;
+            var arr = location.href.split('/');
+            var url = "http://" + arr[2] + "/PDF_Files/" + d.data.replace('"', '');
+            url = url.replace('"', '');
+            $window.open(url, '_blank');
+
         }).error(function (err) {
             alert("Error " + err);
         });
 
     }
 
-    $scope.QuotationSend = function (varpid) {
+    $scope.QuotationSend = function (varpid, varprojectType) {
         $http({
             url: "/Client/SendClientQuotation",
             dataType: 'json',
             method: 'POST',
             params: {
-                pid: varpid
+                pid: varpid,
+                projectType: varprojectType
             },
             contentType: "application/json; charaset = utf-8"
         }).then(function (d) {
-          
-            if (d.data == "success")
-            {
+
+            if (d.data == "success") {
                 alert("Quotation successfully sent");
             }
         }).error(function (err) {

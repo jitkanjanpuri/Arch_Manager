@@ -81,7 +81,22 @@ namespace MvcSDesign.Controllers
             CompanyModel obj = _IAmn.GetCompanyProfile();
             return View(obj);
         }
+        public ActionResult PRF()
+        {
+            //try
+            //{
+            //     string ch = Session["user"].ToString();
+            //}
+            //catch (Exception ex)
+            //{
+            //    FormsAuthentication.SignOut();
+            //    FormsAuthentication.SetAuthCookie("", true);
 
+            //    return RedirectToAction("Index", "Login");
+            //}
+             
+            return View();
+        }
 
         public ActionResult Testss()
         {
@@ -226,21 +241,194 @@ namespace MvcSDesign.Controllers
         {
             return Json(_IAmn.getQuotation(), JsonRequestBehavior.AllowGet);
         }
-        public JsonResult SaveProjectManagement(string projectID, string finalAmount)
+        public JsonResult SaveProjectManagement(string clientid, string level, string projectID, string finalAmount)
         {
-            string ch = "";
+            string res = "";
             try
             {
-                //ch = Session["user"].ToString();
-                ch =  _IAmn.UpdateQuotation(int.Parse(projectID), int.Parse(finalAmount));
+               
+                    string pth = HostingEnvironment.MapPath("~//ProjectLocation//");
+                    string subfolder = "";
+ 
+                    pth = pth + "//client_" + clientid;
+                    //client folder check
+                    if (!Directory.Exists(pth))
+                    {
+                        Directory.CreateDirectory(pth);
+                    }
+                    //project folder create
+                    pth = pth + "//proj_" + projectID;
+                    Directory.CreateDirectory(pth);
+
+                    subfolder = pth + "//Site Photo";
+                    Directory.CreateDirectory(subfolder);
+
+                    subfolder = pth + "//Presentation Drawing";
+                    Directory.CreateDirectory(subfolder);
+
+                        string ch = subfolder + "//Furniture Layout";
+                        Directory.CreateDirectory(ch);
+
+                        ch = subfolder + "//Floor plans ground";
+                        Directory.CreateDirectory(ch);
+
+                    subfolder = pth + "//Structure Drawing";
+                    Directory.CreateDirectory(subfolder);
+
+                        ch = subfolder + "//Center Line Plan";
+                        Directory.CreateDirectory(ch);
+
+                        ch = subfolder + "//Column Footing Column and Footing Design";
+                        Directory.CreateDirectory(ch);
+
+                        ch = subfolder + "//Plinth Beam plan and Design";
+                        Directory.CreateDirectory(ch);
+
+                        ch = subfolder + "//UG Tank Detail";
+                        Directory.CreateDirectory(ch);
+
+                    //Ground
+                    subfolder = pth + "//Ground Floor Drawing";
+                    Directory.CreateDirectory(subfolder);
+
+                        ch = subfolder + "//Working Drawing";
+                        Directory.CreateDirectory(ch);
+
+                        ch = subfolder + "//Door and Window Schedule";
+                        Directory.CreateDirectory(ch);
+
+                        ch = subfolder + "//Lintel Beam";
+                        Directory.CreateDirectory(ch);
+
+                        ch = subfolder + "//StairCase Detail Drawing";
+                        Directory.CreateDirectory(ch);
+
+                        ch = subfolder + "//Wall Electrical";
+                        Directory.CreateDirectory(ch);
+
+                        ch = subfolder + "//Roof Electrial";
+                        Directory.CreateDirectory(ch);
+
+                        ch = subfolder + "//Ground Floor Shuttering";
+                        Directory.CreateDirectory(ch);
+
+                        ch = subfolder + "//Ground Floor Beam and Slab Design";
+                        Directory.CreateDirectory(ch);
+
+                        ch = subfolder + "//2D Elevation";
+                        Directory.CreateDirectory(ch);
+
+                        ch = subfolder + "//2D Elevation Electrical";
+                        Directory.CreateDirectory(ch);
+
+                        ch = subfolder + "//Plumbing Drainage and Rain Water";
+                        Directory.CreateDirectory(ch);
+
+                        ch = subfolder + "//Toilet Plan and Detail Niche";
+                        Directory.CreateDirectory(ch);
+
+                        ch = subfolder + "//Compound Wall";
+                        Directory.CreateDirectory(ch);
+                
+                if (level == "Ground") goto Here;
+                    //First Floor
+                subfolder = pth + "//First Floor Drawing";
+                Directory.CreateDirectory(subfolder);
+
+                    ch = subfolder + "//Working Drawing";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//Door and Window Schedule";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//Lintel Beam";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//StairCase Detail Drawing";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//Wall Electrical";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//Roof Electrial";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//First Floor Shuttering";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//First Floor Beam and Slab Design";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//2D Elevation";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//2D Elevation Electrical";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//Plumbing Drainage and Rain Water";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//Toilet Plan and Detail Niche";
+                    Directory.CreateDirectory(ch);
+
+                if (level == "G+1") goto Here;
+                subfolder = pth + "//Second Floor Drawing";
+                 Directory.CreateDirectory(subfolder);
+
+                    ch = subfolder + "//Working Drawing";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//Door and Window Schedule";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//Lintel Beam";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//StairCase Detail Drawing";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//Wall Electrical";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//Roof Electrial";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//First Floor Shuttering";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//First Floor Beam and Slab Design";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//2D Elevation";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//2D Elevation Electrical";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//Plumbing Drainage and Rain Water";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//Toilet Plan and Detail Niche";
+                    Directory.CreateDirectory(ch);
+
+                    ch = subfolder + "//Perapet Wall";
+                    Directory.CreateDirectory(ch);
+
+
+                Here:
+                   res =  _IAmn.UpdateQuotation(int.Parse(projectID), int.Parse(finalAmount), pth);
+               
             }
             catch (Exception ex)
             {
                 //FormsAuthentication.SignOut();
                 // FormsAuthentication.SetAuthCookie("", true);
             }
-            return Json(ch, JsonRequestBehavior.AllowGet);
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
+
+
+
         public JsonResult QuotationDelete(string projectID)
         {
             string ch = "";
@@ -390,27 +578,27 @@ namespace MvcSDesign.Controllers
         }
         public JsonResult SearchRegistration(string name)
         {
-            List<tblStaff> obj = new List<tblStaff>();
-            if (name == null) name = "";
-            var lst = _IAmn.SearchRegistration(name).OrderBy(x => x.name);
+            //List<tblStaff> obj = new List<tblStaff>();
+            //if (name == null) name = "";
+            //var lst = _IAmn.SearchRegistration(name).OrderBy(x => x.name);
 
-            foreach (var item in lst)
-            {
-                obj.Add(new tblStaff
-                {
-                    staffID = item.staffID,
-                    name = item.name,
-                    designation = item.designation,
-                    address = item.address,
-                    city = item.city,
-                    mobile = item.mobile,
-                    phone = item.phone,
-                    emailID = item.emailID,
-                    username = item.username,
-                    password = item.password
+            //foreach (var item in lst)
+            //{
+            //    obj.Add(new tblStaff
+            //    {
+            //        staffID = item.staffID,
+            //        name = item.name,
+            //        designation = item.designation,
+            //        address = item.address,
+            //        city = item.city,
+            //        mobile = item.mobile,
+            //        phone = item.phone,
+            //        emailID = item.emailID,
+            //        username = item.username,
+            //        password = item.password
 
-                });
-            }
+            //    });
+            //}
 
 
             return Json(obj, JsonRequestBehavior.AllowGet);
@@ -462,10 +650,10 @@ namespace MvcSDesign.Controllers
             var obj = new List<SelectListItem>();
             var dsn = _IAmn.getOperationDesigner();
             obj.Add(new SelectListItem
-            {    
+            {
                 Text = "All",
                 Value = "0",
-                
+
             });
             foreach (var item in dsn)
             {
@@ -476,7 +664,7 @@ namespace MvcSDesign.Controllers
 
                 });
             }
-            
+
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
          
@@ -589,6 +777,8 @@ namespace MvcSDesign.Controllers
         {
             //return Json(_IAmn.SaveGMail(gmailID.Trim(), pwd.Trim()) , JsonRequestBehavior.AllowGet);
 
+            
+            
             return Json("", JsonRequestBehavior.AllowGet);
         }
         public JsonResult getGmailAccount()
