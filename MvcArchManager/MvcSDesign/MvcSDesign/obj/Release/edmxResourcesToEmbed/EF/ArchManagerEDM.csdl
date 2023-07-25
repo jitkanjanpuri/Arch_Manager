@@ -99,13 +99,10 @@
     <Property Name="plinthheight" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="porchheight" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="elevationpattern" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="totalfloor" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="towerroom" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="cornerplotplan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="plotside" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="boundrywall" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="pencilsketch" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="colorcombination" Type="Binary" MaxLength="Max" FixedLength="false" />
     <Property Name="anyother" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="doorlintel" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="windowsill" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />

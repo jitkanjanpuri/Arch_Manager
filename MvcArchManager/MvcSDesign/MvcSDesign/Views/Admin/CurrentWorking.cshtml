@@ -12,7 +12,7 @@
 <head>
 
 
-    <script src="~/angularjs/currentworking1.js"></script>
+    <script src="~/angularjs/currentworking.js"></script>
     <style>
         table, th, td {
             border: 1px solid black;
@@ -53,7 +53,7 @@
                                     <a href="@Url.Action("Quotation", "Client")" class="btn btn-primary"><span>Quotation </span></a>
                                     <a href="@Url.Action("ProjectManagement", "Admin")" class="btn btn-primary"><span>Prj Management </span></a>
                                     <a href="@Url.Action("PRF", "Admin")" class="btn btn-primary"><span>PRF </span></a>
-                                    <a href="@Url.Action("Operation", "Admin")" class="btn btn-primary"><span> Operation  </span></a>
+                                    @*<a href="@Url.Action("Operation", "Admin")" class="btn btn-primary"><span> Operation  </span></a>*@
                                     <a href="@Url.Action("SiteVisit", "Admin")" class="btn btn-primary"><span>Site Visit </span></a>
                                     <a href="@Url.Action("CurrentWorking", "Admin")" class="btn btn-primary"><span> Current working  </span></a>
 
@@ -188,7 +188,7 @@
                                                 </thead>
                                                 <tbody>
 
-                                                    <tr>
+                                                    <!--<tr>
                                                         <td>
                                                             <span style="color:black "> 1 </span>
                                                         </td>
@@ -224,26 +224,26 @@
 
                                                         <td style=" background-color:{{item.rowcolor }}">
 
-                                                            <button type="button" class="btn btn-success waves-effect waves-light w-sm" ng-click="ShowCurrentWorking(item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-confirm">
-                                                                @*<i class="mdi mdi-check d-block font-size-8"></i>*@Confirm
+                                                            <button type="button" class="btn btn-success waves-effect waves-light w-sm" ng-click="ShowCurrentWorking(item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-confirm">-->
+                                                                @*<i class="mdi mdi-check d-block font-size-8"></i>*@<!--Confirm
                                                             </button>
                                                         </td>
                                                         <td style=" background-color:{{item.rowcolor}}">
-                                                            <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="EditCurWorking( item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2">
-                                                                @*<i class="mdi mdi-pencil d-block font-size-16"></i>*@ Photo upload
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="EditCurWorking( item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2">-->
+                                                                @*<i class="mdi mdi-pencil d-block font-size-16"></i>*@ <!--Photo upload
                                                             </button>
                                                         </td>
                                                         <td style=" background-color:{{item.rowcolor}}">
-                                                            <button type="button" class="btn btn-info waves-effect waves-light w-sm" ng-click="EditCurWorking( item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2">
-                                                                @*<i class="mdi mdi-pencil d-block font-size-16"></i>*@ Remark
+                                                            <button type="button" class="btn btn-info waves-effect waves-light w-sm" ng-click="EditCurWorking( item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2">-->
+                                                                @*<i class="mdi mdi-pencil d-block font-size-16"></i>*@ <!--Remark
                                                             </button>
                                                         </td>
                                                         <td style=" background-color:{{item.rowcolor }}">
-                                                            <button type="button" class="btn btn-danger waves-effect waves-light w-sm" ng-click="ShowDelete(item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center3">
-                                                                @*<i class="mdi mdi-trash-can d-block font-size-8"></i>*@ Delete
+                                                            <button type="button" class="btn btn-danger waves-effect waves-light w-sm" ng-click="ShowDelete(item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center3">-->
+                                                                @*<i class="mdi mdi-trash-can d-block font-size-8"></i>*@ <!--Delete
                                                             </button>
                                                         </td>
-                                                    </tr>
+                                                    </tr>-->
 
                                                     <!--<tr ng-repeat="item in currentworkinglist">
         <td style=" background-color:{{item.rowcolor }}">

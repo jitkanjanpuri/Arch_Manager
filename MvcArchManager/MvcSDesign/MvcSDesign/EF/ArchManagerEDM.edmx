@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ArchManagerDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ArchManagerDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tblAmountReceive">
           <Key>
             <PropertyRef Name="amountReceiveID" />
@@ -95,13 +95,10 @@
           <Property Name="plinthheight" Type="nvarchar" MaxLength="200" />
           <Property Name="porchheight" Type="nvarchar" MaxLength="200" />
           <Property Name="elevationpattern" Type="nvarchar" MaxLength="200" />
-          <Property Name="totalfloor" Type="nvarchar" MaxLength="100" />
           <Property Name="towerroom" Type="nvarchar" MaxLength="10" />
           <Property Name="cornerplotplan" Type="nvarchar" MaxLength="50" />
           <Property Name="plotside" Type="nvarchar" MaxLength="100" />
           <Property Name="boundrywall" Type="nvarchar" MaxLength="50" />
-          <Property Name="pencilsketch" Type="nvarchar" MaxLength="50" />
-          <Property Name="colorcombination" Type="image" />
           <Property Name="anyother" Type="nvarchar" MaxLength="500" />
           <Property Name="doorlintel" Type="nvarchar" MaxLength="100" />
           <Property Name="windowsill" Type="nvarchar" MaxLength="100" />
@@ -343,8 +340,7 @@
             <End Role="tblStaffPaid" EntitySet="tblStaffPaid" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ArchManagerDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -447,13 +443,10 @@
           <Property Name="plinthheight" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="porchheight" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="elevationpattern" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="totalfloor" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="towerroom" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="cornerplotplan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="plotside" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="boundrywall" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="pencilsketch" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="colorcombination" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="anyother" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="doorlintel" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="windowsill" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -805,13 +798,10 @@
                 <ScalarProperty Name="plinthheight" ColumnName="plinthheight" />
                 <ScalarProperty Name="porchheight" ColumnName="porchheight" />
                 <ScalarProperty Name="elevationpattern" ColumnName="elevationpattern" />
-                <ScalarProperty Name="totalfloor" ColumnName="totalfloor" />
                 <ScalarProperty Name="towerroom" ColumnName="towerroom" />
                 <ScalarProperty Name="cornerplotplan" ColumnName="cornerplotplan" />
                 <ScalarProperty Name="plotside" ColumnName="plotside" />
                 <ScalarProperty Name="boundrywall" ColumnName="boundrywall" />
-                <ScalarProperty Name="pencilsketch" ColumnName="pencilsketch" />
-                <ScalarProperty Name="colorcombination" ColumnName="colorcombination" />
                 <ScalarProperty Name="anyother" ColumnName="anyother" />
                 <ScalarProperty Name="doorlintel" ColumnName="doorlintel" />
                 <ScalarProperty Name="windowsill" ColumnName="windowsill" />

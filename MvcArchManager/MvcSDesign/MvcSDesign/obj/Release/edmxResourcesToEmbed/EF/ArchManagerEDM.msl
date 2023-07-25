@@ -96,13 +96,10 @@
           <ScalarProperty Name="plinthheight" ColumnName="plinthheight" />
           <ScalarProperty Name="porchheight" ColumnName="porchheight" />
           <ScalarProperty Name="elevationpattern" ColumnName="elevationpattern" />
-          <ScalarProperty Name="totalfloor" ColumnName="totalfloor" />
           <ScalarProperty Name="towerroom" ColumnName="towerroom" />
           <ScalarProperty Name="cornerplotplan" ColumnName="cornerplotplan" />
           <ScalarProperty Name="plotside" ColumnName="plotside" />
           <ScalarProperty Name="boundrywall" ColumnName="boundrywall" />
-          <ScalarProperty Name="pencilsketch" ColumnName="pencilsketch" />
-          <ScalarProperty Name="colorcombination" ColumnName="colorcombination" />
           <ScalarProperty Name="anyother" ColumnName="anyother" />
           <ScalarProperty Name="doorlintel" ColumnName="doorlintel" />
           <ScalarProperty Name="windowsill" ColumnName="windowsill" />

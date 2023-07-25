@@ -355,6 +355,44 @@ namespace MvcSDesign.Repository
 
             return reqlist.ToList();
         }
+
+
+        public string SavePRF(PRFModel model)
+        {
+            tblPRF obj = new tblPRF();
+            try
+            {
+                obj.projectID = model.projectID;
+                obj.workingStatus =model.workingStatus;
+                obj.slabdetail = "-";
+                obj.slabheight =model.slabheight;
+                obj.plinthheight =model.plinthheight;
+                obj.porchheight = model.porchheight;
+                obj.elevationpattern = model.elevationpattern;
+                //obj.totalfloor = "-";
+                obj.towerroom = model.towerroom;
+                obj.cornerplotplan = model.cornerplotplan;
+                obj.plotside = model.plotside;
+                obj.boundrywall = model.boundrywall;
+                obj.doorlintel = model.doorlintel;
+                obj.windowsill =model.windowsill;
+                obj.windowlintel =model.windowlintel;
+                obj.anyother = model.anyother;
+
+                _dbContext.tblPRFs.Add(obj);
+                _dbContext.SaveChanges();
+ 
+            }
+            catch(SqlException ex)
+            {
+                string ch= ex.Message;
+                return ch;
+            }
+            
+            
+            return "";
+        }
+
         public IEnumerable<tblStaff> getOperationDesigner()
         {
             return _dbContext.tblStaffs.ToList().OrderBy(x => x.name);
@@ -464,8 +502,6 @@ namespace MvcSDesign.Repository
             }
             return "";
         }
-
-
 
         public IEnumerable<operation> getCurrentWorkingList(string dname)
         {

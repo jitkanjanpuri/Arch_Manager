@@ -35,6 +35,11 @@ namespace MvcSDesign.Repository
         IEnumerable<operation> getProjectQuotation();
         string UpdateQuotation(int pid, int famount, string projectlocation);
         string QuotationDelete(int projectID);
+
+
+        //PRF
+
+        string SavePRF(PRFModel obj);
         IEnumerable<tblStaff> getOperationDesigner();
         IEnumerable<operation> getProjectAssign();
 
@@ -42,6 +47,8 @@ namespace MvcSDesign.Repository
         //List<GMail> getGmail();
         //string RemoveGMailAccount(int id);
         string SaveProjectAssigned(string projectID, string clientID, string projectCategory, string designerAmount);
+
+
 
 
         // Operation
@@ -86,6 +93,9 @@ namespace MvcSDesign.Repository
 
 
         //void SaveStatus(string ch);
+
+
+        
 
         List<operation> GetClientLedger(int clientID, string fromDt);
 

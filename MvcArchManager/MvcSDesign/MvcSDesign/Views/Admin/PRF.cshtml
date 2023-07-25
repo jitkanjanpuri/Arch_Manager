@@ -1,10 +1,6 @@
 ﻿@{
     ViewBag.Title = "PRF";
-}
-
-@{
-    ViewBag.Title = "Test";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
 
@@ -31,8 +27,8 @@
 
         /*Background color*/
         #grad1 {
-            background-color: : #9C27B0;
-            background-image: linear-gradient(120deg, #FF4081, #81D4FA);
+            /* background-color: : #9C27B0;*/
+            /* background-image: linear-gradient(120deg, #FF4081, #81D4FA);*/
         }
 
         /*form styles*/
@@ -526,28 +522,25 @@
             var error = 0;
 
             var atv = $('fieldset.active #txtProjectID').length;
-            alert("Active " + atv);
             var element = $('#txtProjectID').val();
-            if (element==undefined || element== '' || !$.isNumeric(element)) {
+            if (element == undefined || element == '' || !$.isNumeric(element)) {
                 $('.error-msg').fadeIn();
                 error = 1;
                 return error;
             }
 
             element = $('#txtWorkingStatus').val();
-            if (element == undefined ||  element == '') {
+            if (element == undefined || element == '') {
                 element.next('.error-msg').fadeIn();
                 error = 1;
             }
 
             element = $('#txtSlabHeight').val();
-            alert("1. 1 " + element)
             if (element == undefined || element == '') {
-                alert("3.2")
                 element.next('.error-msg').fadeIn();
                 error = 1;
             }
-         //   alert("2")
+            //   alert("2")
 
             //element = $('#txtPlinthHeight').val();
             //if (element == undefined || element == '') {
@@ -608,12 +601,79 @@
 
             return error;
         }
+        function Save() {
+            var projectID = $('#txtProjectID').val();
+            var workingStatus = $('#txtWorkingStatus').val();
+            var slabHeight = $('#txtSlabHeight').val();
+            var plinthHeight = $('#txtPlinthHeight').val();
+            var porchHeigh = $('#txtPorchHeigh').val();
+            var doorLintel = $('#txtDoorLintel').val();
+            var windowSill = $('#txtWindowSill').val();
+            var windowLinte = $('#txtWindowLinte').val();
+            var plotFaceSide = $('#txtPlotFaceSide').val();
+            var anyOther = $('#txtAnyOther').val();
 
+            var elevationPattern = $("#ddlElevationPattern option:selected").text();   // $("#ddlEleationPattern").val();
+            if (elevationPattern == "Select") {
+                alert("Please select elevation pattern");
+                return;
+            }
+            var towerRoom = $('input[name="TowerRoom"]:checked').val();
+            var cornerPlot = $('input[name="CornerPlot"]:checked').val();
+            var boundaryWall = $('input[name="BoundaryWall"]:checked').val();
+
+            var obj = new Object();
+            obj.projectID = projectID;
+            obj.workingStatus = workingStatus;
+            //  obj.slabdetail = slabHeight;
+            obj.slabheight = slabHeight;
+            obj.plinthheight = plinthHeight;
+            obj.porchheight = porchHeigh;
+            obj.elevationpattern = elevationPattern;
+            // obj.totalfloor = towerRoom;
+            obj.towerroom = towerRoom;
+            obj.cornerplotplan = cornerPlot;
+            obj.plotside = plotFaceSide;
+            obj.boundrywall = boundaryWall;
+            obj.doorlintel = doorLintel;
+            obj.windowsill = windowSill;
+            obj.windowlintel = windowLinte;
+            obj.anyother = anyOther;
+            $.ajax({
+
+                url: "/Admin/SavePRF",
+                type: "POST",
+                dataType: "json",
+                contentType: 'application/json;charaset=utf-8',
+                data: JSON.stringify(obj),
+                success: function (result) {
+                    if (result == "") {
+                        alert("PRF successfully saved ");
+                        window.location.reload();
+                    }
+                },
+                error: function () {
+                    window.location.reload();
+                }
+            });
+
+        }
+
+        function IsNumber(e) {
+
+            var theEvent = event || window.event;
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+            var regex = /[0-9]|\./;
+
+            if (!regex.test(key)) {
+                theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
+            }
+        }
     </script>
-
 </head>
-<body>
-
+ 
+  <body>
     <br /><br />
 
 
@@ -655,7 +715,7 @@
                                       <fieldset>
                                           <div class="form-card">
                                               <h2 class="fs-title"></h2>
-                                              <input type="text" class="form-control" name="txtProjectID" id="txtProjectID" placeholder="Project ID" />
+                                              <input type="text" class="form-control" name="txtProjectID" id="txtProjectID" placeholder="Project ID" onkeypress="IsNumber()" />
                                               <span class="error-msg">This field is required and numeric value only</span>
                                               <label><span style="color:black">2. Specify the <b>actual working status </b> of the site</span><span class="required">*</span> </label>
                                               <input type="text" class="form-control" name="txtWorkingStatus" id="txtWorkingStatus" placeholder="" />
@@ -664,7 +724,6 @@
                                               <label><span style="color:black">3. Specify the <b>slab height </b> (In feet)</span><span class="required">*</span></label>
                                               <input type="text" class="form-control" name="txtSlabHeight" id="txtSlabHeight" placeholder="" />
                                               <span class="error-msg">This field is required </span>
-                                              @*<input type="text" name="cpwd" placeholder="Specify the <b>slab height</b> " /*@
                                           </div>
                                           <input type="button" name="next" class="next action-button" value="Next Step" />
                                       </fieldset>
@@ -755,7 +814,7 @@
                                               <textarea maxlength="500" id="txtAnyOther" name="txtAnyOther"></textarea>
                                           </div>
                                           <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                          <input type="button" name="submit" class="action-button" value="Submit" />
+                                          <input type="button" onclick="Save()" class="action-button" value="Submit" />
 
                                       </fieldset>
                                   </form>
@@ -765,9 +824,8 @@
                   </div>
               </div>
           </div>
+      </body>
 
 
-
-</body>
 </html>
 

@@ -45,6 +45,8 @@ app.controller("myController", function ($scope, $http, cw) {
     }
 
     $scope.GetSubcategory = function () {
+
+        alert(" category  " + $scope.category);
          
         if ($scope.category == "Presentation Drawing") {
             $scope.subcategory = ["Presentation Drawing With Furniture Layout", "Floor Plans Ground To Terrace"];

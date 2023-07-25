@@ -8,17 +8,19 @@ app.controller("myController", function ($scope, $http, cw) {
 
     $scope.projectCategory = ["Presentation Drawing", "Structure Drawing", "Ground Floor Drawing", "First Floor Drawing", "Second Floor Drawing"]
     $scope.category = $scope.projectCategory[0];
-    $scope.loading = false;
+    $scope.subcategory = ["Presentation Drawing With Furniture Layout", "Floor Plans Ground To Terrace"];
+    $scope.subcategoryName = $scope.subcategory[0];
+    $scope.loading = true;
     var operationID = 0;
     var varCategory = "";
 
     cw.getRecord().then(function (d) {
         //$scope.currentworkinglist = d.data;
         //$scope.loading = true;
-        
+
         //  getDesigner();
 
-        alert("Test");
+
 
     });
 
@@ -42,14 +44,29 @@ app.controller("myController", function ($scope, $http, cw) {
         });
     }
 
-    $scope.GetSubcategory = function(item)
-    {
+    $scope.GetSubcategory = function () {
+
+        alert(" category  " + $scope.category);
+
         if ($scope.category == "Presentation Drawing") {
-            $scope.projectCategory = ["Furniture Layout", "Structure Drawing", "Ground Floor Drawing", "First Floor Drawing", "Second Floor Drawing"]
-            $scope.category = $scope.projectCategory[0];
+            $scope.subcategory = ["Presentation Drawing With Furniture Layout", "Floor Plans Ground To Terrace"];
+            $scope.subcategoryName = $scope.subcategory[0];
         }
         else if ($scope.category == "Structure Drawing") {
-
+            $scope.subcategory = ["Center Line Plan", "Column, Footing, Column and Footing Design", "Plinth Beam Plan And Design", "UG Tank Detail, Septic Tank, Fire Tank, Rain Water Tank"];
+            $scope.subcategoryName = $scope.subcategory[0];
+        }
+        else if ($scope.category == "Ground Floor Drawings") {
+            $scope.subcategory = ["Working Drawing(Measurement)", "Door And Window Schedule", "Lintel Beam", "Staircase Detail Drawing", "Wall Electrical", "Roof Electrical", "Ground Floor Shuttering", "Ground Floor Beam And Slab Design Drawing", "2D Elevation", "2D Elevation Electrical", "Plumbing, Drainage And Rain Water Drawing", "Toilet Plan And Detail, Niche And Other Working Drawing as Per Elevation", "Compound Wall"];
+            $scope.subcategoryName = $scope.subcategory[0];
+        }
+        else if ($scope.category == "First Floor Drawing") {
+            $scope.subcategory = ["Working Drawing(Measurement)", "Door And Window Schedule", "Lintel Beam", "Staircase Detail Drawing", "Wall Electrical", "Roof Electrical", "First Floor Shuttering", "First Floor Beam And Slab Design Drawing", "2D Elevation", "2D Elevation Electrical", "Toilet Plan And Detail, Niche And Other Working Drawing as Per Elevation", "Plumbing, Drainage And Rain Water Drawing"];
+            $scope.subcategoryName = $scope.subcategory[0];
+        }
+        else if ($scope.category == "Second Floor Drawing") {
+            $scope.subcategory = ["Working Drawing(Measurement)", "Door And Window Schedule", "Lintel Beam", "Staircase Detail Drawing", "Wall Electrical", "Roof Electrical", "First Floor Shuttering", "First Floor Beam And Slab Design Drawing", "2D Elevation", "2D Elevation Electrical", "Toilet Plan And Detail, Niche And Other Working Drawing as Per Elevation", "Plumbing, Drainage And Rain Water Drawing", "Perapet Wall"];
+            $scope.subcategoryName = $scope.subcategory[0];
         }
     }
 

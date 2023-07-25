@@ -90,13 +90,10 @@
     <Property Name="plinthheight" Type="nvarchar" MaxLength="200" />
     <Property Name="porchheight" Type="nvarchar" MaxLength="200" />
     <Property Name="elevationpattern" Type="nvarchar" MaxLength="200" />
-    <Property Name="totalfloor" Type="nvarchar" MaxLength="100" />
     <Property Name="towerroom" Type="nvarchar" MaxLength="10" />
     <Property Name="cornerplotplan" Type="nvarchar" MaxLength="50" />
     <Property Name="plotside" Type="nvarchar" MaxLength="100" />
     <Property Name="boundrywall" Type="nvarchar" MaxLength="50" />
-    <Property Name="pencilsketch" Type="nvarchar" MaxLength="50" />
-    <Property Name="colorcombination" Type="image" />
     <Property Name="anyother" Type="nvarchar" MaxLength="500" />
     <Property Name="doorlintel" Type="nvarchar" MaxLength="100" />
     <Property Name="windowsill" Type="nvarchar" MaxLength="100" />

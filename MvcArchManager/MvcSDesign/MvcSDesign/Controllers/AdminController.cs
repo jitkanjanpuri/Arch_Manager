@@ -98,6 +98,29 @@ namespace MvcSDesign.Controllers
             return View();
         }
 
+        public JsonResult SavePRF(PRFModel obj)
+        {
+            return Json(_IAmn.SavePRF(obj), JsonRequestBehavior.AllowGet);
+        }
+
+        //[HttpPost]
+        //public ActionResult PRF(string txtProjectID, string txtWorkingStatus, string txtSlabHeight, string txtPlinthHeight, string txtPorchHeigh , string ddlElevationPattern, string txtDoorLintel, string txtWindowSill, string txtWindowLinte, string TowerRoom,  string CornerPlot , string txtPlotFaceSide, string BoundaryWall,  string  txtAnyOther  )
+        //{
+        //    //try
+        //    //{
+        //    //     string ch = Session["user"].ToString();
+        //    //}
+        //    //catch (Exception ex)
+        //    //{
+        //    //    FormsAuthentication.SignOut();
+        //    //    FormsAuthentication.SetAuthCookie("", true);
+
+        //    //    return RedirectToAction("Index", "Login");
+        //    //}
+
+        //    return View();
+        //}
+
         public ActionResult Testss()
         {
 
