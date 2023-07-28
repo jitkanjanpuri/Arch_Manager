@@ -8,7 +8,7 @@
 <html lang="en">
 
 <head>
-    <script src="~/angularjs/registration.js"></script>
+    <script src="~/angularjs/registration1.js"></script>
 
     <script type="text/javascript">
 
@@ -65,19 +65,22 @@
                         <div class="row">
                             <div class="col-xl-4 col-md-6">
                                 <div class="form-group mb-3">
+                                    <label>Name</label>
                                     <input type="text" ng-model="txtSearchName" class="form-control" placeholder="Designer Name " />
                                 </div>
                             </div>
+                         </div>
 
-
-
+                        <div class="row">
                             <div class="col-xl-1 col-md-6">
 
-                                <div class="form-group">
+                                <div class="form-group mb-3">
+                                    <label>.</label>
                                     <button type="button" class="btn btn-primary" ng-click="Search()">Search</button>
                                 </div>
                             </div>
                         </div>
+
                         <div class="text-center" ng-hide="loading">
                             <button type="button" class="btn btn-dark waves-effect waves-light">
                                 <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
@@ -98,8 +101,6 @@
 
                                         <div class="table-responsive">
                                             <table class="table align-middle datatable dt-responsive table-bordered nowrap" style="border: 1px solid black; border-spacing: 0 8px; width: 100%;">
-
-
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
@@ -107,15 +108,12 @@
                                                         <th>City	</th>
                                                         <th>Phone</th>
                                                         <th>Mobile</th>
-
                                                         <th>Email</th>
                                                         <th>User name</th>
                                                         <th>Password</th>
-
-
                                                         <th>Edit</th>
                                                         <th>Delete </th>
-                                                        <th>Pay</th>
+                                                        @*<th>Pay</th>*@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -129,7 +127,6 @@
                                                         <td> {{item.username}}  </td>
                                                         <td> {{item.password}} </td>
                                                         <td>
-                                                             
 
                                                             <a href="/Client/EditDesigner?id={{item.staffID}}" class="btn btn-primary waves-effect waves-light w-sm">
 
@@ -142,23 +139,15 @@
                                                                 @*<i class="mdi mdi-trash-can d-block font-size-16"></i>*@ Delete
                                                             </button>
                                                         </td>
-                                                        <td>
-                                                            <button type="button" class="btn btn-success waves-effect waves-light w-sm" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2" ng-click="GetDesigner(item.staffID , item.name)">
-                                                                @*<i class="mdi mdi-check d-block font-size-16"></i>*@Pay
-                                                            </button>
+                                                        <!--<td>
+                                                            <button type="button" class="btn btn-success waves-effect waves-light w-sm" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2" ng-click="GetDesigner(item.staffID , item.name)">-->
+                                                                @*<i class="mdi mdi-check d-block font-size-16"></i>*@<!--Pay
+                                                            </button>-->
 
                                                             @*<a href="/Client/EditDesigner?id={{item.staffID}}">GoEdit</a>*@
-                                                        </td>
-                                                        @*<td>
-                                                            <img src="~/Images/edit-icon.png" ng-click="GetValue(item.staffID , item.name, item.designation ,item.address , item.city,item.phone, item.mobile, item.emailID , item.username, item.password)" style="width:100%; height:5%;" />
-                                                        </td>
-                                                        <td>
-                                                            <img src="~/Images/delete.png" ng-click="RegistrationDelete(item.staffID , item.name)" style="width:50%; height:11%;" />
-
-                                                        </td>
-                                                        <td>
-                                                            <img src="~/Images/onlinepayment.png" ng-click="ShowPayWindow(item.staffID , item.name)" style=" width:100%; height:11%" />
-                                                        </td>*@
+                                                        <!--</td>-->
+                                                        @*<td>*@
+                                            
                                                     </tr>
 
 

@@ -60,6 +60,7 @@ namespace MvcSDesign.Repository
                 obj.package = qtn.package;
                 obj.plotSize = qtn.plotSize;
                 obj.amount = qtn.amount;
+                obj.finalizeAmount = 0;
                 obj.status = "request";
                 obj.remark = qtn.remark;
 
@@ -184,16 +185,50 @@ namespace MvcSDesign.Repository
             catch (Exception ex) { return ex.Message; }
             return "";
         }
-
-        public IEnumerable<tblClient> SearchByName(string chkName, string name, string chkcity, string cityname)
+        
+        public IEnumerable<client> SearchClientByName(string opt, string name, string cityname)
         {
-            if ((chkName == "true") && (chkcity == "true"))
-                return _dbContext.tblClients.Where(x => (x.clientName.Contains(name)) && (x.city.Contains(cityname)));
-            else if (chkcity == "true")
-                return _dbContext.tblClients.Where(x => (x.city.Contains(cityname)));
+            List<client> lst = new List<client>(); 
+            if (opt == "name")  {
+                var res = (from item in _dbContext.tblClients
+                           where (item.clientName.Contains(name))
+                           select new client
+                           {
+                               clientID = item.clientID,
+                               clientName = item.clientName,
+                               orgName = item.orgName,
+                               address = item.address,
+                               city = item.city,
+                               mobile = item.mobile,
+                               phone = item.phone,
+                               emailID = item.emailID,
+                               state = item.state
 
+                           }).ToList();
+                lst = res.ToList();
+            }
 
-            return _dbContext.tblClients.Where(s => s.clientName.Contains(name)).ToList();
+            else if (opt == "city")
+            {
+                var res = (from item in _dbContext.tblClients
+                           where (item.city.Contains(cityname))
+                           select new client
+                           {
+                               clientID = item.clientID,
+                               clientName = item.clientName,
+                               orgName = item.orgName,
+                               address = item.address,
+                               city = item.city,
+                               mobile = item.mobile,
+                               phone = item.phone,
+                               emailID = item.emailID,
+                               state = item.state
+
+                           }).ToList();
+                lst = res.ToList();
+
+            }
+            return lst;
         }
 
         public IEnumerable<tblClient> getByName(string name)

@@ -178,31 +178,9 @@ namespace MvcSDesign.Controllers
              
         }
         
-        public JsonResult SearchClient(string chkName , string name , string chkcity, string cityname)
-        {
-            if (name == null || name.Trim() == "") name = "";
-            if (cityname == null || cityname.Trim() == "") cityname = "";
-            //List<tblClient> obj = new List<tblClient>();
-            //var lst = IClnt.SearchByName(chkName, name, chkcity, cityname);
-            //int i = 1;
-            //foreach (var item in lst)
-            //{
-            //    obj.Add(new tblClient
-            //    {
-            //        clientID = item.clientID,
-            //        clientName = item.clientName,
-            //        orgName = item.orgName,
-            //        address = item.address,
-            //        city = item.city,
-            //        mobile = item.mobile,
-            //        phone = item.phone,
-            //        emailID = item.emailID,
-            //        state = item.state
-
-            //    });
-            //    i++;
-            //}
-            return Json(obj, JsonRequestBehavior.AllowGet);
+        public JsonResult SearchClient(string opt , string name , string cityname)
+        { 
+            return Json(IClnt.SearchClientByName(opt, name, cityname), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult AllClient(string name)

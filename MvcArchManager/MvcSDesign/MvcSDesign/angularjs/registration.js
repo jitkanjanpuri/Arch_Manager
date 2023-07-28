@@ -12,6 +12,7 @@ app.controller('myController', function ($scope, $http) {
     function SearchRegistration() {
         var varname = $scope.txtSearchName;
         $scope.loading = false;
+        $scope.errMessage = "";
         $http({
             url: "/Admin/SearchRegistration",
             dataType: 'json',
@@ -25,7 +26,7 @@ app.controller('myController', function ($scope, $http) {
             $scope.loading = true;
             if (d.data.length == 0) {
                $scope.errMessage = "Record not found";
-                //return;
+               
             }
            
 

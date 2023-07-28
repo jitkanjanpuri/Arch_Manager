@@ -1,13 +1,16 @@
-﻿using System;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 
 namespace MvcSDesign.Models
 {
     public class PRFModel
     {
-       
+
         public int prfID { get; set; }
 
         public long projectID { get; set; }
@@ -26,10 +29,13 @@ namespace MvcSDesign.Models
         public string doorlintel { get; set; }
         public string windowsill { get; set; }
         public string windowlintel { get; set; }
-        
 
-          
+
+
+
 
 
     }
+
+
 }

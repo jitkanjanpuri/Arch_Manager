@@ -4,7 +4,7 @@ app.controller('myController', function ($scope, $http) {
 
     $scope.loading = true;
     var varClientID = 0;
-    
+
 
     $scope.Search = function () {
         SearchClient();
@@ -12,26 +12,33 @@ app.controller('myController', function ($scope, $http) {
 
     function SearchClient() {
         var varname = $scope.txtName;
-        var varchkname = $scope.chkCName;
-        var varchkcity = $scope.chkCity
+        var opt = $scope.opt;
         var varcityname = $scope.txtSearchCity;
 
-
-        $scope.errMessage = "";
-
-        if (((varchkname == undefined) || (varchkname == false)) && ((varchkcity == undefined) || (varchkcity == false))) {
-            alert("Please select atleast one option for search");
+        $scope.errRecord = "";
+         
+        if (opt == undefined) {
+            $scope.errRecord = "Please select at least one option";
             return;
         }
+        else if ((opt == "name") && ((varname == null) || (varname == undefined) || (varname == ""))) {
+            $scope.errRecord = "Please enter name";
+            return;
+        }
+        else if ((opt == "city") && ((varcityname == null) || (varcityname == undefined) || (varcityname == ""))) {
+            $scope.errRecord = "Please enter city";
+            return;
+        }
+         
+       
         $scope.loading = false;
         $http({
             url: "/Client/SearchClient",
             dataType: 'json',
             method: 'POST',
             params: {
-                chkName: varchkname,
+                opt: opt,
                 name: varname,
-                chkcity: varchkcity,
                 cityname: varcityname
 
             },
@@ -39,11 +46,11 @@ app.controller('myController', function ($scope, $http) {
         }).then(function (d) {
             $scope.clist = d.data;
             $scope.loading = true;
-            alert("Test");
-            if ($scope.clist.lenght == 0) {
+
+            if ($scope.clist.length == 0) {
                 $scope.errMessage = "Record not found";
             }
-             
+
         }).error(function (err) {
             alert("Error : " + err);
         });
@@ -58,7 +65,7 @@ app.controller('myController', function ($scope, $http) {
             contentType: "application/json; charaset=utf-8"
         }).then(function (d) {
             $scope.allclient = d.data;
-            if ($scope.allclient.lenght == 0) {
+            if ($scope.allclient.length == 0) {
                 alert("Record not available");
                 return;
             }
@@ -75,10 +82,10 @@ app.controller('myController', function ($scope, $http) {
         $scope.txtAmount = "";
         $scope.txtRemark = "";
     }
-     
+
 
     $scope.AmountReceiveSave = function () {
-        
+
         var varcname = $scope.txtCName;
         var varamount = $scope.txtAmount;
         var varremark = $scope.txtRemark;
@@ -88,14 +95,14 @@ app.controller('myController', function ($scope, $http) {
             return;
         }
         else if (varamount == undefined) {
-            $scope.errReceive = "";"Please enter amount";
+            $scope.errReceive = ""; "Please enter amount";
             return;
         }
         else if ((varamount == "") || (varamount == "0")) {
             $scope.errReceive = "Please enter amount";
             return;
         }
-         
+
 
         $http({
             url: "/Admin/AmountReceive",
@@ -129,7 +136,7 @@ app.controller('myController', function ($scope, $http) {
         $scope.txtAddress = address;
         $scope.txtCity = city;
         $scope.statename = state,
-        $scope.txtPhone = phone;
+            $scope.txtPhone = phone;
         $scope.txtMobile = mobile;
         $scope.txtEmailID = emailID;
         $scope.assignwindow = false;
@@ -141,7 +148,7 @@ app.controller('myController', function ($scope, $http) {
 
     }
 
-     
+
 
 
     $scope.UpdateClient = function () {
@@ -207,7 +214,7 @@ app.controller('myController', function ($scope, $http) {
 
 
     $scope.ShowDelete = function (clientID, cname) {
-        
+
         $scope.clientname = cname;
         varClientID = clientID;
 

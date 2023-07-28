@@ -246,6 +246,12 @@
     <Compile Include="EF\tblProjectDetail.cs">
       <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblProjectManagement.cs">
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\tblProjectSiteVisit.cs">
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tblStaff.cs">
       <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
@@ -265,7 +271,6 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\client.cs" />
-    <Compile Include="Models\clsReport.cs" />
     <Compile Include="Models\CompanyModel.cs" />
     <Compile Include="Models\GMail.cs" />
     <Compile Include="Models\InteriorProject.cs" />
@@ -275,6 +280,7 @@
     <Compile Include="Models\quotation.cs" />
     <Compile Include="Models\QuotationModel.cs" />
     <Compile Include="Models\registration.cs" />
+    <Compile Include="Models\SiteVisitModel.cs" />
     <Compile Include="Models\staff.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AdminRepository.cs" />
@@ -301,6 +307,7 @@
     <Content Include="angularjs\gmailSetting.js" />
     <Content Include="angularjs\operation.js" />
     <Content Include="angularjs\operation1.js" />
+    <Content Include="angularjs\prf.js" />
     <Content Include="angularjs\projectmanagement.js" />
     <Content Include="angularjs\projectmanagement1.js" />
     <Content Include="angularjs\promoMail.js" />
@@ -318,6 +325,7 @@
     <Content Include="angularjs\ReportDesinger.js" />
     <Content Include="angularjs\reportmonthquotation.js" />
     <Content Include="angularjs\ReportQuotation.js" />
+    <Content Include="angularjs\SiteVisit.js" />
     <Content Include="angularjs\test.js" />
     <Content Include="assets\css\bootstrap.min.css" />
     <Content Include="assets\css\dataTables.bootstrap4.min.css" />
@@ -4528,12 +4536,12 @@
     <Content Include="vendor\fontawesome-free\webfonts\fa-solid-900.woff2" />
     <Content Include="vendor\jquery\jquery.min.map" />
     <Content Include="vendor\jquery\jquery.slim.min.map" />
-    <Content Include="Views\Admin\SiteVisit.cshtml" />
     <Content Include="Views\Admin\ReportSiteVisit.cshtml" />
     <Content Include="Views\Admin\CompanyProfile.cshtml" />
     <Content Include="Views\Admin\ReportProjectHistory.cshtml" />
     <Content Include="Views\Admin\Test.cshtml" />
     <Content Include="Views\Admin\PRF.cshtml" />
+    <Content Include="Views\Admin\SiteVisit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4569,6 +4577,7 @@
     <Folder Include="assets\libs\twitter-bootstrap-wizard\examples\" />
     <Folder Include="Images\logoimage\" />
     <Folder Include="PDF_Files\ClientlLedger\" />
+    <Folder Include="prf\" />
     <Folder Include="ProjectLocation\" />
   </ItemGroup>
   <ItemGroup>

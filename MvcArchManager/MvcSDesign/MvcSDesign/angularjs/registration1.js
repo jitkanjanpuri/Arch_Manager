@@ -1,9 +1,8 @@
 ﻿var app = angular.module("myApp", [])
 app.controller('myController', function ($scope, $http) {
 
-    $scope.assignwindow = true;
-    $scope.paywindow = true;
-
+    $scope.loading = true;
+    var varStaffID = 0;
     $scope.nettotal = 0;
 
     $scope.Search = function () {
@@ -12,7 +11,8 @@ app.controller('myController', function ($scope, $http) {
 
     function SearchRegistration() {
         var varname = $scope.txtSearchName;
-
+        $scope.loading = false;
+        $scope.errMessage = "";
         $http({
             url: "/Admin/SearchRegistration",
             dataType: 'json',
@@ -22,13 +22,14 @@ app.controller('myController', function ($scope, $http) {
             },
             contentType: "application/json; charaset=utf-8"
         }).then(function (d) {
-
-
-            if (d.data.length == 0) {
-                alert("Record not found");
-                return;
-            }
             $scope.stafflist = d.data;
+            $scope.loading = true;
+           
+            if (d.data.length == 0) {
+                $scope.errMessage = "Record not found";
+                //return;
+            }
+
 
         }).error(function (err) {
             alert("Error : " + err);
@@ -38,9 +39,9 @@ app.controller('myController', function ($scope, $http) {
     }
 
     $scope.PayDesigner = function () {
-         
+
         if (($scope.txtAmount == undefined) || ($scope.txtAmount == "0")) {
-            alert(" Please enter amount");
+            $scope.errReceive = " Please enter amount";
             return;
         }
 
@@ -49,18 +50,16 @@ app.controller('myController', function ($scope, $http) {
             dataType: 'json',
             method: 'POST',
             params: {
-                sid: $scope.txtsid,
+                sid: varStaffID,
                 amount: $scope.txtAmount,
                 remark: $scope.txtRemark
             },
             contentType: "application/json; charaset=utf-8"
         }).then(function (d) {
             if (d.data == "") {
-                $scope.paywindow = true;
-                $scope.txtDName = "";
-                $scope.txtsid = "";
-                $scope.txtRemark = "";
+
                 alert("Designer payment successfully saved");
+                location.reload();
                 return;
             }
 
@@ -72,7 +71,7 @@ app.controller('myController', function ($scope, $http) {
     }
 
     $scope.ShowPayWindow = function (sid, name) {
-        
+
         $scope.txtDName = "";
         $scope.txtsid = "";
         $scope.txtRemark = "";
@@ -83,30 +82,30 @@ app.controller('myController', function ($scope, $http) {
 
     }
 
-    $scope.CloseAmountReceiveWindow = function () {
-        $scope.paywindow = true;
-        $scope.txtDName = "";
-        $scope.txtsid = "";
-        $scope.txtRemark = "";
-    }
-    $scope.CloseAssignWindow = function () {
-        Reset();
-    }
+    //$scope.CloseAmountReceiveWindow = function () {
+    //    $scope.paywindow = true;
+    //    $scope.txtDName = "";
+    //    $scope.txtsid = "";
+    //    $scope.txtRemark = "";
+    //}
+    //$scope.CloseAssignWindow = function () {
+    //    Reset();
+    //}
 
 
 
-    function Reset() {
-        $scope.txtStaffID = "";
-        $scope.txtName = "";
-        $scope.txtDesination = "";
-        $scope.txtAddress = "";
-        $scope.txtCity = "";
-        $scope.txtPhone = "";
-        $scope.txtMobile = "";
-        $scope.txtEmailID = "";
+    //function Reset() {
+    //    $scope.txtStaffID = "";
+    //    $scope.txtName = "";
+    //    $scope.txtDesination = "";
+    //    $scope.txtAddress = "";
+    //    $scope.txtCity = "";
+    //    $scope.txtPhone = "";
+    //    $scope.txtMobile = "";
+    //    $scope.txtEmailID = "";
 
-        $scope.assignwindow = true;
-    }
+    //    $scope.assignwindow = true;
+    //}
 
     $scope.GetValue = function (staffID, name, designation, address, city, phone, mobile, emailID, username, password) {
 
@@ -120,9 +119,6 @@ app.controller('myController', function ($scope, $http) {
         $scope.txtEmailID = emailID;
         $scope.txtUsername = username;
         $scope.txtPassword = password;
-
-        $scope.assignwindow = false;
-
     }
 
     $scope.Update = function () {
@@ -203,31 +199,39 @@ app.controller('myController', function ($scope, $http) {
         });
     }
 
-    $scope.RegistrationDelete = function (staffID, name) {
-        var con = confirm("Do you want to delete  " + name + " ?");
-        if (con) {
-            $http({
-                url: "/Admin/RegistrationDelete",
-                dataType: 'json',
-                method: 'POST',
-                params: {
-                    sid: staffID
-                },
-                contentType: "application/json; charaset=utf-8"
-            }).then(function (d) {
-                if (d.data == "") {
-                    alert("Data successfully deleted");
-                    SearchRegistration();
-                    Reset();
-                }
-                else {
-                    alert(d.data);
-                }
+    $scope.GetDesigner = function (staffID, name) {
 
-            }).error(function (err) {
-                alert("Error : " + err);
-            });
-        }
+        varStaffID = staffID;
+        $scope.designername = name;
+        $scope.txtDName = name;
+        $scope.txtAmount = "";
+        $scope.txtRemark = "";
     }
 
+
+
+    $scope.RegistrationDelete = function () {
+
+        $http({
+            url: "/Admin/RegistrationDelete",
+            dataType: 'json',
+            method: 'POST',
+            params: {
+                sid: varStaffID
+            },
+            contentType: "application/json; charaset=utf-8"
+        }).then(function (d) {
+            if (d.data == "") {
+                alert("Data successfully deleted");
+                location.reload();
+            }
+            else {
+                alert(d.data);
+            }
+
+        }).error(function (err) {
+            alert("Error : " + err);
+        });
+
+    }
 });

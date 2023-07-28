@@ -1,11 +1,11 @@
 ﻿var app = angular.module("myApp", [])
-app.controller("myController", function ($scope, $http, cw) {
+app.controller("myController", function ($scope, $http) {
 
     $scope.record = "";
     $scope.normal = "0";
     $scope.attention = "0";
     $scope.critical = "0";
-
+    $scope.err = "";
     $scope.projectCategory = ["Presentation Drawing", "Structure Drawing", "Ground Floor Drawing", "First Floor Drawing", "Second Floor Drawing"]
     $scope.category = $scope.projectCategory[0];
     $scope.subcategory = ["Presentation Drawing With Furniture Layout", "Floor Plans Ground To Terrace"];
@@ -14,15 +14,15 @@ app.controller("myController", function ($scope, $http, cw) {
     var operationID = 0;
     var varCategory = "";
 
-    cw.getRecord().then(function (d) {
-        //$scope.currentworkinglist = d.data;
-        //$scope.loading = true;
+    //cw.getRecord().then(function (d) {
+    //    //$scope.currentworkinglist = d.data;
+    //    //$scope.loading = true;
 
-        //  getDesigner();
+    //    //  getDesigner();
 
 
 
-    });
+    //});
 
     function getDesigner() {
         $http({
@@ -46,7 +46,7 @@ app.controller("myController", function ($scope, $http, cw) {
 
     $scope.GetSubcategory = function () {
 
-        alert(" category  " + $scope.category);
+
 
         if ($scope.category == "Presentation Drawing") {
             $scope.subcategory = ["Presentation Drawing With Furniture Layout", "Floor Plans Ground To Terrace"];
@@ -111,6 +111,39 @@ app.controller("myController", function ($scope, $http, cw) {
     //    $scope.txtProjectID = "";
     //    $scope.addNewWindow = true;
     //}
+
+    $scope.Search = function () {
+        $scope.err = "";
+        $scope.workinglist = null;
+        $scope.loading = false;
+        $http({
+            url: '/Admin/SearchCurrentWorking',
+            dataType: 'json',
+            method: 'POST',
+            params: {
+                dname: "0",
+                category: $scope.category,
+                subcategory: $scope.subcategoryName
+            },
+            contentType: "application/json;charaset=utf-8"
+        }).then(function (d) {
+            $scope.loading = true;
+
+            $scope.workinglist = d.data;
+
+
+            if (d.data.length == 0) {
+                $scope.err = " Record not available";
+                return false;
+            }
+
+
+        }).error(function (err) {
+            alert(" Error : " + err);
+        });
+    }
+
+
 
     $scope.SearchProject = function () {
         var pid = $scope.txtPID;
@@ -350,16 +383,5 @@ app.controller("myController", function ($scope, $http, cw) {
 
 
 });
-
-
-
-app.factory('cw', function ($http) {
-
-    var fac = {};
-    fac.getRecord = function () {
-        return $http.get('/Admin/getCurrentWorkingList');
-    }
-    return fac;
-});
-
+ 
 

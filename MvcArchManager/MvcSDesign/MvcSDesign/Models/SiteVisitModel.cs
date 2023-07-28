@@ -5,9 +5,11 @@ using System.Web;
 
 namespace MvcSDesign.Models
 {
-    public class clsReport
+    public class SiteVisitModel
     {
-        public DateTime dt { get; set; }
+        public int projectID { get; set; }
+        public string remark { get; set; }
+
 
     }
 }

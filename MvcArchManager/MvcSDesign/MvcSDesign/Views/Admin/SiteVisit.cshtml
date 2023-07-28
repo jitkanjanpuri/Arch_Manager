@@ -1,19 +1,22 @@
 ﻿ 
+@model MvcSDesign.Models.SiteVisitModel 
+
+
 @{
     ViewBag.Title = "Site Visit";
     Layout = "~/Views/Shared/_Admin.cshtml";
 
 }
-
-
-
 <!doctype html>
 <html lang="en">
+
+
+
 
 <head>
 
 
-    <script src="~/angularjs/currentworking1.js"></script>
+    <script src="~/angularjs/SiteVisit.js"></script>
     <style>
         table, th, td {
             border: 1px solid black;
@@ -25,27 +28,61 @@
     <script type="text/javascript">
 
 
-        function IsNumber(e) {
+        //function IsNumber(e) {
 
-            var theEvent = event || window.event;
-            var key = theEvent.keyCode || theEvent.which;
-            key = String.fromCharCode(key);
-            var regex = /[0-9]|\./;
+        //    var theEvent = event || window.event;
+        //    var key = theEvent.keyCode || theEvent.which;
+        //    key = String.fromCharCode(key);
+        //    var regex = /[0-9]|\./;
 
-            if (!regex.test(key)) {
-                theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
+        //    if (!regex.test(key)) {
+        //        theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
+        //    }
+        //}
+ 
+        function ValidateSize(file) {
+            document.getElementById("lblError").innerText = "";
+            var FileSize = file.files[0].size / 1024 / 1024; // in MB
+            if (FileSize >= 10) {
+                document.getElementById("lblError").innerText = "File must be under 10 MB";
+                document.getElementById("uploadPhotograph").value = "";
+                document.getElementById("uploadPhotograph").focus();
+                return false;
             }
+
         }
+
+        function Validation() {
+            var fname = document.getElementById("sitevisitPhoto").value;
+            var remark = document.getElementById("remark").value;
+            if ((fname.length == 0) && (remark == "")) {
+                document.getElementById("lblError").innerText = "Upload correction file or mention text. Empty corrections cannot be submitted.";
+                return false;
+            }
+
+           else if (fname.length != 0) {
+                var ext = fname.substr(fname.lastIndexOf('.') + 1);
+                if ((ext.toLowerCase() != "jpg") && (ext.toLowerCase() != "jpeg") && (ext.toLowerCase() != "rar") && (ext.toLowerCase() != "zip")) {
+                    document.getElementById("lblError").innerText = "Only jpg/ rar/ zip file valid.";
+                    return false;
+                }
+            }
+            return true;
+
+        }
+
     </script>
 
 </head>
-@using (@Html.BeginForm())
+@using (@Html.BeginForm("SiteVisit","Admin",FormMethod.Post, new {id="frmSiteVisit", enctype = "multipart/form-data",  name = "frmSiteVisit" }))
 {
     <body>
-        <div ng-app="myApp">
-            <div ng-controller="myController">
+        <div ng-app ="myApp" >
+              <div ng-controller = "myController" >
 
-                <div class="page-content">
+
+
+                    <div class="page-content">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12">
@@ -66,75 +103,40 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-
-
                                     <div class="col-xl-2 col-md-2">
                                         <div class="form-group mb-3">
-
-
                                             <h4 class="mb-sm-0 font-size-18">Site Visit </h4>
                                         </div>
                                     </div>
-
-
-                                    <div class="col-xl-2 col-md-2">
-                                        <div class="form-group mb-3">
-
-
-                                        </div>
-                                    </div>
-
-                                    @*<div class="page-title-right">
-                                        <ol class="breadcrumb m-0">
-                                            <button type="button" class="btn btn-outline-secondary">
-                                                Normal	 <span class="badge bg-success ms-1">{{normal}}</span>
-                                            </button>
-                                            <button type="button" class="btn btn-primary bg-warning">
-                                                Attention	 <span class="badge bg-success ms-1">{{attention}}</span>
-                                            </button>
-                                            <button type="button" class="btn btn-success bg-danger">
-                                                Critical<span class="badge bg-danger ms-1">{{critical}}</span>
-                                            </button>
-
-                                        </ol>
-                                    </div>*@
-
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xl-1 col-md-1">
-                                <div class="form-group mb-3">
-
-                                    Project ID
-                                </div>
-                            </div>
-
                             <div class="col-xl-2 col-md-2">
                                 <div class="form-group mb-3">
-                                    <input type="text" class="form-control" ng-model="projectID" placeholder="Project ID" />
-
+                                    <input type="radio" ng-model="opt" value="projectID" class="form-check-input">
+                                    <label>Project ID </label>
+                                    <input type="text" ng-model="varProjectID" class="form-control" placeholder="Project ID " onkeypress="IsNumber()" />
                                 </div>
                             </div>
-                            <div class="col-xl-1 col-md-1">
+
+                            <div class="col-xl-3 col-md-3">
                                 <div class="form-group mb-3">
-                                    Client name
+                                    <input type="radio" ng-model="opt" value="name" class="form-check-input">
+                                    <label>Name  </label>
+                                    <input type="text" ng-model="name" class="form-control" placeholder="Name" />
                                 </div>
                             </div>
 
-                            <div class="col-xl-2 col-md-2">
-                                <div class="form-group mb-3">
-                                    <input type="text" class="form-control" ng-model="clientName" placeholder="Client name" />
-
-                                </div>
-                            </div>
                             <div class="col-xl-1 col-md-6">
+                                <label> . </label>
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-primary" ng-click="ShowDesignerTask()">Search</button>
+                                    <button type="button" class="btn btn-primary" ng-click="Search()">Search</button>
                                 </div>
                             </div>
                         </div>
-                        
+                         
+
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="card">
@@ -149,322 +151,56 @@
                                         </div>
 
                                         <div class="text-center">
-                                            <span style="font-size:18pt;" class="text-danger">{{record}}</span>
+                                            <span style="font-size:14pt;" class="text-danger">{{record}}</span>
                                         </div>
 
                                         <div class="table-responsive">
                                             <table class="table align-middle datatable dt-responsive table-bordered  nowrap" style=" border: 1px solid black; border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
                                                 <thead>
                                                     <tr class="bg-transparent">
-
                                                         <th style="">  Sno  </th>
                                                         <th style="">  Project ID </th>
-
-                                                        <th>Name </th>
-                                                        <th>Project Type</th>
-                                                        <th>Category </th>
-                                                        <th>Package</th>
+                                                        <th>Client Name </th>
+                                                        <th>Project Name</th>
                                                         <th>Plot size	</th>
                                                         <th>Level</th>
-                                                        <th>Designer </th>
-                                                        <th>Remark</th>
-                                                        <th>Confirm</th>
-                                                        <th>Site photo upload</th>
-                                                        
+                                                        <th>Action</th>
+
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
-                                                    <tr>
+                                                     
+                                                    <tr ng-repeat="item in sitevisitlist">
                                                         <td>
-                                                            <span style="color:black "> 1 </span>
+                                                            <span style="color:black "> {{$Index+1}} </span>
                                                         </td>
+                                                       
                                                         <td>
-                                                            <span style="color: black ">  1025  </span>
-                                                        </td>
-                                                        <td>
-                                                            <span style="color: black ">  Xyz  </span>
-                                                        </td>
-                                                        <td>
-                                                            <span style="color: black ">  Structure Drawing  </span>
-                                                        </td>
-                                                        <td>
-                                                            <span style="color: black ">Center Line Plan </span>
-                                                        </td>
-                                                        <td>
-                                                            <span style="color: black "> II </span>
-                                                        </td>
-                                                        <td>
-                                                            <span style="color: black "> 25X50 </span>
-                                                        </td>
-                                                        <td>
-                                                            <span style="color: black "> G+2</span>
+                                                            <span style="color: black ">  {{item.projectID}}  </span>
                                                         </td>
 
                                                         <td>
-                                                            <span style="color: black ">Abc</span>
+                                                            <span style="color: black ">  {{item.clientName}}  </span>
                                                         </td>
                                                         <td>
-                                                            <span style="color: black "> </span>
+                                                            <span style="color: black ">  {{item.projectName }}  </span>
                                                         </td>
 
-
-                                                        <td style=" background-color:{{item.rowcolor }}">
-
-                                                            <button type="button" class="btn btn-success waves-effect waves-light w-sm" ng-click="ShowCurrentWorking(item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-confirm">
-                                                                @*<i class="mdi mdi-check d-block font-size-8"></i>*@Remark
+                                                        <td>
+                                                            <span style="color: black "> {{item.plotSize}} </span>
+                                                        </td>
+                                                        <td>
+                                                            <span style="color: black "> {{item.projectLevel}} </span>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="ShowCurrentWorking(item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-confirm">
+                                                                  Action
                                                             </button>
-                                                        </td>
-                                                        <td style=" background-color:{{item.rowcolor}}">
-                                                            <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="EditCurWorking( item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2">
-                                                                @*<i class="mdi mdi-pencil d-block font-size-16"></i>*@ Photo upload
-                                                            </button>
-                                                        </td>
-                                                      
+                                                      </td>
+    
                                                     </tr>
-
-                                                    <!--<tr ng-repeat="item in currentworkinglist">
-                                                    <td style=" background-color:{{item.rowcolor }}">
-                                                        <span style="color:black "> {{item.sno}}  </span>
-                                                    </td>
-                                                    <td style="background-color:{{item.rowcolor }}">
-                                                        <span style="color: black ">  {{item.projectID}}  </span>
-                                                    </td>
-                                                    <td style=" background-color:{{item.rowcolor }}">
-                                                        <span style="color: black ">  {{item.clientName}}  </span>
-                                                    </td>
-                                                    <td style=" background-color:{{item.rowcolor }}">
-                                                        <span style="color: black ">  {{item.projectType }}  </span>
-                                                    </td>
-                                                    <td style=" background-color:{{item.rowcolor }}">
-                                                        <span style="color: black "> {{item.projectCategory}} </span>
-                                                    </td>
-                                                    <td style=" background-color:{{item.rowcolor }}">
-                                                        <span style="color: black "> {{item.package}} </span>
-                                                    </td>
-                                                    <td style=" background-color:{{item.rowcolor }}">
-                                                        <span style="color: black "> {{item.plotSize}} </span>
-                                                    </td>
-                                                    <td style=" background-color:{{item.rowcolor }}">
-                                                        <span style="color: black "> {{item.projectLevel}} </span>
-                                                    </td>
-
-                                                    <td style=" background-color:{{item.rowcolor }}">
-                                                        <span style="color: black "> {{item.designerName}}</span>
-                                                    </td>
-                                                    <td style=" background-color:{{item.rowcolor }}">
-                                                        <span style="color: black "> {{item.remark}}</span>
-                                                    </td>
-
-
-                                                    <td style=" background-color:{{item.rowcolor }}">
-
-                                                        <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="ShowCurrentWorking(item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-confirm">-->
-                                                    @*<i class="mdi mdi-check d-block font-size-8"></i>*@
-                                                    <!--Confirm
-                                                        </button>
-                                                    </td>
-                                                    <td style=" background-color:{{item.rowcolor}}">
-                                                        <button type="button" class="btn btn-success waves-effect waves-light w-sm" ng-click="EditCurWorking( item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2">-->
-                                                    @*<i class="mdi mdi-pencil d-block font-size-16"></i>*@
-                                                    <!--Edit
-                                                        </button>
-                                                    </td>
-                                                    <td style=" background-color:{{item.rowcolor }}">
-                                                        <button type="button" class="btn btn-danger waves-effect waves-light w-sm" ng-click="ShowDelete(item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center3">-->
-                                                    @*<i class="mdi mdi-trash-can d-block font-size-8"></i>*@
-                                                    <!--Delete
-                                                            </button>
-                                                        </td>
-                                                    </tr>-->
                                                 </tbody>
                                             </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Add New Project</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div>
-                                                    <form id="pristine-valid-example" novalidate method="post">
-                                                        <input type="hidden" />
-                                                        <div class="row">
-
-                                                            <div class="col-xl-4 col-md-6">
-                                                                <div class="form-group mb-3">
-                                                                    <label>Project ID </label>
-                                                                    <input type="text" ng-model="txtPID" onkeypress="return IsNumber();" class="form-control" placeholder="Project ID" />
-
-
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-2 col-md-6">
-                                                                <div class="form-group mb-3">
-
-                                                                    <label>.</label>
-                                                                    <button type="button" class="btn btn-primary" ng-click="SearchProject()">Search</button>
-
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-6 col-md-6">
-                                                                <div class="form-group mb-3">
-                                                                    <label>Client name	 </label>
-                                                                    <input type="text" ng-model="txtCName1" class="form-control" readonly />
-
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-6 col-md-6">
-                                                                <div class="form-group mb-3">
-                                                                    <label>Project Type </label>
-                                                                    <input type="text" ng-model="txtPType" class="form-control" readonly />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-6">
-                                                                <div class="mb-4">
-                                                                    <label class="form-label" for="default-input"> Project category</label>
-
-                                                                    <select class="form-control" ng-model="cmbProjectCategory" style="">
-                                                                        <option value="Elevation" selected>Elevation</option>
-                                                                        <option value="Revised Elevation">Revised Elevation</option>
-                                                                        <option value="Dratf View">Dratf View</option>
-                                                                        <option value="Revised View">Revised View</option>
-                                                                        <option value="Final View">Final View</option>
-                                                                        <option value="Interior"> Interior</option>
-                                                                        <option value="3D Floor Plan">3D Floor Plan</option>
-
-                                                                    </select>
-
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-xl-6 col-md-6">
-                                                                <div class="form-group mb-3">
-                                                                    <label>Designer </label>
-                                                                    <select class="form-control" ng-model="dName1" ng-options=" items.Text for items in designerList1"></select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-6 col-md-6">
-                                                                <div class="form-group mb-3">
-                                                                    <label>Designer Amount</label>
-                                                                    <input type="text" ng-model="txtAmount" class="form-control" onkeypress="return IsNumber();" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" ng-click="SubmitNewProject()" class="btn btn-primary waves-effect waves-light">Submit</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div><!-- /.modal-content -->
-                            </div><!-- /.modal-dialog -->
-                        </div><!-- /.modal -->
-
-                        <div class="modal fade bs-example-modal-center2" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Working Edit</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div>
-                                                    <form id="pristine-valid-example" novalidate method="post">
-                                                        <input type="hidden" />
-                                                        <div class="row">
-
-                                                            <div class="col-xl-6 col-md-6">
-                                                                <div class="form-group mb-3">
-                                                                    <label>Project ID </label>
-                                                                    <input type="text" id="txtProjectID" ng-model="txtProjectID" class="form-control" readonly />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-6 col-md-6">
-                                                                <div class="form-group mb-3">
-                                                                    <label>Client name	 </label>
-                                                                    <input type="text" id="txtCName" ng-model="txtCName" readonly class="form-control" />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-6 col-md-6">
-                                                                <div class="form-group mb-3">
-                                                                    <label>Project Type </label>
-                                                                    <input type="text" id="txtProjectType" ng-model="txtProjectType" readonly class="form-control" placeholder="  " />
-
-
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-6 col-md-6">
-                                                                <div class="form-group mb-3">
-                                                                    <label>Project Category </label>
-                                                                    <input type="text" id="txtProjectCategory" ng-model="txtProjectCategory " readonly class="form-control" />
-
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-12 col-md-12">
-                                                                <div class="form-group mb-3">
-                                                                    <label>Remark </label>
-
-                                                                    <textarea ng-model="txtRemark" class="form-control" rows="2" cols="20" style=" "></textarea>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </form>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="modal-footer">
-                                                <button type="button" ng-click="CurrentWorkingRemarkUpdate();" class="btn btn-primary waves-effect waves-light">Submit</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- /.modal-dialog -->
-                        </div><!-- /.modal -->
-
-
-
-                        <div class="modal fade bs-example-modal-center3" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-
-                                    <div class="modal-body">
-
-                                        <div class="modal-header">
-                                            <h3 class="modal-title">Delete Project</h3>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-
-                                        <br /><br />
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <span style="font-size:14pt;">  Are you want to delect project ID <b>{{projectID}}</b> ? </span><br><br>
-                                            </div>
-
-                                            <div class="modal-footer">
-
-
-                                                <button type="button" class="btn btn-success waves-effect waves-light" ng-click="DeleteCurrentWorking()">Yes</button>
-                                            </div>
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -476,41 +212,64 @@
                         <div class="modal fade bs-example-modal-confirm" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
-
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Site Visit</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
                                     <div class="modal-body">
-
-                                        <div class="modal-header">
-                                            <h3 class="modal-title">Confirm Project</h3>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-
-                                        <br /><br />
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <span style="font-size:14pt;">  Do you want to complete current working  process of project ID <b>{{confirmprojectID}}</b> ? </span><br><br>
-                                            </div>
+                                                <div>
+                                                    <input type="hidden" />
+                                                    <div class="row">
 
+                                                        <div class="col-xl-12 col-md-6">
+                                                            <div class="form-group mb-3">
+                                                                <label>Project ID </label>
+                                                                <input type="text" ng-model="projectID" id="projectID" name="projectID" onkeypress="return IsNumber();" class="form-control" placeholder="Project ID" />
+
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-xl-12 col-md-6">
+                                                            <div class="form-group mb-3">
+                                                                <label>Site Photo </label>
+                                                                <input type="file" class="form-control" name="sitevisitPhoto" id="sitevisitPhoto" />
+                                                                <span style="font-size:8pt; font-family:Arial">Compress multiple files using ZIP/RAR utility. And then upload it.</span>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12 col-md-12">
+                                                            <div class="form-group mb-3">
+                                                                <label>Remark </label>
+                                                                @Html.TextAreaFor(x => x.remark, new { cols = 60, rows = 10 })
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12 col-md-12">
+                                                            <div class="form-group mb-3">
+                                                                <label id="lblError" class="form-control text-center text-danger"> </label>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                 
+                                                </div>
+                                            </div>
                                             <div class="modal-footer">
-
-
-                                                <button type="button" class="btn btn-success waves-effect waves-light" ng-click="CompleteCurrentWorking()">Yes</button>
+                                                <input type="submit" class="btn btn-primary waves-effect waves-light" onclick="return Validation()" value="Submit" />
                                             </div>
-
-
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
+                                </div> 
+                            </div> 
+                        </div>  
 
                     </div>
                 </div>
             </div>
         </div>
-
-
-
 
 
     </body>

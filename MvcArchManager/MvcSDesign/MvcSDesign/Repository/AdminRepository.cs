@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Globalization;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
 using MvcSDesign.EF;
 using MvcSDesign.Models;
-using MvcSDesign.Repository;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Web.Hosting;
 
 namespace MvcSDesign.Repository
 {
@@ -135,9 +137,33 @@ namespace MvcSDesign.Repository
             catch (Exception ex) { }
         }
 
-        public IEnumerable<tblStaff> SearchRegistration(string name)
+        public IEnumerable<staff> SearchRegistration(string name)
         {
-            return _dbContext.tblStaffs.Where(s => s.name.Contains(name)).ToList();
+            List<staff> lst = new List<staff>();
+            try
+            {
+                var res = (from item in _dbContext.tblStaffs
+                           where item.name.Contains(name)
+                           select new staff
+                           {
+                               staffID = item.staffID,
+                               name = item.name,
+                               designation = item.designation,
+                               address = item.address,
+                               city = item.city,
+                               mobile = item.mobile,
+                               phone = item.phone,
+                               emailID = item.emailID,
+                               username = item.username,
+                               password = item.password
+                           }).ToList();
+                lst = res.ToList();
+            }
+            catch (Exception ex)
+            { }
+            
+
+            return lst;
         }
 
         public staff getLogin(logincls lgn)
@@ -267,7 +293,7 @@ namespace MvcSDesign.Repository
                         tblProjectDetail pd = context.tblProjectDetails.Find(pid);
                         tblClientLedger obj = new tblClientLedger();
                         pd.dt = DateTime.Now;
-                        pd.amount = famount;
+                        pd.finalizeAmount = famount;
                         pd.status = "estimated";
                         pd.projectlocation = projectlocation;
                         cid = pd.clientID;
@@ -275,6 +301,19 @@ namespace MvcSDesign.Repository
 
                         context.Entry(pd).State = System.Data.Entity.EntityState.Modified;
                         context.SaveChanges();
+
+                        //Entry in tblProjectmanagement
+                        tblProjectManagement pmObj = new tblProjectManagement();
+                        pmObj.dt = DateTime.Today;
+                        pmObj.projectID = pid;
+                        pmObj.category = "Presentation Drawing";
+                        pmObj.subcategory = "Presentation Drawing With Furniture Layout";
+                        pmObj.projectstatus = "Normal";
+                        pmObj.status = "WRC";
+                        pmObj.remark = "";
+                        context.tblProjectManagements.Add(pmObj);
+                        context.SaveChanges();
+
 
                         try
                         {
@@ -356,30 +395,84 @@ namespace MvcSDesign.Repository
             return reqlist.ToList();
         }
 
+        public PRFModel GetPRFByPrjectID(int projectID)
+        {
+            PRFModel obj = new PRFModel();
+            try
+            {
+
+                var res = _dbContext.tblPRFs.Where(x => x.projectID == projectID).FirstOrDefault();
+                if (res != null)
+                {
+                    obj.workingStatus = res.workingStatus;
+                    obj.slabdetail = "-";
+                    obj.slabheight = res.slabheight;
+                    obj.plinthheight = res.plinthheight;
+                    obj.porchheight = res.porchheight;
+                    obj.elevationpattern = res.elevationpattern;
+                    //obj.totalfloor = "-";
+                    obj.towerroom = res.towerroom;
+                    obj.cornerplotplan = res.cornerplotplan;
+                    obj.plotside = res.plotside;
+                    obj.boundrywall = res.boundrywall;
+                    obj.doorlintel = res.doorlintel;
+                    obj.windowsill = res.windowsill;
+                    obj.windowlintel = res.windowlintel;
+                    obj.anyother = res.anyother;
+                }
+            }
+            catch (Exception ex) { }
+
+            return obj;
+        }
 
         public string SavePRF(PRFModel model)
         {
-            tblPRF obj = new tblPRF();
+           
             try
             {
-                obj.projectID = model.projectID;
-                obj.workingStatus =model.workingStatus;
-                obj.slabdetail = "-";
-                obj.slabheight =model.slabheight;
-                obj.plinthheight =model.plinthheight;
-                obj.porchheight = model.porchheight;
-                obj.elevationpattern = model.elevationpattern;
-                //obj.totalfloor = "-";
-                obj.towerroom = model.towerroom;
-                obj.cornerplotplan = model.cornerplotplan;
-                obj.plotside = model.plotside;
-                obj.boundrywall = model.boundrywall;
-                obj.doorlintel = model.doorlintel;
-                obj.windowsill =model.windowsill;
-                obj.windowlintel =model.windowlintel;
-                obj.anyother = model.anyother;
+                 
+                var res = _dbContext.tblPRFs.Where(x => x.projectID == model.projectID).FirstOrDefault();
+                if (res != null)
+                {
+                    res.workingStatus = model.workingStatus;
+                    res.slabdetail = "-";
+                    res.slabheight = model.slabheight;
+                    res.plinthheight = model.plinthheight;
+                    res.porchheight = model.porchheight;
+                    res.elevationpattern = model.elevationpattern;
+                    //obj.totalfloor = "-";
+                    res.towerroom = model.towerroom;
+                    res.cornerplotplan = model.cornerplotplan;
+                    res.plotside = model.plotside;
+                    res.boundrywall = model.boundrywall;
+                    res.doorlintel = model.doorlintel;
+                    res.windowsill = model.windowsill;
+                    res.windowlintel = model.windowlintel;
+                    res.anyother = model.anyother;
+                }
+                else
+                {
+                    tblPRF obj = new tblPRF();
+                    obj.projectID = model.projectID;
+                    obj.workingStatus = model.workingStatus;
+                    obj.slabdetail = "-";
+                    obj.slabheight = model.slabheight;
+                    obj.plinthheight = model.plinthheight;
+                    obj.porchheight = model.porchheight;
+                    obj.elevationpattern = model.elevationpattern;
+                    //obj.totalfloor = "-";
+                    obj.towerroom = model.towerroom;
+                    obj.cornerplotplan = model.cornerplotplan;
+                    obj.plotside = model.plotside;
+                    obj.boundrywall = model.boundrywall;
+                    obj.doorlintel = model.doorlintel;
+                    obj.windowsill = model.windowsill;
+                    obj.windowlintel = model.windowlintel;
+                    obj.anyother = model.anyother;
 
-                _dbContext.tblPRFs.Add(obj);
+                    _dbContext.tblPRFs.Add(obj);
+                }
                 _dbContext.SaveChanges();
  
             }
@@ -391,6 +484,119 @@ namespace MvcSDesign.Repository
             
             
             return "";
+        }
+
+        
+        public IEnumerable<QuotationModel> SearchByProjectIDOrName(string opt, string projectID  , string name )
+        {
+            List<QuotationModel> lst = new List<QuotationModel>();
+            //if ((chkName == "true") && (chkcity == "true"))
+            //    return _dbContext.tblClients.Where(x => (x.clientName.Contains(name)) && (x.city.Contains(cityname)));
+            //else if (chkcity == "true")
+            //    return _dbContext.tblClients.Where(x => (x.city.Contains(cityname)));
+
+
+            return lst;// (s => s.clientName.Contains(name)).ToList();
+        }
+
+        public string SaveSiteVisit(int projectID, string fname, string remark)
+        {
+            tblProjectSiteVisit obj = new tblProjectSiteVisit();
+            try
+            {
+                obj.dt = DateTime.Today.Date;
+                obj.projectID = projectID;
+                obj.sitePhotoFile = fname;
+                obj.remark = remark == null ? "-" : remark.Trim();
+
+                _dbContext.tblProjectSiteVisits.Add(obj);
+                _dbContext.SaveChanges();
+            }
+            catch(Exception ex) { return ex.Message; }
+
+            return "";
+        }
+
+        public IEnumerable<operation> SearchSiteVisitByNameOrProjectID(string opt, string projectID, string name)
+        {
+            List<operation> lst = new List<operation>();
+            try
+            {
+                if (opt == "projectID")
+                {
+                    int pid = int.Parse(projectID);
+                    lst = (from pl in _dbContext.tblProjectDetails
+                           join cl in _dbContext.tblClients on pl.clientID equals cl.clientID
+                           where (pl.projectID == pid)
+                           select new operation
+                           {
+                               dt = pl.dt,
+                               clientID = cl.clientID,
+                               clientName = cl.clientName,
+                               projectName = pl.projectname,
+                               projectID = pl.projectID,
+                               projectType = pl.projectType,
+                               package = pl.package,
+                               projectLevel = pl.projectLevel,
+                               plotSize = pl.plotSize,
+                               amount = pl.amount,
+                               projectlocation = pl.projectlocation,
+                               
+                           }).ToList();
+
+
+                }
+                else
+                {
+                    lst = (from pl in _dbContext.tblProjectDetails
+                           join cl in _dbContext.tblClients on pl.clientID equals cl.clientID
+                           where (cl.clientName.Contains(name))
+                           select new operation
+                           {
+                               dt = pl.dt,
+                               clientID = cl.clientID,
+                               clientName = cl.clientName,
+                               projectName = pl.projectname,
+                               projectID = pl.projectID,
+                               projectType = pl.projectType,
+                               package = pl.package,
+                               projectLevel = pl.projectLevel,
+                               plotSize = pl.plotSize,
+                               amount = pl.amount,
+                               projectlocation = pl.projectlocation,
+                               
+
+                           }).ToList();
+
+                }
+
+            }
+            catch (Exception ex) { }
+            
+            return lst; 
+        }
+
+       public operation GetProjectInfo(int projectID)
+        {
+            operation op = new operation();
+            try
+            {
+                var res = (from pd in _dbContext.tblProjectDetails
+                           where pd.projectID == projectID
+                           select new operation
+                           {
+                               clientID = pd.clientID,
+                               projectlocation = pd.projectlocation,
+
+                           }).ToList();
+                foreach(var item in res)
+                {
+                    op.clientID = item.clientID;
+                    op.projectlocation = item.projectlocation;
+                }
+            }
+            catch (Exception ex) { }
+            return op;
         }
 
         public IEnumerable<tblStaff> getOperationDesigner()
@@ -503,7 +709,7 @@ namespace MvcSDesign.Repository
             return "";
         }
 
-        public IEnumerable<operation> getCurrentWorkingList(string dname)
+        public IEnumerable<operation> GetCurrentWorking(string dname, string category , string subcategory)
         {
             List<operation> prjlist = new List<operation>();
             string diffDt, color = "";
@@ -513,11 +719,10 @@ namespace MvcSDesign.Repository
                 if ((dname == null) || (dname == "0"))
                 {
 
-                    var query = from pl in _dbContext.tblProjectDetails
+                    var query = (from pl in _dbContext.tblProjectDetails
                                 join cl in _dbContext.tblClients on pl.clientID equals cl.clientID
-                                join cw in _dbContext.tblOperations on pl.projectID equals cw.projectID
-                                join sf in _dbContext.tblStaffs on cw.staffID equals sf.staffID
-                                where (cw.status == "WRC")
+                                join cw in _dbContext.tblProjectManagements on pl.projectID equals cw.projectID
+                                where ((cw.category == category) &&(cw.subcategory == subcategory))
                                 select new
                                 {
                                     dt = cw.dt,
@@ -525,24 +730,27 @@ namespace MvcSDesign.Repository
                                     clientName = cl.clientName,
                                     projectID = pl.projectID,
                                     projectType = pl.projectType,
-                                    projectCategory = cw.projectCategory,
+                                    category = cw.category,
+                                    subcatgory= cw.subcategory,
                                     package = pl.package,
                                     projectLevel = pl.projectLevel,
                                     plotSize = pl.plotSize,
                                     amount = pl.amount,
-                                    name = sf.name,
+                                    projectlocation = pl.projectlocation,
+                                    //name = sf.name,
                                     remark = cw.remark,
-                                    operationID = cw.operationID
-                                };
+                                    pmID = cw.pmID
+                                    //operationID = cw.operationID
+                                }).ToList();
                     int i = 1;
                     foreach (var item in query)
                     {
                         diffDt = (DateTime.Now.Date - item.dt).TotalDays.ToString();
-                        l = diffDt.IndexOf(".");
-                        diffDt = diffDt.Substring(0, l);
-                        if (diffDt == "-0")
+                        //l = diffDt.IndexOf(".");
+                        //diffDt = diffDt.Substring(0, l);
+                        if (diffDt == "0")
                             color = "#FFF";//White;
-                        else if (int.Parse(diffDt) == 0)
+                        else if (int.Parse(diffDt) == 1)
                             color = "#ffa500";//Orange;
                         else
                             color = "#ff0000";//red;
@@ -550,17 +758,19 @@ namespace MvcSDesign.Repository
                         prjlist.Add(new operation
                         {
                             sno = i,
-                            operationID = item.operationID,
+                            pmID = item.pmID,
                             clientID = item.clientID,
                             projectID = item.projectID,
                             clientName = item.clientName,
                             projectType = item.projectType,
+                            projectlocation= item.projectlocation,
                             package = item.package,
                             projectLevel = item.projectLevel,
-                            projectCategory = item.projectCategory,
+                            category = item.category,
+                            subcategory = item.subcatgory,
                             plotSize = item.plotSize,
                             amount = item.amount,
-                            designerName = item.name,
+                            //designerName = item.name,
                             remark = item.remark,
                             rowcolor = color
 
@@ -577,7 +787,7 @@ namespace MvcSDesign.Repository
                                 join cl in _dbContext.tblClients on pl.clientID equals cl.clientID
                                 join cw in _dbContext.tblOperations on pl.projectID equals cw.projectID
                                 join sf in _dbContext.tblStaffs on cw.staffID equals sf.staffID
-                                where ((cw.status == "WRC") && (cw.staffID == sid))
+                                where (cw.staffID == sid)
                                 select new
                                 {
                                     dt = cw.dt,
@@ -598,11 +808,12 @@ namespace MvcSDesign.Repository
                     foreach (var item in query)
                     {
                         diffDt = (DateTime.Now.Date - item.dt).TotalDays.ToString();
-                        l = diffDt.IndexOf(".");
-                        diffDt = diffDt.Substring(0, l);
-                        if (diffDt == "-0")
+                        //l = diffDt.IndexOf(".");
+
+                        //diffDt = diffDt.Substring(0, l);
+                        if (diffDt == "0")
                             color = "#FFF";//White;
-                        else if (int.Parse(diffDt) == 0)
+                        else if (int.Parse(diffDt) ==1)
                             color = "#ffa500";//Orange;
                         else
                             color = "#ff0000";//red;
@@ -622,7 +833,7 @@ namespace MvcSDesign.Repository
                             designerName = item.name,
                             remark = item.remark,
                             rowcolor = color,
-                            operationID = item.operationID,
+                            pmID  = item.operationID,
 
                         });
                         i++;
@@ -633,7 +844,377 @@ namespace MvcSDesign.Repository
             return prjlist;
         }
 
+        public string DownloadPRF(string projectID, string filelocation)
+        {
+            string str = "", pdfname = "";
 
+           
+            Document doc = new Document();
+            Paragraph para1 = new Paragraph();
+            Phrase ph1 = new Phrase();
+            iTextSharp.text.Font fnt = new iTextSharp.text.Font();
+            SqlDataAdapter adsDs = new SqlDataAdapter();
+            DataSet ds = new DataSet();
+            PdfPTable table1 = new PdfPTable(2);
+            PdfPCell pdfcell;// As PdfPCell
+            try
+            {
+                if (!Directory.Exists(HostingEnvironment.MapPath("~//prf")))
+                {
+                    Directory.CreateDirectory(HostingEnvironment.MapPath("~//prf"));
+                }
+
+                pdfname = HostingEnvironment.MapPath("~//prf//prf_" + projectID + ".pdf");
+                PdfWriter.GetInstance(doc, new FileStream(pdfname, FileMode.Create));
+                doc.Open();
+                para1.Alignment = Element.ALIGN_LEFT;
+                para1.SetLeading(0.0F, 1.0F);
+
+                //get file which uploaded by client
+                // getFile(filelocation, out filename, out zipfilename);
+
+                //get record of prf
+                int pid = int.Parse(projectID);
+                var res = _dbContext.tblPRFs.Where(x => x.projectID == pid).FirstOrDefault();  // GetPRF(projectID, ref level, ref sideEle, ref floorOption);
+                if(res ==null)
+                {
+                    return "";
+                }
+
+                Phrase p1;
+                //iTextSharp.text.Font link;
+                //link = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.NORMAL, BaseColor.BLUE);
+
+                //dr = ds.Tables[0].Rows[0];
+                para1.Alignment = Element.ALIGN_LEFT;
+                para1.SetLeading(0.0F, 1.0F);
+
+                fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 14, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+
+                p1 = new Phrase(new Chunk(Environment.NewLine + "Project Details Requirement Form  (" + projectID + ")", fnt));
+                para1.Add(p1);
+                para1.Add(Environment.NewLine);
+                //fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.NORMAL + iTextSharp.text.Font.ITALIC, BaseColor.BLACK);
+
+                //str = "The purpose of this very brief is to help us serve your needs more effectively.  By understanding where we are " +
+                //     "exceeding your expectations, or need to improve, we can allocate our resources to provide better services,  " +
+                //     "knowledgeable staff, and executive management.  Our goal is to be proactive in monitoring your satisfaction, " +
+                //     "so please provide constructive replies that we can incorporate into our strategy. ";
+
+                //table1.WidthPercentage = 80;
+                //table1.HorizontalAlignment = 0;
+                //pdfcell = null;
+                //pdfcell = new PdfPCell(new Phrase(new Chunk(str, fnt)));
+                //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                //pdfcell.BorderWidth = 0;
+                //pdfcell.FixedHeight = 80;
+                //table1.AddCell(pdfcell);
+
+                //para1.Add(table1);
+                //para1.Add(Environment.NewLine);
+
+                fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                table1 = new PdfPTable(3);
+                table1.WidthPercentage = 100;
+                table1.HorizontalAlignment = 0;
+                int[] cellWidthPercentage = new int[3];
+                cellWidthPercentage[0] = 6;
+                cellWidthPercentage[1] = 60;
+                cellWidthPercentage[2] = 30;
+                table1.SetWidths(cellWidthPercentage);
+
+                pdfcell = null;
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" SNo. ", fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.BackgroundColor = iTextSharp.text.BaseColor.GRAY;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" Query", fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.BackgroundColor = iTextSharp.text.BaseColor.GRAY;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" Reply", fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.BackgroundColor = iTextSharp.text.BaseColor.GRAY;
+                table1.AddCell(pdfcell);
+
+
+                pdfcell = null;
+                fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.NORMAL);
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" 1", fnt)));
+                pdfcell.FixedHeight = 25;
+
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Project ID or Project Name", fnt)));
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(projectID, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+
+                pdfcell = null;
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" 2", fnt)));
+                pdfcell.FixedHeight = 35;
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Specify the actual working status of the site.", fnt)));
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(res.workingStatus, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                //pdfcell = null;
+                //pdfcell = new PdfPCell(new Phrase(new Chunk(" 3", fnt)));
+                //pdfcell.FixedHeight = 35;
+                //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                //table1.AddCell(pdfcell);
+
+                //pdfcell = new PdfPCell(new Phrase(new Chunk(" Existing site photographs (zip/rar)", fnt)));
+                //table1.AddCell(pdfcell);
+
+                //Anchor an = new Anchor(zipfilename, link);
+                //an.Reference = zipfileloacation;
+                //table1.AddCell(an);
+
+
+                //pdfcell = null;
+                //pdfcell = new PdfPCell(new Phrase(new Chunk(" 4", fnt)));
+                //pdfcell.FixedHeight = 35;
+                //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                //table1.AddCell(pdfcell);
+
+                //pdfcell = new PdfPCell(new Phrase(new Chunk("Is the Slab is executed ? If yes, mark the slab details in plan", fnt)));
+                //table1.AddCell(pdfcell);
+
+                //pdfcell = new PdfPCell(new Phrase(new Chunk(dr["slabdetail"].ToString(), fnt)));
+                //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                //table1.AddCell(pdfcell);
+
+
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" 3", fnt)));
+                pdfcell.FixedHeight = 30;
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Specify the slab height?(In Feet)", fnt)));
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(res.slabheight, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" 4", fnt)));
+                pdfcell.FixedHeight = 35;
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Specify the height of the plinth ? (In Feet) ", fnt)));
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(res.plinthheight, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" 5", fnt)));
+                pdfcell.FixedHeight = 30;
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Specify the height of porch ? (In Feet)  ", fnt)));
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(res.porchheight, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" 6", fnt)));
+                pdfcell.FixedHeight = 35;
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Specify the desired pattern for the elevation? ", fnt)));
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(res.elevationpattern, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+
+                //pdfcell = new PdfPCell(new Phrase(new Chunk(" 9", fnt)));
+                //pdfcell.FixedHeight = 35;
+                //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                //table1.AddCell(pdfcell);
+
+                //pdfcell = new PdfPCell(new Phrase(new Chunk("No. of floors in the proposed building  ", fnt)));
+                //table1.AddCell(pdfcell);
+
+                //pdfcell = new PdfPCell(new Phrase(new Chunk(level, fnt)));
+                //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                //table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" 7", fnt)));
+                pdfcell.FixedHeight = 35;
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" Door lintel level ? ", fnt)));
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(res.doorlintel, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" 8", fnt)));
+                pdfcell.FixedHeight = 35;
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Window sill level?   ", fnt)));
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(res.windowsill, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" 9", fnt)));
+                pdfcell.FixedHeight = 35;
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Window lintel level?   ", fnt)));
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(res.windowlintel, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" 10", fnt)));
+                pdfcell.FixedHeight = 30;
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Is the tower room is executed at Stairs?    ", fnt)));
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(res.towerroom, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" 11", fnt)));
+                pdfcell.FixedHeight = 30;
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Do you want side elevations ?", fnt)));
+                table1.AddCell(pdfcell);
+
+               // if (sideEle == "0") sideEle = "";
+                pdfcell = new PdfPCell(new Phrase(new Chunk(res.cornerplotplan, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" 12", fnt)));
+                pdfcell.FixedHeight = 30;
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Mention the facing side of plot:  ", fnt)));
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(res.plotside, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" 13", fnt)));
+                pdfcell.FixedHeight = 60;
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Do you want boundary wall Design ? (if yes Please give us plot boundary detail with entrance and site plan) ", fnt)));
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(res.boundrywall, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+
+
+
+                //pdfcell = new PdfPCell(new Phrase(new Chunk(" 17", fnt)));
+                //// pdfcell.FixedHeight = 60;
+                //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                //table1.AddCell(pdfcell);
+
+                //pdfcell = new PdfPCell(new Phrase(new Chunk("Floor", fnt)));
+                //table1.AddCell(pdfcell);
+
+                //pdfcell = new PdfPCell(new Phrase(new Chunk(floorOption, fnt)));
+                //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                //table1.AddCell(pdfcell);
+
+
+
+
+
+                //pdfcell = new PdfPCell(new Phrase(new Chunk(" 18", fnt)));
+                //pdfcell.FixedHeight = 40;
+                //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                //table1.AddCell(pdfcell);
+
+                //pdfcell = new PdfPCell(new Phrase(new Chunk("If you want any type of Color combination, provide us some concept image before 3d view ", fnt)));
+                //table1.AddCell(pdfcell);
+
+                //Anchor an1 = new Anchor(filename, link);
+                //an1.Reference = flocation;
+                //table1.AddCell(an1);
+
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" 14", fnt)));
+                pdfcell.FixedHeight = 30;
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Any Other ", fnt)));
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(res.anyother, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                para1.Add(table1);
+
+                //string imageURL = HostingEnvironment.MapPath("~/PDF_Files/letterhead.jpg");
+                //iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(imageURL);
+                //jpg.Alignment = Element.ALIGN_LEFT;
+                //jpg.ScaleToFit(400.0F, 900.0F);
+                //jpg.SetAbsolutePosition(doc.PageSize.Width - 140.0F, doc.PageSize.Height - 845.0F);
+                //doc.Add(jpg);
+                doc.Add(para1);
+                doc.Close();
+                doc.Dispose();
+                doc = null;
+
+            }
+            catch (Exception ex)
+            {
+                pdfname = "";
+            }
+
+
+            return pdfname;
+
+        }
         public IEnumerable<operation> getDesignerWorkingList(int reg)
         {
             List<operation> prjlist = new List<operation>();
@@ -840,7 +1421,7 @@ namespace MvcSDesign.Repository
                 {
                     prjlist.Add(new operation
                     {
-                        operationID = item.operationID,
+                        pmID = item.operationID,
                         projectID = item.projectID,
                         projectCategory = item.projectCategory,
                         amount = item.designerAmount.Value,

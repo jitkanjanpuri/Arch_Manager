@@ -12,7 +12,7 @@
 <html lang="en">
 
 <head>
-    <script src="~/angularjs/client.js"></script>
+    <script src="~/angularjs/client1.js"></script>
  
     <style>
         table, th, td {
@@ -74,7 +74,8 @@
                         <div class="row">
                             <div class="col-xl-4 col-md-6">
                                 <div class="form-group mb-3">
-                                    <input type="checkbox" ng-model="chkCName" class="form-check-input">
+
+                                    <input type="radio" ng-model="opt" value="name" class="form-check-input">
                                     <label>Client Name </label>
                                     <input type="text" ng-model="txtName" class="form-control" placeholder="Client Name " />
                                 </div>
@@ -82,7 +83,7 @@
 
                             <div class="col-xl-4 col-md-6">
                                 <div class="form-group mb-3">
-                                    <input type="checkbox" ng-model="chkCity" class="form-check-input">
+                                    <input type="radio" ng-model="opt" value="city" class="form-check-input">
                                     <label>City  </label>
                                     <input type="text" ng-model="txtSearchCity" class="form-control" placeholder="City" />
                                 </div>
@@ -95,6 +96,15 @@
                                 </div>
                             </div>
                         </div>
+                       
+                        <div class="row">
+                            <div class="col-xl-12 col-md-12 text-center">
+                                 
+                                    <label> <span class="text-danger font-size-16 font-weight-bold" >{{errRecord}}</span> </label>
+                                
+                            </div>
+                        </div>
+
 
                         <div class="text-center" ng-hide="loading">
                             <button type="button" class="btn btn-dark waves-effect waves-light">
@@ -114,7 +124,7 @@
                                     <div class="card-body" style="margin-left:-20px; margin-right:-20px;margin-top:-20px">
 
                                         <div class="table-responsive">
-                                            <table  class="table align-middle datatable dt-responsive table-check nowrap"  style=" border: 1px solid black; border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+                                            <table class="table align-middle datatable dt-responsive table-check nowrap" style=" border: 1px solid black; border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
@@ -142,126 +152,126 @@
                                                         <td> {{item.emailID}} </td>
 
                                                         <td>
-                                                             
+
                                                             <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="QuotationSend(item.projectID , item.projectType)">
                                                                 @*<i class="mdi mdi-pencil d-block font-size-8"></i>*@ Edit
                                                             </button>
                                                         </td>
-                                                                <td>
-                                                                    <button type="button" class="btn btn-danger waves-effect waves-light w-sm" ng-click="ShowDelete(item.clientID , item.clientName)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center3">
-                                                                        @*<i class="mdi mdi-trash-can d-block font-size-16"></i>*@ Delete
-                                                                    </button>
-                                                                </td>
-                                                                <td>
-                                                                    <button type="button" class="btn btn-success waves-effect waves-light w-sm" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2" ng-click="ShowAmountReceive(item.clientID , item.clientName)">
-                                                                        @*<i class="mdi mdi-check d-block font-size-16"></i>*@ Amount Receive
-                                                                    </button>
-                                                                </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-danger waves-effect waves-light w-sm" ng-click="ShowDelete(item.clientID , item.clientName)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center3">
+                                                                @*<i class="mdi mdi-trash-can d-block font-size-16"></i>*@ Delete
+                                                            </button>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-success waves-effect waves-light w-sm" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2" ng-click="ShowAmountReceive(item.clientID , item.clientName)">
+                                                                @*<i class="mdi mdi-check d-block font-size-16"></i>*@ Amount Receive
+                                                            </button>
+                                                        </td>
 
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div class="text-center">
-                                                    <span class="text-danger font-size-16 font-weight-bold" >{{errMessage}}</span>
-                                                </div>
-                                            </div>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="text-center">
+                                            <span class="text-danger font-size-16 font-weight-bold">{{errMessage}}</span>
                                         </div>
                                     </div>
                                 </div>
-
-
-                                <div class="modal fade bs-example-modal-center3" tabindex="-1" role="dialog" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-
-                                            <div class="modal-body">
-
-                                                <div class="modal-header">
-                                                    <h3 class="modal-title">Delete Client</h3>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-
-                                                <br /><br />
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <span style="font-size:14pt;">  Are you want to delect client  <b>{{clientname}}</b> ? </span><br><br>
-                                                    </div>
-
-                                                    <div class="modal-footer">
-
-
-                                                        <button type="button" class="btn btn-success waves-effect waves-light" ng-click="Delete()">Yes</button>
-                                                    </div>
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-
-
-                                <div class="modal fade bs-example-modal-center2" tabindex="-1" role="dialog" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Amount Receive</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <div>
-                                                            <form id="pristine-valid-example" novalidate method="post">
-                                                                <input type="hidden" />
-                                                                <div class="row">
-
-                                                                    <div class="col-xl-6 col-md-6">
-                                                                        <div class="form-group mb-3">
-                                                                            <label>Name</label>
-
-                                                                            <input type="text" ng-model="txtCName" readonly class="form-control" />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-xl-6 col-md-6">
-                                                                        <div class="form-group mb-3">
-                                                                            <label>Amount	 </label>
-                                                                            <input type="text" ng-model="txtAmount" onkeypress="return IsNumber();" class="form-control" />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-xl-6 col-md-6">
-                                                                        <div class="form-group mb-3">
-                                                                            <label>Remark</label>
-                                                                            <textarea ng-model="txtRemark" class="form-control" rows="2" cols="20" style=""></textarea>
-                                                                        </div>
-                                                                    </div>
-
-
-
-                                                                </div>
-                                                                <div>
-                                                                    <span class="text-dangertext-center ">{{errReceive}}</span>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="modal-footer">
-                                                        <button type="button" ng-click="AmountReceiveSave();" class="btn btn-primary waves-effect waves-light">Submit</button>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
+                        </div>
+
+
+                        <div class="modal fade bs-example-modal-center3" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+
+                                    <div class="modal-body">
+
+                                        <div class="modal-header">
+                                            <h3 class="modal-title">Delete Client</h3>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+                                        <br /><br />
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <span style="font-size:14pt;">  Are you want to delect client  <b>{{clientname}}</b> ? </span><br><br>
+                                            </div>
+
+                                            <div class="modal-footer">
+
+
+                                                <button type="button" class="btn btn-success waves-effect waves-light" ng-click="Delete()">Yes</button>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+                        <div class="modal fade bs-example-modal-center2" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Amount Receive</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div>
+                                                    <form id="pristine-valid-example" novalidate method="post">
+                                                        <input type="hidden" />
+                                                        <div class="row">
+
+                                                            <div class="col-xl-12 col-md-12">
+                                                                <div class="form-group mb-3">
+                                                                    <label>Name</label>
+
+                                                                    <input type="text" ng-model="txtCName" readonly class="form-control" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-12 col-md-12">
+                                                                <div class="form-group mb-3">
+                                                                    <label>Amount	 </label>
+                                                                    <input type="text" ng-model="txtAmount" onkeypress="return IsNumber();" class="form-control" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-12 col-md-12">
+                                                                <div class="form-group mb-3">
+                                                                    <label>Remark</label>
+                                                                    <textarea ng-model="txtRemark" class="form-control" rows="2" cols="20" style=""></textarea>
+                                                                </div>
+                                                            </div>
+
+
+
+                                                        </div>
+                                                        <div>
+                                                            <span class="text-dangertext-center ">{{errReceive}}</span>
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" ng-click="AmountReceiveSave();" class="btn btn-primary waves-effect waves-light">Submit</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
 
                         </div>
                     </div>

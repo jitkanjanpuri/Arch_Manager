@@ -20,8 +20,8 @@ namespace MvcSDesign.Repository
         void InsertRegistration(staff st);
         string RegistrationUpdate(staff obj);
         string RegistrationDelete(int staffID);
-        //IEnumerable<tblStaff> SearchRegistration(string name);
-
+        IEnumerable<staff> SearchRegistration(string name);
+        IEnumerable<operation> GetCurrentWorking(string dname, string category, string subcategory);
 
         //Dashboard
         List<operation> DashBoard_getProjectType();
@@ -29,17 +29,20 @@ namespace MvcSDesign.Repository
         List<quotation> getQuotation();
 
         IEnumerable<operation> Dashboard_getMonthQuotation();
-
+        IEnumerable<QuotationModel> SearchByProjectIDOrName(string opt, string projectID, string name);
 
         // Quotation
         IEnumerable<operation> getProjectQuotation();
         string UpdateQuotation(int pid, int famount, string projectlocation);
         string QuotationDelete(int projectID);
 
+        operation GetProjectInfo(int projectID);
 
         //PRF
-
+        PRFModel GetPRFByPrjectID(int projectID);
         string SavePRF(PRFModel obj);
+
+        string DownloadPRF(string projectID, string filelocation);
         IEnumerable<tblStaff> getOperationDesigner();
         IEnumerable<operation> getProjectAssign();
 
@@ -48,17 +51,13 @@ namespace MvcSDesign.Repository
         //string RemoveGMailAccount(int id);
         string SaveProjectAssigned(string projectID, string clientID, string projectCategory, string designerAmount);
 
-
-
-
         // Operation
-        IEnumerable<operation> getCurrentWorkingList(string dname);
+        //IEnumerable<operation> getCurrentWorkingList(string dname);
         IEnumerable<operation> getDesignerProjectAmount(int designerID);
         string DesignerAmountCancel(int operationID);
 
 
-        // Current working
-         //string CompleteCurrentWorking(string projectID, string pcategory);
+         
         string CompleteCurrentWorking(int operationID);
 
         string CurrentWorkingRemarkUpdate(int opID, string remark);
@@ -72,6 +71,13 @@ namespace MvcSDesign.Repository
         staff getLogin(logincls lgn);
         bool DesignerNameValidation(string name);
         bool DesignerEmailValidation(string mailID);
+
+
+        string SaveSiteVisit(int projectID, string fname,  string remark);
+        IEnumerable<operation> SearchSiteVisitByNameOrProjectID(string opt, string projectID, string name);
+
+
+        //Report
 
         IEnumerable<client> RptClientLedger(string cname);
         IEnumerable<operation> RptClientLedgerDetail(int clientID, string fromDt, string toDt, ref DataTable clientDetailRecord);
@@ -88,17 +94,7 @@ namespace MvcSDesign.Repository
         string SaveRegistration(registration obj);
 
         string SaveBalanceAdjust(int clientID, int balance, int amount, string remark);
-        //GMail getGMailAccount();
-        //void UpdateGMailPassword(GMail obj);
-
-
-        //void SaveStatus(string ch);
-
-
-        
-
         List<operation> GetClientLedger(int clientID, string fromDt);
-
         string UpdateLedger(int clientLedgerID, int amount, int receivedAmount, int newAmount, string remark);
 
 

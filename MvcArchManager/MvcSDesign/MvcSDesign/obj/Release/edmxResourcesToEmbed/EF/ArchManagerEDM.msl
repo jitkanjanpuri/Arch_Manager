@@ -124,6 +124,7 @@
     <EntitySetMapping Name="tblProjectDetails">
       <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectDetail">
         <MappingFragment StoreEntitySet="tblProjectDetail">
+          <ScalarProperty Name="finalizeAmount" ColumnName="finalizeAmount" />
           <ScalarProperty Name="projectID" ColumnName="projectID" />
           <ScalarProperty Name="dt" ColumnName="dt" />
           <ScalarProperty Name="clientID" ColumnName="clientID" />
@@ -187,6 +188,31 @@
         <MappingFragment StoreEntitySet="tblStatus">
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="status" ColumnName="status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblProjectManagements">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectManagement">
+        <MappingFragment StoreEntitySet="tblProjectManagement">
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="projectstatus" ColumnName="projectstatus" />
+          <ScalarProperty Name="subcategory" ColumnName="subcategory" />
+          <ScalarProperty Name="category" ColumnName="category" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="pmID" ColumnName="pmID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblProjectSiteVisits">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectSiteVisit">
+        <MappingFragment StoreEntitySet="tblProjectSiteVisit">
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="sitePhotoFile" ColumnName="sitePhotoFile" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="sitevisitID" ColumnName="sitevisitID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

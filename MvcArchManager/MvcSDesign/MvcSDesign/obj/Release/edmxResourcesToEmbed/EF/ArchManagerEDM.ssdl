@@ -128,6 +128,30 @@
     <Property Name="remark" Type="varchar" MaxLength="100" />
     <Property Name="projectname" Type="varchar" MaxLength="100" />
     <Property Name="projectlocation" Type="varchar(max)" />
+    <Property Name="finalizeAmount" Type="bigint" />
+  </EntityType>
+  <EntityType Name="tblProjectManagement">
+    <Key>
+      <PropertyRef Name="pmID" />
+    </Key>
+    <Property Name="pmID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="dt" Type="datetime" Nullable="false" />
+    <Property Name="projectID" Type="bigint" Nullable="false" />
+    <Property Name="category" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="subcategory" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="projectstatus" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="status" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="remark" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="tblProjectSiteVisit">
+    <Key>
+      <PropertyRef Name="sitevisitID" />
+    </Key>
+    <Property Name="sitevisitID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="dt" Type="datetime" Nullable="false" />
+    <Property Name="projectID" Type="bigint" Nullable="false" />
+    <Property Name="sitePhotoFile" Type="varchar" MaxLength="200" />
+    <Property Name="remark" Type="varchar(max)" />
   </EntityType>
   <EntityType Name="tblStaff">
     <Key>
@@ -260,6 +284,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_tblProjectManagement_projectID">
+    <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
+    <End Role="tblProjectManagement" Type="Self.tblProjectManagement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProjectDetail">
+        <PropertyRef Name="projectID" />
+      </Principal>
+      <Dependent Role="tblProjectManagement">
+        <PropertyRef Name="projectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblProjectSiteVisit_projectID">
+    <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
+    <End Role="tblProjectSiteVisit" Type="Self.tblProjectSiteVisit" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProjectDetail">
+        <PropertyRef Name="projectID" />
+      </Principal>
+      <Dependent Role="tblProjectSiteVisit">
+        <PropertyRef Name="projectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_tblStaffLedger_staffID">
     <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
     <End Role="tblStaffLedger" Type="Self.tblStaffLedger" Multiplicity="*" />
@@ -294,6 +342,8 @@
     <EntitySet Name="tblPRF" EntityType="Self.tblPRF" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProfile" EntityType="Self.tblProfile" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProjectDetail" EntityType="Self.tblProjectDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblProjectManagement" EntityType="Self.tblProjectManagement" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblProjectSiteVisit" EntityType="Self.tblProjectSiteVisit" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblStaff" EntityType="Self.tblStaff" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblStaffLedger" EntityType="Self.tblStaffLedger" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblStaffPaid" EntityType="Self.tblStaffPaid" Schema="dbo" store:Type="Tables" />
@@ -325,6 +375,14 @@
     <AssociationSet Name="FK_tblProjectDetail_ClientID" Association="Self.FK_tblProjectDetail_ClientID">
       <End Role="tblClient" EntitySet="tblClient" />
       <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblProjectManagement_projectID" Association="Self.FK_tblProjectManagement_projectID">
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+      <End Role="tblProjectManagement" EntitySet="tblProjectManagement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblProjectSiteVisit_projectID" Association="Self.FK_tblProjectSiteVisit_projectID">
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+      <End Role="tblProjectSiteVisit" EntitySet="tblProjectSiteVisit" />
     </AssociationSet>
     <AssociationSet Name="FK_tblStaffLedger_staffID" Association="Self.FK_tblStaffLedger_staffID">
       <End Role="tblStaff" EntitySet="tblStaff" />

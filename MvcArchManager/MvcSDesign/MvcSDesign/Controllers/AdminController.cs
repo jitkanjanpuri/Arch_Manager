@@ -97,36 +97,19 @@ namespace MvcSDesign.Controllers
              
             return View();
         }
+        
+
+         public JsonResult GetPRFByPrjectID(string projectID)
+        {
+            return Json(_IAmn.GetPRFByPrjectID(int.Parse(projectID)), JsonRequestBehavior.AllowGet);
+        }
 
         public JsonResult SavePRF(PRFModel obj)
         {
             return Json(_IAmn.SavePRF(obj), JsonRequestBehavior.AllowGet);
         }
 
-        //[HttpPost]
-        //public ActionResult PRF(string txtProjectID, string txtWorkingStatus, string txtSlabHeight, string txtPlinthHeight, string txtPorchHeigh , string ddlElevationPattern, string txtDoorLintel, string txtWindowSill, string txtWindowLinte, string TowerRoom,  string CornerPlot , string txtPlotFaceSide, string BoundaryWall,  string  txtAnyOther  )
-        //{
-        //    //try
-        //    //{
-        //    //     string ch = Session["user"].ToString();
-        //    //}
-        //    //catch (Exception ex)
-        //    //{
-        //    //    FormsAuthentication.SignOut();
-        //    //    FormsAuthentication.SetAuthCookie("", true);
-
-        //    //    return RedirectToAction("Index", "Login");
-        //    //}
-
-        //    return View();
-        //}
-
-        public ActionResult Testss()
-        {
-
-            return View();
-        }
-
+         
        [HttpPost]
         public ActionResult CompanyProfile(CompanyModel obj, HttpPostedFileBase logofile)
         {
@@ -496,6 +479,7 @@ namespace MvcSDesign.Controllers
         }
         public ActionResult SiteVisit()
         {
+            SiteVisitModel obj = new SiteVisitModel();
             try
             {
                 //string ch = Session["user"].ToString();
@@ -508,9 +492,84 @@ namespace MvcSDesign.Controllers
                 //return RedirectToAction("Index", "Login");
             }
 
+            return View(obj);
+        }
+        [HttpPost]
+        public ActionResult SiteVisit(SiteVisitModel obj,string projectID, HttpPostedFileBase sitevisitPhoto)
+        {
+            try
+            {
+                var res = _IAmn.GetProjectInfo(obj.projectID);
+                string fname = "", ext, fpath;
+                if (sitevisitPhoto != null)
+                {
+                    ext = Path.GetExtension(sitevisitPhoto.FileName);
+                    fname = "SitePhoto_" + obj.projectID + "_" + "_" + DateTime.Now.Day + DateTime.Now.Month + DateTime.Now.Year + DateTime.Now.Hour + DateTime.Now.Minute + DateTime.Now.Second;
+                    fpath = HostingEnvironment.MapPath("~/ProjectLocation/client_" + res.clientID + "/proj_" + projectID + "/Site Photo/");
+                    fname = fname + ext;
+                    fpath +=  fname;
+                    sitevisitPhoto.SaveAs(fpath);
+
+                }
+                ext =_IAmn.SaveSiteVisit(obj.projectID, fname, obj.remark);
+            }
+            catch (Exception ex) { }
             return View();
         }
 
+
+        public JsonResult SearchSiteVisitByNameOrProjectID(string opt, string projectID, string cname)
+        {
+            return Json(_IAmn.SearchSiteVisitByNameOrProjectID(opt, projectID, cname), JsonRequestBehavior.AllowGet);
+        }
+
+
+
+
+        public JsonResult SearchByProjectIDOrName(string opt, string projectID, string cname)
+        {
+             
+            List<tblClient> obj = new List<tblClient>();
+            var lst = _IAmn.SearchByProjectIDOrName(opt, projectID, cname);
+            //int i = 1;
+            //foreach (var item in lst)
+            //{
+            //    obj.Add(new tblClient
+            //    {
+            //        clientID = item.clientID,
+            //        clientName = item.clientName,
+            //        orgName = item.orgName,
+            //        address = item.address,
+            //        city = item.city,
+            //        mobile = item.mobile,
+            //        phone = item.phone,
+            //        emailID = item.emailID,
+            //        state = item.state
+
+            //    });
+            //    i++;
+            //}
+            return Json(lst, JsonRequestBehavior.AllowGet);
+        }
+        
+        public JsonResult SearchCurrentWorking(string dname, string category,   string subcategory)
+        {
+
+            //List<tblClient> obj = new List<tblClient>();
+            var lst = _IAmn.GetCurrentWorking("0",category, subcategory);
+           
+            return Json(lst, JsonRequestBehavior.AllowGet);
+        }
+
+         
+        public FileResult DownloadPRF(string projectID, string location)
+        {
+            string pdfpath = _IAmn.DownloadPRF(projectID, location);
+            string filename = System.IO.Path.GetFileName(pdfpath);
+            string contentType = "application/pdf";
+
+            return File(pdfpath, contentType, filename);
+        }
         public ActionResult ReportProjectHistory()
         {
             try
@@ -545,6 +604,7 @@ namespace MvcSDesign.Controllers
         }
         public ActionResult Registration()
         {
+            staff obj = new staff();
             try
             {
                 //string ch = Session["user"].ToString();
@@ -561,7 +621,41 @@ namespace MvcSDesign.Controllers
              {
                  ViewBag.message = "";
              }
-            return View();
+            obj.designerList = GetDesignerList();
+            return View(obj);
+        }
+
+
+        IEnumerable<SelectListItem> GetDesignerList()
+        {
+            var obj = new List<SelectListItem>();
+             
+            obj.Add(new SelectListItem
+            {
+                Text ="Admin",
+                Value="Admin"
+            });
+            obj.Add(new SelectListItem
+            {
+                Text = "Tech",
+                Value = "Tech"
+            });
+
+            obj.Add(new SelectListItem
+            {
+                Text = "BDM",
+                Value = "BDM"
+            });
+
+            obj.Add(new SelectListItem
+            {
+                Text = "Sales Executive",
+                Value = "Sales Executive"
+            });
+           
+            
+            return obj;
+
         }
 
         [HttpPost]
@@ -579,12 +673,15 @@ namespace MvcSDesign.Controllers
                 //return RedirectToAction("Index", "Login");
             }
             ViewBag.message = "";
+            
             if (ModelState.IsValid)
             {
                 _IAmn.InsertRegistration(st);
                 ModelState.Clear();
                 ViewBag.message = "success";
             }
+            staff obj = new staff();
+            obj.designerList = GetDesignerList();
             return View();
         }
 
@@ -603,28 +700,11 @@ namespace MvcSDesign.Controllers
         {
             //List<tblStaff> obj = new List<tblStaff>();
             //if (name == null) name = "";
-            //var lst = _IAmn.SearchRegistration(name).OrderBy(x => x.name);
+            //var lst = .OrderBy(x => x.name);
 
-            //foreach (var item in lst)
-            //{
-            //    obj.Add(new tblStaff
-            //    {
-            //        staffID = item.staffID,
-            //        name = item.name,
-            //        designation = item.designation,
-            //        address = item.address,
-            //        city = item.city,
-            //        mobile = item.mobile,
-            //        phone = item.phone,
-            //        emailID = item.emailID,
-            //        username = item.username,
-            //        password = item.password
+            
 
-            //    });
-            //}
-
-
-            return Json(obj, JsonRequestBehavior.AllowGet);
+            return Json(_IAmn.SearchRegistration(name), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult SearchAddProject(string projectID)
@@ -702,11 +782,11 @@ namespace MvcSDesign.Controllers
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult getCurrentWorkingList(string dname)
-        {
-            var lst = _IAmn.getCurrentWorkingList(dname);
-            return Json(lst, JsonRequestBehavior.AllowGet);
-        }
+        //public JsonResult getCurrentWorkingList(string dname)
+        //{
+        //    var lst = _IAmn.getCurrentWorkingList(dname);
+        //    return Json(lst, JsonRequestBehavior.AllowGet);
+        //}
 
   
         public JsonResult CurrentWorkingRemarkUpdate(string opID, string remark)
@@ -1356,9 +1436,8 @@ namespace MvcSDesign.Controllers
 
         public ActionResult ReportClientLedger()
         {
-            clsReport obj = new clsReport();
-            obj.dt = DateTime.Today;
-            return View(obj);
+          
+            return View();
         }
 
         public ActionResult ReportMonthQuotation()

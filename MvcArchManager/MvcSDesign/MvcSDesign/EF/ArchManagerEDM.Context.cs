@@ -38,5 +38,7 @@ namespace MvcSDesign.EF
         public virtual DbSet<tblStaffLedger> tblStaffLedgers { get; set; }
         public virtual DbSet<tblStaffPaid> tblStaffPaids { get; set; }
         public virtual DbSet<tblStatu> tblStatus { get; set; }
+        public virtual DbSet<tblProjectManagement> tblProjectManagements { get; set; }
+        public virtual DbSet<tblProjectSiteVisit> tblProjectSiteVisits { get; set; }
     }
 }

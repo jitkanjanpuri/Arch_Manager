@@ -128,20 +128,28 @@
                                 <div>
                                     <div class="row">
 
-                                        <div class="col-xl-6 col-md-6">
+                                        <div class="col-xl-4 col-md-4">
                                             <div class="form-group mb-3">
                                                 <label>Name </label>
                                                 @Html.TextBoxFor(model => model.name, new { @class = "form-control", style = "", placeholder = "Name" })
                                                 @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
-                                        <div class="col-xl-6 col-md-6">
+                                        @*<div class="col-xl-6 col-md-6">
                                             <div class="form-group mb-3">
                                                 <label>Designation	</label>
                                                 @Html.TextBoxFor(model => model.designation, new { @class = "form-control", placeholder = "Designation" })
                                             </div>
+                                        </div>*@
+                                        <div class="col-xl-2 col-md-2">
+                                            <div class="form-group mb-3">
+                                                <label>Designation	</label>
+                                                @Html.DropDownListFor(model => model.designation, Model.designerList, new { @class = "form-control", placeholder = "Designation" })
+
+                                                
+                                            </div>
                                         </div>
-                                        <div class="col-xl-4 col-md-6">
+                                        <div class="col-xl-6 col-md-6">
                                             <div class="form-group mb-3">
                                                 <label>Address  </label>
                                                 @Html.TextBoxFor(model => model.address, new { @class = "form-control", placeholder = "Addresss" })
@@ -149,7 +157,7 @@
                                         </div>
 
 
-                                        <div class="col-xl-4 col-md-6">
+                                        <div class="col-xl-4 col-md-4">
                                             <div class="form-group mb-3">
                                                 <label> City   </label>
                                                 @Html.TextBoxFor(model => model.city, new { @class = "form-control", placeholder = " Father Name" })
@@ -158,22 +166,22 @@
 
 
 
-                                        <div class="col-xl-4 col-md-6">
+                                        <div class="col-xl-4 col-md-4">
                                             <div class="form-group mb-3">
                                                 <label>Mobile Number </label>
-                                                @Html.TextBoxFor(model => model.mobile, new { @class = "form-control", @maxlength = "10",  style = "", @onkeypress = "IsNumber()", placeholder = "Mobile Number" })
+                                                @Html.TextBoxFor(model => model.mobile, new { @class = "form-control", @maxlength = "10", style = "", @onkeypress = "IsNumber()", placeholder = "Mobile Number" })
                                                 @Html.ValidationMessageFor(model => model.mobile, "", new { @class = "text-danger" })
 
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-4 col-md-6">
+                                        <div class="col-xl-4 col-md-4">
                                             <div class="form-group mb-3">
                                                 <label> Phone  </label>
                                                 @Html.TextBoxFor(model => model.phone, new { @class = "form-control", @onkeypress = "PhoneIsNumber", placeholder = "Phone Number" })
                                             </div>
                                         </div>
-                                        <div class="col-xl-4 col-md-6">
+                                        <div class="col-xl-4 col-md-4">
                                             <div class="form-group mb-3">
                                                 <label> Email ID  </label>
                                                 @Html.TextBoxFor(model => model.emailID, new { @class = "form-control", placeholder = "Email ID " })
@@ -181,14 +189,14 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-xl-4 col-md-6">
+                                        <div class="col-xl-4 col-md-4">
                                             <div class="form-group mb-3">
                                                 <label> User name  </label>
                                                 @Html.TextBoxFor(model => model.username, new { @class = "form-control", placeholder = "user name" })
                                                 @Html.ValidationMessageFor(model => model.emailID, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
-                                        <div class="col-xl-4 col-md-6">
+                                        <div class="col-xl-4 col-md-4">
                                             <div class="form-group mb-3">
                                                 <label> Password  </label>
                                                 @Html.TextBoxFor(model => model.password, new { @class = "form-control", placeholder = "Password " })

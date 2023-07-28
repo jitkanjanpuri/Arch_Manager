@@ -9,7 +9,7 @@ namespace MvcSDesign.Models
     {
         
         public int clientLedgerID { get; set; }
-        public int operationID { get; set; }
+        public int pmID { get; set; }
         public DateTime dt { get; set; }
 
         public string dtstr { get; set; }
@@ -20,8 +20,11 @@ namespace MvcSDesign.Models
         public string designerName { get; set; }
         public string projectName { get; set; }
         public string projectType { get; set; }
-
+        public string projectlocation { get; set; }
         public string projectCategory { get; set; }
+
+        public string category { get; set; }
+        public string subcategory { get; set; }
 
         public string projectLevel { get; set; }
         public string package { get; set; }

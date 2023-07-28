@@ -19,6 +19,8 @@ namespace MvcSDesign.EF
         {
             this.tblOperations = new HashSet<tblOperation>();
             this.tblPRFs = new HashSet<tblPRF>();
+            this.tblProjectManagements = new HashSet<tblProjectManagement>();
+            this.tblProjectSiteVisits = new HashSet<tblProjectSiteVisit>();
         }
     
         public long projectID { get; set; }
@@ -33,11 +35,16 @@ namespace MvcSDesign.EF
         public string remark { get; set; }
         public string projectname { get; set; }
         public string projectlocation { get; set; }
+        public Nullable<long> finalizeAmount { get; set; }
     
         public virtual tblClient tblClient { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblOperation> tblOperations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblPRF> tblPRFs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblProjectManagement> tblProjectManagements { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblProjectSiteVisit> tblProjectSiteVisits { get; set; }
     }
 }
