@@ -215,23 +215,18 @@
 
                                         </div>
                                     </div>
-                                    @*<button type="submit" class="btn btn-primary d-block ml-auto mt-3" ng-click="SearchProjectItems()">Search</button>*@
 
-                                   
 
-                                 
+                                    <div class="row mb-3">
+                                        <div class="col-lg-2 col-2">
+                                            <button type="button" class="btn btn-primary d-block ml-auto mt-3" ng-click="Search()">Search</button>
+                                        </div>
+                                        <div class="col-lg-3 col-4">
+                                            <button type="button" class="btn btn-primary d-block ml-auto mt-3" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center">Add New Project </button>
 
-                                            
-                                <div class="row mb-3">
-                                    <div class="col-lg-2 col-2">
-                                        <button type="button" class="btn btn-primary d-block ml-auto mt-3" ng-click="Search()">Search</button>
+
+                                        </div>
                                     </div>
-                                    <div class="col-lg-3 col-4">
-                                        <button type="button" class="btn btn-primary d-block ml-auto mt-3" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center">Add New Project </button>
-
-
-                                    </div>
-                                </div>
 
                                 </form>
                             </div>
@@ -412,11 +407,11 @@
                                                     </td>
                                                     <td style="background-color:{{item.rowcolor }}">{{item.status}}</td>
                                                     <td style="background-color:{{item.rowcolor }}">
-                                                        <div ng-if="item.filename.length != 0">
-                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#downloadPopup" ng-click="ShowFileInPopup(item)">
-                                                                <i class="fa fa-download"></i>
-                                                            </button>
-                                                        </div>
+                                                        @*<div ng-if="item.filename.length != 0">*@
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".bs-example-modal-send" ng-click="ShowFileInPopup(item)">
+                                                            <i class="fa fa-download"></i>
+                                                        </button> 
+                                                        @*</div>*@
                                                     </td>
                                                     <td style="background-color:{{item.rowcolor }}">
                                                         @*<div ng-if="item.filename.length == 0">
@@ -432,7 +427,7 @@
                                                     </td>
                                                     <td style="background-color:{{item.rowcolor }}">
                                                         @*<div ng-if="item.rollback =='Y' ">*@
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rollbackPopup" ng-click="RollBackConfirm(item)">
+                                                        <button type="button" class="btn btn-primary waves-effect waves-light w-sm" data-bs-toggle="modal" data-bs-target=".bs-example-modal-rollbackPopup" ng-click="RollBackConfirm(item)">
                                                             <i class="fa fa-undo"></i>
                                                         </button>
 
@@ -542,6 +537,149 @@
         </div>*@
 
 
+
+                    <div class="modal fade bs-example-modal-send" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+
+                                <div class="modal-body">
+
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Click to Open the file in webcanvas. Or select the file to send to client</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+
+                                    <br /><br />
+                                          <div class="row">
+                                              @*<div class="col-lg-12">
+            <div class="row">
+                <div class="form-group col-md-10">
+
+                    <label class="form-lable" for="inlineFormCustomSelectPref">
+                        Do you want to rollback the project  {{rollbackProjectID}}  option {{rollbackOption}}  ?
+
+                    </label>
+                </div>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+            <button type="submit" class="btn btn-primary" ng-click="RollBack()" onclick="closeRollBack()">Yes</button>
+        </div>*@
+
+                                              <div class="form-group form-check " ng-repeat="itm in filelist">
+                                                  <input class="form-check-input check-kbox" type="checkbox" name="remember" ng-model="folder[itm]" id={{itm}}>
+                                                  <label class="form-check-label" for="terms-check">
+
+                                                      <div ng-if="itm.substr((itm.lastIndexOf('.') + 1)) =='dwg'">
+                                                          <a href="@Url.Action("DownloadDWG", "Technical")?filename={{itm}}&option={{fileoption}}&pmID={{pmID}}&projectID={{projectID}}&projectType={{projectType}}&projectCategory={{projectCategory}}">{{itm}} </a>
+                                                      </div>
+                                                      <div ng-if="itm.substr((itm.lastIndexOf('.') + 1)) !='dwg'">
+                                                          <a href="@Url.Action("OpenElevationViewer", "Technical")?filename={{itm}}&option={{fileoption}}&pmID={{pmID}}&projectID={{projectID}}&projectType={{projectType}}&projectCategory={{projectCategory}}">{{itm}} </a>
+                                                      </div>
+                                                  </label>
+                                              </div>
+
+
+                                              <div class="form-group form-check" ng-if="projectCategory == 'Final View'">
+                                                  <input class="form-check-input check-kbox" type="checkbox" id="chkTwitter" name="chkTwitter" ng-model="chkTwitter">
+                                                  <label class="form-check-label" for="terms-check">
+                                                      Twitter
+                                                  </label>
+                                                  &nbsp;&nbsp;  &nbsp;&nbsp;
+                                                  <input class="form-check-input check-kbox" type="checkbox" id="chkFacebook" name="chkFacebook" ng-model="chkFacebook">
+                                                  <label class="form-check-label" for="terms-check">
+                                                      Facebook
+                                                  </label>
+                                              </div>
+
+                                              <div class="form-group">
+
+                                                  <label class="form-check-label">
+                                                      <span style="color:red">{{lblError}}</span>
+                                                  </label>
+                                              </div>
+
+                                              <div ng-if="projectCategory != '3D Model'">
+                                                  <input type="button" value="Send to Client" ng-click="TaskSend()" class="btn btn-primary" />
+                                              </div>
+                                              <div ng-if="projectCategory == '3D Model'">
+                                                  <input type="button" value="Accept" ng-click="TaskSend()" class="btn btn-primary" />
+                                              </div>
+
+
+                                          </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                        @*<div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Click to Open the file in webcanvas. Or select the file to send to client</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="text-center" ng-hide="webcanvasload">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group form-check " ng-repeat="itm in filelist">
+                            <input class="form-check-input check-kbox" type="checkbox" name="remember" ng-model="folder[itm]" id={{itm}}>
+                            <label class="form-check-label" for="terms-check">
+
+                                <div ng-if="itm.substr((itm.lastIndexOf('.') + 1)) =='dwg'">
+                                    <a href="@Url.Action("DownloadDWG", "Technical")?filename={{itm}}&option={{fileoption}}&pmID={{pmID}}&projectID={{projectID}}&projectType={{projectType}}&projectCategory={{projectCategory}}">{{itm}} </a>
+                                </div>
+                                <div ng-if="itm.substr((itm.lastIndexOf('.') + 1)) !='dwg'">
+                                    <a href="@Url.Action("OpenElevationViewer", "Technical")?filename={{itm}}&option={{fileoption}}&pmID={{pmID}}&projectID={{projectID}}&projectType={{projectType}}&projectCategory={{projectCategory}}">{{itm}} </a>
+                                </div>
+                            </label>
+                        </div>
+
+
+                        <div class="form-group form-check" ng-if="projectCategory == 'Final View'">
+                            <input class="form-check-input check-kbox" type="checkbox" id="chkTwitter" name="chkTwitter" ng-model="chkTwitter">
+                            <label class="form-check-label" for="terms-check">
+                                Twitter
+                            </label>
+                            &nbsp;&nbsp;  &nbsp;&nbsp;
+                            <input class="form-check-input check-kbox" type="checkbox" id="chkFacebook" name="chkFacebook" ng-model="chkFacebook">
+                            <label class="form-check-label" for="terms-check">
+                                Facebook
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="form-check-label">
+                                <span style="color:red">{{lblError}}</span>
+                            </label>
+                        </div>
+
+                        <div ng-if="projectCategory != '3D Model'">
+                            <input type="button" value="Send to Client" ng-click="TaskSend()" class="btn btn-primary" />
+                        </div>
+                        <div ng-if="projectCategory == '3D Model'">
+                            <input type="button" value="Accept" ng-click="TaskSend()" class="btn btn-primary" />
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>*@
+                    
+
+
+
                         <div class="modal fade bs-example-modal-Assign" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
@@ -554,47 +692,79 @@
                                         </div>
 
                                         <br /><br />
-                                              <div class="row">
-                                                  <div class="col-lg-12">
-                                                      <div class="col-md-11 mb-3">
-                                                          <div class="d-flex align-items-center">
-                                                              <label class="my-1 mr-2 form-lable" for="inlineFormCustomSelectPref">
-                                                                  Project ID
-                                                              </label>
-                                                              <input ng-model="projectID" type="text" class="form-control input-control light-bg" id="projectID" readonly="">
-                                                          </div>
-                                                      </div>
-                                                      <div class="col-md-11 mb-3">
-                                                          <div class="d-flex align-items-center">
-                                                              <label class="my-1 mr-2 form-lable " for="inlineFormCustomSelectPref">
-                                                                  Designer
-                                                              </label>
-                                                              <select class="form-control" id="assignDesignerID" ng-model="assignDesignerID" ng-options="items.Value as items.Text for items in assignDesignerList"></select>
-                                                          </div>
-                                                      </div>
-                                                      <div class="col-11">
-                                                          <div class="form-group">
-                                                              <label class="lable-text">Tech Remark</label>
-                                                              <textarea class="form-control" id="exampleFormControlTextarea1" ng-model="remark" rows="3"></textarea>
-                                                          </div>
-                                                      </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="col-md-11 mb-3">
+                                                    <div class="d-flex align-items-center">
+                                                        <label class="my-1 mr-2 form-lable" for="inlineFormCustomSelectPref">
+                                                            Project ID
+                                                        </label>
+                                                        <input ng-model="projectID" type="text" class="form-control input-control light-bg" id="projectID" readonly="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-11 mb-3">
+                                                    <div class="d-flex align-items-center">
+                                                        <label class="my-1 mr-2 form-lable " for="inlineFormCustomSelectPref">
+                                                            Designer
+                                                        </label>
+                                                        <select class="form-control" id="assignDesignerID" ng-model="assignDesignerID" ng-options="items.Value as items.Text for items in assignDesignerList"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-11">
+                                                    <div class="form-group">
+                                                        <label class="lable-text">Tech Remark</label>
+                                                        <textarea class="form-control" id="exampleFormControlTextarea1" ng-model="remark" rows="3"></textarea>
+                                                    </div>
+                                                </div>
 
-                                                      <div class="col-2">
-                                                          <div class="form-group">
-                                                              &nbsp;&nbsp; &nbsp;<button type="submit" class="btn btn-primary" ng-click="ProjectAssigned()">Submit</button>
-                                                          </div>
-                                                      </div>
-                                                  </div>
-                                                  @*<div class="modal-footer">
+                                                <div class="col-2">
+                                                    <div class="form-group">
+                                                        &nbsp;&nbsp; &nbsp;<button type="submit" class="btn btn-primary" ng-click="ProjectAssigned()">Submit</button>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-
-                                                      <button type="button" class="btn btn-success waves-effect waves-light" ng-click="CompleteCurrentWorking()">Yes</button>
-                                                  </div>*@
-                                              </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="modal fade bs-example-modal-rollbackPopup" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+
+                                    <div class="modal-body">
+
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Roll Back</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+                                        <br /><br />
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="row">
+                                                    <div class="form-group col-md-10">
+
+                                                        <label class="form-lable" for="inlineFormCustomSelectPref">
+                                                            Do you want to rollback the project  {{rollbackProjectID}}  option {{rollbackOption}}  ?
+
+                                                        </label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                                                <button type="submit" class="btn btn-primary" ng-click="RollBack()" onclick="closeRollBack()">Yes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
 
 
 
@@ -784,6 +954,10 @@
                                 </div>
                             </div>
                         </div>
+
+
+
+
 
 
 
