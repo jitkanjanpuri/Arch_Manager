@@ -240,9 +240,6 @@
     <Compile Include="EF\tblPRF.cs">
       <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\tblProfile.cs">
-      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\tblProjectDetail.cs">
       <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
@@ -262,6 +259,9 @@
       <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblStatu.cs">
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\tblTaskAssign.cs">
       <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="Filters\AdminFilter.cs" />

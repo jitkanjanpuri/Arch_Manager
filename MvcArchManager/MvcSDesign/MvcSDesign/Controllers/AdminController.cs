@@ -554,10 +554,7 @@ namespace MvcSDesign.Controllers
         
         public JsonResult SearchCurrentWorking(string dname, string category,   string subcategory)
         {
-
-            //List<tblClient> obj = new List<tblClient>();
-            var lst = _IAmn.GetCurrentWorking("0",category, subcategory);
-           
+            var lst = _IAmn.GetCurrentWorking(dname,category, subcategory);
             return Json(lst, JsonRequestBehavior.AllowGet);
         }
 
@@ -622,6 +619,7 @@ namespace MvcSDesign.Controllers
                  ViewBag.message = "";
              }
             obj.designerList = GetDesignerList();
+            obj.rollList = GetRollList();
             return View(obj);
         }
 
@@ -657,6 +655,26 @@ namespace MvcSDesign.Controllers
             return obj;
 
         }
+
+        IEnumerable<SelectListItem> GetRollList()
+        {
+            var obj = new List<SelectListItem>();
+
+            obj.Add(new SelectListItem
+            {
+                Text = "Admin",
+                Value = "Admin"
+            });
+            obj.Add(new SelectListItem
+            {
+                Text = "User",
+                Value = "User"
+            });
+             
+            return obj;
+
+        }
+
 
         [HttpPost]
         public ActionResult Registration(staff st)
@@ -750,25 +768,7 @@ namespace MvcSDesign.Controllers
         }
         public JsonResult getOperationDesigner()
         {
-            var obj = new List<SelectListItem>();
-            var dsn = _IAmn.getOperationDesigner();
-            obj.Add(new SelectListItem
-            {
-                Text = "All",
-                Value = "0",
-
-            });
-            foreach (var item in dsn)
-            {
-                obj.Add(new SelectListItem
-                {
-                    Text = item.name,
-                    Value = item.staffID.ToString(),
-
-                });
-            }
-
-            return Json(obj, JsonRequestBehavior.AllowGet);
+            return Json(_IAmn.getOperationDesigner(), JsonRequestBehavior.AllowGet);
         }
          
         public JsonResult getProjectAssignList()
@@ -776,6 +776,65 @@ namespace MvcSDesign.Controllers
             var prj = _IAmn.getProjectAssign();
             return Json(prj, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult ProjectAssigning(operation op)
+        {
+            string whatsAppno = "", designername = "";
+
+            string ch =  _IAmn.ProjectAssigning(op);
+            //if ((ch == "Success") && (whatsAppno != ""))
+            //{
+                designername = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(designername.ToLower());
+                //url = "Dear " + designername + " \n\n";
+                //switch (op.category)
+                //{
+                //    case "Elevation":
+                //        url += "🏚 You are requested to provide Elevation of Project ID " + op.projectID + "__" + op.option + ".";
+                //        break;
+                //    case "Revised Elevation":
+                //        url += "🏚 You are requested to provide Revised Elevation of Project ID " + op.projectID + "__" + op.option + ".";
+                //        break;
+                //    case "3D Model":
+                //        url += "🏚 You are requested to provide Model of Project ID " + op.projectID + "__" + op.option + ".";
+                //        break;
+                //    case "Draft View":
+                //        url += "🏡 You are requested to provide Draft view of Project ID " + op.projectID + "__" + op.option + ".";
+                //        break;
+                //    case "Revised Draft":
+                //        url += "🏡 You are requested to provide Revise Draft of Project ID " + op.projectID + "__" + op.option + ".";
+                //        break;
+                //    case "Final View":
+                //        url += "🏡 You are requested to provide Finalize render of Project ID " + op.projectID + "__" + op.option + ".";
+                //        break;
+                //}
+                //url += "\n\n Thanks \n";
+                //url += " Team DSuite Technical";
+                ////var client = new RestClient("https://panel.rapiwha.com/send_message.php?apikey=0UFVPJN62DTQFVRBUQFN&number=91" + whatsAppno + "&text=" + url + " ");
+                //var client = new RestClient("https://panel.rapiwha.com/send_message.php?apikey=0UFVPJN62DTQFVRBUQFN&number=" + whatsAppno + "&text=" + url + " ");
+
+
+                //var request = new RestRequest(Method.GET);
+                //IRestResponse response = client.Execute(request);
+            //}
+
+            return Json(ch, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ProjectRollBack(string pmID)
+        {
+             
+            string ch = _IAmn.ProjectRollBack(int.Parse(pmID));
+            //if ((ch == "Y") && (whatsAppno != ""))
+            //{
+            //    //string url = "We rolled back " + category + " of  project ID " + projectID + " option " + opt;
+            //    //var client = new RestClient("https://panel.rapiwha.com/send_message.php?apikey=0UFVPJN62DTQFVRBUQFN&number=" + whatsAppno + "&text=" + url + " ");
+            //    //var request = new RestRequest(Method.GET);
+            //    //IRestResponse response = client.Execute(request);
+            //}
+            return Json(ch, JsonRequestBehavior.AllowGet);
+
+        }
+
         public JsonResult SaveProjectAssigned(string projectID, string staffID, string projectCategory, string designerAmount)
         {
             obj.name = _IAmn.SaveProjectAssigned(projectID, staffID, projectCategory, designerAmount);

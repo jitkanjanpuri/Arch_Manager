@@ -135,20 +135,15 @@
                                                 @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
-                                        @*<div class="col-xl-6 col-md-6">
-                                            <div class="form-group mb-3">
-                                                <label>Designation	</label>
-                                                @Html.TextBoxFor(model => model.designation, new { @class = "form-control", placeholder = "Designation" })
-                                            </div>
-                                        </div>*@
                                         <div class="col-xl-2 col-md-2">
                                             <div class="form-group mb-3">
                                                 <label>Designation	</label>
                                                 @Html.DropDownListFor(model => model.designation, Model.designerList, new { @class = "form-control", placeholder = "Designation" })
-
-                                                
                                             </div>
+
                                         </div>
+
+
                                         <div class="col-xl-6 col-md-6">
                                             <div class="form-group mb-3">
                                                 <label>Address  </label>
@@ -163,8 +158,6 @@
                                                 @Html.TextBoxFor(model => model.city, new { @class = "form-control", placeholder = " Father Name" })
                                             </div>
                                         </div>
-
-
 
                                         <div class="col-xl-4 col-md-4">
                                             <div class="form-group mb-3">
@@ -189,14 +182,23 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-xl-4 col-md-4">
+                                        <div class="col-xl-2 col-md-2">
+                                            <div class="form-group mb-3">
+                                                <label>Roll Type	</label>
+                                                @Html.DropDownListFor(model => model.rolltype, Model.rollList, new { @class = "form-control", placeholder = "Designation" })
+
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-3 col-md-4">
                                             <div class="form-group mb-3">
                                                 <label> User name  </label>
                                                 @Html.TextBoxFor(model => model.username, new { @class = "form-control", placeholder = "user name" })
                                                 @Html.ValidationMessageFor(model => model.emailID, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
-                                        <div class="col-xl-4 col-md-4">
+                                        <div class="col-xl-3 col-md-4">
                                             <div class="form-group mb-3">
                                                 <label> Password  </label>
                                                 @Html.TextBoxFor(model => model.password, new { @class = "form-control", placeholder = "Password " })

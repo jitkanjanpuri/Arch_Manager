@@ -26,20 +26,7 @@
 
 
     <script type="text/javascript">
-
-
-        //function IsNumber(e) {
-
-        //    var theEvent = event || window.event;
-        //    var key = theEvent.keyCode || theEvent.which;
-        //    key = String.fromCharCode(key);
-        //    var regex = /[0-9]|\./;
-
-        //    if (!regex.test(key)) {
-        //        theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
-        //    }
-        //}
- 
+         
         function ValidateSize(file) {
             document.getElementById("lblError").innerText = "";
             var FileSize = file.files[0].size / 1024 / 1024; // in MB
@@ -79,9 +66,7 @@
     <body>
         <div ng-app ="myApp" >
               <div ng-controller = "myController" >
-
-
-
+                   
                     <div class="page-content">
                     <div class="container-fluid">
                         <div class="row">

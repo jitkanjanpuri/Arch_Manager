@@ -1,5 +1,5 @@
 ﻿var app = angular.module("myApp", [])
-app.controller("myController", function ($scope, $http) {
+app.controller("myController", function ($scope, $http, cw) {
 
     $scope.record = "";
     $scope.normal = "0";
@@ -11,38 +11,36 @@ app.controller("myController", function ($scope, $http) {
     $scope.subcategory = ["Presentation Drawing With Furniture Layout", "Floor Plans Ground To Terrace"];
     $scope.subcategoryName = $scope.subcategory[0];
     $scope.loading = true;
-    var operationID = 0;
-    var varCategory = "";
+    var pmID = 0;
+   
 
-    //cw.getRecord().then(function (d) {
-    //    //$scope.currentworkinglist = d.data;
-    //    //$scope.loading = true;
+    cw.getRecord().then(function (d) {
+        $scope.designerList = d.data;
+        $scope.dname = $scope.designerList[0];
+        $scope.assignDesignerList = $scope.designerList;
+        $scope.assignDesigner = $scope.assignDesignerList[0];
 
-    //    //  getDesigner();
+    });
 
+    //function getDesigner() {
+    //    $http({
+    //        url: "/Admin/getOperationDesigner",
+    //        method: "POST",
+    //        dataType: 'json',
+    //        contentType: 'application/json;charaset=utf-8'
+    //    }).then(function (d) {
+    //        $scope.designerlst = d.data;
+    //        $scope.dname = $scope.designerlst[0];
+    //        $scope.designerList1 = d.data;
+    //        $scope.dName1 = $scope.designerList1[0];
 
-
-    //});
-
-    function getDesigner() {
-        $http({
-            url: "/Admin/getOperationDesigner",
-            method: "POST",
-            dataType: 'json',
-            contentType: 'application/json;charaset=utf-8'
-        }).then(function (d) {
-            $scope.designerlst = d.data;
-            $scope.dname = $scope.designerlst[0];
-            $scope.designerList1 = d.data;
-            $scope.dName1 = $scope.designerList1[0];
-
-            statusCount();
+    //        statusCount();
 
 
-        }).error(function (err) {
-            alert("Error: " + err);
-        });
-    }
+    //    }).error(function (err) {
+    //        alert("Error: " + err);
+    //    });
+    //}
 
     $scope.GetSubcategory = function () {
 
@@ -80,8 +78,8 @@ app.controller("myController", function ($scope, $http) {
         var critical = 0;
 
         var arr = [];
-        for (var i = 0; i < $scope.currentworkinglist.length; i++) {
-            arr = $scope.currentworkinglist[i];
+        for (var i = 0; i < $scope.workinglist.length; i++) {
+            arr = $scope.workinglist[i];
             if (arr.rowcolor == "#FFF") {
                 normal++;
             }
@@ -100,20 +98,16 @@ app.controller("myController", function ($scope, $http) {
 
     }
 
-    //$scope.addNewProject = function () {
-    //    $scope.addNewWindow = false;
-    //}
-    //$scope.CloseAddWindow = function () {
-    //    Reset();
-    //}
-
-    //function Reset() {
-    //    $scope.txtProjectID = "";
-    //    $scope.addNewWindow = true;
-    //}
+    
 
     $scope.Search = function () {
-        $scope.err = "";
+        SearchProject();
+    }
+
+
+
+   function SearchProject() {
+        $scope.lblMsg = "";
         $scope.workinglist = null;
         $scope.loading = false;
         $http({
@@ -121,22 +115,19 @@ app.controller("myController", function ($scope, $http) {
             dataType: 'json',
             method: 'POST',
             params: {
-                dname: "0",
+                dname: $scope.dname.Text,
                 category: $scope.category,
                 subcategory: $scope.subcategoryName
             },
             contentType: "application/json;charaset=utf-8"
         }).then(function (d) {
             $scope.loading = true;
-
             $scope.workinglist = d.data;
-
-
             if (d.data.length == 0) {
-                $scope.err = " Record not available";
+                $scope.lblMsg = " Record not available";
                 return false;
             }
-
+            statusCount();
 
         }).error(function (err) {
             alert(" Error : " + err);
@@ -144,35 +135,36 @@ app.controller("myController", function ($scope, $http) {
     }
 
 
+    $scope.RollBack = function (item) {
+        $scope.rollbackProjectID = item.projectID
+        pmID = item.pmID
 
-    $scope.SearchProject = function () {
-        var pid = $scope.txtPID;
-        if (pid == undefined) {
-            alert("Please enter project ID   ");
-            return false;
-        }
+    }
+
+
+    $scope.RollBackConfirm = function () {
+         
+        
+        
         $http({
-            url: '/Admin/SearchAddProject',
-            dataType: 'json',
-            method: 'POST',
+            url: "/Admin/ProjectRollBack",
+            dataType: "json",
+            method: "GET",
             params: {
-                projectID: pid
+                pmID: pmID,
             },
-            contentType: "application/json;charaset=utf-8"
-        }).then(function (d) {
-
-            if (d.data.clientName == "") {
-                alert(" Record not available");
-                return false;
+            contentType: "application/json; charaset =utf-8",
+        }).then(function (result) {
+             
+            if (result.data == "Y") {
+                $(".bs-example-modal-rollbackPopup").modal('hide')
+                SearchProject();
+                return;
             }
-            $scope.txtCName1 = d.data.clientName;
-            $scope.txtPType = d.data.projectType;
-
-
-        }).error(function (err) {
-            alert(" Error : " + err);
         });
     }
+     
+
     $scope.SubmitNewProject = function () {
         var pid = $scope.txtPID
         var cname = $scope.txtCName1;
@@ -239,149 +231,185 @@ app.controller("myController", function ($scope, $http) {
     }
 
 
-    $scope.ShowDesignerTask = function () {
-        $scope.loading = false;
-        $scope.record = "";
+    //$scope.ShowDesignerTask = function () {
+    //    $scope.loading = false;
+    //    $scope.record = "";
 
-        $http({
-            url: "/Admin/getCurrentWorkingList",
-            method: "POST",
-            dataType: "json",
-            params: {
-                dname: $scope.dname.Value
-            },
-            contentType: "application/json;charaset=utf-8"
-        }).then(function (d) {
-            $scope.currentworkinglist = d.data;
-            $scope.loading = true;
-            statusCount();
-            if ($scope.currentworkinglist.length == 0) {
-                //  alert("Record not available");
-                $scope.record = "Record not available";
-                return;
-            }
+    //    $http({
+    //        url: "/Admin/getCurrentWorkingList",
+    //        method: "POST",
+    //        dataType: "json",
+    //        params: {
+    //            dname: $scope.dname.Value
+    //        },
+    //        contentType: "application/json;charaset=utf-8"
+    //    }).then(function (d) {
+    //        $scope.currentworkinglist = d.data;
+    //        $scope.loading = true;
+    //        statusCount();
+    //        if ($scope.currentworkinglist.length == 0) {
+    //            //  alert("Record not available");
+    //            $scope.record = "Record not available";
+    //            return;
+    //        }
 
-        }).error(function (err) {
-            alert(" Error " + err);
-        });
+    //    }).error(function (err) {
+    //        alert(" Error " + err);
+    //    });
 
-    }
+    //}
 
-    $scope.EditCurWorking = function (item) {
+    //$scope.EditCurWorking = function (item) {
 
-        $scope.txtProjectID = item.projectID;
-        $scope.txtCName = item.clientName;
-        $scope.txtProjectType = item.projectType;
-        $scope.txtProjectCategory = item.projectCategory;
-        $scope.txtRemark = item.remark;
-        operationID = item.operationID;
-    }
+    //    $scope.txtProjectID = item.projectID;
+    //    $scope.txtCName = item.clientName;
+    //    $scope.txtProjectType = item.projectType;
+    //    $scope.txtProjectCategory = item.projectCategory;
+    //    $scope.txtRemark = item.remark;
+    //    pmID = item.pmID;
+    //}
 
 
-    $scope.CurrentWorkingRemarkUpdate = function () {
+    //$scope.CurrentWorkingRemarkUpdate = function () {
 
-        var varremark = $scope.txtRemark;
-        if ((varremark == undefined) || (varremark.length == 0)) {
-            alert("Please enter remark")
-            return;
-        }
-        //pid: $scope.txtProjectID,
-        //    category: $scope.txtProjectCategory,
+    //    var varremark = $scope.txtRemark;
+    //    if ((varremark == undefined) || (varremark.length == 0)) {
+    //        alert("Please enter remark")
+    //        return;
+    //    }
 
-        $http({
-            url: "/Admin/CurrentWorkingRemarkUpdate",
-            dataType: 'json',
-            method: 'POST',
-            params: {
-                opID: operationID,
-                remark: varremark
-            },
-            contentType: "application/json;charaset=utf-8"
-        }).then(function (d) {
-            if (d.data == "success") {
-                //   alert(" Remark successfully updated");
-                location.reload();
+    //    $http({
+    //        url: "/Admin/CurrentWorkingRemarkUpdate",
+    //        dataType: 'json',
+    //        method: 'POST',
+    //        params: {
+    //            opID: pmID,
+    //            remark: varremark
+    //        },
+    //        contentType: "application/json;charaset=utf-8"
+    //    }).then(function (d) {
+    //        if (d.data == "success") {
+    //            //   alert(" Remark successfully updated");
+    //            location.reload();
 
-                return;
-            }
-            else {
-                alert(d.data);
+    //            return;
+    //        }
+    //        else {
+    //            alert(d.data);
 
-            }
-        }).error(function (err) {
-            alert(" Error " + err);
-        });
+    //        }
+    //    }).error(function (err) {
+    //        alert(" Error " + err);
+    //    });
 
-    }
+    //}
 
     $scope.ShowCurrentWorking = function (item) {
-        $scope.confirmprojectID = item.projectID;
-        varCategory = item.projectCategory;
-        operationID = item.operationID;
+        $scope.assignProjectID = item.projectID;
+        pmID = item.pmID;
 
     }
+    $scope.ProjectAssigned = function () {
 
 
-    $scope.CompleteCurrentWorking = function () {
-        //projectID: $scope.confirmprojectID,
-        //pcategory: varCategory
+        $scope.lblAssinError = "";
+        var vardID = $scope.assignDesigner.Value;
+        var remark = $scope.techRemark;
+        if (vardID == "0") {
+            $scope.lblAssinError = "Please select designer name";
+            return;
+        }
+        var obj = new Object();
+
+        obj.pmID = pmID;
+        obj.projectID = $scope.assignProjectID;;
+        obj.designerName = vardID;
+        obj.techremark = $scope.techRemark;
+      
+        
         $http({
-            url: "/Admin/CompleteCurrentWorking",
-            dataType: 'json',
-            method: 'POST',
-            params: {
-                opID: operationID
-            },
-            contentType: "application/json;charaset=utf-8"
-        }).then(function (d) {
-            if (d.data.name == "") {
-                alert("Project successfully updated")
-
-                location.reload();
+            url: "/Admin/ProjectAssigning",
+            method: "POST",
+            dataType: "json",
+            data: { op: obj },
+            contentType: "application/json; charaset =utf-8"
+        }).then(function (result) {
+           
+            if (result.data == "Success") {
+                $scope.techRemark = "";
+                $(".bs-example-modal-Assign").modal('hide');
+                SearchProject();
+                return;
             }
-            else
-                alert("Error :" + d.data.name);
-        }).error(function (err) {
-            alert("Error :" + err);
         });
-
-    }
-
+    };
 
 
+    //$scope.CompleteCurrentWorking = function () {
+    //    $http({
+    //        url: "/Admin/CompleteCurrentWorking",
+    //        dataType: 'json',
+    //        method: 'POST',
+    //        params: {
+    //            opID: pmID
+    //        },
+    //        contentType: "application/json;charaset=utf-8"
+    //    }).then(function (d) {
+    //        if (d.data.name == "") {
+    //            alert("Project successfully updated")
 
-    $scope.ShowDelete = function (item) {
-        //$scope.projectID = pid;
-        //varCategory = category;
-        operationID = item.operationID;
-    }
+    //            location.reload();
+    //        }
+    //        else
+    //            alert("Error :" + d.data.name);
+    //    }).error(function (err) {
+    //        alert("Error :" + err);
+    //    });
+
+    //}
 
 
-    $scope.DeleteCurrentWorking = function () {
 
-        $http({
-            url: "/Admin/DeleteCurrentWorking",
-            dataType: 'json',
-            method: 'POST',
-            params: {
-                opID: operationID
-            },
-            contentType: "application/json;charaset=utf-8"
-        }).then(function (d) {
-            if (d.data.name == "") {
-                alert("Project successfully deleted")
-                location.reload();
 
-            }
-            else
-                alert("Error :" + d.data.name);
-        }).error(function (err) {
-            alert("Error :" + err);
-        });
-    }
+    //$scope.ShowDelete = function (item) {
+    //    //$scope.projectID = pid;
+    //    //varCategory = category;
+    //    pmID = item.pmID;
+    //}
+
+
+    //$scope.DeleteCurrentWorking = function () {
+
+    //    $http({
+    //        url: "/Admin/DeleteCurrentWorking",
+    //        dataType: 'json',
+    //        method: 'POST',
+    //        params: {
+    //            opID: pmID
+    //        },
+    //        contentType: "application/json;charaset=utf-8"
+    //    }).then(function (d) {
+    //        if (d.data.name == "") {
+    //            alert("Project successfully deleted")
+    //            location.reload();
+
+    //        }
+    //        else
+    //            alert("Error :" + d.data.name);
+    //    }).error(function (err) {
+    //        alert("Error :" + err);
+    //    });
+    //}
 
 
 
 });
- 
 
+app.factory('cw', function ($http) {
+    var fac = {};
+    fac.getRecord = function () {
+        return $http.get('/Admin/getOperationDesigner');
+    }
+
+    return fac;
+});

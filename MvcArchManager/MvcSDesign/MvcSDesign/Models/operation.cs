@@ -23,6 +23,8 @@ namespace MvcSDesign.Models
         public string projectlocation { get; set; }
         public string projectCategory { get; set; }
 
+        public string projectStatus { get; set; }
+
         public string category { get; set; }
         public string subcategory { get; set; }
 
@@ -43,5 +45,9 @@ namespace MvcSDesign.Models
         public string emailID { get; set; }
         public string rowcolor { get; set; }
         public string remark { get; set; }
+        public string techremark { get; set; }
+        public string uploadFileName { get; set; }
+
+
     }
 }

@@ -110,18 +110,6 @@
     <Property Name="projectID" Type="Int64" Nullable="false" />
     <NavigationProperty Name="tblProjectDetail" Relationship="Self.FK_tblPRF_projectDetail_projectID" FromRole="tblPRF" ToRole="tblProjectDetail" />
   </EntityType>
-  <EntityType Name="tblProfile">
-    <Key>
-      <PropertyRef Name="profileID" />
-    </Key>
-    <Property Name="profileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="name" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="companyName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-    <Property Name="profession" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="mobileno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="emailID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-  </EntityType>
   <EntityType Name="tblProjectDetail">
     <Key>
       <PropertyRef Name="projectID" />
@@ -144,6 +132,7 @@
     <NavigationProperty Name="tblProjectManagements" Relationship="ArchManagerDBModel.FK_tblProjectManagement_projectID" FromRole="tblProjectDetail" ToRole="tblProjectManagement" />
     <NavigationProperty Name="tblProjectSiteVisits" Relationship="ArchManagerDBModel.FK_tblProjectSiteVisit_projectID" FromRole="tblProjectDetail" ToRole="tblProjectSiteVisit" />
     <Property Name="finalizeAmount" Type="Int64" />
+    <NavigationProperty Name="tblTaskAssigns" Relationship="ArchManagerDBModel.FK_tblTaskAssign_projectID" FromRole="tblProjectDetail" ToRole="tblTaskAssign" />
   </EntityType>
   <EntityType Name="tblStaff">
     <Key>
@@ -164,6 +153,8 @@
     <NavigationProperty Name="tblOperations" Relationship="Self.FK_tblOperation_staffID" FromRole="tblStaff" ToRole="tblOperation" />
     <NavigationProperty Name="tblStaffLedgers" Relationship="Self.FK_tblStaffLedger_staffID" FromRole="tblStaff" ToRole="tblStaffLedger" />
     <NavigationProperty Name="tblStaffPaids" Relationship="Self.FK_tblStaffPaid_staffID" FromRole="tblStaff" ToRole="tblStaffPaid" />
+    <NavigationProperty Name="tblTaskAssigns" Relationship="ArchManagerDBModel.FK_tblTaskAssign_designerID" FromRole="tblStaff" ToRole="tblTaskAssign" />
+    <Property Name="active" Type="Boolean" />
   </EntityType>
   <EntityType Name="tblStaffLedger">
     <Key>
@@ -313,7 +304,6 @@
     <EntitySet Name="tblGmailAccounts" EntityType="Self.tblGmailAccount" />
     <EntitySet Name="tblOperations" EntityType="Self.tblOperation" />
     <EntitySet Name="tblPRFs" EntityType="Self.tblPRF" />
-    <EntitySet Name="tblProfiles" EntityType="Self.tblProfile" />
     <EntitySet Name="tblProjectDetails" EntityType="Self.tblProjectDetail" />
     <EntitySet Name="tblStaffs" EntityType="Self.tblStaff" />
     <EntitySet Name="tblStaffLedgers" EntityType="Self.tblStaffLedger" />
@@ -365,6 +355,19 @@
       <End Role="tblProjectDetail" EntitySet="tblProjectDetails" />
       <End Role="tblProjectSiteVisit" EntitySet="tblProjectSiteVisits" />
     </AssociationSet>
+    <EntitySet Name="tblTaskAssigns" EntityType="ArchManagerDBModel.tblTaskAssign" />
+    <AssociationSet Name="FK_tblTaskAssign_projectID" Association="ArchManagerDBModel.FK_tblTaskAssign_projectID">
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetails" />
+      <End Role="tblTaskAssign" EntitySet="tblTaskAssigns" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblTaskAssign_pmID" Association="ArchManagerDBModel.FK_tblTaskAssign_pmID">
+      <End Role="tblProjectManagement" EntitySet="tblProjectManagements" />
+      <End Role="tblTaskAssign" EntitySet="tblTaskAssigns" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblTaskAssign_designerID" Association="ArchManagerDBModel.FK_tblTaskAssign_designerID">
+      <End Role="tblStaff" EntitySet="tblStaffs" />
+      <End Role="tblTaskAssign" EntitySet="tblTaskAssigns" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="tblProjectManagement">
     <Key>
@@ -379,6 +382,8 @@
     <Property Name="status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="remark" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="tblProjectDetail" Relationship="ArchManagerDBModel.FK_tblProjectManagement_projectID" FromRole="tblProjectManagement" ToRole="tblProjectDetail" />
+    <Property Name="User_UploadedFileName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblTaskAssigns" Relationship="ArchManagerDBModel.FK_tblTaskAssign_pmID" FromRole="tblProjectManagement" ToRole="tblTaskAssign" />
   </EntityType>
   <EntityType Name="tblProjectSiteVisit">
     <Key>
@@ -412,6 +417,61 @@
       </Principal>
       <Dependent Role="tblProjectSiteVisit">
         <PropertyRef Name="projectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="tblTaskAssign">
+    <Key>
+      <PropertyRef Name="taskID" />
+    </Key>
+    <Property Name="taskID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="tm" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="projectID" Type="Int64" Nullable="false" />
+    <Property Name="designerID" Type="Int32" Nullable="false" />
+    <Property Name="category" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="subcatorgy" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="techRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="submitDate" Type="DateTime" Precision="3" />
+    <Property Name="submitTime" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="pmID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tblProjectDetail" Relationship="ArchManagerDBModel.FK_tblTaskAssign_projectID" FromRole="tblTaskAssign" ToRole="tblProjectDetail" />
+    <NavigationProperty Name="tblProjectManagement" Relationship="ArchManagerDBModel.FK_tblTaskAssign_pmID" FromRole="tblTaskAssign" ToRole="tblProjectManagement" />
+    <NavigationProperty Name="tblStaff" Relationship="ArchManagerDBModel.FK_tblTaskAssign_designerID" FromRole="tblTaskAssign" ToRole="tblStaff" />
+  </EntityType>
+  <Association Name="FK_tblTaskAssign_projectID">
+    <End Type="ArchManagerDBModel.tblProjectDetail" Role="tblProjectDetail" Multiplicity="1" />
+    <End Type="ArchManagerDBModel.tblTaskAssign" Role="tblTaskAssign" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProjectDetail">
+        <PropertyRef Name="projectID" />
+      </Principal>
+      <Dependent Role="tblTaskAssign">
+        <PropertyRef Name="projectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblTaskAssign_pmID">
+    <End Type="ArchManagerDBModel.tblProjectManagement" Role="tblProjectManagement" Multiplicity="1" />
+    <End Type="ArchManagerDBModel.tblTaskAssign" Role="tblTaskAssign" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProjectManagement">
+        <PropertyRef Name="pmID" />
+      </Principal>
+      <Dependent Role="tblTaskAssign">
+        <PropertyRef Name="pmID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblTaskAssign_designerID">
+    <End Type="ArchManagerDBModel.tblStaff" Role="tblStaff" Multiplicity="1" />
+    <End Type="ArchManagerDBModel.tblTaskAssign" Role="tblTaskAssign" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblStaff">
+        <PropertyRef Name="staffID" />
+      </Principal>
+      <Dependent Role="tblTaskAssign">
+        <PropertyRef Name="designerID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

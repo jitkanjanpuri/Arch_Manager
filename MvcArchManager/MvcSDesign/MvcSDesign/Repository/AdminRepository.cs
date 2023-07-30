@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web.Hosting;
+using System.Web.Mvc;
 
 namespace MvcSDesign.Repository
 {
@@ -131,6 +132,8 @@ namespace MvcSDesign.Repository
                 tsf.emailID = st.emailID;
                 tsf.username = st.username;
                 tsf.password = st.password;
+                tsf.active = true;
+                tsf.rolltype = st.rolltype;
                 _dbContext.tblStaffs.Add(tsf);
                 _dbContext.SaveChanges();
             }
@@ -142,10 +145,10 @@ namespace MvcSDesign.Repository
             List<staff> lst = new List<staff>();
             try
             {
-                var res = (from item in _dbContext.tblStaffs
-                           where item.name.Contains(name)
-                           select new staff
-                           {
+                var res = ( from item in _dbContext.tblStaffs
+                            where item.name.Contains(name)
+                            select new staff
+                            {
                                staffID = item.staffID,
                                name = item.name,
                                designation = item.designation,
@@ -155,14 +158,15 @@ namespace MvcSDesign.Repository
                                phone = item.phone,
                                emailID = item.emailID,
                                username = item.username,
-                               password = item.password
+                               password = item.password,
+                               rolltype = item.rolltype,
+                               active =(bool) item.active ,
                            }).ToList();
                 lst = res.ToList();
             }
             catch (Exception ex)
             { }
-            
-
+             
             return lst;
         }
 
@@ -176,6 +180,7 @@ namespace MvcSDesign.Repository
                     return null;
                 obj.name = rec.name;
                 obj.rolltype = rec.rolltype;
+                obj.designation = rec.designation;
                 obj.staffID = rec.staffID;
 
             }
@@ -599,11 +604,143 @@ namespace MvcSDesign.Repository
             return op;
         }
 
-        public IEnumerable<tblStaff> getOperationDesigner()
+        public IEnumerable<SelectListItem> getOperationDesigner()
         {
-            return _dbContext.tblStaffs.ToList().OrderBy(x => x.name);
-        }
+            var obj = new List<SelectListItem>();
+            obj.Add(new SelectListItem
+            {
+                Text = "NA",
+                Value = "0",
 
+            });
+            try
+            {
+                var res = _dbContext.tblStaffs.Where(x => x.designation == "Tech").ToList();
+                foreach (var item in res)
+                {
+                    obj.Add(new SelectListItem
+                    {
+                        Text = item.name,
+                        Value = item.staffID.ToString(),
+
+                    });
+                }
+            }
+            catch (Exception ex) { }
+            return obj;
+
+        }
+        public string ProjectAssigning(operation op)
+        {
+           
+            try
+            {
+                tblTaskAssign taObj = new tblTaskAssign();
+                DateTime dt = DateTime.Today.Date;
+                string tm = DateTime.Now.Hour + ":" + DateTime.Now.Minute;// +":" + DateTime.Now.Second;
+                var res = _dbContext.tblProjectManagements.Where(x => x.pmID == op.pmID).FirstOrDefault();
+                res.projectstatus = "Assigned";
+                 
+                taObj.dt = dt;
+                taObj.tm = tm;
+                taObj.projectID = op.projectID;
+                taObj.designerID = int.Parse(op.designerName);
+                taObj.category = res.category;
+                taObj.subcatorgy = res.subcategory;
+                taObj.techRemark = op.techremark == null?"" : op.techremark.Trim();
+                taObj.pmID = op.pmID;
+
+                _dbContext.tblTaskAssigns.Add(taObj);
+                _dbContext.SaveChanges();
+                 
+                return "Success";
+            }
+            catch (Exception ex) { return ex.Message; }
+
+        }
+        public string ProjectRollBack(int pmID)
+        {
+            try
+            {
+                
+                var res = _dbContext.tblProjectManagements.Where(x => x.pmID == pmID).FirstOrDefault();
+
+                if (res != null)
+                {
+                    res.projectstatus = "Normal";
+                }
+
+                var res1 = _dbContext.tblTaskAssigns.Where(x => x.pmID == pmID).ToList();
+
+                foreach(var item in res1)
+                {
+                    item.designerID = 0;
+                }
+                _dbContext.SaveChanges();
+
+                return "Y";
+            }
+            catch (SqlException ex)
+            {
+                string ch = ex.Message;
+                return ch;
+            }
+
+        }
+        public string ProjectRollBack(string projectmanagementID, ref string whatsAppno, ref string opt, ref string category, ref string projectID)
+        {
+            try
+            {
+                string designerID = "";
+                whatsAppno = ""; opt = ""; category = ""; projectID = "";
+
+                //if (conDlb.State == ConnectionState.Closed) conDlb.Open();
+                //if (conAmtConfirm.State == ConnectionState.Closed) conAmtConfirm.Open();
+
+                //str = " Select designerID , opt, projectCategory, projectID From  " +
+                //      " tblDesignerTaskAssign Where projectmanagementID = " + projectmanagementID;
+                //cmd = new SqlCommand(str, conDlb);
+                //try
+                //{
+                //    SqlDataReader rd = cmd.ExecuteReader();
+                //    if (rd.Read())
+                //    {
+                //        designerID = rd["designerID"].ToString();
+                //        opt = rd["opt"].ToString();
+                //        projectID = rd["projectID"].ToString();
+                //        category = rd["projectCategory"].ToString();
+                //    }
+                //    rd.Close();
+                //}
+                //catch (Exception ex) { }
+
+
+                //str = " Update tblDesignerTaskAssign SET designerID = 0 " +
+                //     "  Where projectmanagementID = " + projectmanagementID;
+                //cmd = new SqlCommand(str, conDlb);
+                //cmd.ExecuteNonQuery();
+
+                //str = " Update tblProjectManagement SET projectStatus ='Normal', rowcolor  ='Normal'," +
+                //      " User_UploadedFileName='', User_UploadedReferenceFile='', " +
+                //      " User_pdfUpload ='', User_conceptImagUpload ='' Where " +
+                //      " projectmanagementID =" + projectmanagementID;
+                //cmd = new SqlCommand(str, conAmtConfirm);
+                //cmd.ExecuteNonQuery();
+
+
+                //str = " Select whatsappno From tblRegistration Where registrationID =" + designerID;
+                //cmd = new SqlCommand(str, conAmtConfirm);
+                //try
+                //{
+                //    whatsAppno = cmd.ExecuteScalar().ToString();
+                //}
+                //catch (Exception ex) { }
+
+                return "Y";
+            }
+            catch (Exception ex) { return ex.Message; }
+
+        }
 
         public IEnumerable<operation> getProjectAssign()
         {
@@ -716,7 +853,7 @@ namespace MvcSDesign.Repository
             int l;
             try
             {
-                if ((dname == null) || (dname == "0"))
+                if ((dname == null) || (dname == "0") || (dname == "NA"))
                 {
 
                     var query = (from pl in _dbContext.tblProjectDetails
@@ -737,23 +874,30 @@ namespace MvcSDesign.Repository
                                     plotSize = pl.plotSize,
                                     amount = pl.amount,
                                     projectlocation = pl.projectlocation,
-                                    //name = sf.name,
                                     remark = cw.remark,
-                                    pmID = cw.pmID
-                                    //operationID = cw.operationID
+                                    pmID = cw.pmID,
+                                    projetStatus = cw.projectstatus,
+                                    status = cw.status,
+                                    uploadFileName= cw.User_UploadedFileName,
                                 }).ToList();
                     int i = 1;
                     foreach (var item in query)
                     {
-                        diffDt = (DateTime.Now.Date - item.dt).TotalDays.ToString();
-                        //l = diffDt.IndexOf(".");
-                        //diffDt = diffDt.Substring(0, l);
-                        if (diffDt == "0")
-                            color = "#FFF";//White;
-                        else if (int.Parse(diffDt) == 1)
-                            color = "#ffa500";//Orange;
-                        else
-                            color = "#ff0000";//red;
+                        //diffDt = (DateTime.Now.Date - item.dt).TotalDays.ToString();
+                        //if (item.projetStatus == "Normal")
+                        //    color = "#FFF";//White;
+                        //else if (int.Parse(diffDt) == 1)
+                        //    color = "#ffa500";//Orange;
+                        //else
+                        //    color = "#ff0000";//red;
+
+                         
+                        if (item.projetStatus == "Normal")
+                           color = "#FFF";//White;
+                        else if (item.projetStatus == "Assigned")
+                           color = "#ffa500";//Orange;
+                         else
+                            color = "#E3FF00";//red;
 
                         prjlist.Add(new operation
                         {
@@ -770,7 +914,9 @@ namespace MvcSDesign.Repository
                             subcategory = item.subcatgory,
                             plotSize = item.plotSize,
                             amount = item.amount,
-                            //designerName = item.name,
+                            projectStatus = item.projetStatus,
+                            status = item.status,
+                            uploadFileName = item.uploadFileName == null?"": item.uploadFileName.Trim(),
                             remark = item.remark,
                             rowcolor = color
 
@@ -785,55 +931,72 @@ namespace MvcSDesign.Repository
                     int sid = int.Parse(dname);
                     var query = from pl in _dbContext.tblProjectDetails
                                 join cl in _dbContext.tblClients on pl.clientID equals cl.clientID
-                                join cw in _dbContext.tblOperations on pl.projectID equals cw.projectID
-                                join sf in _dbContext.tblStaffs on cw.staffID equals sf.staffID
-                                where (cw.staffID == sid)
+                                join pm in _dbContext.tblProjectManagements on pl.projectID equals pm.projectID
+                                join ta in _dbContext.tblTaskAssigns on  pm.pmID equals ta.pmID
+                                join sf in _dbContext.tblStaffs on ta.designerID equals sf.staffID
+                                where (ta.designerID == sid)
                                 select new
                                 {
-                                    dt = cw.dt,
+                                    dt = pm.dt,
                                     clientID = cl.clientID,
                                     clientName = cl.clientName,
                                     projectID = pl.projectID,
                                     projectType = pl.projectType,
-                                    projectCategory = cw.projectCategory,
+                                    category = pm.category,
+                                    subcatgory = pm.subcategory,
                                     package = pl.package,
                                     projectLevel = pl.projectLevel,
                                     plotSize = pl.plotSize,
                                     amount = pl.amount,
-                                    name = sf.name,
-                                    remark = cw.remark,
-                                    operationID = cw.operationID
+                                    projectlocation = pl.projectlocation,
+                                    remark = pm.remark,
+                                    pmID = pm.pmID,
+                                    projetStatus = pm.projectstatus,
+                                    status = pm.status,
+                                    uploadFileName = pm.User_UploadedFileName,
                                 };
                     int i = 1;
                     foreach (var item in query)
                     {
-                        diffDt = (DateTime.Now.Date - item.dt).TotalDays.ToString();
-                        //l = diffDt.IndexOf(".");
+                        //diffDt = (DateTime.Now.Date - item.dt).TotalDays.ToString();
+                        ////l = diffDt.IndexOf(".");
 
-                        //diffDt = diffDt.Substring(0, l);
-                        if (diffDt == "0")
+                        ////diffDt = diffDt.Substring(0, l);
+                        //if (diffDt == "0")
+                        //    color = "#FFF";//White;
+                        //else if (int.Parse(diffDt) ==1)
+                        //    color = "#ffa500";//Orange;
+                        //else
+                        //    color = "#ff0000";//red;
+
+                        if (item.projetStatus == "Normal")
                             color = "#FFF";//White;
-                        else if (int.Parse(diffDt) ==1)
+                        else if (item.projetStatus == "Assigned")
                             color = "#ffa500";//Orange;
                         else
-                            color = "#ff0000";//red;
+                            color = "#E3FF00";//red;
+
 
                         prjlist.Add(new operation
                         {
                             sno = i,
+                            pmID = item.pmID,
                             clientID = item.clientID,
                             projectID = item.projectID,
                             clientName = item.clientName,
                             projectType = item.projectType,
+                            projectlocation = item.projectlocation,
                             package = item.package,
                             projectLevel = item.projectLevel,
-                            projectCategory = item.projectCategory,
+                            category = item.category,
+                            subcategory = item.subcatgory,
                             plotSize = item.plotSize,
                             amount = item.amount,
-                            designerName = item.name,
+                            projectStatus = item.projetStatus,
+                            status = item.status,
+                            uploadFileName = item.uploadFileName == null ? "" : item.uploadFileName.Trim(),
                             remark = item.remark,
-                            rowcolor = color,
-                            pmID  = item.operationID,
+                            rowcolor = color
 
                         });
                         i++;

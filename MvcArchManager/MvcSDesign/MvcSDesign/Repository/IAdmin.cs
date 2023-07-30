@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MvcSDesign.EF;
 using MvcSDesign.Models;
 using System.Data;
+using System.Web.Mvc;
 
 namespace MvcSDesign.Repository
 {
@@ -43,7 +44,7 @@ namespace MvcSDesign.Repository
         string SavePRF(PRFModel obj);
 
         string DownloadPRF(string projectID, string filelocation);
-        IEnumerable<tblStaff> getOperationDesigner();
+        IEnumerable<SelectListItem> getOperationDesigner();
         IEnumerable<operation> getProjectAssign();
 
         //string SaveGMail(string gmailID, string pwd);
@@ -51,13 +52,12 @@ namespace MvcSDesign.Repository
         //string RemoveGMailAccount(int id);
         string SaveProjectAssigned(string projectID, string clientID, string projectCategory, string designerAmount);
 
+        string ProjectRollBack(int pmID);
+
         // Operation
         //IEnumerable<operation> getCurrentWorkingList(string dname);
         IEnumerable<operation> getDesignerProjectAmount(int designerID);
         string DesignerAmountCancel(int operationID);
-
-
-         
         string CompleteCurrentWorking(int operationID);
 
         string CurrentWorkingRemarkUpdate(int opID, string remark);
@@ -66,6 +66,8 @@ namespace MvcSDesign.Repository
         string AmountReceive(int cid, string amount, string remark);
         string SavePayDesigner(int sid, int amount, string remark);
 
+
+        string ProjectAssigning(operation op);
         operation SearchAddProject(int projectID);
         string SaveNewProject(int projectID, string pcategory, string dname, int amount);
         staff getLogin(logincls lgn);

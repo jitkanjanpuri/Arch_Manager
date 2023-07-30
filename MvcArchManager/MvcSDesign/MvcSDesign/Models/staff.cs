@@ -44,10 +44,12 @@ namespace MvcSDesign.Models
         public string password { get; set; }
 
         public string rolltype { get; set; }
-
+        public bool active { get; set; }
         public int prjAmount { get; set; }
         public int paidAmount { get; set; }
         public int balance { get; set; }
         public IEnumerable<SelectListItem> designerList { get; set; }
+
+        public IEnumerable<SelectListItem> rollList { get; set; }
     }
 }

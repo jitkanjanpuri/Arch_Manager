@@ -66,7 +66,7 @@
                             <div class="col-xl-4 col-md-6">
                                 <div class="form-group mb-3">
                                     <label>Name</label>
-                                    <input type="text" ng-model="txtSearchName" class="form-control" placeholder="Designer Name " />
+                                    <input type="text" ng-model="txtSearchName" class="form-control" placeholder="Name " />
                                 </div>
                             </div>
                          </div>
@@ -109,11 +109,14 @@
                                                         <th>Phone</th>
                                                         <th>Mobile</th>
                                                         <th>Email</th>
+                                                        <th>Designation</th>
+                                                        <th>Roll</th>
                                                         <th>User name</th>
                                                         <th>Password</th>
+                                                      
                                                         <th>Edit</th>
                                                         <th>Delete </th>
-                                                        @*<th>Pay</th>*@
+                                                    
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -124,8 +127,11 @@
                                                         <td> {{item.phone}}  </td>
                                                         <td> {{item.mobile}}</td>
                                                         <td> {{item.emailID}} </td>
+                                                        <td> {{item.designation}}  </td>
+                                                        <td> {{item.rolltype}}  </td>
                                                         <td> {{item.username}}  </td>
                                                         <td> {{item.password}} </td>
+                                                        
                                                         <td>
 
                                                             <a href="/Client/EditDesigner?id={{item.staffID}}" class="btn btn-primary waves-effect waves-light w-sm">
@@ -139,15 +145,8 @@
                                                                 @*<i class="mdi mdi-trash-can d-block font-size-16"></i>*@ Delete
                                                             </button>
                                                         </td>
-                                                        <!--<td>
-                                                            <button type="button" class="btn btn-success waves-effect waves-light w-sm" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2" ng-click="GetDesigner(item.staffID , item.name)">-->
-                                                                @*<i class="mdi mdi-check d-block font-size-16"></i>*@<!--Pay
-                                                            </button>-->
+                                                        
 
-                                                            @*<a href="/Client/EditDesigner?id={{item.staffID}}">GoEdit</a>*@
-                                                        <!--</td>-->
-                                                        @*<td>*@
-                                            
                                                     </tr>
 
 
@@ -188,10 +187,7 @@
                                             </div>
                                         </div>
                                     </div>
-
-
-
-
+                                     
 
                                     <div class="modal fade bs-example-modal-center2" tabindex="-1" role="dialog" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">

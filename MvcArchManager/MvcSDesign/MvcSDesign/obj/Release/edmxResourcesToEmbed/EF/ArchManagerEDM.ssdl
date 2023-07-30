@@ -100,18 +100,6 @@
     <Property Name="windowlintel" Type="nvarchar" MaxLength="100" />
     <Property Name="projectID" Type="bigint" Nullable="false" />
   </EntityType>
-  <EntityType Name="tblProfile">
-    <Key>
-      <PropertyRef Name="profileID" />
-    </Key>
-    <Property Name="profileID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="name" Type="varchar" MaxLength="250" Nullable="false" />
-    <Property Name="companyName" Type="varchar" MaxLength="250" />
-    <Property Name="profession" Type="varchar" MaxLength="50" />
-    <Property Name="mobileno" Type="varchar" MaxLength="50" />
-    <Property Name="emailID" Type="varchar" MaxLength="50" />
-    <Property Name="password" Type="varchar" MaxLength="50" />
-  </EntityType>
   <EntityType Name="tblProjectDetail">
     <Key>
       <PropertyRef Name="projectID" />
@@ -142,6 +130,7 @@
     <Property Name="projectstatus" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="status" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="remark" Type="varchar" MaxLength="200" />
+    <Property Name="User_UploadedFileName" Type="varchar" MaxLength="500" />
   </EntityType>
   <EntityType Name="tblProjectSiteVisit">
     <Key>
@@ -169,6 +158,7 @@
     <Property Name="rolltype" Type="varchar" MaxLength="50" />
     <Property Name="username" Type="varchar" MaxLength="50" />
     <Property Name="password" Type="varchar" MaxLength="50" />
+    <Property Name="active" Type="bit" />
   </EntityType>
   <EntityType Name="tblStaffLedger">
     <Key>
@@ -199,6 +189,22 @@
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="status" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblTaskAssign">
+    <Key>
+      <PropertyRef Name="taskID" />
+    </Key>
+    <Property Name="taskID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="dt" Type="datetime" Nullable="false" />
+    <Property Name="tm" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="projectID" Type="bigint" Nullable="false" />
+    <Property Name="designerID" Type="int" Nullable="false" />
+    <Property Name="category" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="subcatorgy" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="techRemark" Type="varchar" MaxLength="500" />
+    <Property Name="submitDate" Type="datetime" />
+    <Property Name="submitTime" Type="varchar" MaxLength="50" />
+    <Property Name="pmID" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="FK__tblClient__compa__5EBF139D">
     <End Role="tblCompanyProfile" Type="Self.tblCompanyProfile" Multiplicity="1" />
@@ -332,6 +338,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_tblTaskAssign_pmID">
+    <End Role="tblProjectManagement" Type="Self.tblProjectManagement" Multiplicity="1" />
+    <End Role="tblTaskAssign" Type="Self.tblTaskAssign" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProjectManagement">
+        <PropertyRef Name="pmID" />
+      </Principal>
+      <Dependent Role="tblTaskAssign">
+        <PropertyRef Name="pmID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblTaskAssign_projectID">
+    <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
+    <End Role="tblTaskAssign" Type="Self.tblTaskAssign" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProjectDetail">
+        <PropertyRef Name="projectID" />
+      </Principal>
+      <Dependent Role="tblTaskAssign">
+        <PropertyRef Name="projectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="ArchManagerDBModelStoreContainer">
     <EntitySet Name="tblAmountReceive" EntityType="Self.tblAmountReceive" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblClient" EntityType="Self.tblClient" Schema="dbo" store:Type="Tables" />
@@ -340,7 +370,6 @@
     <EntitySet Name="tblGmailAccount" EntityType="Self.tblGmailAccount" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblOperation" EntityType="Self.tblOperation" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblPRF" EntityType="Self.tblPRF" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="tblProfile" EntityType="Self.tblProfile" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProjectDetail" EntityType="Self.tblProjectDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProjectManagement" EntityType="Self.tblProjectManagement" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProjectSiteVisit" EntityType="Self.tblProjectSiteVisit" Schema="dbo" store:Type="Tables" />
@@ -348,6 +377,7 @@
     <EntitySet Name="tblStaffLedger" EntityType="Self.tblStaffLedger" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblStaffPaid" EntityType="Self.tblStaffPaid" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblStatus" EntityType="Self.tblStatus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblTaskAssign" EntityType="Self.tblTaskAssign" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK__tblClient__compa__5EBF139D" Association="Self.FK__tblClient__compa__5EBF139D">
       <End Role="tblCompanyProfile" EntitySet="tblCompanyProfile" />
       <End Role="tblClient" EntitySet="tblClient" />
@@ -391,6 +421,14 @@
     <AssociationSet Name="FK_tblStaffPaid_staffID" Association="Self.FK_tblStaffPaid_staffID">
       <End Role="tblStaff" EntitySet="tblStaff" />
       <End Role="tblStaffPaid" EntitySet="tblStaffPaid" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblTaskAssign_pmID" Association="Self.FK_tblTaskAssign_pmID">
+      <End Role="tblProjectManagement" EntitySet="tblProjectManagement" />
+      <End Role="tblTaskAssign" EntitySet="tblTaskAssign" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblTaskAssign_projectID" Association="Self.FK_tblTaskAssign_projectID">
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+      <End Role="tblTaskAssign" EntitySet="tblTaskAssign" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

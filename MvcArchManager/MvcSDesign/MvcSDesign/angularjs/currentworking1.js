@@ -1,5 +1,5 @@
 ﻿var app = angular.module("myApp", [])
-app.controller("myController", function ($scope, $http) {
+app.controller("myController", function ($scope, $http, cw) {
 
     $scope.record = "";
     $scope.normal = "0";
@@ -14,39 +14,38 @@ app.controller("myController", function ($scope, $http) {
     var operationID = 0;
     var varCategory = "";
 
-    //cw.getRecord().then(function (d) {
-    //    //$scope.currentworkinglist = d.data;
-    //    //$scope.loading = true;
+    cw.getRecord().then(function (d) {
+        $scope.designerList = d.data;
+        $scope.dname = $scope.designerlst[0];
+        $scope.assignDesignerList = d.data;
+        $scope.assignDesigner = $scope.assignDesignerList[0];
+        alert("Assign list")
 
-    //    //  getDesigner();
+    });
+
+    //function getDesigner() {
+    //    $http({
+    //        url: "/Admin/getOperationDesigner",
+    //        method: "POST",
+    //        dataType: 'json',
+    //        contentType: 'application/json;charaset=utf-8'
+    //    }).then(function (d) {
+    //        $scope.designerlst = d.data;
+    //        $scope.dname = $scope.designerlst[0];
+    //        $scope.designerList1 = d.data;
+    //        $scope.dName1 = $scope.designerList1[0];
+
+    //        statusCount();
 
 
-
-    //});
-
-    function getDesigner() {
-        $http({
-            url: "/Admin/getOperationDesigner",
-            method: "POST",
-            dataType: 'json',
-            contentType: 'application/json;charaset=utf-8'
-        }).then(function (d) {
-            $scope.designerlst = d.data;
-            $scope.dname = $scope.designerlst[0];
-            $scope.designerList1 = d.data;
-            $scope.dName1 = $scope.designerList1[0];
-
-            statusCount();
-
-
-        }).error(function (err) {
-            alert("Error: " + err);
-        });
-    }
+    //    }).error(function (err) {
+    //        alert("Error: " + err);
+    //    });
+    //}
 
     $scope.GetSubcategory = function () {
 
-        
+
 
         if ($scope.category == "Presentation Drawing") {
             $scope.subcategory = ["Presentation Drawing With Furniture Layout", "Floor Plans Ground To Terrace"];
@@ -113,7 +112,7 @@ app.controller("myController", function ($scope, $http) {
     //}
 
     $scope.Search = function () {
-        $scope.err = "";
+        $scope.lblMsg = "";
         $scope.workinglist = null;
         $scope.loading = false;
         $http({
@@ -121,7 +120,7 @@ app.controller("myController", function ($scope, $http) {
             dataType: 'json',
             method: 'POST',
             params: {
-                dname :"0",
+                dname: $scope.dname,
                 category: $scope.category,
                 subcategory: $scope.subcategoryName
             },
@@ -130,10 +129,10 @@ app.controller("myController", function ($scope, $http) {
             $scope.loading = true;
 
             $scope.workinglist = d.data;
-           
-           
+
+
             if (d.data.length == 0) {
-                $scope.err =" Record not available";
+                $scope.lblMsg = " Record not available";
                 return false;
             }
 
@@ -165,8 +164,8 @@ app.controller("myController", function ($scope, $http) {
                 alert(" Record not available");
                 return false;
             }
-            $scope.txtCName1 = d.data.clientName;
-            $scope.txtPType = d.data.projectType;
+            //$scope.txtCName1 = d.data.clientName;
+            //$scope.txtPType = d.data.projectType;
 
 
         }).error(function (err) {
@@ -323,8 +322,7 @@ app.controller("myController", function ($scope, $http) {
 
 
     $scope.CompleteCurrentWorking = function () {
-        //projectID: $scope.confirmprojectID,
-        //pcategory: varCategory
+        
         $http({
             url: "/Admin/CompleteCurrentWorking",
             dataType: 'json',
@@ -383,16 +381,12 @@ app.controller("myController", function ($scope, $http) {
 
 
 });
+ 
+app.factory('cw', function ($http) {
+    var fac = {};
+    fac.getRecord = function () {
+        return $http.get('/Admin/getOperationDesigner');
+    }
 
-
-
-//app.factory('cw', function ($http) {
-
-//    var fac = {};
-//    fac.getRecord = function () {
-//        return $http.get('/Admin/getCurrentWorkingList');
-//    }
-//    return fac;
-//});
-
-
+    return fac;
+});
