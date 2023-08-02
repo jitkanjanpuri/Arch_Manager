@@ -11,7 +11,8 @@ using System.Net.Mail;
 using System.Globalization;
 
 using System.Threading;
-  
+using System.Data.SqlClient;
+
 namespace MvcSDesign.Repository
 {
     public class ClientRepository :IClient
@@ -30,19 +31,29 @@ namespace MvcSDesign.Repository
             tblClient obj = new tblClient();
             try
             {
-                obj.clientName = cnt.clientName;
-                obj.orgName = cnt.orgName;
-                obj.address = cnt.address;
-                obj.city = cnt.city;
+                var res = _dbContext.tblCompanyProfiles.FirstOrDefault();
+                int companyID = 0;
+                if(res !=null)
+                {
+                    companyID = res.companyID;
+                }
+                obj.companyID = companyID;
+                obj.clientName = cnt.clientName.Trim();
+                obj.orgName = cnt.orgName.Trim();
+                obj.address = cnt.address.Trim();
+                obj.city = cnt.city.Trim();
                 obj.phone = cnt.phone;
                 obj.mobile = cnt.mobile;
-                obj.emailID = cnt.emailID;
+                obj.emailID = cnt.emailID.Trim();
                 obj.state = cnt.state;
+                obj.remark = "-";
 
                 _dbContext.tblClients.Add(obj);
                 _dbContext.SaveChanges();
             }
-            catch (Exception ex) { }
+            catch (SqlException ex) {
+                string ch = ex.Message;
+            }
         }
         public long InsertQuotation(quotation qtn)
         {
