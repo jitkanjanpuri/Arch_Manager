@@ -31,6 +31,7 @@ namespace MvcSDesign.EF
         public string mobileno { get; set; }
         public string phoneno { get; set; }
         public string emailID { get; set; }
+        public string pwd { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblClient> tblClients { get; set; }

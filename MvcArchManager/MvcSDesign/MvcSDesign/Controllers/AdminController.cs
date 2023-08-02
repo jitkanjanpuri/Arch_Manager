@@ -551,14 +551,67 @@ namespace MvcSDesign.Controllers
             //}
             return Json(lst, JsonRequestBehavior.AllowGet);
         }
+
+
         
         public JsonResult SearchCurrentWorking(string dname, string category,   string subcategory)
         {
-            var lst = _IAmn.GetCurrentWorking(dname,category, subcategory);
-            return Json(lst, JsonRequestBehavior.AllowGet);
+            return Json(_IAmn.GetCurrentWorking(dname, category, subcategory), JsonRequestBehavior.AllowGet);
         }
 
-         
+        public FileResult DownloadDWG(string filename, string pmID, string projectID)
+        {
+            string ext = Path.GetExtension(filename);
+            string fpath= _IAmn.GetFilePath(int.Parse(pmID),  filename);
+            string contentType = "application/octet-stream";
+            return File(fpath, contentType, filename);
+        }
+
+
+
+        public JsonResult TaskSendToClient(string pmID, string pid, string[] filelist, string gmail)
+        {
+            string uploadedFileName = "",   whatsAppFilepath = "", whatsAppno = "", socialmedia = "";
+            if (_IAmn.SendTaskMailToClien(int.Parse(pmID), int.Parse(pid),filelist, out uploadedFileName,gmail) == "Y")
+            {
+                string ch = "";// _IAmn.DeleteProjectManagement(pid,   uploadedFileName);
+
+            }
+            List<SelectListItem> para = new List<SelectListItem>();
+            para.Add(new SelectListItem { Text = "", Value = "" });
+            para.Add(new SelectListItem { Text = socialmedia, Value = socialmedia });
+
+
+            //if ((whatsAppno != "") && ((projectCategory == "Elevation") || (projectCategory == "Revised Elevation") || (projectCategory == "Final View") || (projectCategory == "Draft View") || (projectCategory == "Revised Draft")))
+            //{
+            //    string[] arr = whatsAppFilepath.Split('#');
+            //    for (int i = 0; i < arr.Length; i++)
+            //    {
+            //        //string url = "http://173.248.151.174:89/WhatsAppMsg/" + arr[i];
+            //        //var client = new RestClient("https://panel.rapiwha.com/send_message.php?apikey=0UFVPJN62DTQFVRBUQFN&number=91" + whatsAppno + "&text=" + url + " ");
+            //        //var request = new RestRequest(Method.GET);
+            //        //IRestResponse response = client.Execute(request);
+
+                    
+
+            //    }
+
+            //    para.Add(new SelectListItem { Text = "WhatsApp", Value = "WhatsApp" });
+            //}
+            //else
+            //{
+            //    para.Add(new SelectListItem { Text = "No", Value = "No" });
+            //}
+
+            return Json(para, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        public JsonResult AddSearchProject_ClientName(string pid)
+        {
+            return Json(_IAmn.AddSearchProject_ClientName(int.Parse(pid)), JsonRequestBehavior.AllowGet);
+        }
         public FileResult DownloadPRF(string projectID, string location)
         {
             string pdfpath = _IAmn.DownloadPRF(projectID, location);
@@ -732,11 +785,10 @@ namespace MvcSDesign.Controllers
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult SaveNewProject(string projectID, string pcategory, string dname, string amount)
+        public JsonResult SaveNewProject(operation obj)
         {
-            operation obj = new operation();
-            obj.clientName =   _IAmn.SaveNewProject(int.Parse(projectID), pcategory , dname, int.Parse(amount));
-            return Json(obj, JsonRequestBehavior.AllowGet);
+            
+            return Json(_IAmn.SaveNewProject(obj), JsonRequestBehavior.AllowGet);
 
            
         }
@@ -808,7 +860,7 @@ namespace MvcSDesign.Controllers
                 //        break;
                 //}
                 //url += "\n\n Thanks \n";
-                //url += " Team DSuite Technical";
+                //url += " Team Arch Manager Technical";
                 ////var client = new RestClient("https://panel.rapiwha.com/send_message.php?apikey=0UFVPJN62DTQFVRBUQFN&number=91" + whatsAppno + "&text=" + url + " ");
                 //var client = new RestClient("https://panel.rapiwha.com/send_message.php?apikey=0UFVPJN62DTQFVRBUQFN&number=" + whatsAppno + "&text=" + url + " ");
 

@@ -29,7 +29,6 @@ namespace MvcSDesign.EF
         public virtual DbSet<tblClient> tblClients { get; set; }
         public virtual DbSet<tblClientLedger> tblClientLedgers { get; set; }
         public virtual DbSet<tblCompanyProfile> tblCompanyProfiles { get; set; }
-        public virtual DbSet<tblGmailAccount> tblGmailAccounts { get; set; }
         public virtual DbSet<tblOperation> tblOperations { get; set; }
         public virtual DbSet<tblPRF> tblPRFs { get; set; }
         public virtual DbSet<tblProjectDetail> tblProjectDetails { get; set; }
@@ -40,5 +39,6 @@ namespace MvcSDesign.EF
         public virtual DbSet<tblProjectManagement> tblProjectManagements { get; set; }
         public virtual DbSet<tblProjectSiteVisit> tblProjectSiteVisits { get; set; }
         public virtual DbSet<tblTaskAssign> tblTaskAssigns { get; set; }
+        public virtual DbSet<tblProjectUploadFile> tblProjectUploadFiles { get; set; }
     }
 }

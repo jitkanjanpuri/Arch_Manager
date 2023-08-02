@@ -12,10 +12,17 @@ namespace MvcSDesign.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class tblGmailAccount
+    public partial class tblProjectUploadFile
     {
-        public int id { get; set; }
-        public string gmailID { get; set; }
-        public string pwd { get; set; }
+        public int uploadfileID { get; set; }
+        public System.DateTime dt { get; set; }
+        public Nullable<long> projectID { get; set; }
+        public int designerID { get; set; }
+        public string category { get; set; }
+        public string subcategory { get; set; }
+        public string filename { get; set; }
+    
+        public virtual tblProjectDetail tblProjectDetail { get; set; }
+        public virtual tblStaff tblStaff { get; set; }
     }
 }

@@ -48,6 +48,7 @@
     <EntitySetMapping Name="tblCompanyProfiles">
       <EntityTypeMapping TypeName="ArchManagerDBModel.tblCompanyProfile">
         <MappingFragment StoreEntitySet="tblCompanyProfile">
+          <ScalarProperty Name="pwd" ColumnName="pwd" />
           <ScalarProperty Name="companyID" ColumnName="companyID" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="orgName" ColumnName="orgName" />
@@ -59,15 +60,6 @@
           <ScalarProperty Name="mobileno" ColumnName="mobileno" />
           <ScalarProperty Name="phoneno" ColumnName="phoneno" />
           <ScalarProperty Name="emailID" ColumnName="emailID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="tblGmailAccounts">
-      <EntityTypeMapping TypeName="ArchManagerDBModel.tblGmailAccount">
-        <MappingFragment StoreEntitySet="tblGmailAccount">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="gmailID" ColumnName="gmailID" />
-          <ScalarProperty Name="pwd" ColumnName="pwd" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -219,6 +211,19 @@
           <ScalarProperty Name="tm" ColumnName="tm" />
           <ScalarProperty Name="dt" ColumnName="dt" />
           <ScalarProperty Name="taskID" ColumnName="taskID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblProjectUploadFiles">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectUploadFile">
+        <MappingFragment StoreEntitySet="tblProjectUploadFile">
+          <ScalarProperty Name="filename" ColumnName="filename" />
+          <ScalarProperty Name="subcategory" ColumnName="subcategory" />
+          <ScalarProperty Name="category" ColumnName="category" />
+          <ScalarProperty Name="designerID" ColumnName="designerID" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="uploadfileID" ColumnName="uploadfileID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

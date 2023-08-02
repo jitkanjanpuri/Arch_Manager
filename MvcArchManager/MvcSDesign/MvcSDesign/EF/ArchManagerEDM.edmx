@@ -61,14 +61,7 @@
           <Property Name="mobileno" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="phoneno" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="emailID" Type="varchar" MaxLength="100" Nullable="false" />
-        </EntityType>
-        <EntityType Name="tblGmailAccount">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="gmailID" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="pwd" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="pwd" Type="varchar" MaxLength="40" Nullable="false" />
         </EntityType>
         <EntityType Name="tblOperation">
           <Key>
@@ -146,6 +139,18 @@
           <Property Name="projectID" Type="bigint" Nullable="false" />
           <Property Name="sitePhotoFile" Type="varchar" MaxLength="200" />
           <Property Name="remark" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tblProjectUploadFile">
+          <Key>
+            <PropertyRef Name="uploadfileID" />
+          </Key>
+          <Property Name="uploadfileID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dt" Type="datetime" Nullable="false" />
+          <Property Name="projectID" Type="bigint" />
+          <Property Name="designerID" Type="int" Nullable="false" />
+          <Property Name="category" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="subcategory" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="filename" Type="varchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <EntityType Name="tblStaff">
           <Key>
@@ -319,6 +324,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblProjectUploadFile_designerID">
+          <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
+          <End Role="tblProjectUploadFile" Type="Self.tblProjectUploadFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStaff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="tblProjectUploadFile">
+              <PropertyRef Name="designerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProjectUploadFile_projectID">
+          <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="0..1" />
+          <End Role="tblProjectUploadFile" Type="Self.tblProjectUploadFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProjectDetail">
+              <PropertyRef Name="projectID" />
+            </Principal>
+            <Dependent Role="tblProjectUploadFile">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblStaffLedger_staffID">
           <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
           <End Role="tblStaffLedger" Type="Self.tblStaffLedger" Multiplicity="*" />
@@ -372,12 +401,12 @@
           <EntitySet Name="tblClient" EntityType="Self.tblClient" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblClientLedger" EntityType="Self.tblClientLedger" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblCompanyProfile" EntityType="Self.tblCompanyProfile" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tblGmailAccount" EntityType="Self.tblGmailAccount" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOperation" EntityType="Self.tblOperation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPRF" EntityType="Self.tblPRF" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProjectDetail" EntityType="Self.tblProjectDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProjectManagement" EntityType="Self.tblProjectManagement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProjectSiteVisit" EntityType="Self.tblProjectSiteVisit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblProjectUploadFile" EntityType="Self.tblProjectUploadFile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblStaff" EntityType="Self.tblStaff" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblStaffLedger" EntityType="Self.tblStaffLedger" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblStaffPaid" EntityType="Self.tblStaffPaid" Schema="dbo" store:Type="Tables" />
@@ -418,6 +447,14 @@
           <AssociationSet Name="FK_tblProjectSiteVisit_projectID" Association="Self.FK_tblProjectSiteVisit_projectID">
             <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
             <End Role="tblProjectSiteVisit" EntitySet="tblProjectSiteVisit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProjectUploadFile_designerID" Association="Self.FK_tblProjectUploadFile_designerID">
+            <End Role="tblStaff" EntitySet="tblStaff" />
+            <End Role="tblProjectUploadFile" EntitySet="tblProjectUploadFile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProjectUploadFile_projectID" Association="Self.FK_tblProjectUploadFile_projectID">
+            <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+            <End Role="tblProjectUploadFile" EntitySet="tblProjectUploadFile" />
           </AssociationSet>
           <AssociationSet Name="FK_tblStaffLedger_staffID" Association="Self.FK_tblStaffLedger_staffID">
             <End Role="tblStaff" EntitySet="tblStaff" />
@@ -503,14 +540,7 @@
           <Property Name="phoneno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="emailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="tblClients" Relationship="Self.FK__tblClient__compa__5EBF139D" FromRole="tblCompanyProfile" ToRole="tblClient" />
-        </EntityType>
-        <EntityType Name="tblGmailAccount">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="gmailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="pwd" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pwd" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="tblOperation">
           <Key>
@@ -573,6 +603,7 @@
           <NavigationProperty Name="tblProjectSiteVisits" Relationship="ArchManagerDBModel.FK_tblProjectSiteVisit_projectID" FromRole="tblProjectDetail" ToRole="tblProjectSiteVisit" />
           <Property Name="finalizeAmount" Type="Int64" />
           <NavigationProperty Name="tblTaskAssigns" Relationship="ArchManagerDBModel.FK_tblTaskAssign_projectID" FromRole="tblProjectDetail" ToRole="tblTaskAssign" />
+          <NavigationProperty Name="tblProjectUploadFiles" Relationship="ArchManagerDBModel.FK_tblProjectUploadFile_projectID" FromRole="tblProjectDetail" ToRole="tblProjectUploadFile" />
         </EntityType>
         <EntityType Name="tblStaff">
           <Key>
@@ -595,6 +626,7 @@
           <NavigationProperty Name="tblStaffPaids" Relationship="Self.FK_tblStaffPaid_staffID" FromRole="tblStaff" ToRole="tblStaffPaid" />
           <NavigationProperty Name="tblTaskAssigns" Relationship="ArchManagerDBModel.FK_tblTaskAssign_designerID" FromRole="tblStaff" ToRole="tblTaskAssign" />
           <Property Name="active" Type="Boolean" />
+          <NavigationProperty Name="tblProjectUploadFiles" Relationship="ArchManagerDBModel.FK_tblProjectUploadFile_designerID" FromRole="tblStaff" ToRole="tblProjectUploadFile" />
         </EntityType>
         <EntityType Name="tblStaffLedger">
           <Key>
@@ -741,7 +773,6 @@
           <EntitySet Name="tblClients" EntityType="Self.tblClient" />
           <EntitySet Name="tblClientLedgers" EntityType="Self.tblClientLedger" />
           <EntitySet Name="tblCompanyProfiles" EntityType="Self.tblCompanyProfile" />
-          <EntitySet Name="tblGmailAccounts" EntityType="Self.tblGmailAccount" />
           <EntitySet Name="tblOperations" EntityType="Self.tblOperation" />
           <EntitySet Name="tblPRFs" EntityType="Self.tblPRF" />
           <EntitySet Name="tblProjectDetails" EntityType="Self.tblProjectDetail" />
@@ -807,6 +838,15 @@
           <AssociationSet Name="FK_tblTaskAssign_designerID" Association="ArchManagerDBModel.FK_tblTaskAssign_designerID">
             <End Role="tblStaff" EntitySet="tblStaffs" />
             <End Role="tblTaskAssign" EntitySet="tblTaskAssigns" />
+          </AssociationSet>
+          <EntitySet Name="tblProjectUploadFiles" EntityType="ArchManagerDBModel.tblProjectUploadFile" />
+          <AssociationSet Name="FK_tblProjectUploadFile_projectID" Association="ArchManagerDBModel.FK_tblProjectUploadFile_projectID">
+            <End Role="tblProjectDetail" EntitySet="tblProjectDetails" />
+            <End Role="tblProjectUploadFile" EntitySet="tblProjectUploadFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProjectUploadFile_designerID" Association="ArchManagerDBModel.FK_tblProjectUploadFile_designerID">
+            <End Role="tblStaff" EntitySet="tblStaffs" />
+            <End Role="tblProjectUploadFile" EntitySet="tblProjectUploadFiles" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="tblProjectManagement">
@@ -915,6 +955,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="tblProjectUploadFile">
+          <Key>
+            <PropertyRef Name="uploadfileID" />
+          </Key>
+          <Property Name="uploadfileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="projectID" Type="Int64" />
+          <Property Name="designerID" Type="Int32" Nullable="false" />
+          <Property Name="category" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="subcategory" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="filename" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblProjectDetail" Relationship="ArchManagerDBModel.FK_tblProjectUploadFile_projectID" FromRole="tblProjectUploadFile" ToRole="tblProjectDetail" />
+          <NavigationProperty Name="tblStaff" Relationship="ArchManagerDBModel.FK_tblProjectUploadFile_designerID" FromRole="tblProjectUploadFile" ToRole="tblStaff" />
+        </EntityType>
+        <Association Name="FK_tblProjectUploadFile_projectID">
+          <End Type="ArchManagerDBModel.tblProjectDetail" Role="tblProjectDetail" Multiplicity="0..1" />
+          <End Type="ArchManagerDBModel.tblProjectUploadFile" Role="tblProjectUploadFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProjectDetail">
+              <PropertyRef Name="projectID" />
+            </Principal>
+            <Dependent Role="tblProjectUploadFile">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProjectUploadFile_designerID">
+          <End Type="ArchManagerDBModel.tblStaff" Role="tblStaff" Multiplicity="1" />
+          <End Type="ArchManagerDBModel.tblProjectUploadFile" Role="tblProjectUploadFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStaff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="tblProjectUploadFile">
+              <PropertyRef Name="designerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -968,6 +1046,7 @@
           <EntitySetMapping Name="tblCompanyProfiles">
             <EntityTypeMapping TypeName="ArchManagerDBModel.tblCompanyProfile">
               <MappingFragment StoreEntitySet="tblCompanyProfile">
+                <ScalarProperty Name="pwd" ColumnName="pwd" />
                 <ScalarProperty Name="companyID" ColumnName="companyID" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="orgName" ColumnName="orgName" />
@@ -979,15 +1058,6 @@
                 <ScalarProperty Name="mobileno" ColumnName="mobileno" />
                 <ScalarProperty Name="phoneno" ColumnName="phoneno" />
                 <ScalarProperty Name="emailID" ColumnName="emailID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblGmailAccounts">
-            <EntityTypeMapping TypeName="ArchManagerDBModel.tblGmailAccount">
-              <MappingFragment StoreEntitySet="tblGmailAccount">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="gmailID" ColumnName="gmailID" />
-                <ScalarProperty Name="pwd" ColumnName="pwd" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1139,6 +1209,19 @@
                 <ScalarProperty Name="tm" ColumnName="tm" />
                 <ScalarProperty Name="dt" ColumnName="dt" />
                 <ScalarProperty Name="taskID" ColumnName="taskID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProjectUploadFiles">
+            <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectUploadFile">
+              <MappingFragment StoreEntitySet="tblProjectUploadFile">
+                <ScalarProperty Name="filename" ColumnName="filename" />
+                <ScalarProperty Name="subcategory" ColumnName="subcategory" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="designerID" ColumnName="designerID" />
+                <ScalarProperty Name="projectID" ColumnName="projectID" />
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="uploadfileID" ColumnName="uploadfileID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -39,7 +39,7 @@ namespace MvcSDesign.Controllers
                 else
                 {
 
-                    return RedirectToAction("Index", "Designer");
+                    return RedirectToAction("operation", "Render");
                 }
 
             }

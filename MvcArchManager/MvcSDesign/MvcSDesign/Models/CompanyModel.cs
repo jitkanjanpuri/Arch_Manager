@@ -41,10 +41,16 @@ namespace MvcSDesign.Models
         [MinLength(10)]
         public string mobile { get; set; }
 
-       
+        [Required(ErrorMessage = "Enter Mail ID")]
         [DataType(DataType.EmailAddress)]
         [EmailAddress]
         public string emailID { get; set; }
+
+
+        [Required(ErrorMessage = "Enter Password")]
+        [MaxLength(20)]
+        [MinLength(5)]
+        public string password { get; set; }
         public string phone { get; set; }
 
         bool active { get; set; }

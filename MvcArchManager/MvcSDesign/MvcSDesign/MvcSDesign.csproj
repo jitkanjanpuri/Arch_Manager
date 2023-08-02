@@ -204,6 +204,7 @@
     <Compile Include="Controllers\DesignerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\RenderController.cs" />
     <Compile Include="EF\ArchManagerEDM.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -231,9 +232,6 @@
     <Compile Include="EF\tblCompanyProfile.cs">
       <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\tblGmailAccount.cs">
-      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\tblOperation.cs">
       <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
@@ -247,6 +245,9 @@
       <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblProjectSiteVisit.cs">
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\tblProjectUploadFile.cs">
       <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblStaff.cs">
@@ -282,11 +283,14 @@
     <Compile Include="Models\registration.cs" />
     <Compile Include="Models\SiteVisitModel.cs" />
     <Compile Include="Models\staff.cs" />
+    <Compile Include="Models\TaskListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AdminRepository.cs" />
     <Compile Include="Repository\ClientRepository.cs" />
     <Compile Include="Repository\IAdmin.cs" />
     <Compile Include="Repository\IClient.cs" />
+    <Compile Include="Repository\IUser.cs" />
+    <Compile Include="Repository\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="angularjs\adminDashboard.js" />
@@ -327,6 +331,39 @@
     <Content Include="angularjs\ReportQuotation.js" />
     <Content Include="angularjs\SiteVisit.js" />
     <Content Include="angularjs\test.js" />
+    <Content Include="assetsUser\css\bootstrap.min.css" />
+    <Content Include="assetsUser\css\dataTables.bootstrap4.min.css" />
+    <Content Include="assetsUser\css\font-awesome-all.min.css" />
+    <Content Include="assetsUser\css\login.css" />
+    <Content Include="assetsUser\css\main.css" />
+    <Content Include="assetsUser\css\style.css" />
+    <Content Include="assetsUser\fonts\fa-solid-900.svg" />
+    <Content Include="assetsUser\fonts\Pe-icon-7-stroke.svg" />
+    <Content Include="assetsUser\images\avatars\10.jpg" />
+    <Content Include="assetsUser\images\avatars\11.jpg" />
+    <Content Include="assetsUser\images\avatars\12.jpg" />
+    <Content Include="assetsUser\images\avatars\2.jpg" />
+    <Content Include="assetsUser\images\avatars\3.jpg" />
+    <Content Include="assetsUser\images\avatars\4.jpg" />
+    <Content Include="assetsUser\images\avatars\5.jpg" />
+    <Content Include="assetsUser\images\avatars\8.jpg" />
+    <Content Include="assetsUser\images\avatars\9.jpg" />
+    <Content Include="assetsUser\images\city.jpg" />
+    <Content Include="assetsUser\images\Designlab Icon.png" />
+    <Content Include="assetsUser\images\icon-png.png" />
+    <Content Include="assetsUser\images\logo-inverse.png" />
+    <Content Include="assetsUser\images\logo.png" />
+    <Content Include="assetsUser\images\placeholder-image.png" />
+    <Content Include="assetsUser\images\profile-img.jpg" />
+    <Content Include="assetsUser\js\bootstrap.bundle.min.js" />
+    <Content Include="assetsUser\js\chart.min.js" />
+    <Content Include="assetsUser\js\circle-progress.min.js" />
+    <Content Include="assetsUser\js\dataTables.bootstrap4.js" />
+    <Content Include="assetsUser\js\dataTables.bootstrap4.min.js" />
+    <Content Include="assetsUser\js\dataTables.min.js" />
+    <Content Include="assetsUser\js\jquery.dataTables.min.js" />
+    <Content Include="assetsUser\js\jquery.min.js" />
+    <Content Include="assetsUser\js\script.js" />
     <Content Include="assets\css\bootstrap.min.css" />
     <Content Include="assets\css\dataTables.bootstrap4.min.css" />
     <Content Include="assets\css\font-awesome-all.min.css" />
@@ -1869,6 +1906,18 @@
     <Content Include="EF\ArchManagerEDM.edmx.diagram">
       <DependentUpon>ArchManagerEDM.edmx</DependentUpon>
     </Content>
+    <Content Include="assetsUser\css\bootstrap.min.css.map" />
+    <Content Include="assetsUser\fonts\911PorschaLaser.woff" />
+    <Content Include="assetsUser\fonts\911PorschaLaser.woff2" />
+    <Content Include="assetsUser\fonts\911porschav3bold.ttf" />
+    <Content Include="assetsUser\fonts\fa-solid-900.eot" />
+    <Content Include="assetsUser\fonts\fa-solid-900.ttf" />
+    <Content Include="assetsUser\fonts\fa-solid-900.woff" />
+    <Content Include="assetsUser\fonts\fa-solid-900.woff2" />
+    <Content Include="assetsUser\fonts\Pe-icon-7-stroke.eot" />
+    <Content Include="assetsUser\fonts\Pe-icon-7-stroke.ttf" />
+    <Content Include="assetsUser\fonts\Pe-icon-7-stroke.woff" />
+    <Content Include="assetsUser\js\bootstrap.bundle.min.js.map" />
     <None Include="Properties\PublishProfiles\IISProfile.pubxml" />
     <None Include="Properties\PublishProfiles\MvcDesigner.pubxml" />
     <Content Include="Scripts\i18n\angular-locale_af-na.js" />
@@ -4542,6 +4591,8 @@
     <Content Include="Views\Admin\Test.cshtml" />
     <Content Include="Views\Admin\PRF.cshtml" />
     <Content Include="Views\Admin\SiteVisit.cshtml" />
+    <Content Include="Views\Shared\_User.cshtml" />
+    <Content Include="Views\Render\operation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

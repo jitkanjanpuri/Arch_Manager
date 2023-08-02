@@ -9,7 +9,6 @@
         <EntityTypeShape EntityType="ArchManagerDBModel.tblClient" Width="1.5" PointX="3" PointY="7.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ArchManagerDBModel.tblClientLedger" Width="1.5" PointX="5.25" PointY="6.5" IsExpanded="true" />
         <EntityTypeShape EntityType="ArchManagerDBModel.tblCompanyProfile" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ArchManagerDBModel.tblGmailAccount" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ArchManagerDBModel.tblOperation" Width="1.5" PointX="7.5" PointY="10.25" IsExpanded="true" />
         <EntityTypeShape EntityType="ArchManagerDBModel.tblPRF" Width="1.5" PointX="7.5" PointY="14.25" IsExpanded="true" />
         <EntityTypeShape EntityType="ArchManagerDBModel.tblProjectDetail" Width="1.5" PointX="5.25" PointY="10.875" IsExpanded="true" />
@@ -34,6 +33,9 @@
         <AssociationConnector Association="ArchManagerDBModel.FK_tblTaskAssign_projectID" />
         <AssociationConnector Association="ArchManagerDBModel.FK_tblTaskAssign_pmID" />
         <AssociationConnector Association="ArchManagerDBModel.FK_tblTaskAssign_designerID" />
+        <EntityTypeShape EntityType="ArchManagerDBModel.tblProjectUploadFile" Width="1.5" PointX="10.5" PointY="16.25" />
+        <AssociationConnector Association="ArchManagerDBModel.FK_tblProjectUploadFile_projectID" />
+        <AssociationConnector Association="ArchManagerDBModel.FK_tblProjectUploadFile_designerID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -48,6 +48,9 @@ namespace MvcSDesign.Models
         public string techremark { get; set; }
         public string uploadFileName { get; set; }
 
+        public string[] arr { get; set; }
+        public string filename { get; set; }
+
 
     }
 }

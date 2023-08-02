@@ -211,7 +211,7 @@
                                                     @Html.ValidationMessageFor(model => model.state, "", new { style = "color:red;" })
                                                 </div>
                                             </div>
-                                            <div class="col-xl-2 col-md-2">
+                                            <div class="col-xl-3 col-md-2">
                                                 <div class="form-group mb-2">
                                                     <label>Pincode *   </label>
                                                     @Html.TextBoxFor(model => model.pincode, new { @class = "form-control", @minlength = "6", @maxlength = "6", @onkeypress = "IsNumber()", placeholder = "Pincode" })
@@ -220,7 +220,7 @@
                                             </div>
 
                                             <!-- end row -->
-                                            <div class="col-xl-2 col-md-2">
+                                            <div class="col-xl-3 col-md-2">
                                                 <div class="form-group mb-2">
                                                     <label>Mobile Number </label>
                                                     @Html.TextBoxFor(model => model.mobile, new { @class = "form-control", @maxlength = "10", @onkeypress = "IsNumber()", placeholder = "Mobile no" })
@@ -228,7 +228,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-xl-2 col-md-6">
+                                            <div class="col-xl-3 col-md-6">
                                                 <div class="form-group mb-2">
                                                     <label> Phone  </label>
                                                     @Html.TextBoxFor(model => model.phone, new { @class = "form-control", @type = "number", placeholder = "Phone" })
@@ -242,7 +242,16 @@
                                                     @Html.ValidationMessageFor(model => model.emailID, "", new { style = "color:red;" })
                                                 </div>
                                             </div>
-                                            <div class="col-xl-2 col-md-6">
+                                            <div class="col-xl-3 col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label> Password </label>
+                                                    @Html.PasswordFor(model => model.password, new { @class = "form-control", placeholder = "Password" })
+                                                    @Html.ValidationMessageFor(model => model.password, "", new { style = "color:red;" })
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-xl-3 col-md-6">
                                                 <div class="form-group mb-3">
                                                     <label> Logo Image  </label>
                                                     <input type="file" class="form-control" name="logofile" id="logofile" accept="image/png,image/jpeg" placeholder="Logo Image">

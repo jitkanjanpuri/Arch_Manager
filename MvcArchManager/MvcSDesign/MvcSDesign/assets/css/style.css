@@ -102,10 +102,10 @@ textarea.form-control {
 .lable-text:last-child{
   font-weight: 400;
 }
-.dsuite-h2{
-  font-family: '911 Porscha';
-  font-weight: 600;
-  font-size: 26px;
+.archManager-h2 {
+    font-family: '911 Porscha';
+    font-weight: 600;
+    font-size: 26px;
 }
 .accounts{
   color: #625d5d ;

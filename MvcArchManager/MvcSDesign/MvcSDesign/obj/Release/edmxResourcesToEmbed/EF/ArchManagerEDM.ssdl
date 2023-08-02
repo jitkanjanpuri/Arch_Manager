@@ -56,14 +56,7 @@
     <Property Name="mobileno" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="phoneno" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="emailID" Type="varchar" MaxLength="100" Nullable="false" />
-  </EntityType>
-  <EntityType Name="tblGmailAccount">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="gmailID" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="pwd" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="pwd" Type="varchar" MaxLength="40" Nullable="false" />
   </EntityType>
   <EntityType Name="tblOperation">
     <Key>
@@ -141,6 +134,18 @@
     <Property Name="projectID" Type="bigint" Nullable="false" />
     <Property Name="sitePhotoFile" Type="varchar" MaxLength="200" />
     <Property Name="remark" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="tblProjectUploadFile">
+    <Key>
+      <PropertyRef Name="uploadfileID" />
+    </Key>
+    <Property Name="uploadfileID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="dt" Type="datetime" Nullable="false" />
+    <Property Name="projectID" Type="bigint" />
+    <Property Name="designerID" Type="int" Nullable="false" />
+    <Property Name="category" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="subcategory" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="filename" Type="varchar" MaxLength="500" Nullable="false" />
   </EntityType>
   <EntityType Name="tblStaff">
     <Key>
@@ -314,6 +319,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_tblProjectUploadFile_designerID">
+    <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
+    <End Role="tblProjectUploadFile" Type="Self.tblProjectUploadFile" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblStaff">
+        <PropertyRef Name="staffID" />
+      </Principal>
+      <Dependent Role="tblProjectUploadFile">
+        <PropertyRef Name="designerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblProjectUploadFile_projectID">
+    <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="0..1" />
+    <End Role="tblProjectUploadFile" Type="Self.tblProjectUploadFile" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProjectDetail">
+        <PropertyRef Name="projectID" />
+      </Principal>
+      <Dependent Role="tblProjectUploadFile">
+        <PropertyRef Name="projectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_tblStaffLedger_staffID">
     <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
     <End Role="tblStaffLedger" Type="Self.tblStaffLedger" Multiplicity="*" />
@@ -367,12 +396,12 @@
     <EntitySet Name="tblClient" EntityType="Self.tblClient" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblClientLedger" EntityType="Self.tblClientLedger" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblCompanyProfile" EntityType="Self.tblCompanyProfile" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="tblGmailAccount" EntityType="Self.tblGmailAccount" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblOperation" EntityType="Self.tblOperation" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblPRF" EntityType="Self.tblPRF" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProjectDetail" EntityType="Self.tblProjectDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProjectManagement" EntityType="Self.tblProjectManagement" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProjectSiteVisit" EntityType="Self.tblProjectSiteVisit" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblProjectUploadFile" EntityType="Self.tblProjectUploadFile" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblStaff" EntityType="Self.tblStaff" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblStaffLedger" EntityType="Self.tblStaffLedger" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblStaffPaid" EntityType="Self.tblStaffPaid" Schema="dbo" store:Type="Tables" />
@@ -413,6 +442,14 @@
     <AssociationSet Name="FK_tblProjectSiteVisit_projectID" Association="Self.FK_tblProjectSiteVisit_projectID">
       <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
       <End Role="tblProjectSiteVisit" EntitySet="tblProjectSiteVisit" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblProjectUploadFile_designerID" Association="Self.FK_tblProjectUploadFile_designerID">
+      <End Role="tblStaff" EntitySet="tblStaff" />
+      <End Role="tblProjectUploadFile" EntitySet="tblProjectUploadFile" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblProjectUploadFile_projectID" Association="Self.FK_tblProjectUploadFile_projectID">
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+      <End Role="tblProjectUploadFile" EntitySet="tblProjectUploadFile" />
     </AssociationSet>
     <AssociationSet Name="FK_tblStaffLedger_staffID" Association="Self.FK_tblStaffLedger_staffID">
       <End Role="tblStaff" EntitySet="tblStaff" />

@@ -12,6 +12,9 @@ using System.IO;
 using System.Linq;
 using System.Web.Hosting;
 using System.Web.Mvc;
+using System.Net;
+using System.Net.Mail;
+using System.Threading;
 
 namespace MvcSDesign.Repository
 {
@@ -55,6 +58,7 @@ namespace MvcSDesign.Repository
                     obj.mobileno = model.mobile.Trim();
                     obj.phoneno = model.phone == null ? "-" : model.phone;
                     obj.emailID = model.emailID.Trim();
+                    obj.pwd = model.password;
                     _dbContext.tblCompanyProfiles.Add(obj);
                 }
                 else
@@ -69,6 +73,7 @@ namespace MvcSDesign.Repository
                     rec.mobileno = model.mobile.Trim();
                     rec.phoneno = model.phone.Trim();
                     rec.emailID = model.emailID.Trim();
+                    rec.pwd = model.password;
                 }
                 _dbContext.SaveChanges();
 
@@ -504,6 +509,37 @@ namespace MvcSDesign.Repository
             return lst;// (s => s.clientName.Contains(name)).ToList();
         }
 
+
+
+
+        public string AddSearchProject_ClientName(int projectID)
+        {
+            string cname = "";
+            try
+            {
+                
+                var res = (from pd in _dbContext.tblProjectDetails
+                           join c in _dbContext.tblClients on pd.clientID equals c.clientID
+                           where (pd.projectID == projectID)
+                           select new
+                           {
+                               clientName = c.clientName
+                           }).ToList();
+               foreach(var item in res)
+                {
+                    cname = item.clientName;
+                }
+            }
+            catch (Exception ex) { }
+            return cname;
+        }
+
+       
+
+
+
+
+
         public string SaveSiteVisit(int projectID, string fname, string remark)
         {
             tblProjectSiteVisit obj = new tblProjectSiteVisit();
@@ -668,6 +704,7 @@ namespace MvcSDesign.Repository
                 if (res != null)
                 {
                     res.projectstatus = "Normal";
+                    res.User_UploadedFileName = "";
                 }
 
                 var res1 = _dbContext.tblTaskAssigns.Where(x => x.pmID == pmID).ToList();
@@ -849,17 +886,44 @@ namespace MvcSDesign.Repository
         public IEnumerable<operation> GetCurrentWorking(string dname, string category , string subcategory)
         {
             List<operation> prjlist = new List<operation>();
-            string diffDt, color = "";
-            int l;
+            string  color = "", files = "";
+         
             try
             {
                 if ((dname == null) || (dname == "0") || (dname == "NA"))
                 {
 
+                    //var query = (from pl in _dbContext.tblProjectDetails
+                    //            join cl in _dbContext.tblClients on pl.clientID equals cl.clientID
+                    //            join cw in _dbContext.tblProjectManagements on pl.projectID equals cw.projectID
+
+                    //            where ((cw.category == category) &&(cw.subcategory == subcategory))
+                    //            select new
+                    //            {
+                    //                dt = cw.dt,
+                    //                clientID = cl.clientID,
+                    //                clientName = cl.clientName,
+                    //                projectID = pl.projectID,
+                    //                projectType = pl.projectType,
+                    //                category = cw.category,
+                    //                subcatgory= cw.subcategory,
+                    //                package = pl.package,
+                    //                projectLevel = pl.projectLevel,
+                    //                plotSize = pl.plotSize,
+                    //                amount = pl.amount,
+                    //                projectlocation = pl.projectlocation,
+                    //                remark = cw.remark,
+                    //                pmID = cw.pmID,
+                    //                projetStatus = cw.projectstatus,
+                    //                status = cw.status,
+                    //                uploadFileName= cw.User_UploadedFileName,
+                    //            }).ToList();
+
+                
                     var query = (from pl in _dbContext.tblProjectDetails
                                 join cl in _dbContext.tblClients on pl.clientID equals cl.clientID
                                 join cw in _dbContext.tblProjectManagements on pl.projectID equals cw.projectID
-                                where ((cw.category == category) &&(cw.subcategory == subcategory))
+                                where ((cw.category == category) && (cw.subcategory == subcategory))
                                 select new
                                 {
                                     dt = cw.dt,
@@ -868,7 +932,7 @@ namespace MvcSDesign.Repository
                                     projectID = pl.projectID,
                                     projectType = pl.projectType,
                                     category = cw.category,
-                                    subcatgory= cw.subcategory,
+                                    subcatgory = cw.subcategory,
                                     package = pl.package,
                                     projectLevel = pl.projectLevel,
                                     plotSize = pl.plotSize,
@@ -878,26 +942,35 @@ namespace MvcSDesign.Repository
                                     pmID = cw.pmID,
                                     projetStatus = cw.projectstatus,
                                     status = cw.status,
-                                    uploadFileName= cw.User_UploadedFileName,
+                                    uploadFileName = cw.User_UploadedFileName,
+                                    files = cw.User_UploadedFileName,
                                 }).ToList();
+
+
+                     
                     int i = 1;
+                    string dname1 = "";
                     foreach (var item in query)
                     {
-                        //diffDt = (DateTime.Now.Date - item.dt).TotalDays.ToString();
-                        //if (item.projetStatus == "Normal")
-                        //    color = "#FFF";//White;
-                        //else if (int.Parse(diffDt) == 1)
-                        //    color = "#ffa500";//Orange;
-                        //else
-                        //    color = "#ff0000";//red;
-
-                         
                         if (item.projetStatus == "Normal")
                            color = "#FFF";//White;
                         else if (item.projetStatus == "Assigned")
                            color = "#ffa500";//Orange;
                          else
                             color = "#E3FF00";//red;
+
+                        var rec = ( from d in _dbContext.tblStaffs 
+                                    join ta in _dbContext.tblTaskAssigns on d.staffID equals ta.designerID
+                                    where (ta.pmID == item.pmID)
+                                    select new 
+                                    {
+                                        name = d.name
+                                    });
+                        dname1 = "";
+                        foreach(var item1 in rec)
+                        {
+                            dname1 = item1.name;
+                        }
 
                         prjlist.Add(new operation
                         {
@@ -916,10 +989,12 @@ namespace MvcSDesign.Repository
                             amount = item.amount,
                             projectStatus = item.projetStatus,
                             status = item.status,
+                            designerName = dname1,
                             uploadFileName = item.uploadFileName == null?"": item.uploadFileName.Trim(),
                             remark = item.remark,
-                            rowcolor = color
-
+                            rowcolor = color,
+                            arr = item.files.ToString().Split(','),
+                            filename = item.files,// dr["filename"].ToString(),
                         });
                         i++;
                     }
@@ -958,17 +1033,7 @@ namespace MvcSDesign.Repository
                     int i = 1;
                     foreach (var item in query)
                     {
-                        //diffDt = (DateTime.Now.Date - item.dt).TotalDays.ToString();
-                        ////l = diffDt.IndexOf(".");
-
-                        ////diffDt = diffDt.Substring(0, l);
-                        //if (diffDt == "0")
-                        //    color = "#FFF";//White;
-                        //else if (int.Parse(diffDt) ==1)
-                        //    color = "#ffa500";//Orange;
-                        //else
-                        //    color = "#ff0000";//red;
-
+                        
                         if (item.projetStatus == "Normal")
                             color = "#FFF";//White;
                         else if (item.projetStatus == "Assigned")
@@ -1007,6 +1072,409 @@ namespace MvcSDesign.Repository
             return prjlist;
         }
 
+     
+        public string GetFilePath(int pmID, string filename)
+        {
+            string location = "",  category ="", subcategory ="";
+            try
+            {
+                int clientID = 0;
+                long projectID = 0;
+                var res = (from pd in _dbContext.tblProjectDetails
+                           join pm in _dbContext.tblProjectManagements on pd.projectID equals pm.projectID
+                           where (pm.pmID == pmID)
+                           select new
+                           {
+                               projectID = pd.projectID,
+                               clientID = pd.clientID,
+                               category = pm.category,
+                               subcategory = pm.subcategory
+                           }).ToList();
+
+                if (res == null)
+                {
+                    return "";
+                }
+
+                foreach (var item in res)
+                {
+                    clientID = item.clientID;
+                    category = item.category;
+                    subcategory = item.subcategory;
+                    projectID = item.projectID;
+                }
+                location = HostingEnvironment.MapPath("~//ProjectLocation//client_" + clientID.ToString() + "//proj_" + projectID.ToString() + "//" + category + "//" + subcategory + "//I/" + filename);
+
+            }
+            catch (Exception ex) { return ex.Message; }
+            return location;
+        }
+
+   
+        public string SendTaskMailToClien(int pmID, int pid,  string[] arrFiles, out string uploadedFileName, string gmail)
+        {
+
+            uploadedFileName = "";
+            try
+            {
+                string filename = "", plotSize = "",  ch ,str="", fnamesub="";
+                string mainfile = "", gMailAccount, password, clientMailId = "", clientName = "", filepath = "", category ="", subcategory = "";
+                int i, j, clientID=0;
+                string[] arr = new string[10];
+                 
+                Attachment at;
+                  
+                gMailAccount = "";
+                password = "";
+                GetCompanyGmail(ref gMailAccount, ref password);
+
+                NetworkCredential loginInfo = new NetworkCredential(gMailAccount, password);
+                MailMessage objMail = new MailMessage();
+
+                 
+                var res = (from pd in _dbContext.tblProjectDetails
+                           join cl in _dbContext.tblClients on pd.clientID equals cl.clientID
+                           join pm in _dbContext.tblProjectManagements on pd.projectID equals pm.projectID
+                           where (pm.pmID == pmID)
+                           select new
+                           {   
+                               clientID = pd.clientID,
+                               category = pm.category,
+                               subcategory = pm.subcategory,
+                               clientName = cl.clientName,
+                               clientMailID = cl.emailID,
+                               plotSize = pd.plotSize
+                           }).ToList();
+                if (res == null)
+                {
+                    return "Record not found";
+                }
+
+                foreach(var item in res)
+                {
+                    clientID = item.clientID;
+                    category = item.category;
+                    subcategory = item.subcategory;
+                    clientName = item.clientName;
+                    clientMailId = item.clientMailID;
+                    plotSize = item.plotSize;
+
+                }
+                var profile = _dbContext.tblCompanyProfiles.FirstOrDefault();
+                if(profile == null)
+                {
+                    return "Company profile is not available";
+                }
+
+
+                //get client's WhatsApp mobile no
+                //if (allowWhatsApp == "True")
+                //{
+                //    str = " Select uid , whatsAppno From tblDatabank Where proprietorName ='" + clientname + "' " +
+                //          " AND phone3 like '%" + clientMailId + "%' ";
+
+                //    cmd = new SqlCommand(str, conCallLog);
+                //    try
+                //    {
+                //        rd = cmd.ExecuteReader();
+                //        if (rd.Read())
+                //        {
+                //            whatsAppno = rd["whatsAppno"].ToString();
+                //            uid = rd["uid"].ToString();
+                //        }
+                //        rd.Close();
+                //    }
+                //    catch (Exception ex) { }
+                //}
+                //else
+                //{
+
+               
+
+                if (clientMailId.IndexOf(',') > 0)
+                    arr = clientMailId.Split(',');
+                else if (clientMailId.IndexOf(';') > 0)
+                    arr = clientMailId.Split(';');
+                else if (clientMailId.IndexOf('/') > 0)
+                    arr = clientMailId.Split('/');
+                else
+                    str = clientMailId;
+
+                if (str.Length > 0)
+                    objMail.To.Add(new MailAddress(clientMailId));
+                else
+                {
+                    for (i = 0; i < arr.Length; i++)
+                    {
+                        objMail.To.Add(new MailAddress(arr[i]));
+                    }
+                }
+
+
+                CultureInfo CInfo = Thread.CurrentThread.CurrentCulture;
+                TextInfo TInfo = CInfo.TextInfo;
+                clientName = TInfo.ToTitleCase(clientName);
+
+                clientName = clientName.Replace(" ", "_");
+                str = "Dear " + clientName;
+
+                objMail.From = new MailAddress(gMailAccount);
+                objMail.IsBodyHtml = true;
+                objMail.Priority = MailPriority.High;
+
+                //objMail.CC.Add(new MailAddress(""));
+
+               //get first character of each word in subcategory
+                
+
+
+                foreach (var part in subcategory.Split(' '))
+                {
+                    fnamesub += part.Substring(0, 1);
+                }
+
+                str += "<br /> <br /> Greetings!";
+                
+                objMail.Subject = " 🏚 " + subcategory + "_" + pid + "_" + "_" + clientName + "_" + plotSize;
+                str += "<br /> <br /> Kindly find our submission of " + subcategory +" of Project ID  " + pid + ".";
+                ch = HostingEnvironment.MapPath("~//ProjectLocation//client_" + clientID.ToString() + "//proj_" + pid.ToString() + "//" + category + "//" + subcategory );
+                for (i = 0; i < arrFiles.Length; i++)
+                {
+                    filename = arrFiles[i];
+                    // flag = "";
+                    string tempfilename = "", ext = "";
+                   
+                    
+                    string filetmp = ch + "/I/" + filename; // check file is available in option of elevation otherwise search in another folder
+
+                    if (File.Exists(filetmp))
+                    {
+                        ext = Path.GetExtension(filename);
+                        tempfilename = ch + "/" + pid + "_"+ fnamesub + ext;
+                        if (File.Exists(tempfilename))
+                        {
+                            //check if file already exist in Elevation path
+                            tempfilename = ch + "/" + pid +"_"+ fnamesub + "_rev_1" + ext;
+                            if (File.Exists(tempfilename))
+                            {
+
+                                bool flag1 = true;
+                                j = 2;
+                                while (flag1)
+                                {
+                                    tempfilename = ch + "/" + pid + "_" + fnamesub+ "_rev_" + j.ToString() + ext;
+                                    if (!File.Exists(tempfilename))
+                                    {
+                                        flag1 = false;
+                                    }
+                                    j++;
+                                }
+                            }
+                        }
+
+                        File.Copy(filetmp, tempfilename); // copy file from test folder to main folder
+                        filename = Path.GetFileName(tempfilename);
+                        filepath = ch + "/" + filename;
+                        mainfile = filename;
+
+                        if (uploadedFileName.Length == 0)
+                            uploadedFileName = filename;
+                        else
+                            uploadedFileName = uploadedFileName + "," + filename;
+
+                        //attach Elevation file 
+                        at = new Attachment(tempfilename);
+                        at.Name = filename;
+                        objMail.Attachments.Add(at);
+                    }
+                }  
+
+
+                str += " <br /> <br /> Check draft image very carefully for: <br/> ";
+                str += "<ul> ";
+                str += "   <li> Modeling </li>";
+                str += "   <li> Camera Angle </li>";
+                str += "   <li> Colors </li>";
+                str += "   <li> Light </li>";
+                str += "   <li> Materials or Textures </li> </ul> <br/>";
+
+                str += "<br/><br/> Your feedback is very important to us.  <br/> <br /> Thank you for your business. <br/><br/>";
+                str += " <br /> <br /> Thank you for the opportunity to serve you. We look forward for further communication with you.  ";
+                   
+                str += " <br /> <br /> Best Regards <br /><br /> ";
+                str += " "+ profile.orgName +"   <br /> ";
+
+                str += "<br/> <i>Please note that this is a system generated mail and does not require signature. </i> ";
+                objMail.Body = str;
+                //SmtpClient client = new SmtpClient("smtp.gmail.com");
+                //client.EnableSsl = true;
+                //client.UseDefaultCredentials = false;
+                //client.Credentials = loginInfo;
+                //client.Send(objMail);
+
+                SmtpClient client = new SmtpClient("smtp.hostinger.com");
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = false;
+                client.Credentials = loginInfo;
+                client.Port = 587;// 465;
+                client.Send(objMail);
+
+                try
+                {
+                  filepath = ch + "/I";
+                   Directory.Delete(filepath, true);
+                }
+                catch (Exception ex) { }
+                return "Y";
+            }
+            catch (Exception ex) { return ex.Message; }
+
+            return "";
+        }
+
+        public string DeleteProjectManagement(int pmID,string pid, string uploadedFileName)
+        {
+            try
+            {
+               
+                string filename = "", subcategory="";
+             
+
+                // Get files name which we are sending to client
+                //str = " Select User_UploadedFileName , User_UploadedReferenceFile , projectTypeName , User_conceptImagUpload   " +
+                //      " From tblProjectManagement Where projectID = " + pid + " AND optionType='" + option + "'  AND " +
+                //      " projectTypeName ='" + projectCategory + "' ";
+                //cmd = new SqlCommand(str, conAmtConfirm);
+                //SqlDataReader rd = cmd.ExecuteReader();
+                //try
+                //{
+                //    if (rd.Read())
+                //    {
+                //        filename = rd["User_UploadedFileName"].ToString();
+                //        reffilename = rd["User_UploadedReferenceFile"].ToString();
+                //        projectTypeName = rd["projectTypeName"].ToString();
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    rd.Close();
+                //    return ex.Message;
+                //}
+                //rd.Close();
+
+                //Get designer name
+                //str = " Select designerID from tblDesignerTaskAssign Where projectID =" + pid +
+                //      " AND opt ='" + option.Trim() + "' AND projectCategory ='" + projectCategory + "'  Order by taskID desc";
+                //cmd = new SqlCommand(str, conDlb);
+                //designID = cmd.ExecuteScalar().ToString();
+                //if (designID != "0")
+                //{
+                //    str = " Select name from tblRegistration Where registrationID = " + designID;
+                //    cmd = new SqlCommand(str, conAmtConfirm);
+                //    try
+                //    {
+                //        dname = cmd.ExecuteScalar().ToString();
+                //    }
+                //    catch (Exception ex) { }
+                //}
+
+                //if ((projectCategory == "Elevation") || (projectCategory == "Revised Elevation"))
+                //{
+                //    str = " Update tblDesignerTaskAssign SET designerID=0, elevationDesigner = '" + designID + "' ," +
+                //          " ConceptImage ='" + conceptFile + "', uploadFiles ='" + uploadedFileName + "'" +
+                //          " Where projectID =" + pid + " AND opt ='" + option.Trim() + "' AND designerID <>0 ";
+                //}
+                //else
+                //{
+                //    str = " Update tblDesignerTaskAssign SET designerID=0, threeDDesigner = '" + designID + "' , " +
+                //          " ConceptImage ='" + conceptFile + "', uploadFiles ='" + uploadedFileName + "' " +
+                //          "  Where projectID =" + pid + " AND opt ='" + option.Trim() + "'  AND designerID <>0 ";
+                //}
+
+
+                //cmd = new SqlCommand(str, conDlb);
+                //cmd.ExecuteNonQuery();
+
+                ////entry for dwg file
+                //subcategory = projectCategory;
+                //projectCategory = projectCategory.Replace("3D Model", "Model");
+                //str = " Insert into tblProjectUploadFiles(dt, projectID, uploadtype, filename , desinerName , " +
+                //      " uploadcategory) Values('" + dt + "'," + pid + ",'" + projectCategory + "','" + uploadedFileName + "' , " +
+                //      " '" + dname + "' , '" + option.Trim() + "') ";
+                //try
+                //{
+                //    cmd = new SqlCommand(str, conDlb);
+                //    cmd.ExecuteNonQuery();
+                //}
+                //catch (Exception ex) { }
+
+                int  designrID=0;
+                string category = "";
+                var res = _dbContext.tblTaskAssigns.Where(x => x.pmID == pmID).ToList();
+                foreach(var item in res)
+                {
+                    
+                    designrID = item.designerID;
+                    item.designerID = 0;
+                    category = item.category;
+                    subcategory = item.subcatorgy;
+                }
+
+                var del = _dbContext.tblProjectManagements.Where(x => x.pmID == pmID).FirstOrDefault();
+                if(del != null)
+                {
+                    _dbContext.tblProjectManagements.Remove(del);
+                     
+                }
+
+
+                tblProjectUploadFile objFile = new tblProjectUploadFile();
+                objFile.dt = DateTime.Today.Date;
+              //  objFile.projectID = pid;
+                objFile.designerID = designrID;
+                objFile.category = category;
+                objFile.subcategory = subcategory;
+                objFile.filename = filename;
+
+                _dbContext.tblProjectUploadFiles.Add(objFile);
+
+
+                _dbContext.SaveChanges();
+
+
+               
+
+ 
+
+                return "Success";
+            }
+            catch (Exception ex) { }
+            return "";
+        }
+
+        public void GetCompanyGmail(ref string gmailID, ref string pwd)
+        {
+
+            gmailID = "jaya.verma@designlabinternational.com";
+            pwd = "j7#Cnhgt";
+            //if (conAmtConfirm.State == ConnectionState.Closed) conAmtConfirm.Open();
+            //str = " SELECT * FROM tblCompanyMail ";
+            //cmd = new SqlCommand(str, conAmtConfirm);
+            //try
+            //{
+            //    SqlDataReader rd = cmd.ExecuteReader();
+            //    if (rd.Read())
+            //    {
+            //        gmailID = rd["emailID"].ToString();
+            //        pwd = rd["password"].ToString();
+            //    }
+            //    rd.Close();
+
+            //}
+            //catch (Exception ex) { }
+        }
+
+         
         public string DownloadPRF(string projectID, string filelocation)
         {
             string str = "", pdfname = "";
@@ -1076,7 +1544,7 @@ namespace MvcSDesign.Repository
                 //para1.Add(table1);
                 //para1.Add(Environment.NewLine);
 
-                fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.BOLD, BaseColor.WHITE);
                 table1 = new PdfPTable(3);
                 table1.WidthPercentage = 100;
                 table1.HorizontalAlignment = 0;
@@ -1090,16 +1558,19 @@ namespace MvcSDesign.Repository
                 pdfcell = new PdfPCell(new Phrase(new Chunk(" SNo. ", fnt)));
                 pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
                 pdfcell.BackgroundColor = iTextSharp.text.BaseColor.GRAY;
+                pdfcell.FixedHeight = 25;
                 table1.AddCell(pdfcell);
 
                 pdfcell = new PdfPCell(new Phrase(new Chunk(" Query", fnt)));
                 pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
                 pdfcell.BackgroundColor = iTextSharp.text.BaseColor.GRAY;
+                pdfcell.FixedHeight = 25;
                 table1.AddCell(pdfcell);
 
                 pdfcell = new PdfPCell(new Phrase(new Chunk(" Reply", fnt)));
                 pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
                 pdfcell.BackgroundColor = iTextSharp.text.BaseColor.GRAY;
+                pdfcell.FixedHeight = 25;
                 table1.AddCell(pdfcell);
 
 
@@ -1107,7 +1578,6 @@ namespace MvcSDesign.Repository
                 fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.NORMAL);
                 pdfcell = new PdfPCell(new Phrase(new Chunk(" 1", fnt)));
                 pdfcell.FixedHeight = 25;
-
                 pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
                 table1.AddCell(pdfcell);
 
@@ -1465,44 +1935,56 @@ namespace MvcSDesign.Repository
 
         }
 
-        public string SaveNewProject(int projectID, string pcategory, string dname, int amount)
+        public string SaveNewProject(operation obj)
         {
-            tblOperation objOptn = new tblOperation();
-            try
+            using (var context = new ArchManagerDBEntities())
             {
-                int tmp = 0;
-                // check for project already in queue for same category
-
-                //(cw.status.ToLower() != "complete")
-                var rec = from cw in _dbContext.tblOperations.Where(cw => (cw.projectID == projectID) && (cw.projectCategory == pcategory) && (cw.status.ToLower() != "complete"))
-                          select new
-                          {
-                              operationID = cw.operationID
-                          };
-
-                try
+                using (var dbTransaction = context.Database.BeginTransaction())
                 {
-                    foreach (var item in rec)
+                    try
                     {
-                        tmp = item.operationID;
+                        var rec = context.tblProjectManagements.Where(pm => ((pm.projectID == obj.projectID) && (pm.category == obj.category) && (pm.subcategory == obj.subcategory))).FirstOrDefault();
+                        if (rec != null)
+                        {
+                            return "Project already in queue for same category";
+                        }
+                         
+                        tblProjectManagement pmObj = new tblProjectManagement();
+                        pmObj.dt = DateTime.Today;
+                        pmObj.projectID = obj.projectID;
+                        pmObj.category = obj.category;
+                        pmObj.subcategory = obj.subcategory;
+                        pmObj.projectstatus = "Assigned";
+                        pmObj.status = "WRC";
+                        pmObj.remark = obj.remark == null ? "" : obj.remark.Trim(); 
+                        context.tblProjectManagements.Add(pmObj);
+                        context.SaveChanges();
+
+                        tblTaskAssign taObj = new tblTaskAssign();
+                        taObj.dt = DateTime.Today.Date;
+                        taObj.tm = DateTime.Now.Hour + ":" + DateTime.Now.Minute;
+                        taObj.projectID = obj.projectID;
+                        taObj.designerID = int.Parse(obj.designerName);
+                        taObj.category = obj.category;
+                        taObj.subcatorgy = obj.subcategory;
+                        taObj.techRemark = obj.remark == null ? "" : obj.remark.Trim();
+                        taObj.pmID = pmObj.pmID;
+
+                        context.tblTaskAssigns.Add(taObj);
+                        context.SaveChanges();
+
+                        dbTransaction.Commit();
+
                     }
+                    catch (Exception ex)
+                    {
+                        dbTransaction.Rollback();
+                        return ex.Message;
+                    }
+
                 }
-                catch (Exception ex) { }
-                if (tmp != 0) return "Project already in queue for same category";
-
-                objOptn.dt = DateTime.Now;
-                objOptn.projectID = projectID;
-                objOptn.staffID = int.Parse(dname);
-                objOptn.designerAmount = amount;
-                objOptn.projectCategory = pcategory;
-                objOptn.status = "WRC";
-                objOptn.payStatus = "pending";
-
-                _dbContext.tblOperations.Add(objOptn);
-                _dbContext.SaveChanges();
-
             }
-            catch (Exception ex) { return ex.Message; }
+
 
             return "";
         }
@@ -2688,21 +3170,21 @@ namespace MvcSDesign.Repository
 
         }
 
-        public void UpdateGMailPassword(GMail obj)
-        {
-            try
-            {
-                tblGmailAccount res = _dbContext.tblGmailAccounts.Where(x => x.id == 2).FirstOrDefault();
-                if (res != null)
-                {
-                    res.pwd = obj.pwd;
-                    _dbContext.SaveChanges();
-                }
+        //public void UpdateGMailPassword(GMail obj)
+        //{
+        //    try
+        //    {
+        //        tblGmailAccount res = _dbContext.tblGmailAccounts.Where(x => x.id == 2).FirstOrDefault();
+        //        if (res != null)
+        //        {
+        //            res.pwd = obj.pwd;
+        //            _dbContext.SaveChanges();
+        //        }
 
-            }
-            catch (Exception ex) { }
+        //    }
+        //    catch (Exception ex) { }
 
-        }
+        //}
 
 
 

@@ -1,195 +1,235 @@
 ﻿var app = angular.module("myApp", []);
-app.controller("myController", function ($scope, $http, projectFactory) {
+app.controller("myCntr", function ($scope, $http, opt) {
+    //$scope.addNewWindow = true;
+    //$scope.buttonDisable = true;
+    //$scope.withoutAuth_ = [];
+    //$scope.withAuth_ = [];
+    //$scope.historyStatus = "";
+    //$scope.rowHeight = 0;
+    //$scope.thumbnailwidth = 0;
+    //$scope.thumbnailheight = 0;
+    //var projectID = "0";
 
-    $scope.assignwindow = true;
-    $scope.addNewWindow = true;
-    $scope.projectCategory = "Elevation";
-    $scope.cmbProjectCategory = "Elevation";
 
-    projectFactory.getRecord().then(function (d) {
-        $scope.designerlst = d.data;
-        $scope.designerList1 = $scope.designerlst;
-        $scope.designerName = $scope.designerlst[0];
-         $scope.dName = $scope.designerList1[0];
-    
-        getProjectAssignList();
+
+
+    opt.getRecord().then(function (d) {
+        var perday = d.data / 30;
+        var perdayval = perday / 10;
+        $('.average-per-day-circle').circleProgress({
+            value: perdayval,
+            fill: { gradient: ['#5ce497', '#469EFB'] },
+            size: 260,
+        }).on('circle-animation-progress', function (event, progress) {
+            $(this).find('strong').html(Math.round(perday * progress));
+        });
+
+        //showWeeklyPerformance();
+
     });
 
 
-    function getProjectAssignList() {
+
+    function showWeeklyPerformance() {
+
+        $scope.dtArr = [];
+        $scope.prjcntArr = [];
+        $scope.achieveArr = [];
+        var slist;
         $http({
-            url: "/Admin/getProjectAssignList",
-            method: 'POST',
-            dataType: 'json',
-            contentType: 'application/json;charaset=utf-8'
+            url: "/Render/getWeeklyPerformance",
+            dataType: "json",
+            method: "POST",
+            contentType: "application/json; charaset =utf-8"
         }).then(function (d) {
-            $scope.projectlist = d.data;
-            if ($scope.projectlist.length == 0) {
-                alert("Record not available");
-                return;
+            for (var i = 0; i < d.data.length; i++) {
+                slist = d.data[i];
+                $scope.dtArr.push(slist.strDt);
+                $scope.prjcntArr.push(slist.totalprj);
+                $scope.achieveArr.push(slist.achieve);
             }
+            var ctx = document.getElementById('dvMonthTarget');
+            if (ctx) {
+                var mq = window.matchMedia("(max-width: 570px)");
+                if (mq.matches) {
+                    ctx.height = 600;
+                }
+                else {
+                    ctx.height = 160;
+                }
+
+
+                var chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        datasets: [{
+                            label: 'Submitted Projects',
+                            data: $scope.prjcntArr,
+                            backgroundColor: '#469EFB',
+                            order: 2,
+                        }, {
+                            label: 'Average Line',
+                            borderColor: '#5CE497',
+                            backgroundColor: 'transparent',
+                            data: $scope.achieveArr,
+                            type: 'line',
+                            order: 1
+                        }],
+                        labels: $scope.dtArr,
+                    },
+
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    stepSize: 2
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+
+            getProjectCategoryPerformance();
 
         });
     }
-
-    $scope.ShowAssignWindow = function (clientID, projectID, clientName, designerID, amount) {
-
-        if (designerID == null) {
-            alert(" Please select designer name");
-            return false;
-        }
-        $scope.assignwindow = false;
-        $scope.projectID = projectID;
-        $scope.clientName = clientName;
-        $scope.amount = amount;
-        $scope.designerAmount = 0;
-        $scope.designerID = designerID;
-
-    }
-
-    $scope.addNewProject = function () {
-        $scope.addNewWindow = false;
-    }
-
-    $scope.CloseAddWindow = function () {
-        $scope.txtProjectID = "";
-        $scope.addNewWindow = true;
-    }
-
-    $scope.CloseAssignWindow = function () {
-        Reset();
-
-    }
-
-    function Reset() {
-        $scope.assignwindow = true;
-        $scope.projectID = 0;
-        $scope.clientName = "";
-        $scope.amount = 0;
-        $scope.designerAmount = 0;
-        $scope.designerID = 0;
-    }
-
-    $scope.SearchProject = function () {
-        var pid = $scope.txtProjectID;
-        if (pid == undefined) {
-            alert("Please enter project ID   ");
-            return false;
-        }
+    function getProjectCategoryPerformance() {
+        var slist;
+        $scope.prjTypeArr = [];
+        $scope.draftArr = [];
+        $scope.revisedArr = [];
+        $scope.finalArr = [];
         $http({
-            url: '/Admin/SearchAddProject',
-            dataType: 'json',
-            method: 'POST',
+            url: "/Render/getProjectCategoryPerformance",
+            dataType: "json",
+            method: "POST",
+            contentType: "application/json; charaset =utf-8"
+        }).then(function (d) {
+            for (var i = 0; i < d.data.length; i++) {
+                slist = d.data[i];
+                $scope.prjTypeArr.push(slist.projectType);
+                $scope.draftArr.push(slist.draft);
+                $scope.revisedArr.push(slist.revised);
+                $scope.finalArr.push(slist.final);
+            }
+
+
+            var ctx2 = document.getElementById('stacked-bars-chart').getContext('2d');
+            if (ctx2) {
+                var mq = window.matchMedia("(max-width: 570px)");
+
+
+                if (mq.matches) {
+                    ctx2.height = 200;
+
+                }
+                else {
+
+                    ctx2.height = 100;
+                }
+                var barChartData = new Chart(ctx2, {
+                    type: 'horizontalBar',
+                    data: {
+                        labels: $scope.prjTypeArr,
+                        datasets: [{
+                            label: 'Draft View',
+                            backgroundColor: "#DC828F",
+                            data: $scope.draftArr
+                        }, {
+                            label: 'Revised View',
+                            backgroundColor: "#F7CE76",
+                            data: $scope.revisedArr
+                        }, {
+                            label: 'Final View',
+                            backgroundColor: "#8C7386",
+                            data: $scope.finalArr,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            xAxes: [{
+                                stacked: true,
+                            }],
+                            yAxes: [{
+                                stacked: true
+                            }]
+                        }
+                    }
+                });
+            }
+        });
+
+
+
+    }
+
+
+
+
+    $scope.ShowHistory = function (id) {
+        $scope.projectID = id;
+        $scope.imglist = null;
+        $scope.historyStatus = "";
+        $scope.rowHeight = 0;
+        $scope.chkThumbnail = false;
+        $scope.buttonDisable = true;
+        $scope.thumbnailwidth = 400;
+        $scope.thumbnailheight = 400;
+        projectID = id;
+        $http({
+            url: "/Render/getThumbnail",
+            dataType: "json",
+            method: "POST",
             params: {
-                projectID: pid
+                projectID: $scope.projectID
             },
             contentType: "application/json;charaset=utf-8"
         }).then(function (d) {
 
-            if (d.data.clientName == "") {
-                alert(" Record not available");
-                return false;
-            }
-            $scope.txtClientName = d.data.clientName;
-            $scope.txtProjectType = d.data.projectType;
-
+            $scope.imglist = d.data;
 
         }).error(function (err) {
-            alert(" Error : " + err);
+            alert("Error " + err);
         });
     }
 
+    $scope.closeHistory = function () {
+        $scope.projectID = "";
+        $scope.imglist = null;
 
-    $scope.SubmitNewProject = function () {
-        var pid = $scope.txtProjectID;
-        var cname = $scope.txtClientName;
-        var vardname = $scope.dName.Text;
-        var damount = $scope.txtAmount;
-
-    
-        if (pid == undefined) {
-            alert("Please enter project ID   ");
-            return false;
-        }
-        else if (cname == undefined) {
-            alert("Please enter project ID   ");
-            return false;
-        }
-        else if (vardname == undefined) {
-            alert("Please select designer name   ");
-            return false;
-        }
-        else if (damount == undefined) {
-            alert("Please enter amount");
-            return false;
-        }
-
-        $http({
-            url: '/Admin/SaveNewProject',
-            dataType: 'json',
-            method: 'POST',
-            params: {
-                projectID: pid,
-                pcategory: $scope.cmbProjectCategory,
-                dname: vardname,
-                amount: damount
-
-            },
-            contentType: "application/json;charaset=utf-8"
-        }).then(function (d) {
-            if (d.data.name == "") {
-                alert("Data successfully saved")
-                Reset();
-                getProjectAssignList();
-            }
-            else
-                alert("Error :" + d.data.name);
-
-        }).error(function (err) {
-            alert("Error :" + err);
-        });
     }
-    $scope.Submit = function () {
-        var varDAmount = $scope.designerAmount;
-        if (varDAmount == undefined) {
-            alert("Please enter finalize amount ");
-            return false;
+
+    $scope.buttonActive = function () {
+        if ($scope.chkThumbnail == true)
+            $scope.buttonDisable = false;
+        else
+            $scope.buttonDisable = true;
+    }
+
+
+    $scope.acceptTerms = function () {
+        if ($scope.chkThumbnail == true) {
+            $scope.withoutAuth_[projectID] = true;
+            $scope.withAuth_[projectID] = true;
+
+        }
+        else {
+            $scope.lblTermErr = "Please select check box";
         }
 
-        $http({
-            url: '/Admin/SaveProjectAssigned',
-            dataType: 'json',
-            method: 'POST',
-            params: {
-                projectID: $scope.projectID,
-                staffID: $scope.designerID,
-                projectCategory: $scope.projectCategory,
-                designerAmount: varDAmount
-            },
-            contentType: "application/json;charaset=utf-8"
-        }).then(function (d) {
-            if (d.data.name == "") {
-                alert("Data successfully saved")
-                Reset();
-                getProjectAssignList();
-            }
-            else
-                alert("Error :" + d.data.name);
-
-        }).error(function (err) {
-            alert("Error :" + err);
-        });
     }
 
 
 });
 
-
-app.factory('projectFactory', function ($http) {
-
+app.factory('opt', function ($http) {
     var fac = {};
     fac.getRecord = function () {
-        return $http.get('/Admin/getOperationDesigner');
+        return $http.get("/Render/fillMonthlyPerformance");
     }
     return fac;
+
 });

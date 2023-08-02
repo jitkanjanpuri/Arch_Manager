@@ -24,6 +24,8 @@ namespace MvcSDesign.Repository
         IEnumerable<staff> SearchRegistration(string name);
         IEnumerable<operation> GetCurrentWorking(string dname, string category, string subcategory);
 
+        string AddSearchProject_ClientName(int projectID);
+
         //Dashboard
         List<operation> DashBoard_getProjectType();
         List<staff> getTopPerformers();
@@ -63,13 +65,18 @@ namespace MvcSDesign.Repository
         string CurrentWorkingRemarkUpdate(int opID, string remark);
         string DeleteCurrentWorking(string opID);
 
+        string GetFilePath(int pmID, string filename);
+
+        string SendTaskMailToClien(int pmID,int pid, string[] arrFiles, out string uploadedFileName, string gmail);
+
+
         string AmountReceive(int cid, string amount, string remark);
         string SavePayDesigner(int sid, int amount, string remark);
 
 
         string ProjectAssigning(operation op);
         operation SearchAddProject(int projectID);
-        string SaveNewProject(int projectID, string pcategory, string dname, int amount);
+        string SaveNewProject(operation obj);
         staff getLogin(logincls lgn);
         bool DesignerNameValidation(string name);
         bool DesignerEmailValidation(string mailID);
