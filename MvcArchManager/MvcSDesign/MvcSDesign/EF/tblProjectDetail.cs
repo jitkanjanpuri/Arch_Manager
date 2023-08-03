@@ -21,8 +21,8 @@ namespace MvcSDesign.EF
             this.tblPRFs = new HashSet<tblPRF>();
             this.tblProjectManagements = new HashSet<tblProjectManagement>();
             this.tblProjectSiteVisits = new HashSet<tblProjectSiteVisit>();
-            this.tblTaskAssigns = new HashSet<tblTaskAssign>();
             this.tblProjectUploadFiles = new HashSet<tblProjectUploadFile>();
+            this.tblTaskAssigns = new HashSet<tblTaskAssign>();
         }
     
         public long projectID { get; set; }
@@ -49,8 +49,8 @@ namespace MvcSDesign.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblProjectSiteVisit> tblProjectSiteVisits { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblTaskAssign> tblTaskAssigns { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblProjectUploadFile> tblProjectUploadFiles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblTaskAssign> tblTaskAssigns { get; set; }
     }
 }

@@ -54,7 +54,7 @@ app.controller("myController", function ($scope, $http) {
             },
             contentType: "application/json; charaset=utf-8"
         }).then(function (d) {
-           
+
             document.getElementById("txtWorkingStatus").value = d.data.workingStatus;
             document.getElementById("txtSlabHeight").value = d.data.slabheight;
 
@@ -68,12 +68,11 @@ app.controller("myController", function ($scope, $http) {
             document.getElementById("txtWindowLinte").value = d.data.windowlintel;
             document.getElementById("txtAnyOther").value = d.data.anyother;
             document.getElementById("txtPlotFaceSide").value = d.data.plotside;
-          
+
             if (d.data.towerroom == "Yes") {
                 document.getElementById("rdTowerRoomYes").checked = true;
             }
-            else
-            {
+            else {
                 document.getElementById("rdTowerRoomNo").checked = true;
             }
 

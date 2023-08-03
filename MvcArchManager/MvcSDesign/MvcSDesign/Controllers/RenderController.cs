@@ -121,24 +121,7 @@ namespace MvcSDesign.Controllers
                     ViewBag.uploadmessage = "Please select file for upload";
                     return RedirectToAction("operation");
                 }
-
-
-
-                //if ((pcategory == "Draft View") || (pcategory == "Revised Draft") || (pcategory == "Final View") || (pcategory == "Draft View (Night)") || (pcategory == "Revised Draft View (Night)"))
-                //{
-                //    foreach (var item in fileUpload)
-                //    {
-                //        ch = System.IO.Path.GetExtension(item.FileName);
-                //        if ((ch.ToLower() != ".jpg") && (ch.ToLower() != ".jpeg") && (ch.ToLower() != ".png"))
-                //        {
-                //            ViewBag.uploadmessage = "Please select only jpg file";
-                //            return RedirectToAction("operation");
-                //        }
-
-                //    }
-                //}
-
-
+                 
                 ch =  _IUser.UploadDesignerTask(int.Parse(pmid), int.Parse(taskId), fileUpload);
                 if (ch == "Y")
                     TempData["message"] = "success";

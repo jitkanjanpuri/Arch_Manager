@@ -24,10 +24,9 @@ namespace MvcSDesign.EF
         public string techRemark { get; set; }
         public Nullable<System.DateTime> submitDate { get; set; }
         public string submitTime { get; set; }
-        public int pmID { get; set; }
+        public Nullable<int> submitDesignerID { get; set; }
+        public Nullable<int> pmID { get; set; }
     
         public virtual tblProjectDetail tblProjectDetail { get; set; }
-        public virtual tblProjectManagement tblProjectManagement { get; set; }
-        public virtual tblStaff tblStaff { get; set; }
     }
 }

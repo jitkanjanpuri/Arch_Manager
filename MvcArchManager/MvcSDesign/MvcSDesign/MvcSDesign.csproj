@@ -312,6 +312,7 @@
     <Content Include="angularjs\operation.js" />
     <Content Include="angularjs\operation1.js" />
     <Content Include="angularjs\prf.js" />
+    <Content Include="angularjs\prf1.js" />
     <Content Include="angularjs\projectmanagement.js" />
     <Content Include="angularjs\projectmanagement1.js" />
     <Content Include="angularjs\promoMail.js" />

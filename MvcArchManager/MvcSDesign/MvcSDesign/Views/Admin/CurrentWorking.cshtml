@@ -366,9 +366,12 @@
                                                     <td style="background-color:{{item.rowcolor }}">{{item.projectID}}</td>
                                                     <td style="background-color:{{item.rowcolor }}">{{item.clientName}}</td>
                                                     <td style=" background-color:{{item.rowcolor }}">
-                                                        <a href="@Url.Action("DownloadPRF","Admin")?projectID={{item.projectID}}&location={{item.projectlocation}}" class="btn btn-sm btn-info" style="width:50px; height:35px;">
-                                                            <span style="font-size:12pt;">   PRF</span>
-                                                        </a>
+                                                        <div ng-if="item.prfFlag =='Y'">
+                                                            <a href="@Url.Action("DownloadPRF","Admin")?projectID={{item.projectID}}&location={{item.projectlocation}}" class="btn btn-sm btn-info" style="width:50px; height:35px;">
+                                                                <span style="font-size:12pt;">   PRF</span>
+                                                            </a>
+                                                        </div>
+                                                        
                                                     </td>
 
 
@@ -510,136 +513,62 @@
                                 <div class="modal-body">
 
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Click to Open the file in webcanvas. Or select the file to send to client</h5>
+                                        <h5 class="modal-title">Click to download the file. Or select the file to send to client</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
 
                                     <br />
-                                          <div class="row">
-                                              <div class="form-group form-check " ng-repeat="itm in filelist">
-                                                  <input class="form-check-input check-kbox" type="checkbox" name="remember" ng-model="folder[itm]" id={{itm}}>
-                                                  <label class="form-check-label" for="terms-check">
+                                    <div class="row">
+                                        <div class="form-group form-check " ng-repeat="itm in filelist">
+                                            <input class="form-check-input check-kbox" type="checkbox" name="remember" ng-model="folder[itm]" id={{itm}}>
+                                            <label class="form-check-label" for="terms-check">
 
-                                                      <div>
-                                                          <a href="@Url.Action("DownloadDWG", "Admin")?filename={{itm}}&pmID={{pmID}}&projectID={{projectID}}">{{itm}} </a>
+                                                <div>
+                                                    <a href="@Url.Action("DownloadDWG", "Admin")?filename={{itm}}&pmID={{pmID}}&projectID={{projectID}}">{{itm}} </a>
 
-                                                          @*<a href="@Url.Action("DownloadDWG", "Technical")?filename={{itm}}&pmID={{pmID}}&projectID={{projectID}}&catetory={{category}}&subategory={{subcategory}}">{{itm}} </a>*@
-                                                      </div>
-                                                      @*<div ng-if="itm.substr((itm.lastIndexOf('.') + 1)) !='dwg'">
-                                                          <a href="@Url.Action("OpenElevationViewer", "Technical")?filename={{itm}}&option={{fileoption}}&pmID={{pmID}}&projectID={{projectID}}&projectType={{projectType}}&projectCategory={{projectCategory}}">{{itm}} </a>
-                                                      </div>*@
-                                                  </label>
-                                              </div>
-                                              <br /><br />
+                                                    @*<a href="@Url.Action("DownloadDWG", "Technical")?filename={{itm}}&pmID={{pmID}}&projectID={{projectID}}&catetory={{category}}&subategory={{subcategory}}">{{itm}} </a>*@
+                                                </div>
+                                                @*<div ng-if="itm.substr((itm.lastIndexOf('.') + 1)) !='dwg'">
+                    <a href="@Url.Action("OpenElevationViewer", "Technical")?filename={{itm}}&option={{fileoption}}&pmID={{pmID}}&projectID={{projectID}}&projectType={{projectType}}&projectCategory={{projectCategory}}">{{itm}} </a>
+                </div>*@
+                                            </label>
+                                        </div>
+                                        <br /><br />
+                                         
+                                        <div class="form-group">
+                                            <div class="form-group form-check ">
 
-                                                    <div class="form-group form-check">
-                                                        @*<input class="form-check-input check-kbox" type="checkbox" id="chkGMail" name="chkGMail" ng-model="chkGMail">
-        <label class="form-check-label" for="terms-check">
-            Mail
-        </label>
-        &nbsp;&nbsp;  &nbsp;&nbsp;
-        <input class="form-check-input check-kbox" type="checkbox" id="chkFacebook" name="chkFacebook" ng-model="chkFacebook">
-        <label class="form-check-label" for="terms-check">
-            Facebook
-        </label>*@
-                                                        <input class="form-check-input check-kbox" type="checkbox" id="chkTwitter" name="chkTwitter" ng-model="chkTwitter">
-                                                        <label class="form-check-label" for="terms-check">
-                                                            Mail
-                                                        </label>
-                                                        &nbsp;&nbsp;  &nbsp;&nbsp;
-                                                        @*<input class="form-check-input check-kbox" type="checkbox" id="chkFacebook" name="chkFacebook" ng-model="chkFacebook">
-                                                        <label class="form-check-label" for="terms-check1">
-                                                            Facebook
-                                                        </label>*@
+                                                <input class="form-check-input check-kbox" ng-model="chkGMail" type="checkbox" name="chkGMail" id="chkGMail">
+                                                <label class="form-check-label" for="terms-check">
+                                                    <span> Mail</span>
+                                                </label>  
+                                             </div>
+                                             <div class="form-group form-check ">
+                                                <input class="form-check-input check-kbox" ng-model="chkWhatsApp" type="checkbox" name="chkWhatsApp" id="chkWhatsApp">
+                                                <label class="form-check-label" for="AttechCNotes">
+                                                    <span> Whats App </span>
+                                                </label>
+                                            </div>
+                                             
+                                        </div> 
 
+                                        <div class="form-group">
+                                            <label class="form-check-label">
+                                                <span style="color:red">{{lblError}}</span>
+                                            </label>
+                                        </div>
 
-                                                    </div>
-
-                                              <div class="form-group">
-
-                                                  <label class="form-check-label">
-                                                      <span style="color:red">{{lblError}}</span>
-                                                  </label>
-                                              </div>
-
-                                              <div>
-                                                  <input type="button" value="Send to Client" ng-click="TaskSend()" class="btn btn-primary" />
-                                              </div>
-                                              @*<div ng-if="projectCategory == '3D Model'">
-                                                  <input type="button" value="Accept" ng-click="TaskSend()" class="btn btn-primary" />
-                                              </div>*@
-                                          </div>
+                                        <div>
+                                            <input type="button" value="Send to Client" ng-click="TaskSend()" class="btn btn-primary" />
+                                        </div>
+                                        
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                        @*<div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Click to Open the file in webcanvas. Or select the file to send to client</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="text-center" ng-hide="webcanvasload">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </div>
-
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group form-check " ng-repeat="itm in filelist">
-                            <input class="form-check-input check-kbox" type="checkbox" name="remember" ng-model="folder[itm]" id={{itm}}>
-                            <label class="form-check-label" for="terms-check">
-
-                                <div ng-if="itm.substr((itm.lastIndexOf('.') + 1)) =='dwg'">
-                                    <a href="@Url.Action("DownloadDWG", "Technical")?filename={{itm}}&option={{fileoption}}&pmID={{pmID}}&projectID={{projectID}}&projectType={{projectType}}&projectCategory={{projectCategory}}">{{itm}} </a>
-                                </div>
-                                <div ng-if="itm.substr((itm.lastIndexOf('.') + 1)) !='dwg'">
-                                    <a href="@Url.Action("OpenElevationViewer", "Technical")?filename={{itm}}&option={{fileoption}}&pmID={{pmID}}&projectID={{projectID}}&projectType={{projectType}}&projectCategory={{projectCategory}}">{{itm}} </a>
-                                </div>
-                            </label>
-                        </div>
-
-
-                        <div class="form-group form-check" ng-if="projectCategory == 'Final View'">
-                            <input class="form-check-input check-kbox" type="checkbox" id="chkTwitter" name="chkTwitter" ng-model="chkTwitter">
-                            <label class="form-check-label" for="terms-check">
-                                Twitter
-                            </label>
-                            &nbsp;&nbsp;  &nbsp;&nbsp;
-                            <input class="form-check-input check-kbox" type="checkbox" id="chkFacebook" name="chkFacebook" ng-model="chkFacebook">
-                            <label class="form-check-label" for="terms-check">
-                                Facebook
-                            </label>
-                        </div>
-
-                        <div class="form-group">
-
-                            <label class="form-check-label">
-                                <span style="color:red">{{lblError}}</span>
-                            </label>
-                        </div>
-
-                        <div ng-if="projectCategory != '3D Model'">
-                            <input type="button" value="Send to Client" ng-click="TaskSend()" class="btn btn-primary" />
-                        </div>
-                        <div ng-if="projectCategory == '3D Model'">
-                            <input type="button" value="Accept" ng-click="TaskSend()" class="btn btn-primary" />
-                        </div>
-
-
-                    </form>
-                </div>
-            </div>
-        </div>*@
-                    
-
-
-
-                        <div class="modal fade bs-example-modal-Assign" tabindex="-1" role="dialog" aria-hidden="true">
+                         
+                    <div class="modal fade bs-example-modal-Assign" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
 

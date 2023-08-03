@@ -197,23 +197,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="tblTaskAssigns">
-      <EntityTypeMapping TypeName="ArchManagerDBModel.tblTaskAssign">
-        <MappingFragment StoreEntitySet="tblTaskAssign">
-          <ScalarProperty Name="pmID" ColumnName="pmID" />
-          <ScalarProperty Name="submitTime" ColumnName="submitTime" />
-          <ScalarProperty Name="submitDate" ColumnName="submitDate" />
-          <ScalarProperty Name="techRemark" ColumnName="techRemark" />
-          <ScalarProperty Name="subcatorgy" ColumnName="subcatorgy" />
-          <ScalarProperty Name="category" ColumnName="category" />
-          <ScalarProperty Name="designerID" ColumnName="designerID" />
-          <ScalarProperty Name="projectID" ColumnName="projectID" />
-          <ScalarProperty Name="tm" ColumnName="tm" />
-          <ScalarProperty Name="dt" ColumnName="dt" />
-          <ScalarProperty Name="taskID" ColumnName="taskID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="tblProjectUploadFiles">
       <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectUploadFile">
         <MappingFragment StoreEntitySet="tblProjectUploadFile">
@@ -224,6 +207,24 @@
           <ScalarProperty Name="projectID" ColumnName="projectID" />
           <ScalarProperty Name="dt" ColumnName="dt" />
           <ScalarProperty Name="uploadfileID" ColumnName="uploadfileID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblTaskAssigns">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblTaskAssign">
+        <MappingFragment StoreEntitySet="tblTaskAssign">
+          <ScalarProperty Name="pmID" ColumnName="pmID" />
+          <ScalarProperty Name="submitDesignerID" ColumnName="submitDesignerID" />
+          <ScalarProperty Name="submitTime" ColumnName="submitTime" />
+          <ScalarProperty Name="submitDate" ColumnName="submitDate" />
+          <ScalarProperty Name="techRemark" ColumnName="techRemark" />
+          <ScalarProperty Name="subcatorgy" ColumnName="subcatorgy" />
+          <ScalarProperty Name="category" ColumnName="category" />
+          <ScalarProperty Name="designerID" ColumnName="designerID" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="tm" ColumnName="tm" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="taskID" ColumnName="taskID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

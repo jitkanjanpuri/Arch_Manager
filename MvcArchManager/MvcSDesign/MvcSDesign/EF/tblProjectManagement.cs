@@ -14,12 +14,6 @@ namespace MvcSDesign.EF
     
     public partial class tblProjectManagement
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tblProjectManagement()
-        {
-            this.tblTaskAssigns = new HashSet<tblTaskAssign>();
-        }
-    
         public int pmID { get; set; }
         public System.DateTime dt { get; set; }
         public long projectID { get; set; }
@@ -31,7 +25,5 @@ namespace MvcSDesign.EF
         public string User_UploadedFileName { get; set; }
     
         public virtual tblProjectDetail tblProjectDetail { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblTaskAssign> tblTaskAssigns { get; set; }
     }
 }

@@ -38,7 +38,7 @@ namespace MvcSDesign.EF
         public virtual DbSet<tblStatu> tblStatus { get; set; }
         public virtual DbSet<tblProjectManagement> tblProjectManagements { get; set; }
         public virtual DbSet<tblProjectSiteVisit> tblProjectSiteVisits { get; set; }
-        public virtual DbSet<tblTaskAssign> tblTaskAssigns { get; set; }
         public virtual DbSet<tblProjectUploadFile> tblProjectUploadFiles { get; set; }
+        public virtual DbSet<tblTaskAssign> tblTaskAssigns { get; set; }
     }
 }

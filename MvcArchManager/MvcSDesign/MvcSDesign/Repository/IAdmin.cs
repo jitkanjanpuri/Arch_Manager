@@ -18,7 +18,7 @@ namespace MvcSDesign.Repository
         string SaveCompanyProfile(CompanyModel obj);
         CompanyModel GetCompanyProfile();
 
-        void InsertRegistration(staff st);
+        string InsertRegistration(staff st);
         string RegistrationUpdate(staff obj);
         string RegistrationDelete(int staffID);
         IEnumerable<staff> SearchRegistration(string name);
@@ -68,7 +68,7 @@ namespace MvcSDesign.Repository
         string GetFilePath(int pmID, string filename);
 
         string SendTaskMailToClien(int pmID,int pid, string[] arrFiles, out string uploadedFileName, string gmail);
-
+        string DeleteProjectManagement(int pmID, string uploadedFileName);
 
         string AmountReceive(int cid, string amount, string remark);
         string SavePayDesigner(int sid, int amount, string remark);

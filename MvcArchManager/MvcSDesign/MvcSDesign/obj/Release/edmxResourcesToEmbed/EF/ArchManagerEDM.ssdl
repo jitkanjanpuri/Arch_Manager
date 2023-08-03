@@ -209,7 +209,8 @@
     <Property Name="techRemark" Type="varchar" MaxLength="500" />
     <Property Name="submitDate" Type="datetime" />
     <Property Name="submitTime" Type="varchar" MaxLength="50" />
-    <Property Name="pmID" Type="int" Nullable="false" />
+    <Property Name="submitDesignerID" Type="int" />
+    <Property Name="pmID" Type="int" />
   </EntityType>
   <Association Name="FK__tblClient__compa__5EBF139D">
     <End Role="tblCompanyProfile" Type="Self.tblCompanyProfile" Multiplicity="1" />
@@ -367,18 +368,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_tblTaskAssign_pmID">
-    <End Role="tblProjectManagement" Type="Self.tblProjectManagement" Multiplicity="1" />
-    <End Role="tblTaskAssign" Type="Self.tblTaskAssign" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tblProjectManagement">
-        <PropertyRef Name="pmID" />
-      </Principal>
-      <Dependent Role="tblTaskAssign">
-        <PropertyRef Name="pmID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_tblTaskAssign_projectID">
     <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
     <End Role="tblTaskAssign" Type="Self.tblTaskAssign" Multiplicity="*" />
@@ -458,10 +447,6 @@
     <AssociationSet Name="FK_tblStaffPaid_staffID" Association="Self.FK_tblStaffPaid_staffID">
       <End Role="tblStaff" EntitySet="tblStaff" />
       <End Role="tblStaffPaid" EntitySet="tblStaffPaid" />
-    </AssociationSet>
-    <AssociationSet Name="FK_tblTaskAssign_pmID" Association="Self.FK_tblTaskAssign_pmID">
-      <End Role="tblProjectManagement" EntitySet="tblProjectManagement" />
-      <End Role="tblTaskAssign" EntitySet="tblTaskAssign" />
     </AssociationSet>
     <AssociationSet Name="FK_tblTaskAssign_projectID" Association="Self.FK_tblTaskAssign_projectID">
       <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />

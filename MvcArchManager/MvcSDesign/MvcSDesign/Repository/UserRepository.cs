@@ -91,7 +91,7 @@ namespace MvcSDesign.Repository
                            where (tl.designerID == regID)
                            select new TaskListModel
                            {
-                               pmID= tl.pmID,
+                               pmID = (int) tl.pmID,
                                taskID = tl.taskID,
                                dt = tl.dt.Day.ToString() + "-" + tl.dt.Month.ToString() + "-" + tl.dt.Year.ToString(),
                                tm = tl.tm,
@@ -105,12 +105,11 @@ namespace MvcSDesign.Repository
                 foreach (var item in res)
                 {
 
-                    // if (previousDesigner == "") previousDesigner = "New";
                     var res1 = _dbContext.tblPRFs.Where(x => x.projectID == item.projectID).FirstOrDefault();
 
                     prfFlag = "N";
-                    if(res1 != null) prfFlag = "Y";
-                    
+                    if (res1 != null) prfFlag = "Y";
+
                     lst.Add(
                           new TaskListModel
                           {
@@ -122,9 +121,9 @@ namespace MvcSDesign.Repository
                               status = item.status,
                               projectlocation = projectlocation,
                               subcategory = item.subcategory,
-                              category =item.category,
+                              category = item.category,
                               prf = prfFlag,
-                              techRemark= item.techRemark
+                              techRemark = item.techRemark
                           });
                 }
             }
@@ -199,12 +198,13 @@ namespace MvcSDesign.Repository
                     item.SaveAs(ch1);
 
                 }
-                
+
                 var res1 = _dbContext.tblTaskAssigns.Where(x => x.taskID == taskID).FirstOrDefault();
-                if(res1 !=null)
+                if (res1 != null)
                 {
+                    res1.submitDesignerID = res1.designerID;
                     res1.designerID = 0;
-                    res1.submitTime = tm ;
+                    res1.submitTime = tm;
                     res1.submitDate = dt;
                 }
 

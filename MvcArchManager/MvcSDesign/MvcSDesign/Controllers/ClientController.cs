@@ -107,7 +107,10 @@ namespace MvcSDesign.Controllers
                 IClnt.InsertData(obj);
                 ModelState.Clear();
             }
-            return RedirectToAction("Index");
+            
+            obj.statelist = getStateList();
+            
+            return View(obj);
 
         }
          
@@ -245,36 +248,36 @@ namespace MvcSDesign.Controllers
                 var prj = IClnt.getProjectDetail(int.Parse(pid));
                 string amountInword = "";
 
-                if (projectType == "Interior")
-                {
-                    operation obj1 = new operation();
-                    foreach (var item in prj)
-                    {
-                        obj1.clientID = item.clientID;
-                        obj1.clientName = item.clientName;
-                        obj1.emailID = item.status;
-                        obj1.package = item.package;
-                        obj1.projectLevel = item.projectLevel;
-                        obj1.projectType = item.projectType;
-                        obj1.plotSize = item.plotSize;
-                        obj1.amount = item.amount;
-                        obj1.emailID = item.status;
-                        obj1.projectName = item.projectName;
-                        obj1.city = item.rowcolor;
-                        obj1.dt = item.dt;
-                    }
-                    DataTable dt = new DataTable();
-                    DataRow dr;
+                //if (projectType == "Interior")
+                //{
+                //    operation obj1 = new operation();
+                //    foreach (var item in prj)
+                //    {
+                //        obj1.clientID = item.clientID;
+                //        obj1.clientName = item.clientName;
+                //        obj1.emailID = item.status;
+                //        obj1.package = item.package;
+                //        obj1.projectLevel = item.projectLevel;
+                //        obj1.projectType = item.projectType;
+                //        obj1.plotSize = item.plotSize;
+                //        obj1.amount = item.amount;
+                //        obj1.emailID = item.status;
+                //        obj1.projectName = item.projectName;
+                //        obj1.city = item.rowcolor;
+                //        obj1.dt = item.dt;
+                //    }
+                //    DataTable dt = new DataTable();
+                //    DataRow dr;
 
-                    dt.Columns.Add("projectDetails");
-                    dt.Columns.Add("particular");
-                    dt.Columns.Add("unit");
-                    dt.Columns.Add("amount");
+                //    dt.Columns.Add("projectDetails");
+                //    dt.Columns.Add("particular");
+                //    dt.Columns.Add("unit");
+                //    dt.Columns.Add("amount");
 
-                    pth = CreateInteriorQuotationPDF(obj1, obj1.emailID, obj1.city, int.Parse(pid), dt, obj1.dt, ref amountInword);
-                }
-                else
-                {
+                //    pth = CreateInteriorQuotationPDF(obj1, obj1.emailID, obj1.city, int.Parse(pid), dt, obj1.dt, ref amountInword);
+                //}
+                //else
+                //{
                     quotation obj1 = new quotation();
                     foreach (var item in prj)
                     {
@@ -292,7 +295,7 @@ namespace MvcSDesign.Controllers
                         obj1.dt = item.dt;
                     }
                     pth = CreateQuotationPDF(obj1, int.Parse(pid), ref pth);
-                }
+                //}
 
                 pth = Path.GetFileName(pth);
 
@@ -805,7 +808,7 @@ namespace MvcSDesign.Controllers
             pdfcell.BackgroundColor = BaseColor.LIGHT_GRAY;
             table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk("Particulars", fnt)));
+            pdfcell = new PdfPCell(new Phrase(new Chunk("Project Level", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
             pdfcell.Border = 0;
@@ -813,7 +816,7 @@ namespace MvcSDesign.Controllers
             pdfcell.BackgroundColor = BaseColor.LIGHT_GRAY;
             table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk("Package", fnt)));
+            pdfcell = new PdfPCell(new Phrase(new Chunk("Plot Size", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
             pdfcell.Border = 0;
@@ -845,14 +848,14 @@ namespace MvcSDesign.Controllers
             pdfcell.FixedHeight = 20;
             table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk(qut.projectType, fnt)));
+            pdfcell = new PdfPCell(new Phrase(new Chunk(qut.projectLevel, fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
             pdfcell.Border = 0;
             pdfcell.FixedHeight = 20;
             table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk(qut.package, fnt)));
+            pdfcell = new PdfPCell(new Phrase(new Chunk(qut.plotSize, fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
             pdfcell.Border = 0;

@@ -166,36 +166,36 @@ namespace MvcSDesign.Controllers
         }
 
         
-       public JsonResult getCCWidget()
-        {
-            List<quotation> prjType = new List<quotation>();
-            try
-            {
-                DataSet ds = new DataSet();
+       //public JsonResult getCCWidget()
+       // {
+       //     List<quotation> prjType = new List<quotation>();
+       //     try
+       //     {
+       //         DataSet ds = new DataSet();
               
-                prjType.Add(
-                        new quotation
-                        {
-                            projectType = "5-01-2023",
-                            sno = 7
-                        });
-                prjType.Add(
-                        new quotation
-                        {
-                            projectType = "6-01-2023",
-                            sno = 4
-                        });
-                prjType.Add(
-                        new quotation
-                        {
-                            projectType = "7-01-2023",
-                            sno = 9
-                        });
+       //         prjType.Add(
+       //                 new quotation
+       //                 {
+       //                     projectType = "5-01-2023",
+       //                     sno = 7
+       //                 });
+       //         prjType.Add(
+       //                 new quotation
+       //                 {
+       //                     projectType = "6-01-2023",
+       //                     sno = 4
+       //                 });
+       //         prjType.Add(
+       //                 new quotation
+       //                 {
+       //                     projectType = "7-01-2023",
+       //                     sno = 9
+       //                 });
 
-            }
-            catch (Exception ex) { }
-            return Json(prjType, JsonRequestBehavior.AllowGet);
-        }
+       //     }
+       //     catch (Exception ex) { }
+       //     return Json(prjType, JsonRequestBehavior.AllowGet);
+       // }
         public JsonResult getHighestMonthSale()
         {
             List<quotation> prjType = new List<quotation>();
@@ -272,10 +272,10 @@ namespace MvcSDesign.Controllers
                     subfolder = pth + "//Presentation Drawing";
                     Directory.CreateDirectory(subfolder);
 
-                        string ch = subfolder + "//Furniture Layout";
+                        string ch = subfolder + "//Presentation Drawing With Furniture Layout Water Tank UG Rain Water Tank";
                         Directory.CreateDirectory(ch);
 
-                        ch = subfolder + "//Floor plans ground";
+                        ch = subfolder + "//Floor Plans Ground To Terrace";
                         Directory.CreateDirectory(ch);
 
                     subfolder = pth + "//Structure Drawing";
@@ -290,7 +290,7 @@ namespace MvcSDesign.Controllers
                         ch = subfolder + "//Plinth Beam plan and Design";
                         Directory.CreateDirectory(ch);
 
-                        ch = subfolder + "//UG Tank Detail";
+                        ch = subfolder + "//UG Tank Detail Septic Tank Fire Tank Rain Water Tank";
                         Directory.CreateDirectory(ch);
 
                     //Ground
@@ -327,10 +327,10 @@ namespace MvcSDesign.Controllers
                         ch = subfolder + "//2D Elevation Electrical";
                         Directory.CreateDirectory(ch);
 
-                        ch = subfolder + "//Plumbing Drainage and Rain Water";
+                        ch = subfolder + "//Plumbing Drainage and Rain Water Drawing";
                         Directory.CreateDirectory(ch);
 
-                        ch = subfolder + "//Toilet Plan and Detail Niche";
+                        ch = subfolder + "//Toilet Plan and Detail Niche and Other Working Drawing";
                         Directory.CreateDirectory(ch);
 
                         ch = subfolder + "//Compound Wall";
@@ -374,8 +374,10 @@ namespace MvcSDesign.Controllers
                     ch = subfolder + "//Plumbing Drainage and Rain Water";
                     Directory.CreateDirectory(ch);
 
-                    ch = subfolder + "//Toilet Plan and Detail Niche";
+                    ch = subfolder + "//Toilet Plan and Detail Niche and Other Working Drawing";
                     Directory.CreateDirectory(ch);
+                 
+
 
                 if (level == "G+1") goto Here;
                 subfolder = pth + "//Second Floor Drawing";
@@ -414,7 +416,7 @@ namespace MvcSDesign.Controllers
                     ch = subfolder + "//Plumbing Drainage and Rain Water";
                     Directory.CreateDirectory(ch);
 
-                    ch = subfolder + "//Toilet Plan and Detail Niche";
+                    ch = subfolder + "//Toilet Plan and Detail Niche and Other Workinge";
                     Directory.CreateDirectory(ch);
 
                     ch = subfolder + "//Perapet Wall";
@@ -569,16 +571,17 @@ namespace MvcSDesign.Controllers
 
 
 
-        public JsonResult TaskSendToClient(string pmID, string pid, string[] filelist, string gmail)
+        public JsonResult TaskSendToClient(string pmID, string pid, string[] filelist, string gmail, string whatsApp)
         {
             string uploadedFileName = "",   whatsAppFilepath = "", whatsAppno = "", socialmedia = "";
-            if (_IAmn.SendTaskMailToClien(int.Parse(pmID), int.Parse(pid),filelist, out uploadedFileName,gmail) == "Y")
+            string ch = _IAmn.SendTaskMailToClien(int.Parse(pmID), int.Parse(pid), filelist, out uploadedFileName, gmail);
+            if ( ch== "Y")
             {
-                string ch = "";// _IAmn.DeleteProjectManagement(pid,   uploadedFileName);
+                ch =  _IAmn.DeleteProjectManagement(int.Parse(pmID),   uploadedFileName);
 
             }
             List<SelectListItem> para = new List<SelectListItem>();
-            para.Add(new SelectListItem { Text = "", Value = "" });
+            para.Add(new SelectListItem { Text = ch, Value = ch });
             para.Add(new SelectListItem { Text = socialmedia, Value = socialmedia });
 
 
@@ -747,13 +750,22 @@ namespace MvcSDesign.Controllers
             
             if (ModelState.IsValid)
             {
-                _IAmn.InsertRegistration(st);
-                ModelState.Clear();
-                ViewBag.message = "success";
+               string ch = _IAmn.InsertRegistration(st);
+                if (ch != "")
+                {
+                    ViewBag.message = ch;
+                }
+                else
+                {
+                    ModelState.Clear();
+                    ViewBag.message = "";
+                }
+
             }
             staff obj = new staff();
             obj.designerList = GetDesignerList();
-            return View();
+            obj.rollList = GetRollList();
+            return View(obj);
         }
 
         public JsonResult CheckDesignertNameExists(string name)
@@ -987,25 +999,25 @@ namespace MvcSDesign.Controllers
             return View(); 
         }
 
-        public JsonResult SaveGMail(string gmailID, string pwd)
-        {
-            //return Json(_IAmn.SaveGMail(gmailID.Trim(), pwd.Trim()) , JsonRequestBehavior.AllowGet);
+        //public JsonResult SaveGMail(string gmailID, string pwd)
+        //{
+        //    //return Json(_IAmn.SaveGMail(gmailID.Trim(), pwd.Trim()) , JsonRequestBehavior.AllowGet);
 
             
             
-            return Json("", JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult getGmailAccount()
-        {
-            IEnumerable<GMail> obj1;//= _IAmn.getGmail();
-            return Json("", JsonRequestBehavior.AllowGet);
-        }
+        //    return Json("", JsonRequestBehavior.AllowGet);
+        //}
+        //public JsonResult getGmailAccount()
+        //{
+        //    IEnumerable<GMail> obj1;//= _IAmn.getGmail();
+        //    return Json("", JsonRequestBehavior.AllowGet);
+        //}
 
-        public JsonResult RemoveGMailAccount(string id)
-        {
-            string name = "";// _IAmn.RemoveGMailAccount(int.Parse(id));
-            return Json(name, JsonRequestBehavior.AllowGet);
-        }
+        //public JsonResult RemoveGMailAccount(string id)
+        //{
+        //    string name = "";// _IAmn.RemoveGMailAccount(int.Parse(id));
+        //    return Json(name, JsonRequestBehavior.AllowGet);
+        //}
 
      
         public JsonResult SaveBalanceAdjust( string clientID , string balance, string amount, string remark)

@@ -25,6 +25,8 @@ namespace MvcSDesign.Models
 
         public string projectStatus { get; set; }
 
+        public string prfFlag { get; set; }
+
         public string category { get; set; }
         public string subcategory { get; set; }
 
