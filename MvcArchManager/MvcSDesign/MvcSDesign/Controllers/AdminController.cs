@@ -1493,11 +1493,17 @@ namespace MvcSDesign.Controllers
 
 
         
-        public JsonResult RptQuotation( string ptype, string dt1 , string dt2 , string searchOpt, string projectID , string cname)
+        public JsonResult RptQuotation(string dt1 , string dt2 , string searchOpt, string projectID , string cname)
         {
-            var prj = _IAmn.RptQuotation(ptype, dt1, dt2, searchOpt, projectID, cname);
+            var prj = _IAmn.RptQuotation( dt1, dt2, searchOpt, projectID, cname);
             return Json(prj, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult RptSiteVisit( string projectID)
+        {
+            return Json(_IAmn.RptSiteVisit(int.Parse(projectID)), JsonRequestBehavior.AllowGet);
+        }
+
 
         public JsonResult ShowBalanceAdjust(string dt1, string dt2, string cname)
         {

@@ -51,7 +51,7 @@
                                     <a href="@Url.Action("ReportClientReceive", "Admin")" class="btn btn-primary"><span>Client Receive </span></a>
                                     <a href="@Url.Action("ReportDesignerLedger", "Admin")" class="btn btn-primary"><span>Desinger</span></a>
                                     <a href="@Url.Action("ReportQuotation", "Admin")" class="btn btn-primary"><span> Quotation  </span></a>
-                                    <a href="@Url.Action("ReportMonthQuotation", "Admin")" class="btn btn-primary"><span> Month Quotation </span></a>
+                                    @*<a href="@Url.Action("ReportMonthQuotation", "Admin")" class="btn btn-primary"><span> Month Quotation </span></a>*@
                                     @*<a href="@Url.Action("ReportBalanceAdjust", "Admin")" class="btn btn-primary"><span> Balance Adjust  </span></a>*@
                                     <a href="@Url.Action("ReportSiteVisit", "Admin")" class="btn btn-primary"><span> Site Visit   </span></a>
                                     <a href="@Url.Action("ReportProjectHistory", "Admin")" class="btn btn-primary"><span> Project History  </span></a>
@@ -67,9 +67,7 @@
 
                                 </div>
                             </div>
-                        </div>
-                        
-
+                        </div> 
                         <div class="row">
                              
                             <div class="row">
@@ -252,8 +250,8 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary waves-effect waves-light" ng-click="ClientPDFReport()">PDF</button>
-                                    <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2" ng-click="BalanceAdjust()">Balance Adjust </button>
-                                    <a href="/Admin/ClientLedgerUpdate" class="btn btn-primary waves-effect waves-light">Update</a>
+                                    @*<button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2" ng-click="BalanceAdjust()">Balance Adjust </button>
+                                    <a href="/Admin/ClientLedgerUpdate" class="btn btn-primary waves-effect waves-light">Update</a>*@
                                 </div>
                             </div>
                         </div>

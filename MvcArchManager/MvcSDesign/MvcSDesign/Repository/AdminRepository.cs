@@ -1183,31 +1183,6 @@ namespace MvcSDesign.Repository
                 NetworkCredential loginInfo = new NetworkCredential(gMailAccount, password);
                 MailMessage objMail = new MailMessage();
 
-
-                //get client's WhatsApp mobile no
-                //if (allowWhatsApp == "True")
-                //{
-                //    str = " Select uid , whatsAppno From tblDatabank Where proprietorName ='" + clientname + "' " +
-                //          " AND phone3 like '%" + clientMailId + "%' ";
-
-                //    cmd = new SqlCommand(str, conCallLog);
-                //    try
-                //    {
-                //        rd = cmd.ExecuteReader();
-                //        if (rd.Read())
-                //        {
-                //            whatsAppno = rd["whatsAppno"].ToString();
-                //            uid = rd["uid"].ToString();
-                //        }
-                //        rd.Close();
-                //    }
-                //    catch (Exception ex) { }
-                //}
-                //else
-                //{
-
-
-
                 if (clientMailId.IndexOf(',') > 0)
                     arr = clientMailId.Split(',');
                 else if (clientMailId.IndexOf(';') > 0)
@@ -1239,32 +1214,49 @@ namespace MvcSDesign.Repository
                 objMail.IsBodyHtml = true;
                 objMail.Priority = MailPriority.High;
 
-                //objMail.CC.Add(new MailAddress(""));
+                //get first character of each word in subcategory
 
-               //get first character of each word in subcategory
+
+               
+
+                //fnamesub = subcategory.Replace(" ", "_");
                 
-                
 
-                foreach (var part in subcategory.Split(' '))
-                {
-                    fnamesub += part.Substring(0, 1);
-                }
-                if (subcategory.Contains("Revised"))
-                {
-                    fnamesub = "Revised " + fnamesub;
 
-                    subcategory = subcategory.Replace("Revised", "");
-                    subcategory = subcategory.Trim();
-                }
                 str += "<br /> <br /> Greetings!";
                 
                 objMail.Subject = " 🏚 " + subcategory + "_" + pid + "_" + "_" + clientName + "_" + plotSize;
                 str += "<br /> <br /> Kindly find our submission of " + subcategory +" of Project ID  " + pid + ".";
+
+               
+
+                if (subcategory.Contains("Revised"))
+                {
+                    fnamesub = "Revised ";
+                    subcategory = subcategory.Replace("Revised", "");
+                    subcategory = subcategory.Trim();
+                }
+
+                if (subcategory.Length >= 60)
+                {
+                    foreach (var part in subcategory.Split(' '))
+                    {
+                        fnamesub += part.Substring(0, 1);
+                    }
+                }
+                else
+                {
+                    fnamesub = subcategory;
+                }
+
+                fnamesub = fnamesub.Replace(" ", "_");
+
+
+
                 ch = HostingEnvironment.MapPath("~//ProjectLocation//client_" + clientID.ToString() + "//proj_" + pid.ToString() + "//" + category + "//" + subcategory );
                 for (i = 0; i < arrFiles.Length; i++)
                 {
                     filename = arrFiles[i];
-                    // flag = "";
                     string tempfilename = "", ext = "";
                    
                     
@@ -1439,9 +1431,6 @@ namespace MvcSDesign.Repository
                 doc.Open();
                 para1.Alignment = Element.ALIGN_LEFT;
                 para1.SetLeading(0.0F, 1.0F);
-
-                //get file which uploaded by client
-                // getFile(filelocation, out filename, out zipfilename);
 
                 //get record of prf
                 int pid = int.Parse(projectID);
@@ -2166,84 +2155,81 @@ namespace MvcSDesign.Repository
                 int balance = 0;
                 if (cname == null) cname = "";
                 CultureInfo cinfo = new CultureInfo("en-US");
-
                 if ((cname == null) || (cname.Trim() == ""))
                 {
-
-
-                    //var query = from cl in _dbContext.tblClients
-                    //            orderby (cl.clientName)
-                    //            select new
-                    //            {
-                    //                clientID = cl.clientID,
-                    //                clientName = cl.clientName,
-                    //                city = cl.city,
-                    //                state = cl.state
-                    //            };
+                    var query = from cl in _dbContext.tblClients
+                                orderby (cl.clientName)
+                                select new
+                                {
+                                    clientID = cl.clientID,
+                                    clientName = cl.clientName,
+                                    city = cl.city,
+                                    state = cl.state
+                                };
 
 
 
-                    //foreach (var item in query)
-                    //{
-                    //    balance = 0;
-                    //    try
-                    //    {
-                    //        tblClientLedger cl = _dbContext.tblClientLedgers.Where(x => x.clientID == item.clientID).OrderByDescending(x => x.clientLadgerID).First();
-                    //        balance = cl.balance;
-                    //    }
-                    //    catch (Exception ex) { }
+                    foreach (var item in query)
+                    {
+                        balance = 0;
+                        try
+                        {
+                            tblClientLedger cl = _dbContext.tblClientLedgers.Where(x => x.clientID == item.clientID).OrderByDescending(x => x.clientLadgerID).First();
+                            balance = cl.balance;
+                        }
+                        catch (Exception ex) { }
 
-                    //    if (balance != 0)
-                    //    {
-                    //        obj.Add(new client
-                    //        {
-                    //            sno = i,
-                    //            clientID = item.clientID,
-                    //            clientName = item.clientName,
-                    //            city = item.city,
-                    //            state = item.state,
-                    //            mobile = balance.ToString()
-                    //        });
-                    //        i++;
-                    //    }
-                    //}
+                        if (balance != 0)
+                        {
+                            obj.Add(new client
+                            {
+                                sno = i,
+                                clientID = item.clientID,
+                                clientName = item.clientName,
+                                city = item.city,
+                                state = item.state,
+                                mobile = balance.ToString()
+                            });
+                            i++;
+                        }
+                    }
                 }
                 else
                 {
 
-                    //var query = from cl in _dbContext.tblClients
-                    //            where (cl.clientName.Contains(cname.Trim()))
-                    //            orderby (cl.clientName)
-                    //            select new
-                    //            {
-                    //                clientID = cl.clientID,
-                    //                clientName = cl.clientName,
-                    //                city = cl.city,
-                    //                state = cl.state
-                    //            };
+                    var query = from cl in _dbContext.tblClients
+                                where (cl.clientName.Contains(cname.Trim()))
+                                orderby (cl.clientName)
+                                select new
+                                {
+                                    clientID = cl.clientID,
+                                    clientName = cl.clientName,
+                                    city = cl.city,
+                                    state = cl.state
+                                };
 
-                    //foreach (var item in query)
-                    //{
-                    //    balance = 0;
-                    //    try
-                    //    {
-                    //        tblClientLedger cl = _dbContext.tblClientLedgers.Where(x => x.clientID == item.clientID).OrderByDescending(x => x.clientLadgerID).First();
-                    //        balance = cl.balance;
-                    //    }
-                    //    catch (Exception ex) { }
+                    foreach (var item in query)
+                    {
+                        balance = 0;
+                        try
+                        {
+                            tblClientLedger cl = _dbContext.tblClientLedgers.Where(x => x.clientID == item.clientID).OrderByDescending(x => x.clientLadgerID).First();
+                            balance = cl.balance;
+                        }
+                        catch (Exception ex) { }
 
-                    //    obj.Add(new client
-                    //    {
-                    //        sno = i,
-                    //        clientID = item.clientID,
-                    //        clientName = item.clientName,
-                    //        city = item.city,
-                    //        state = item.state,
-                    //        mobile = balance.ToString()
-                    //    });
-                    //    i++;
+                        obj.Add(new client
+                        {
+                            sno = i,
+                            clientID = item.clientID,
+                            clientName = item.clientName,
+                            city = item.city,
+                            state = item.state,
+                            mobile = balance.ToString()
+                        });
+                        i++;
 
-                    //}
+                    }
                 }
             }
             catch (Exception ex) { }
@@ -2301,63 +2287,63 @@ namespace MvcSDesign.Repository
                 dt2 = dt2.AddDays(1);
                 DataRow dr;
 
-                //var query = from cl in _dbContext.tblClientLedgers
-                //            join pd in _dbContext.tblProjectDetails on cl.projectID equals pd.projectID into pdetail
-                //            from pd in pdetail.DefaultIfEmpty()
-                //            where ((cl.dt >= dt1) && (cl.dt <= dt2) && (cl.clientID == clientID))
-                //            select new
-                //            {
-                //                clientID = cl.clientID,
+                var query = from cl in _dbContext.tblClientLedgers
+                            join pd in _dbContext.tblProjectDetails on cl.projectID equals pd.projectID into pdetail
+                            from pd in pdetail.DefaultIfEmpty()
+                            where ((cl.dt >= dt1) && (cl.dt <= dt2) && (cl.clientID == clientID))
+                            select new
+                            {
+                                clientID = cl.clientID,
 
-                //                projectID = (pd == null ? 0 : pd.projectID),
-                //                dt = cl.dt,
-                //                projectname = pd.projectname,
-                //                projectType = pd.projectType,
-                //                package = pd.package,
-                //                amount = cl.prjAmount,
-                //                receive = cl.receivedAmount,
-                //                balance = cl.balance,
-                //                remark = cl.remark
-                //            };
+                                projectID = (pd == null ? 0 : pd.projectID),
+                                dt = cl.dt,
+                                projectname = pd.projectname,
+                                projectType = pd.projectType,
+                                package = pd.package,
+                                amount = cl.prjAmount,
+                                receive = cl.receivedAmount,
+                                balance = cl.balance,
+                                remark = cl.remark
+                            };
 
-                //clientDetailRecord = new DataTable();
-                //clientDetailRecord.Columns.Add("projectID");
-                //clientDetailRecord.Columns.Add("dt");
-                //clientDetailRecord.Columns.Add("pname");
-                //clientDetailRecord.Columns.Add("ptype");
-                //clientDetailRecord.Columns.Add("package");
-                //clientDetailRecord.Columns.Add("amount");
-                //clientDetailRecord.Columns.Add("receive");
-                //clientDetailRecord.Columns.Add("balance");
-                //clientDetailRecord.Columns.Add("remark");
-                //foreach (var item in query)
-                //{
-                //    dr = clientDetailRecord.NewRow();
-                //    obj.Add(new operation
-                //    {
-                //        projectID = item.projectID,
-                //        status = item.dt.ToString("dd-MMM-yyyy"),
-                //        projectName = item.projectname,
-                //        projectType = item.projectType,
-                //        package = item.package,
-                //        amount = item.amount,
-                //        receivedAmount = item.receive,
-                //        balance = item.balance,
-                //        remark = item.remark
+                clientDetailRecord = new DataTable();
+                clientDetailRecord.Columns.Add("projectID");
+                clientDetailRecord.Columns.Add("dt");
+                clientDetailRecord.Columns.Add("pname");
+                clientDetailRecord.Columns.Add("ptype");
+                clientDetailRecord.Columns.Add("package");
+                clientDetailRecord.Columns.Add("amount");
+                clientDetailRecord.Columns.Add("receive");
+                clientDetailRecord.Columns.Add("balance");
+                clientDetailRecord.Columns.Add("remark");
+                foreach (var item in query)
+                {
+                    dr = clientDetailRecord.NewRow();
+                    obj.Add(new operation
+                    {
+                        projectID = item.projectID,
+                        status = item.dt.ToString("dd-MMM-yyyy"),
+                        projectName = item.projectname,
+                        projectType = item.projectType,
+                        package = item.package,
+                        amount = item.amount,
+                        receivedAmount = item.receive,
+                        balance = item.balance,
+                        remark = item.remark
 
 
-                //    });
-                //    dr[0] = item.projectID;
-                //    dr[1] = item.dt;
-                //    dr[2] = item.projectname;
-                //    dr[3] = item.projectType;
-                //    dr[4] = item.package;
-                //    dr[5] = item.amount;
-                //    dr[6] = item.receive;
-                //    dr[7] = item.balance;
-                //    dr[8] = item.remark;
-                //    clientDetailRecord.Rows.Add(dr);
-                //}
+                    });
+                    dr[0] = item.projectID;
+                    dr[1] = item.dt;
+                    dr[2] = item.projectname;
+                    dr[3] = item.projectType;
+                    dr[4] = item.package;
+                    dr[5] = item.amount;
+                    dr[6] = item.receive;
+                    dr[7] = item.balance;
+                    dr[8] = item.remark;
+                    clientDetailRecord.Rows.Add(dr);
+                }
 
 
 
@@ -2800,7 +2786,7 @@ namespace MvcSDesign.Repository
             return obj;
         }
 
-        public IEnumerable<operation> RptQuotation(string ptype, string dt1, string dt2, string searchOpt, string projectID, string cname)
+        public IEnumerable<operation> RptQuotation(string dt1, string dt2, string searchOpt, string projectID, string cname)
         {
             List<operation> reqlist = new List<operation>();
             CultureInfo cinfo = new CultureInfo("en-US");
@@ -2810,97 +2796,97 @@ namespace MvcSDesign.Repository
             int amt = 0;
             try
             {
-                if (searchOpt == "projectType")
-                {
-                    if (ptype == "All")
-                    {
+                //if (searchOpt == "projectType")
+                //{
+                //    if (ptype == "All")
+                //    {
 
-                        var prj = from pd in _dbContext.tblProjectDetails
-                                  join cl in _dbContext.tblClients
-                                  on pd.clientID equals cl.clientID
-                                  where ((pd.dt >= fromDt) && (pd.dt <= toDt))
-                                  select new
-                                  {
-                                      clientid = cl.clientID,
-                                      clientname = cl.clientName,
-                                      projectID = pd.projectID,
-                                      projectType = pd.projectType,
-                                      package = pd.package,
-                                      projectLevel = pd.projectLevel,
-                                      plotSize = pd.plotSize,
-                                      amount = pd.amount,
-                                      remark = pd.remark,
-                                  };
+                //        var prj = from pd in _dbContext.tblProjectDetails
+                //                  join cl in _dbContext.tblClients
+                //                  on pd.clientID equals cl.clientID
+                //                  where ((pd.dt >= fromDt) && (pd.dt <= toDt))
+                //                  select new
+                //                  {
+                //                      clientid = cl.clientID,
+                //                      clientname = cl.clientName,
+                //                      projectID = pd.projectID,
+                //                      projectType = pd.projectType,
+                //                      package = pd.package,
+                //                      projectLevel = pd.projectLevel,
+                //                      plotSize = pd.plotSize,
+                //                      amount = pd.amount,
+                //                      remark = pd.remark,
+                //                  };
 
-                        int i = 1;
+                //        int i = 1;
 
-                        foreach (var item in prj)
-                        {
-                            amt += item.amount;
-                            reqlist.Add(new operation
-                            {
-                                sno = i,
-                                clientID = item.clientid,
-                                projectID = item.projectID,
-                                clientName = item.clientname,
-                                projectType = item.projectType,
-                                package = item.package,
-                                projectLevel = item.projectLevel,
-                                plotSize = item.plotSize,
-                                amount = item.amount,
-                                remark = item.remark,
-                                balance = amt,
-                            });
-                            i++;
-                        }
+                //        foreach (var item in prj)
+                //        {
+                //            amt += item.amount;
+                //            reqlist.Add(new operation
+                //            {
+                //                sno = i,
+                //                clientID = item.clientid,
+                //                projectID = item.projectID,
+                //                clientName = item.clientname,
+                //                projectType = item.projectType,
+                //                package = item.package,
+                //                projectLevel = item.projectLevel,
+                //                plotSize = item.plotSize,
+                //                amount = item.amount,
+                //                remark = item.remark,
+                //                balance = amt,
+                //            });
+                //            i++;
+                //        }
 
 
 
-                    }
+                //    }
 
-                    else
-                    {
-                        var prj = from pd in _dbContext.tblProjectDetails
-                                  join cl in _dbContext.tblClients
-                                  on pd.clientID equals cl.clientID
-                                  where ((pd.projectType == ptype) && ((pd.dt >= fromDt) && (pd.dt <= toDt)))
-                                  select new
-                                  {
-                                      clientid = cl.clientID,
-                                      clientname = cl.clientName,
-                                      projectID = pd.projectID,
-                                      projectType = pd.projectType,
-                                      package = pd.package,
-                                      projectLevel = pd.projectLevel,
-                                      plotSize = pd.plotSize,
-                                      amount = pd.amount,
-                                      remark = pd.remark
-                                  };
-                        int i = 1;
+                //    else
+                //    {
+                //        var prj = from pd in _dbContext.tblProjectDetails
+                //                  join cl in _dbContext.tblClients
+                //                  on pd.clientID equals cl.clientID
+                //                  where ((pd.projectType == ptype) && ((pd.dt >= fromDt) && (pd.dt <= toDt)))
+                //                  select new
+                //                  {
+                //                      clientid = cl.clientID,
+                //                      clientname = cl.clientName,
+                //                      projectID = pd.projectID,
+                //                      projectType = pd.projectType,
+                //                      package = pd.package,
+                //                      projectLevel = pd.projectLevel,
+                //                      plotSize = pd.plotSize,
+                //                      amount = pd.amount,
+                //                      remark = pd.remark
+                //                  };
+                //        int i = 1;
 
-                        foreach (var item in prj)
-                        {
-                            amt += item.amount;
-                            reqlist.Add(new operation
-                            {
-                                sno = i,
-                                clientID = item.clientid,
-                                projectID = item.projectID,
-                                clientName = item.clientname,
-                                projectType = item.projectType,
-                                package = item.package,
-                                projectLevel = item.projectLevel,
-                                plotSize = item.plotSize,
-                                amount = item.amount,
-                                remark = item.remark,
-                                balance = amt,
+                //        foreach (var item in prj)
+                //        {
+                //            amt += item.amount;
+                //            reqlist.Add(new operation
+                //            {
+                //                sno = i,
+                //                clientID = item.clientid,
+                //                projectID = item.projectID,
+                //                clientName = item.clientname,
+                //                projectType = item.projectType,
+                //                package = item.package,
+                //                projectLevel = item.projectLevel,
+                //                plotSize = item.plotSize,
+                //                amount = item.amount,
+                //                remark = item.remark,
+                //                balance = amt,
 
-                            });
-                            i++;
-                        }
-                    }
-                }
-                else if (searchOpt == "projectID")
+                //            });
+                //            i++;
+                //        }
+                //    //}
+                //}
+                if (searchOpt == "projectID")
                 {
                     int pid = int.Parse(projectID);
                     var prj = from pd in _dbContext.tblProjectDetails
@@ -2992,6 +2978,62 @@ namespace MvcSDesign.Repository
 
         }
 
+        public IEnumerable<operation> RptSiteVisit(int projectID)
+        {
+            List<operation> reqlist = new List<operation>();
+            CultureInfo cinfo = new CultureInfo("en-US");
+            try
+            {
+                 
+                    
+                    var prj = from sv in _dbContext.tblProjectSiteVisits
+                              join pd in _dbContext.tblProjectDetails
+                              on sv.projectID equals pd.projectID
+                              join cl in _dbContext.tblClients
+                              on pd.clientID equals cl.clientID
+                              where (pd.projectID == projectID)
+                              select new
+                              {
+                                  clientid = cl.clientID,
+                                  clientname = cl.clientName,
+                                  projectID = pd.projectID,
+                                  projectName = pd.projectname,
+                                  projectType = pd.projectType,
+                                  package = pd.package,
+                                  projectLevel = pd.projectLevel,
+                                  plotSize = pd.plotSize,
+                                  remark = sv.remark,
+                                  sitePhotoFile = sv.sitePhotoFile
+                              };
+                    int i = 1;
+
+                    foreach (var item in prj)
+                    {
+                        
+                        reqlist.Add(new operation
+                        {
+                            sno = i,
+                            clientID = item.clientid,
+                            projectID = item.projectID,
+                            clientName = item.clientname,
+                            projectType = item.projectType,
+                            projectName= item.projectName,
+                            package = item.package,
+                            projectLevel = item.projectLevel,
+                            plotSize = item.plotSize,
+                            filename = item.sitePhotoFile,
+                            remark = item.remark,
+                            
+                        });
+                        i++;
+                    }
+                  
+            }
+            catch (Exception ex) { }
+
+            return reqlist.ToList();
+
+        }
 
         public string SaveRegistration(registration obj)
         {

@@ -166,12 +166,10 @@ app.controller("myController", function ($scope, $http, cw) {
 
             var slist = d.data[0];//Massage 
             var ptype = slist.Text;
-            alert("Return " + ptype);
-             
-            //slist = d.data[2];
-            $scope.lblError = "File successfully send to client";
-             
-
+            if(ptype =="Y" )
+             {
+                $scope.lblError = "File successfully send to client";
+             }            
 
             $('.bs-example-modal-send').modal('hide');
             SearchProject();

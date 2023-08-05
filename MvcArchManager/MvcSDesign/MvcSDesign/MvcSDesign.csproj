@@ -330,6 +330,7 @@
     <Content Include="angularjs\ReportDesinger.js" />
     <Content Include="angularjs\reportmonthquotation.js" />
     <Content Include="angularjs\ReportQuotation.js" />
+    <Content Include="angularjs\ReportSiteVisit.js" />
     <Content Include="angularjs\SiteVisit.js" />
     <Content Include="angularjs\test.js" />
     <Content Include="assetsUser\css\bootstrap.min.css" />

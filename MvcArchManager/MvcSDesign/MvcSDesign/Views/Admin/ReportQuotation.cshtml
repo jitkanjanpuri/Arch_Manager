@@ -46,7 +46,7 @@
                                 <a href="@Url.Action("ReportClientReceive", "Admin")" class="btn btn-primary"><span>Client Receive </span></a>
                                 <a href="@Url.Action("ReportDesignerLedger", "Admin")" class="btn btn-primary"><span>Desinger</span></a>
                                 <a href="@Url.Action("ReportQuotation", "Admin")" class="btn btn-primary"><span> Quotation  </span></a>
-                                <a href="@Url.Action("ReportMonthQuotation", "Admin")" class="btn btn-primary"><span> Month Quotation </span></a>
+                                @*<a href="@Url.Action("ReportMonthQuotation", "Admin")" class="btn btn-primary"><span> Month Quotation </span></a>*@
                                 @*<a href="@Url.Action("ReportBalanceAdjust", "Admin")" class="btn btn-primary"><span> Balance Adjust  </span></a>*@
                                 <a href="@Url.Action("ReportSiteVisit", "Admin")" class="btn btn-primary"><span> Site Visit   </span></a>
                                 <a href="@Url.Action("ReportProjectHistory", "Admin")" class="btn btn-primary"><span> Project History  </span></a>
@@ -87,12 +87,12 @@
 
 
                     <div class="row">
-                        <div class="col-xl-2 col-md-2">
+                        @*<div class="col-xl-2 col-md-2">
                             <div class="form-group mb-2">
                                 <label><input type="radio" ng-model="quotationValue" class="form-check-input" name="quotation" value="projectType" checked="checked" /> Project Type</label>
                                 <select class="form-control" ng-model="ptype" ng-options="item for item in arrProjectType" ></select> 
                             </div>
-                        </div>
+                        </div>*@
                         <div class="col-xl-2 col-md-2">
                             <div class="form-group mb-2">
                                 <label><input type="radio" ng-model="quotationValue" class="form-check-input" value="projectID" name="quotation" /> Project ID</label>
@@ -129,10 +129,10 @@
                     <div class="row">
                         <div class="col-xl-12">
                             <div class="card">
-                                <div class="card-header">
+                                @*<div class="card-header">
                                     <h4 class="card-title">Quotation Report</h4>
 
-                                </div>
+                                </div>*@
                                 <div class="card-body">
                                     <div style="display: flex; justify-content: flex-end">
                                         <span class=" text-right font-size:20; font-weight-bold; " style=" margin-right:100px; font-weight:bold">Total amount  {{totalAmount}}</span>
@@ -145,8 +145,8 @@
                                                     <th>#</th>
                                                     <th>Project ID</th>
                                                     <th>Client name</th>
-                                                    <th>Project Type</th>
-                                                    <th>Package</th>
+                                                    <th>Project Name</th>
+                                                    @*<th>Package</th>*@
                                                     <th>Plot size</th>
                                                     <th>Level</th>
 
@@ -172,9 +172,9 @@
                                                     <td>
                                                         <span>  {{item.projectType }}  </span>
                                                     </td>
-                                                    <td>
+                                                    @*<td>
                                                         <span> {{item.package}} </span>
-                                                    </td>
+                                                    </td>*@
                                                     <td>
                                                         <span> {{item.plotSize}} </span>
                                                     </td>
@@ -193,11 +193,11 @@
                                                             @*<i class="mdi mdi-download d-block font-size-16"></i>*@ PDF
                                                         </button>
                                                     </td>
-                                                    <td>
+                                                    @*<td>
                                                         <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="QuotationSend(item.projectID , item.projectType)">
-                                                            @*<i class="mdi mdi-upload d-block font-size-16"></i>*@ Send
+                                                            Send
                                                         </button>
-                                                    </td>
+                                                    </td>*@
                                                 </tr>
                                             </tbody>
                                         </table>

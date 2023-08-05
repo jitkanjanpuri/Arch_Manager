@@ -161,7 +161,9 @@ namespace MvcSDesign.Repository
                     subcatgory = item.subcategory;
                     clientID = item.clientID;
                 }
-                location = "~/ProjectLocation/client_" + clientID.ToString() + "/proj_" + pid.ToString() + "/" + category + "/" + subcatgory+"/I";
+
+                subcatgory = subcatgory.Replace("Revised", "");
+                location = "~/ProjectLocation/client_" + clientID.ToString() + "/proj_" + pid.ToString() + "/" + category + "/" + subcatgory.Trim()+"/I";
                 ch = HostingEnvironment.MapPath(location);
 
                  

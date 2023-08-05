@@ -28,31 +28,7 @@ namespace MvcSDesign.Controllers
             return View();
         }
 
-        //public ActionResult Render()
-        //{
-        //    return View();
-        //}
-
-
-        //public ActionResult Login()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public ActionResult Login(clsLogin lg)
-        //{
-        //    return RedirectToAction("operation");
-        //}
-        //public ActionResult logout()
-        //{
-        //    Session["username"] = "";
-        //    Session["regID"] = "";
-        //    Session["name"] = "";
-        //    Session["profileImage"] = "";
-        //    return RedirectToAction("Login", "Render");
-        //}
-
+         
         //public string userVarification(string uname, string pwd)
         //{
         //    int regID = 0;
@@ -91,9 +67,6 @@ namespace MvcSDesign.Controllers
 
             }
             catch (Exception ex) { }
-
-            //clsTaskAssignModel tm = new Models.clsTaskAssignModel();
-            //tm.tasklist = ta;
             ViewBag.Message = "";
             if (ta.Count == 0)
             {

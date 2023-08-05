@@ -94,8 +94,11 @@ namespace MvcSDesign.Repository
         IEnumerable<operation> RptDesignerLedgerDetail(int sid, string fromDt, string toDt);
         IEnumerable<operation> getDesignerWorkingList(int reg);
 
-        IEnumerable<operation> RptQuotation(string ptype, string dt1, string dt2, string searchOpt, string projectID, string cname);
+        IEnumerable<operation> RptQuotation(string dt1, string dt2, string searchOpt, string projectID, string cname);
         IEnumerable<operation> RptClientReceive(string cname, string fromDt, string toDt);
+
+        IEnumerable<operation> RptSiteVisit(int projectID);
+
 
         IEnumerable<operation> ShowBalanceAdjust(string dt1, string dt2, string cname);
 
