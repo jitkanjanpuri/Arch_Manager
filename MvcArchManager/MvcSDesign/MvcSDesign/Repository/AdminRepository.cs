@@ -1123,7 +1123,26 @@ namespace MvcSDesign.Repository
             return location;
         }
 
-   
+        public string GetProjectSiteVistPath(int pid, string filename)
+        {
+            string  clientID = "";
+            try
+            {
+
+                var res = _dbContext.tblProjectDetails.Where(x => x.projectID == pid).FirstOrDefault();
+                 
+                if (res == null)
+                {
+                    return "";
+                }
+                clientID = res.clientID.ToString();
+               return  HostingEnvironment.MapPath("~//ProjectLocation//client_" + clientID.ToString() + "//proj_" + pid.ToString() + "//Site Visit//" + filename);
+
+            }
+            catch (Exception ex) { return ex.Message; }
+            return "";
+        }
+
         public string SendTaskMailToClien(int pmID, int pid,  string[] arrFiles, out string uploadedFileName, string gmail)
         {
 
@@ -1404,11 +1423,9 @@ namespace MvcSDesign.Repository
         }
 
        
-
-         
         public string DownloadPRF(string projectID, string filelocation)
         {
-            string str = "", pdfname = "";
+            string pdfname = "";
 
            
             Document doc = new Document();
@@ -1771,11 +1788,62 @@ namespace MvcSDesign.Repository
             {
                 pdfname = "";
             }
-
-
             return pdfname;
 
         }
+        public string DownloadSiteVist(int projectID, string filename)
+        {
+            try
+            {
+                var res = _dbContext.tblProjectDetails.Where(x => x.projectID == projectID).FirstOrDefault();
+                if(res == null)
+                {
+                    return ""; 
+                }
+
+                return HostingEnvironment.MapPath("~/ProjectLocation/client_" + res.clientID + "/proj_" + projectID + "/Site Photo/" + filename);
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+
+        }
+        public string DownloadUploadFile(int projectID, int uploafFileID, string filename)
+        {
+            try
+            {
+                string clientID="" ,category="",subcategory="";
+
+                var res = (from uf in _dbContext.tblProjectUploadFiles
+                           join pd in _dbContext.tblProjectDetails
+                           on uf.projectID equals pd.projectID
+                           where (uf.uploadfileID == uploafFileID)
+                           select new
+                           {
+                               clientID = pd.clientID,
+                               category = uf.category,
+                               subcategory = uf.subcategory
+                           }).ToList();
+                           
+                foreach(var item in res)
+                {
+                    clientID = item.clientID.ToString();
+                    category = item.category;
+                    subcategory = item.subcategory;
+
+                }
+                subcategory = subcategory.Replace("Revised", "").Trim();
+
+                return HostingEnvironment.MapPath("~/ProjectLocation/client_" + clientID + "/proj_" + projectID +"/"+ category +"/" + subcategory+"/"+ filename);
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+
+        }
+
         public IEnumerable<operation> getDesignerWorkingList(int reg)
         {
             List<operation> prjlist = new List<operation>();
@@ -2552,7 +2620,7 @@ namespace MvcSDesign.Repository
 
         public List<operation> DashBoard_getProjectType()
         {
-            List<operation> prjType = new List<operation>();
+            List<operation> lst = new List<operation>();
             try
             {
                 DateTime dt2 = DateTime.Today;
@@ -2560,13 +2628,10 @@ namespace MvcSDesign.Repository
 
                 dt2 = DateTime.Today.AddDays(1);
                 string[] arr = new string[] { "" };
-                string projectTypeItems = "", allQty = "";
-                bool flag = false;
-
-
-                string name;
-                arr = new string[] { "Elevation", "Revised Elevation", "Dratf View", "Revised View", "Final View", "Interior", "3D Floor Plan" };
-                projectTypeItems = "Elevation, Revised Elevation, Dratf View, Revised View, Final View, Interior,3D Floor Plan";
+                string   allQty = "", projectTypeItems="Elevation";
+                  
+                //arr = new string[] { "Elevation", "Revised Elevation", "Dratf View", "Revised View", "Final View", "Interior", "3D Floor Plan" };
+                //projectTypeItems = "Elevation, Revised Elevation, Dratf View, Revised View, Final View, Interior,3D Floor Plan";
 
 
                 var res = (from st in _dbContext.tblStaffs
@@ -2579,44 +2644,44 @@ namespace MvcSDesign.Repository
 
                 foreach (var item in res)
                 {
-                    var res1 = (from p in _dbContext.tblOperations
-                                where ((p.staffID == item.staffID) && ((p.dt >= dt1) && (p.dt <= dt2)))
-                                group p by p.projectCategory into g
-                                select new operation
+                    var res1 = (from p in _dbContext.tblProjectUploadFiles
+                                where ((p.designerID == item.staffID) && ((p.dt >= dt1) && (p.dt <= dt2)))
+                                group p by p.designerID into g
+                                select new  
                                 {
                                     sno = g.Count(),
-                                    projectCategory = g.Key
+                                     
                                 }).ToList();
-                    name = item.name;
-                    allQty = "";
-                    for (int i = 0; i < arr.Length; i++)
+                    //name = item.name;
+                    //allQty = "";
+                    //for (int i = 0; i < arr.Length; i++)
+                    //{
+
+                    //    flag = false;
+                    foreach (var itemOp in res1)
                     {
+                        //if (arr[i] == itemOp.projectCategory)
+                        //{
+                        //    if (allQty.Length == 0)
+                                allQty = itemOp.sno.ToString();
+                        //    else
+                        //        allQty = allQty + "," + itemOp.sno.ToString();
 
-                        flag = false;
-                        foreach (var itemOp in res1)
-                        {
-                            if (arr[i] == itemOp.projectCategory)
-                            {
-                                if (allQty.Length == 0)
-                                    allQty = itemOp.sno.ToString();
-                                else
-                                    allQty = allQty + "," + itemOp.sno.ToString();
-
-                                flag = true;
-                            }
-                        }
-                        if (allQty.Length == 0)
-                            allQty = "0";
-                        else
-                            allQty = allQty + "," + "0";
-
-
+                        //    flag = true;
+                        //}
                     }
+                    //    if (allQty.Length == 0)
+                    //        allQty = "0";
+                    //    else
+                    //        allQty = allQty + "," + "0";
 
-                    prjType.Add(
+
+                    //}
+
+                    lst.Add(
                                 new operation
                                 {
-                                    clientName = name,
+                                    clientName = item.name,
                                     projectType = projectTypeItems,
                                     package = allQty,
 
@@ -2627,7 +2692,7 @@ namespace MvcSDesign.Repository
             }
             catch (Exception ex) { }
 
-            return prjType;
+            return lst;
 
         }
 
@@ -2981,7 +3046,6 @@ namespace MvcSDesign.Repository
         public IEnumerable<operation> RptSiteVisit(int projectID)
         {
             List<operation> reqlist = new List<operation>();
-            CultureInfo cinfo = new CultureInfo("en-US");
             try
             {
                  
@@ -2994,6 +3058,7 @@ namespace MvcSDesign.Repository
                               where (pd.projectID == projectID)
                               select new
                               {
+                                  dt = sv.dt,
                                   clientid = cl.clientID,
                                   clientname = cl.clientName,
                                   projectID = pd.projectID,
@@ -3013,6 +3078,7 @@ namespace MvcSDesign.Repository
                         reqlist.Add(new operation
                         {
                             sno = i,
+                            dtstr = item.dt.Day +"-"+ item.dt.Month +"-"+ item.dt.Year,
                             clientID = item.clientid,
                             projectID = item.projectID,
                             clientName = item.clientname,
@@ -3028,6 +3094,68 @@ namespace MvcSDesign.Repository
                         i++;
                     }
                   
+            }
+            catch (Exception ex) { }
+
+            return reqlist.ToList();
+
+        }
+
+        public IEnumerable<operation> RptProjectHistory(int projectID)
+        {
+            List<operation> reqlist = new List<operation>();
+            try
+            {
+
+
+                var prj = from puf in _dbContext.tblProjectUploadFiles
+                          join pd in _dbContext.tblProjectDetails
+                          on puf.projectID equals pd.projectID
+                          join cl in _dbContext.tblClients
+                          on pd.clientID equals cl.clientID
+                          where (pd.projectID == projectID)
+                          select new
+                          {
+                              id = puf.uploadfileID,
+                              dt = puf.dt,
+                              clientid = cl.clientID,
+                              clientname = cl.clientName,
+                              projectID = pd.projectID,
+                              projectName = pd.projectname,
+                              projectType = pd.projectType,
+                              package = pd.package,
+                              projectLevel = pd.projectLevel,
+                              plotSize = pd.plotSize,
+                              category = puf.category,
+                              subcategory = puf.subcategory,
+                              filename = puf.filename
+                          };
+                int i = 1;
+
+                foreach (var item in prj)
+                {
+
+                    reqlist.Add(new operation
+                    {
+                        sno = i,
+                        dtstr = item.dt.Day + "-" + item.dt.Month + "-" + item.dt.Year,
+                        pmID = item.id,
+                        clientID = item.clientid,
+                        projectID = item.projectID,
+                        clientName = item.clientname,
+                        projectType = item.projectType,
+                        projectName = item.projectName,
+                        package = item.package,
+                        projectLevel = item.projectLevel,
+                        plotSize = item.plotSize,
+                        filename = item.filename,
+                        category = item.category,
+                        subcategory = item.subcategory,
+
+                    });
+                    i++;
+                }
+
             }
             catch (Exception ex) { }
 

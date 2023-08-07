@@ -2,12 +2,7 @@
 app.controller("myController", function ($scope, $http,  $window) {
      
     $scope.loading = true;
-    //$scope.arrProjectType = ["All", "Exterior", "Interior", "3D_Floor", "Structure", "Planning", "Gujarat", "Walkthrough", "Bird_Eye_View", "Interactive_View(Exterior)", "Interactive_View(Interior)"];
-
-    //$scope.ptype = $scope.arrProjectType[0];
     $scope.totalAmount = "0";
-
-   
     $scope.toEnd = new Date();
     $scope.fromStart = new Date();
      

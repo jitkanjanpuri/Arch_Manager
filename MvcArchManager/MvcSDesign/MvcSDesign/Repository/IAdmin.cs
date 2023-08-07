@@ -48,16 +48,11 @@ namespace MvcSDesign.Repository
         string DownloadPRF(string projectID, string filelocation);
         IEnumerable<SelectListItem> getOperationDesigner();
         IEnumerable<operation> getProjectAssign();
-
-        //string SaveGMail(string gmailID, string pwd);
-        //List<GMail> getGmail();
-        //string RemoveGMailAccount(int id);
+         
         string SaveProjectAssigned(string projectID, string clientID, string projectCategory, string designerAmount);
 
         string ProjectRollBack(int pmID);
-
-        // Operation
-        //IEnumerable<operation> getCurrentWorkingList(string dname);
+         
         IEnumerable<operation> getDesignerProjectAmount(int designerID);
         string DesignerAmountCancel(int operationID);
         string CompleteCurrentWorking(int operationID);
@@ -69,11 +64,8 @@ namespace MvcSDesign.Repository
 
         string SendTaskMailToClien(int pmID,int pid, string[] arrFiles, out string uploadedFileName, string gmail);
         string DeleteProjectManagement(int pmID, string uploadedFileName);
-
         string AmountReceive(int cid, string amount, string remark);
         string SavePayDesigner(int sid, int amount, string remark);
-
-
         string ProjectAssigning(operation op);
         operation SearchAddProject(int projectID);
         string SaveNewProject(operation obj);
@@ -82,8 +74,12 @@ namespace MvcSDesign.Repository
         bool DesignerEmailValidation(string mailID);
 
 
+        //Site Visit
         string SaveSiteVisit(int projectID, string fname,  string remark);
         IEnumerable<operation> SearchSiteVisitByNameOrProjectID(string opt, string projectID, string name);
+        string DownloadSiteVist(int projectID, string filename);
+
+        string DownloadUploadFile(int projectID, int uploafFileID,  string filename);
 
 
         //Report
@@ -99,7 +95,7 @@ namespace MvcSDesign.Repository
 
         IEnumerable<operation> RptSiteVisit(int projectID);
 
-
+        IEnumerable<operation> RptProjectHistory(int projectID);
         IEnumerable<operation> ShowBalanceAdjust(string dt1, string dt2, string cname);
 
         int ClientPreviousBalance(string clinetID, string dt);

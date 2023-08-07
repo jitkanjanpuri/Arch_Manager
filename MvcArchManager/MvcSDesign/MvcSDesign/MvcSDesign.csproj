@@ -329,6 +329,7 @@
     <Content Include="angularjs\reportclientreceive1.js" />
     <Content Include="angularjs\ReportDesinger.js" />
     <Content Include="angularjs\reportmonthquotation.js" />
+    <Content Include="angularjs\reportProjectHistory.js" />
     <Content Include="angularjs\ReportQuotation.js" />
     <Content Include="angularjs\ReportSiteVisit.js" />
     <Content Include="angularjs\SiteVisit.js" />

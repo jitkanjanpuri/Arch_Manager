@@ -623,6 +623,26 @@ namespace MvcSDesign.Controllers
 
             return File(pdfpath, contentType, filename);
         }
+
+        public FileResult DownloadSiteVist(string projectID,  string filename)
+        {
+            string pdfpath = _IAmn.DownloadSiteVist(int.Parse(projectID), filename);
+            filename = System.IO.Path.GetFileName(pdfpath);
+            string contentType = "application/pdf";
+
+            return File(pdfpath, contentType, filename);
+        }
+
+        public FileResult DownloadUploadFile(string projectID, string uploafFileID,string filename)
+        {
+            string pdfpath = _IAmn.DownloadUploadFile(int.Parse(projectID), int.Parse(uploafFileID), filename);
+            filename = System.IO.Path.GetFileName(pdfpath);
+            string contentType = "application/pdf";
+
+            return File(pdfpath, contentType, filename);
+        }
+
+
         public ActionResult ReportProjectHistory()
         {
             try
@@ -1491,8 +1511,6 @@ namespace MvcSDesign.Controllers
             return Json(rep, JsonRequestBehavior.AllowGet);
         }
 
-
-        
         public JsonResult RptQuotation(string dt1 , string dt2 , string searchOpt, string projectID , string cname)
         {
             var prj = _IAmn.RptQuotation( dt1, dt2, searchOpt, projectID, cname);
@@ -1504,6 +1522,10 @@ namespace MvcSDesign.Controllers
             return Json(_IAmn.RptSiteVisit(int.Parse(projectID)), JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult RptProjectHistory(string projectID)
+        {
+            return Json(_IAmn.RptProjectHistory(int.Parse(projectID)), JsonRequestBehavior.AllowGet);
+        }
 
         public JsonResult ShowBalanceAdjust(string dt1, string dt2, string cname)
         {

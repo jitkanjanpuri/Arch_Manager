@@ -10,9 +10,7 @@
 
 <head>
 
-    <script src="~/angularjs/ReportQuotation.js"></script>
-
-
+    <script src="~/angularjs/ReportProjectHistory.js"></script>
     <script type="text/javascript">
 
         function IsNumber(e) {
@@ -70,20 +68,13 @@
 
                             <div class="col-xl-2 col-md-2">
                                 <div class="form-group mb-2">
-                                    @*<label><input type="radio" ng-model="quotationValue" class="form-check-input" value="projectID" name="quotation" /> Project ID</label>*@
+                                 
                                     <label> Project ID</label>
-                                    <input class="form-control" ng-model="txtProjectID" onkeypress="return IsNumber();">
+                                    <input class="form-control" ng-model="pid" onkeypress="return IsNumber();">
 
                                 </div>
                             </div>
-
-                            @*<div class="col-xl-2 col-md-2">
-                                    <div class="form-group mb-3">
-                                        <label><input type="radio" ng-model="quotationValue" value="clientName" name="quotation" class="form-check-input" />Client name </label>
-                                        <input class="form-control" ng-model="txtName">
-
-                                    </div>
-                                </div>*@
+                             
                             <div class="col-xl-2 col-md-2">
                                 <div class="form-group mb-3">
                                     <label> . </label>
@@ -99,49 +90,59 @@
                                 <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
                             </button>
                         </div>
-                        <div class="text-center ">
-                            <span class="text-danger text-center font-size:16  " style="">{{searchdmsg}}</span>
+                        <div class="text-left ">
+                            <span class="text-danger text-left  " style="font-size:14pt">{{searchdmsg}}</span>
                         </div>
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="card">
-                                    @*<div class="card-header">
-                                        <h4 class="card-title">Quotation Report</h4>
-
-                                    </div>*@
                                     <div class="card-body">
-                                        <div style="display: flex; justify-content: flex-end">
-                                            <span class=" text-right font-size:20; font-weight-bold; " style=" margin-right:100px; font-weight:bold">Total amount  {{totalAmount}}</span>
-                                        </div>
                                         <div class="table-responsive">
-                                           
-
                                             <table class="table align-middle datatable dt-responsive table-bordered  nowrap" style=" border: 1px solid black; border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
                                                 <thead>
                                                     <tr class="bg-transparent">
-
-                                                        <th style="">  Sno  </th>
-                                                        <th style="">  Date</th>
-
-                                                        <th>File name </th>
-                                                        < 
-                                                        
-
+                                                        <th>#</th>
+                                                        <th>Submitted Date</th>
+                                                        <th>Project ID</th>
+                                                        <th>Client name</th>
+                                                        <th>Project Name</th>
+                                                        <th>Category</th>
+                                                        <th>Subcategory</th>
+                                                        <th>Action </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
 
-                                                    <tr>
+                                                    <tr ng-repeat="item in uploadlist">
                                                         <td>
-                                                            <span style="color:black "> 1 </span>
+                                                            <span> {{item.sno}}  </span>
                                                         </td>
                                                         <td>
-                                                            <span style="color: black ">  15-02-2023  </span>
+                                                            <span>{{item.dtstr}} </span>
                                                         </td>
                                                         <td>
-                                                            <span style="color: black ">  Xyz  </span>
+                                                            <span> {{item.projectID}}  </span>
                                                         </td>
-                                                        
+
+                                                        <td>
+                                                            <span>  {{item.clientName}}  </span>
+                                                        </td>
+                                                        <td>
+                                                            <span>  {{item.projectName }}  </span>
+                                                        </td>
+                                                        <td>
+                                                            <span> {{item.category}} </span>
+                                                        </td>
+                                                        <td>
+                                                            <span> {{item.subcategory}} </span>
+                                                        </td>
+                                                        <td>
+                                                            <div ng-if="item.filename.length !=0">
+                                                                <a href="@Url.Action("DownloadUploadFile","Admin")?projectID={{item.projectID}}&uploafFileID={{item.pmID}}&filename={{item.filename}}" class="btn btn-sm btn-primary" style="width:30px; height:30px;">
+                                                                    <i class="fa fa-download"></i>
+                                                                </a>
+                                                            </div>
+                                                        </td>
 
                                                     </tr>
                                                 </tbody>
