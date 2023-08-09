@@ -17,6 +17,7 @@ using System.Globalization;
 using System.Web.Hosting;
 using System.Drawing;
 using System.IO;
+using Org.BouncyCastle.Ocsp;
 
 namespace MvcSDesign.Controllers
 {
@@ -156,7 +157,10 @@ namespace MvcSDesign.Controllers
             return RedirectToAction("CompanyProfile");
         }
 
-
+        public ActionResult RepTechnical(CompanyModel obj, HttpPostedFileBase logofile)
+        {
+            return View();
+        }
 
 
         public JsonResult getProjectQuotation()
@@ -675,6 +679,21 @@ namespace MvcSDesign.Controllers
 
             return View();
         }
+
+        public ActionResult ReportTechnical()
+        {
+            try
+            {
+                //string ch = Session["user"].ToString();
+            }
+            catch (Exception ex)
+            {
+            }
+
+
+            return View();
+        }
+
         public ActionResult Registration()
         {
             staff obj = new staff();
@@ -1114,7 +1133,10 @@ namespace MvcSDesign.Controllers
             return Json(rep, JsonRequestBehavior.AllowGet);
         }
 
-
+        public JsonResult RptTechnical(string designerID, string fromDt, string toDt)
+        {
+            return Json(_IAmn.RptTechnical(designerID, fromDt, toDt), JsonRequestBehavior.AllowGet);
+        }
         public JsonResult ClientLedgerPDF(string cid, string cname, string addr, string fromDt, string toDt)
         {
             string ch = createClientLedgerPDF(clientDetailRecord, cid, cname , addr , fromDt, toDt);
@@ -1132,6 +1154,7 @@ namespace MvcSDesign.Controllers
             PdfPTable table1 = new PdfPTable(2);
             PdfPCell pdfcell;// As PdfPCell
             DataRow dr;
+            string logofile = "";
             string balance = "", pdfname, fname ,tmpDt;
             int i,oldBalance;
             DateTime pdt; 
@@ -1148,8 +1171,21 @@ namespace MvcSDesign.Controllers
             }
             catch (Exception ex) { }
 
+            var dir1 = new DirectoryInfo(HostingEnvironment.MapPath("~//Images/logoimage"));
+            try
+            {
+                foreach (var file in dir1.GetFiles())
+                {
+                    logofile = file.Name;
+                }
+            }
+            catch (Exception ex) { }
+
+
             oldBalance = _IAmn.ClientPreviousBalance(cid, fromDt);
-             
+            var resProfile = _IAmn.GetCompanyProfile();
+
+
             PdfWriter.GetInstance(doc, new FileStream(pdfname, FileMode.Create));
             doc.Open();
              
@@ -1157,54 +1193,105 @@ namespace MvcSDesign.Controllers
             para1.Alignment = Element.ALIGN_LEFT;
             para1.SetLeading(0.0F, 1.0F);
 
-            pdfcell = null;
-            ph1 = new Phrase(Environment.NewLine);
-            para1.Add(ph1);
+            //pdfcell = null;
+            //ph1 = new Phrase(Environment.NewLine);
+            //para1.Add(ph1);
 
-            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            //fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            //table1 = new PdfPTable(2);
+            //int[] cellWidthPercentage = new int[] { 50, 50 };
+            //table1.WidthPercentage = 100;
+            //table1.HorizontalAlignment = Element.ALIGN_CENTER;
+            //table1.SetWidths(cellWidthPercentage);
+
+            //pdfcell = null;
+            //pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
+            //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+            //pdfcell.Border = 0;
+            //pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+            //table1.AddCell(pdfcell);
+
+            //pdfcell = new PdfPCell(new Phrase(new Chunk("301-H, Pushparatna solintare", fnt)));
+            //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+            //pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+            //pdfcell.Border = 0;
+            //table1.AddCell(pdfcell);
+
+
+            //pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
+            //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+            //pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+            //pdfcell.Border = 0;
+            //table1.AddCell(pdfcell);
+
+            //pdfcell = new PdfPCell(new Phrase(new Chunk("New Palasia, AB Road, Indore - 452001 MP", fnt)));
+            //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+            //pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+            //pdfcell.Border = 0;
+            //table1.AddCell(pdfcell);
+
+            //pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
+            //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+            //pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+            //pdfcell.Border = 0;
+            //table1.AddCell(pdfcell);
+
+            //pdfcell = new PdfPCell(new Phrase(new Chunk("Tel: +91-731-4977407 , Cell : +91-96919-06670", fnt)));
+            //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+            //pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+            //pdfcell.Border = 0;
+            //table1.AddCell(pdfcell);
+
+            //pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
+            //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+            //pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+            //pdfcell.Border = 0;
+            //table1.AddCell(pdfcell);
+
+            //pdfcell = new PdfPCell(new Phrase(new Chunk(" Email : design.satyam@gmail.com ", fnt)));
+            //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+            //pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+            //pdfcell.Border = 0;
+            //table1.AddCell(pdfcell);
+
+            //para1.Add(table1);
+
             table1 = new PdfPTable(2);
             int[] cellWidthPercentage = new int[] { 50, 50 };
             table1.WidthPercentage = 100;
             table1.HorizontalAlignment = Element.ALIGN_CENTER;
+
             table1.SetWidths(cellWidthPercentage);
 
-            pdfcell = null;
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 14, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+
+            pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
+            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+            pdfcell.Border = 0;
+            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+            table1.AddCell(pdfcell);
+
+
+            pdfcell = new PdfPCell(new Phrase(new Chunk(resProfile.orgName, fnt)));
+            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+            pdfcell.Border = 0;
+            table1.AddCell(pdfcell);
+
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+
             pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.Border = 0;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
             table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk("301-H, Pushparatna solintare", fnt)));
+            pdfcell = new PdfPCell(new Phrase(new Chunk(resProfile.address, fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
             pdfcell.Border = 0;
             table1.AddCell(pdfcell);
 
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            pdfcell.Border = 0;
-            table1.AddCell(pdfcell);
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk("New Palasia, AB Road, Indore - 452001 MP", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            pdfcell.Border = 0;
-            table1.AddCell(pdfcell);
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            pdfcell.Border = 0;
-            table1.AddCell(pdfcell);
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk("Tel: +91-731-4977407 , Cell : +91-96919-06670", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            pdfcell.Border = 0;
-            table1.AddCell(pdfcell);
 
             pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
@@ -1212,15 +1299,39 @@ namespace MvcSDesign.Controllers
             pdfcell.Border = 0;
             table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk(" Email : design.satyam@gmail.com ", fnt)));
+            pdfcell = new PdfPCell(new Phrase(new Chunk(resProfile.city + " - " + resProfile.pincode + " " + resProfile.state, fnt)));
+            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+            pdfcell.Border = 0;
+            table1.AddCell(pdfcell);
+
+
+
+            pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
+            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+            pdfcell.Border = 0;
+            table1.AddCell(pdfcell);
+
+            pdfcell = new PdfPCell(new Phrase(new Chunk("Tel: " + resProfile.phone + " , Cell : " + resProfile.mobile, fnt)));
+            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+            pdfcell.Border = 0;
+            table1.AddCell(pdfcell);
+
+            pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
+            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+            pdfcell.Border = 0;
+            table1.AddCell(pdfcell);
+
+            pdfcell = new PdfPCell(new Phrase(new Chunk(" Email : " + resProfile.emailID, fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
             pdfcell.Border = 0;
             table1.AddCell(pdfcell);
 
             para1.Add(table1);
- 
-
             table1 = new PdfPTable(2);
             int[] cellWidthPercentage2 = new int[] { 70, 30 };
             table1.WidthPercentage = 100;
@@ -1461,34 +1572,36 @@ namespace MvcSDesign.Controllers
             table1.AddCell(pdfcell);
 
             para1.Add(table1);
-             
 
-            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
-            ph1 = new Phrase(String.Format(Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + "For SATYAM DESIGN  " ), fnt);
-            para1.Add(ph1);
-         
-            ph1 = new Phrase(String.Format(Environment.NewLine + Environment.NewLine + "Satyam Design"), fnt);
+           
+
+            ph1 = new Phrase(String.Format(Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + "     For " + resProfile.orgName.ToUpper()), fnt);
             para1.Add(ph1);
 
-            
-            ph1 = new Phrase(String.Format(Environment.NewLine + "Authorized Signatory"), fnt);
+
+            ph1 = new Phrase(String.Format(Environment.NewLine + Environment.NewLine + "         " + resProfile.orgName), fnt);
             para1.Add(ph1);
-             
+
+
+            ph1 = new Phrase(String.Format(Environment.NewLine + "     Authorized signatory"), fnt);
+            para1.Add(ph1);
+
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.ITALIC, BaseColor.BLACK);
+            ph1 = new Phrase(String.Format(Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + "                                                                     Please note that this is a system generated mail and does not require signature."), fnt);
+            para1.Add(ph1);
+
+           
+
             iTextSharp.text.Image jpg;
-            jpg = iTextSharp.text.Image.GetInstance(HostingEnvironment.MapPath("~//Images//Logo.png"));
+            jpg = iTextSharp.text.Image.GetInstance(HostingEnvironment.MapPath("~//Images/logoimage/" + logofile));
 
             jpg.Alignment = iTextSharp.text.Image.ALIGN_RIGHT;
             jpg.ScaleToFit(90.0F, 90.0F);
-            jpg.SetAbsolutePosition(doc.PageSize.Width - 560, 735.0F);
+            jpg.SetAbsolutePosition(doc.PageSize.Width - 560, 740.0F);
             doc.Add(jpg);
-            
-            jpg = iTextSharp.text.Image.GetInstance(HostingEnvironment.MapPath("~//Images//logoname.jpeg"));
 
-            jpg.Alignment = iTextSharp.text.Image.ALIGN_RIGHT;
-            jpg.ScaleToFit(100.0F, 100.0F);
-            jpg.SetAbsolutePosition(doc.PageSize.Width - 145,782.0F);
-            doc.Add(jpg);
-             
+
+
             doc.Add(para1);
             doc.Close();
             doc.Dispose();

@@ -16,11 +16,12 @@ namespace MvcSDesign.Repository
         string ChangeCredential(int staffID, string pwd);
 
         string UploadDesignerTask(int pmID, int taskID, List<HttpPostedFileBase> fileToUpload );
-
-        //clsGraphItem fillGraph_Elevation(int regID);
-        //void TaskAssignStatusChange(int taskID);
-
         int fillGraphMonthlyPerformance(int regID);
+        List<operation> getWeeklyPerformance(int regID);
+
+
+
+
     }
 }
 

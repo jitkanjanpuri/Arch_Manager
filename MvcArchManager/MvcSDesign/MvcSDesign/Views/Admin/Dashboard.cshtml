@@ -12,9 +12,6 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta http-equiv="Content-Language" content="en">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        @*<link rel="icon" type="image/png" href="~/assets/images/Designlab Icon.png" sizes="32x32">
-        <link rel="icon" type="image/png" href="/assets/images/Designlab Icon.png" sizes="16x16">*@
-         
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
         <meta name="description" content="This is an example dashboard created using build-in elements and components.">
         <meta name="msapplication-tap-highlight" content="no">
@@ -23,7 +20,6 @@
         <link href="~/assets/css/dataTables.bootstrap4.min.css" rel="stylesheet">
         <link href="~/assets/css/font-awesome-all.min.css" rel="stylesheet">
         <link href="~/assets/css/style.css" rel="stylesheet">
-        @*<script src="~/Scripts/angular.js"></script>*@
         <script src="~/angularjs/adminDashboard.js"></script>
 
     </head>
@@ -137,85 +133,82 @@
             </div>
         </div>*@
 
-                                <div class="col-xl-6 col-lg-6 col-md-12 my-3">
-                                    <div class="card card-h-100">
-                                        <div class="card-header">
-                                            <h3>Quotation (last week)</h3>
-                                        </div>
-                                        <div class="card shadow h-100">
-                                            <!-- Card Header -->
-                                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                                <span class="m-0 font-weight-bold text-primary">Total Quotations </span> <span class="ml-auto font-weight-bold text-primary">Total: {{lblquotation}}</span>
-                                            </div>
-                                            <!-- Card Body -->
-                                            <div class="card-body pb-0">
-                                                <div class="chart-pie pt-4 pb-2">
-
-                                                    <canvas id="quotationPieChart"></canvas>
-                                                </div>
-                                                <div class="mt-4">
-                                                    <div class="row">
-                                                        <div class="col-auto">
-                                                            <i style="color: #4e73df" class="fas fa-circle text-uppercase"></i> 3D Plans
-                                                        </div>
-                                                        <div class="col-auto text-right text-dark ml-auto">
-                                                            <span class="font-weight-bold">{{lbl3DPlan}}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-auto">
-                                                            <i style="color: #1cc88a" class="fas fa-circle text-info text-uppercase"></i> BirdEyeView
-                                                        </div>
-                                                        <div class="col-3 text-right text-dark ml-auto">
-                                                            <span class="font-weight-bold">{{lblBirdEyeView}}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-auto">
-                                                            <i style="color: #36b9cc" class="fas fa-circle text-primary text-uppercase"></i> Exterior
-                                                        </div>
-                                                        <div class="col-auto text-right text-dark ml-auto">
-                                                            <span class="font-weight-bold">{{lblExterior}}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-auto">
-                                                            <i style="color: #5A6268" class="fas fa-circle text-info text-uppercase"></i> Interior
-                                                        </div>
-                                                        <div class="col-auto text-right text-dark ml-auto">
-                                                            <span class="font-weight-bold">{{lblInterior}}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-auto">
-                                                            <i style="color: #FEC22A" class="fas fa-circle text-primary text-uppercase"></i> Planning
-                                                        </div>
-                                                        <div class="col-auto text-right text-dark ml-auto">
-                                                            <span class="font-weight-bold">{{lblPlanning}}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-auto">
-                                                            <i style="color: #343A40" class="fas fa-circle text-info text-uppercase"></i> Walkthrough
-                                                        </div>
-                                                        <div class="col-3 text-right text-dark ml-auto">
-                                                            <span class="font-weight-bold">{{lblWalkthrough}}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="row">
                                 <!--<div class="col-xl-6 col-lg-6 col-md-12 my-3">
         <div class="card card-h-100">
             <div class="card-header">
                 <h3>Quotation (last week)</h3>
             </div>
             <div class="card shadow h-100">-->
+                                <!-- Card Header -->
+                                <!--<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <span class="m-0 font-weight-bold text-primary">Total Quotations </span> <span class="ml-auto font-weight-bold text-primary">Total: {{lblquotation}}</span>
+    </div>-->
+                                <!-- Card Body -->
+                                <!--<div class="card-body pb-0">
+                    <div class="chart-pie pt-4 pb-2">
+
+                        <canvas id="quotationPieChart"></canvas>
+                    </div>
+                    <div class="mt-4">
+                        <div class="row">
+                            <div class="col-auto">
+                                <i style="color: #4e73df" class="fas fa-circle text-uppercase"></i> 3D Plans
+                            </div>
+                            <div class="col-auto text-right text-dark ml-auto">
+                                <span class="font-weight-bold">{{lbl3DPlan}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-auto">
+                                <i style="color: #1cc88a" class="fas fa-circle text-info text-uppercase"></i> BirdEyeView
+                            </div>
+                            <div class="col-3 text-right text-dark ml-auto">
+                                <span class="font-weight-bold">{{lblBirdEyeView}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-auto">
+                                <i style="color: #36b9cc" class="fas fa-circle text-primary text-uppercase"></i> Exterior
+                            </div>
+                            <div class="col-auto text-right text-dark ml-auto">
+                                <span class="font-weight-bold">{{lblExterior}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-auto">
+                                <i style="color: #5A6268" class="fas fa-circle text-info text-uppercase"></i> Interior
+                            </div>
+                            <div class="col-auto text-right text-dark ml-auto">
+                                <span class="font-weight-bold">{{lblInterior}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-auto">
+                                <i style="color: #FEC22A" class="fas fa-circle text-primary text-uppercase"></i> Planning
+                            </div>
+                            <div class="col-auto text-right text-dark ml-auto">
+                                <span class="font-weight-bold">{{lblPlanning}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-auto">
+                                <i style="color: #343A40" class="fas fa-circle text-info text-uppercase"></i> Walkthrough
+                            </div>
+                            <div class="col-3 text-right text-dark ml-auto">
+                                <span class="font-weight-bold">{{lblWalkthrough}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+                                <!--<div class="col-xl-6 col-lg-6 col-md-12 my-3">
+    <div class="card card-h-100">
+        <div class="card-header">
+            <h3>Quotation (last week)</h3>
+        </div>
+        <div class="card shadow h-100">-->
                                 <!-- Card Header -->
                                 <!--<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <span class="m-0 font-weight-bold text-primary">Total Quotations </span> <span class="ml-auto font-weight-bold text-primary">Total: {{lblquotation}}</span>
@@ -307,10 +300,10 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
                             </div>
+
+
+                             
                         </div>
                     </div>
                 </div>

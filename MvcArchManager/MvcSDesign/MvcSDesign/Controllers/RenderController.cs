@@ -316,17 +316,16 @@ namespace MvcSDesign.Controllers
         //}
 
 
-        public JsonResult fillGraph_Elevation()
-        {
-            int regID = 0;//
-            try
-            {
-                regID = int.Parse(Session["regID"].ToString());
-            }
-            catch (Exception ex) { }
-            // return Json(renderDb.fillGraph_Elevation(regID), JsonRequestBehavior.AllowGet);
-            return Json("", JsonRequestBehavior.AllowGet);
-        }
+        //public JsonResult fillGraph_Elevation()
+        //{
+        //    int regID = 0;//
+        //    try
+        //    {
+        //        regID = int.Parse(Session["regID"].ToString());
+        //    }
+        //    catch (Exception ex) { }
+        //    return Json(_IUser.fillGraph_Elevation(regID), JsonRequestBehavior.AllowGet);
+        //}
 
         public JsonResult fillMonthlyPerformance()
         {
@@ -343,16 +342,13 @@ namespace MvcSDesign.Controllers
         public JsonResult getWeeklyPerformance()
         {
             int regID = 0;//
-            string name = "";
             try
             {
-                regID = int.Parse(Session["regID"].ToString());
-                name = Session["name"].ToString();
+                regID = int.Parse(Session["staffID"].ToString());
             }
             catch (Exception ex) { }
-            // return Json(renderDb.getWeeklyPerformance(regID, name), JsonRequestBehavior.AllowGet);
+            return Json(_IUser.getWeeklyPerformance(regID), JsonRequestBehavior.AllowGet);
 
-           return Json("", JsonRequestBehavior.AllowGet);
        }
         public JsonResult getProjectCategoryPerformance()
         {

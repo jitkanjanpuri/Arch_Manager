@@ -13,12 +13,13 @@
     <title>Operation - Arch Manager</title>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 
-    <script src="~/angularjs/operation.js"></script>
     <script src="~/Scripts/angular.js"></script>
+    <script src="~/angularjs/operation.js"></script>
+
 
     <script type="text/javascript">
-       
-         
+
+
         function Upload(projectID, pmid, taskId) {
             document.getElementById("projectID").value = projectID;
             document.getElementById("pmid").value = pmid;
@@ -54,12 +55,15 @@
 {
 
     <body>
+        <div ng-app="myApp">
+            <div ng-controller="myCntr">
 
-           <div class="container-fluid mt-3">
+
+                <div class="container-fluid mt-3">
                     <div class="app-main__outer">
                         <div class="app-main__inner">
                             <div class="row">
-                                 
+
                                 <div class="col-sm-12 col-md-7 col-lg-8">
                                     <div class="mb-3 card">
                                         <div class="card-header-tab card-header">
@@ -91,7 +95,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="main-card mb-3 col-12">
                                     <div class="card">
@@ -118,8 +122,8 @@
                                                                     @if (@item.prf == "Y")
                                                                     {
                                                                         <a href="@Url.Action("DownloadPRF", "Admin", new {@class="btn btn-sm btn-info", projectID = @item.projectID, location = @item.projectlocation })">
-                                                                            <span style="font-size:12pt;", class="btn btn-sm btn-info">   PRF</span>
-                                                                        </a>   
+                                                                            <span style="font-size:12pt;" , class="btn btn-sm btn-info">   PRF</span>
+                                                                        </a>
 
                                                                     }
                                                                 </td>
@@ -146,7 +150,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Upload Modal start-->
                 <div class="modal fade" id="UploadPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -191,6 +195,8 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
     </body>
 }
 </html>

@@ -15,6 +15,8 @@ using System.Web.Mvc;
 using System.Net;
 using System.Net.Mail;
 using System.Threading;
+using System.Security.Cryptography;
+using static iTextSharp.text.pdf.AcroFields;
 
 namespace MvcSDesign.Repository
 {
@@ -2412,9 +2414,6 @@ namespace MvcSDesign.Repository
                     dr[8] = item.remark;
                     clientDetailRecord.Rows.Add(dr);
                 }
-
-
-
             }
             catch (Exception ex) { }
             return obj;
@@ -2623,16 +2622,13 @@ namespace MvcSDesign.Repository
             List<operation> lst = new List<operation>();
             try
             {
-                DateTime dt2 = DateTime.Today;
+                DateTime dt2 = DateTime.Today.AddDays(1);
                 DateTime dt1 = dt2.AddDays(-4);
 
                 dt2 = DateTime.Today.AddDays(1);
                 string[] arr = new string[] { "" };
                 string   allQty = "", projectTypeItems="Elevation";
-                  
-                //arr = new string[] { "Elevation", "Revised Elevation", "Dratf View", "Revised View", "Final View", "Interior", "3D Floor Plan" };
-                //projectTypeItems = "Elevation, Revised Elevation, Dratf View, Revised View, Final View, Interior,3D Floor Plan";
-
+                
 
                 var res = (from st in _dbContext.tblStaffs
                            where (st.rolltype == "User")
@@ -2647,36 +2643,16 @@ namespace MvcSDesign.Repository
                     var res1 = (from p in _dbContext.tblProjectUploadFiles
                                 where ((p.designerID == item.staffID) && ((p.dt >= dt1) && (p.dt <= dt2)))
                                 group p by p.designerID into g
-                                select new  
+                                select new
                                 {
                                     sno = g.Count(),
-                                     
-                                }).ToList();
-                    //name = item.name;
-                    //allQty = "";
-                    //for (int i = 0; i < arr.Length; i++)
-                    //{
 
-                    //    flag = false;
+                                }).ToList();
+
                     foreach (var itemOp in res1)
                     {
-                        //if (arr[i] == itemOp.projectCategory)
-                        //{
-                        //    if (allQty.Length == 0)
-                                allQty = itemOp.sno.ToString();
-                        //    else
-                        //        allQty = allQty + "," + itemOp.sno.ToString();
-
-                        //    flag = true;
-                        //}
+                        allQty = itemOp.sno.ToString();
                     }
-                    //    if (allQty.Length == 0)
-                    //        allQty = "0";
-                    //    else
-                    //        allQty = allQty + "," + "0";
-
-
-                    //}
 
                     lst.Add(
                                 new operation
@@ -2720,14 +2696,13 @@ namespace MvcSDesign.Repository
 
                 foreach (var item in res)
                 {
-
-                    var res1 = (from p in _dbContext.tblOperations
-                                where ((p.staffID == item.staffID) && ((p.dt >= dt1) && (p.dt <= dt2)) && (p.status == "complete"))
+                     
+                    var res1 = (from p in _dbContext.tblProjectUploadFiles
+                                where ((p.designerID == item.staffID) && ((p.dt >= dt1) && (p.dt <= dt2)))  
                                 select new operation
                                 {
-                                    projectID = p.projectID
+                                    projectID =(long) p.projectID
                                 }).ToList();
-
 
                     if (res1.Count > 0)
                     {
@@ -2751,9 +2726,6 @@ namespace MvcSDesign.Repository
 
             return obj;
         }
-
-
-
 
         public List<quotation> getQuotation()
         {
@@ -3163,6 +3135,82 @@ namespace MvcSDesign.Repository
 
         }
 
+
+        public IEnumerable<operation> RptTechnical(string dname, string fromDt, string toDt)
+        {
+            List<operation> lst = new List<operation>();
+            try
+            {
+                CultureInfo cinfo = new CultureInfo("en-US");
+                DateTime dt1 = DateTime.Parse(fromDt, cinfo);
+                DateTime dt2 = DateTime.Parse(toDt, cinfo);
+
+                if (dname == "0")
+                {
+                    var res = _dbContext.tblStaffs.Where(x => x.designation == "Tech").ToList();
+                    foreach (var item in res)
+                    {
+                        int qty = 0;
+                        var query = (from up in _dbContext.tblProjectUploadFiles
+                                     join st in _dbContext.tblStaffs on up.designerID equals st.staffID
+                                     where (((up.dt >= dt1) && (up.dt <= dt2)) && (up.designerID == item.staffID))
+                                     group up by up.designerID into g
+                                     select new
+                                     {
+                                         sno = g.Count(),
+                                     });
+                        foreach (var item1 in query)
+                        {
+                            qty = item1.sno;
+                        }
+
+                        lst.Add(
+                                new operation
+                                {
+                                    clientName = item.name,
+                                    projectType = "Elevation",
+                                    package = qty.ToString(),
+                                });
+
+
+                    }
+
+                }
+                else
+
+                {
+                    int staffID = int.Parse(dname);
+                    int qty = 0;
+                    var query = (from up in _dbContext.tblProjectUploadFiles
+                                 join st in _dbContext.tblStaffs on up.designerID equals st.staffID
+                                 where (((up.dt >= dt1) && (up.dt <= dt2)) && (up.designerID == staffID))
+                                 group up by up.designerID into g
+                                 select new
+                                 {
+                                     sno = g.Count(),
+                                 });
+                    foreach (var item1 in query)
+                    {
+                        qty = item1.sno;
+                    }
+
+                    lst.Add(
+                            new operation
+                            {
+                                clientName = "A",
+                                projectType = "Elevation",
+                                package = qty.ToString(),
+                            });
+
+
+                }
+                 
+            }
+            catch (Exception ex) { }
+
+            return lst;
+
+        }
         public string SaveRegistration(registration obj)
         {
 

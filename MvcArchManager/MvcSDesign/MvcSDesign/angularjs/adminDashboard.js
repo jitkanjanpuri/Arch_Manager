@@ -85,40 +85,7 @@ app.controller("cntr", function ($scope, $http, $interval) {
                 datasets: dts
             };
 
-            //var ctx = document.getElementById('chartProjectType');
-            //if (ctx) {
-            //    var mq = window.matchMedia("(max-width: 570px)");
-            //    if (mq.matches) {
-            //        ctx.height = 600;
-            //    }
-            //    else {
-            //        ctx.height = 160;
-            //    }
 
-            //    var chart = new Chart(ctx, {
-            //        type: 'bar',
-            //        data: data1,
-
-            //        options: {
-            //            legend: {
-            //                position: 'top',
-
-
-            //            },
-            //            scales: {
-            //                xAxes: [{
-
-            //                }],
-            //                yAxes: [{
-            //                    ticks: {
-            //                        beginAtZero: true,
-
-            //                    }
-            //                }]
-            //            }
-            //        }
-            //    });
-            //}
             getProjectCount(data1);
         })
     }
@@ -159,7 +126,7 @@ app.controller("cntr", function ($scope, $http, $interval) {
         getTopPerformers();
     }
 
-    
+
     function getTopPerformers() {
         $scope.topperformerslist = null;
         $http({
@@ -169,7 +136,8 @@ app.controller("cntr", function ($scope, $http, $interval) {
             contentType: "application/json;charaset=utf-8"
         }).then(function (d) {
             $scope.topperformerslist = d.data;
-            CurrentMonthQuotation();
+            //  CurrentMonthQuotation();
+            getMonthQuotation();
         });
 
 
@@ -191,7 +159,7 @@ app.controller("cntr", function ($scope, $http, $interval) {
         $scope.lblStructure = "0";
         $scope.lblWalkthrough = "0";
 
-         
+
         var slist, tmpList;
         $http({
             url: '/admin/getQuotation',
@@ -271,8 +239,8 @@ app.controller("cntr", function ($scope, $http, $interval) {
                     cutoutPercentage: 80,
                 },
             });
-             
-            getMonthQuotation();
+
+
 
 
         }).error(function (error) {
@@ -307,7 +275,7 @@ app.controller("cntr", function ($scope, $http, $interval) {
             $scope.quotation = confirmqty + pendingqty;
             $scope.sales = confirmamount;
             $scope.prjDay = confirmqty;
-             
+
         });
 
 

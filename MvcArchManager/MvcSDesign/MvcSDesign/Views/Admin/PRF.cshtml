@@ -523,7 +523,7 @@
 
             var error = 0;
 
-            var atv = $('fieldset.active #txtProjectID').length;
+            var ch = $('#progressbar li#account.active').length;
             var element = $('#txtProjectID').val();
             if (element == undefined || element == '' || !$.isNumeric(element)) {
                 $('.error-msg').fadeIn();
@@ -533,75 +533,88 @@
 
             element = $('#txtWorkingStatus').val();
             if (element == undefined || element == '') {
-                element.next('.error-msg').fadeIn();
+                /*element.next('.error-msg').fadeIn();*/
+                $('.error-msg').fadeIn();
                 error = 1;
+                return error;
             }
 
             element = $('#txtSlabHeight').val();
             if (element == undefined || element == '') {
-                element.next('.error-msg').fadeIn();
+                /* element.next('.error-msg').fadeIn();*/
+                $('.error-msg').fadeIn();
                 error = 1;
+                return error;
             }
-            //   alert("2")
 
-            //element = $('#txtPlinthHeight').val();
-            //if (element == undefined || element == '') {
-            //    element.next('.error-msg').fadeIn();
-            //    error = 1;
-            //}
+            var personal = $('#progressbar li#personal.active').length;
+            if (personal == 0) return 0;
 
-            //alert("3");
+            element = $('#txtPlinthHeight').val();
+             
+            if (element == undefined || element == '' || !$.isNumeric(element)) {
+                $('.error-msg').fadeIn();
+                error = 1;
+                return error;
+            }
 
+            element = $('#txtPorchHeigh').val();
+            if (element == undefined || element == '') {
+                /*element.next('.error-msg').fadeIn();*/
+                $('.error-msg').fadeIn();
+                error = 1;
+                return error;
+            }
+            
+            element = $('#ddlElevationPattern').val();
+            if (element == undefined || element == '') {
+                /* element.next('.error-msg').fadeIn();*/
+                $('.error-msg').fadeIn();
+                error = 1;
+                return error;
+            }
 
-
-            //element = $('#txtPorchHeight').val();
-            //if (element.val() == '') {
-            //    element.next('.error-msg').fadeIn();
-            //    error = 1;
-            //}
-
-
-
-
-
-            //element = $('#txtDoorLintel').val();
-            //if (element.val() == '') {
-            //    element.next('.error-msg').fadeIn();
-            //    error = 1;
-            //}
-
-
-
-
-
-
-            //element = $('#txtWindowSill').val();
-            //if (element.val() == '') {
-            //    element.next('.error-msg').fadeIn();
-            //    error = 1;
-            //}
+            element = $('#txtDoorLintel').val();
+            if (element == undefined || element == '') {
+                /* element.next('.error-msg').fadeIn();*/
+                $('.error-msg').fadeIn();
+                error = 1;
+                return error;
+            }
 
 
+            var payment = $('#progressbar li#payment.active').length;
+            if (payment == 0) return 0;
 
-            //element = $('#txtWindowLintel').val();
-            //if (element.val() == '') {
-            //    element.next('.error-msg').fadeIn();
-            //    error = 1;
-            //}
+            element = $('#txtWindowSill').val();
+            if (element == undefined || element == '') {
+                /* element.next('.error-msg').fadeIn();*/
+                $('.error-msg').fadeIn();
+                error = 1;
+                return error;
+            }
 
+            element = $('#txtWindowLinte').val();
+            if (element == undefined || element == '') {
+                /* element.next('.error-msg').fadeIn();*/
+                $('.error-msg').fadeIn();
+                error = 1;
+                return error;
+            }
 
+           
 
-            //element = $('#txtPlotFaceSide').val();
-            //if (element.val() == '') {
-            //    element.next('.error-msg').fadeIn();
-            //    error = 1;
-            //}
+            var confirm = $('#progressbar li#confirm.active').length;
+            if (confirm == 0) return 0;
 
-
-
-
-
-            return error;
+            element = $('#txtPlotFaceSide').val();
+            if (element == undefined || element == '') {
+               
+                $('.error-msg').fadeIn();
+                error = 1;
+                return error;
+            }
+            return 0;
         }
         function Save() {
             var projectID = $('#txtProjectID').val();
@@ -623,6 +636,12 @@
             var towerRoom = $('input[name="TowerRoom"]:checked').val();
             var cornerPlot = $('input[name="CornerPlot"]:checked').val();
             var boundaryWall = $('input[name="BoundaryWall"]:checked').val();
+
+            if (plotFaceSide == "") {
+               $('.error-msg').fadeIn();
+                return false;
+            }
+
 
             var obj = new Object();
             obj.projectID = projectID;
@@ -859,8 +878,12 @@
                                                                                 <h2 class="fs-title"></h2>
                                                                                 <label><span style="color:black">4. Specify the <b>height of the plinth</b> (In Feet)</span></label>
                                                                                 <input type="text" class="form-control" name="txtPlinthHeight" id="txtPlinthHeight" placeholder=" " />
+                                                                                <span class="error-msg">This field is required </span>
+
                                                                                 <label><span style="color:black">5. Specify the <b> height of porch </b> (In Feet) </span></label>
                                                                                 <input type="text" class="form-control" name="txtPorchHeigh" id="txtPorchHeigh" placeholder="" />
+                                                                                <span class="error-msg">This field is required </span>
+
                                                                                 <label><span style="color:black">6. Specify the <b> desired design pattern </b> for the elevation</span></label>
 
                                                                                 <select class="form-control" name="ddlElevationPattern" id="ddlElevationPattern">
@@ -872,6 +895,8 @@
                                                                                 </select>
                                                                                 <label><span style="color:black">7. <b> Door lintel </b> level <i> (In Feet)</i> </span></label>
                                                                                 <input type="text" class="form-control" name="txtDoorLintel" id="txtDoorLintel" placeholder="" />
+                                                                                <span class="error-msg">This field is required </span>
+
                                                                             </div>
                                                                             <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                                                             <input type="button" name="next" class="next action-button" value="Next Step" />
@@ -882,8 +907,13 @@
 
                                                                                 <label style="color:black">8. <b> Window sill </b> level <i> (In Feet)</i> </label>
                                                                                 <input type="text" class="form-control" name="txtWindowSill" id="txtWindowSill" placeholder="" />
+                                                                                <span class="error-msg">This field is required </span>
+                                                                                
                                                                                 <label style="color:black">9. <b>Window lintel </b> level <i> (In Feet)</i> <span class="required">*</span></label>
                                                                                 <input class="form-control" id="txtWindowLinte" name="txtWindowLinte" type="text" />
+                                                                                <span class="error-msg">This field is required </span>
+                                                                                
+                                                                                
                                                                                 <label style="color:black">10. Is the <b>tower room</b> is executed at Stairs ? <span class="required">*</span></label>
                                                                                 <div class="radio-group">
                                                                                     <table style="width:300px;">
@@ -921,7 +951,7 @@
 
                                                                                 <label style="color:black">12. Mention the <b>facing side </b> of the plot  </label>
                                                                                 <input type="text" class="form-control" name="txtPlotFaceSide" id="txtPlotFaceSide" placeholder="" />
-
+                                                                                <span class="error-msg">This field is required </span>
                                                                                 <label style="color:black">13. Do you want <b>boundary wall design </b>? <span class="required">*</span></label>
                                                                                 <div class="radio-group">
                                                                                     <table style="width:300px;">

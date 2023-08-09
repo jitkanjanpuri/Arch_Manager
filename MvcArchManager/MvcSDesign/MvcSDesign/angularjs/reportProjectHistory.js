@@ -6,6 +6,9 @@ app.controller("myController", function ($scope, $http, $window) {
     $scope.SearchQuotation = function () {
         var varProjectID = $scope.pid;
         $scope.searchdmsg = "";
+        $scope.recordmsg = "";
+ 
+
         if ((varProjectID == undefined) || (varProjectID == "")) {
             $scope.searchdmsg = "Enter project ID";
             return;

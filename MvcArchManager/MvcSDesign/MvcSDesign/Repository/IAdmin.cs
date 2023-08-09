@@ -96,6 +96,9 @@ namespace MvcSDesign.Repository
         IEnumerable<operation> RptSiteVisit(int projectID);
 
         IEnumerable<operation> RptProjectHistory(int projectID);
+
+        IEnumerable<operation> RptTechnical(string dnama, string fromDt, string toDt);
+
         IEnumerable<operation> ShowBalanceAdjust(string dt1, string dt2, string cname);
 
         int ClientPreviousBalance(string clinetID, string dt);

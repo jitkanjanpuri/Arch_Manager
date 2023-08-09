@@ -24,7 +24,7 @@ app.controller("myCntr", function ($scope, $http, opt) {
             $(this).find('strong').html(Math.round(perday * progress));
         });
 
-        //showWeeklyPerformance();
+        showWeeklyPerformance();
 
     });
 
@@ -44,9 +44,9 @@ app.controller("myCntr", function ($scope, $http, opt) {
         }).then(function (d) {
             for (var i = 0; i < d.data.length; i++) {
                 slist = d.data[i];
-                $scope.dtArr.push(slist.strDt);
-                $scope.prjcntArr.push(slist.totalprj);
-                $scope.achieveArr.push(slist.achieve);
+                $scope.dtArr.push(slist.dtstr);
+                $scope.prjcntArr.push(slist.amount);
+                $scope.achieveArr.push(slist.amount);
             }
             var ctx = document.getElementById('dvMonthTarget');
             if (ctx) {
@@ -91,7 +91,7 @@ app.controller("myCntr", function ($scope, $http, opt) {
                 });
             }
 
-            getProjectCategoryPerformance();
+         //   getProjectCategoryPerformance();
 
         });
     }
