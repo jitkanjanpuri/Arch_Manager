@@ -14,7 +14,7 @@
     <script src="~/Content/jquery.CongelarFilaColumna.js"></script>
 
     <script src="~/angularjs/quotation1.js"></script>
-
+    <link href="~/assets/css/main.css" rel="stylesheet" />
     <script type="text/javascript">
 
         function Validation() {
@@ -291,7 +291,9 @@
                                     <a href="@Url.Action("PRF", "Admin")" class="btn btn-primary"><span>PRF</span></a>
                                     @*<a href="@Url.Action("Operation", "Admin")" class="btn btn-primary"><span> Operation  </span></a>*@
                                     <a href="@Url.Action("SiteVisit", "Admin")" class="btn btn-primary"><span>Site Visit </span></a>
-                                    <a href="@Url.Action("CurrentWorking", "Admin")" class="btn btn-primary"><span> Current working  </span></a>
+                                    <a href="@Url.Action("CurrentWorking", "Admin")" class="btn btn-primary"><span> Operation </span></a>
+                                    <a href="@Url.Action("Receipt", "Admin")" class="btn btn-primary"><span>Receipt</span></a>
+
                                 </div>
                             </div>
                         </div>
@@ -301,12 +303,12 @@
 
                         <div class="row">
                             <div class="col-12">
+                                 
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18"> Quotation Generate</h4>
-
-
+                                    <h1 class="h3 my-4 text-gray-800">Quotation Generate</h1>
 
                                 </div>
+
                             </div>
                         </div>
                         <!-- end page title -->
@@ -343,7 +345,7 @@
 
                                         <div class="table-responsive">
                                             <table class="table align-middle datatable dt-responsive  nowrap table-bordered" style=" border: 1px solid black; border-spacing: 0 8px; width: 100%;">
-                                                <thead>
+                                                <thead class="bg-warning text-white">
                                                     <tr class="bg-transparent">
 
                                                         <th style="width: 120px;">CID  </th>
@@ -351,8 +353,7 @@
                                                         <th>Mobile Number</th>
                                                         <th>City  </th>
                                                         <th>Email </th>
-                                                        <th></th>
-                                                        @*<th></th>*@
+                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -366,20 +367,11 @@
                                                         <td>
                                                             <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" ng-click="SetClientID(item.clientID, item.clientName)" data-bs-target=".bs-example-modal-center">Generate</button>
                                                         </td>
-                                                        @*<td>
-            <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" ng-click="SetClientID(item.clientID, item.clientName)" data-bs-target=".bs-example-modal-center">Exterior</button>
-        </td>
-        <td>
-            <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" ng-click="SetClientID(item.clientID, item.clientName)" data-bs-target="#exampleModalFullscreen">Interior</button>
-
-        </td>*@
+                                                         
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <!-- end table responsive -->
-
-
                                         <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">

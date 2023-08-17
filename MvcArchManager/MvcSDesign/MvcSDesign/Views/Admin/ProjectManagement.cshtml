@@ -42,7 +42,8 @@
                                     <a href="@Url.Action("PRF", "Admin")" class="btn btn-primary"><span>PRF</span></a>
                                     @*<a href="@Url.Action("Operation", "Admin")" class="btn btn-primary"><span> Operation  </span></a>*@
                                     <a href="@Url.Action("SiteVisit", "Admin")" class="btn btn-primary"><span>Site Visit </span></a>
-                                    <a href="@Url.Action("CurrentWorking", "Admin")" class="btn btn-primary"><span> Current working  </span></a>
+                                    <a href="@Url.Action("CurrentWorking", "Admin")" class="btn btn-primary"><span> Operation </span></a>
+                                    <a href="@Url.Action("Receipt", "Admin")" class="btn btn-primary"><span>Receipt</span></a>
                                 </div>
                             </div>
                         </div>
@@ -73,16 +74,13 @@
                                             <table class="table align-middle datatable dt-responsive table-bordered nowrap" style="border: 1px solid black; border-color:black; border-spacing: 0 8px; width: 100%;">
 
 
-                                                <thead>
+                                                <thead class="bg-warning text-white">
                                                     <tr>
                                                         <th>#</th>
                                                         <th>Project ID</th>
                                                         <th>Client name</th>
-                                                        @*<th>Project Type</th>
-                                                        <th>Package</th>*@
                                                         <th>Plot size</th>
                                                         <th>Level</th>
-
                                                         <th>Amount</th>
                                                         <th>Remark</th>
                                                         <th>Action </th>

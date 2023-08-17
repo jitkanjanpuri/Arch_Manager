@@ -1,0 +1,229 @@
+﻿@{
+    ViewBag.Title = "ReportClientLeader";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}   
+
+ 
+<!doctype html>
+<html lang="en">
+
+<head>
+
+</head>
+@using (Html.BeginForm())
+{
+
+<body>
+    <div ng-app="myApp">
+        <div ng-controller="myController">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0 font-size-18">Client Ledger </h4>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+                    <div class="row">
+
+
+
+                        <div class="row">
+                            <div class="col-xl-3 col-md-6">
+                                <div class="form-group mb-3">
+
+                                    <label>From Date   </label>
+
+                                    <div class="input-group">
+                                        <input type="date" id="fromStart" class="form-control" ng-model="fromStart">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="form-group mb-3">
+
+                                    <label>To Date   </label>
+
+                                    <div class="input-group">
+                                        <input type="date" id="toEnd" class="form-control" ng-model="toEnd">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-md-6">
+                            <div class="form-group mb-3">
+                                <input type="checkbox" class="form-check-input">
+                                <label>Client name </label>
+                                <input type="text" ng-model="txtCName" class="form-control" placeholder="Client name" />
+
+                            </div>
+                        </div>
+                        <div class="col-xl-1 col-md-6">
+                            <label> . </label>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary" ng-click="ShowClientLeager()">Search</button>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-2 col-md-6">
+                            <br><br>
+                            <div class="form-group">
+                                <label> Total Amount : {{totalclientbalance}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                </div>
+                                <!-- end row -->
+
+                                <div class="table-responsive">
+                                    <table class="table align-middle datatable dt-responsive table-check nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+                                        <thead>
+                                            <tr class="bg-transparent">
+
+                                                <th style="width: 120px;">#   </th>
+                                                <th> Client Name </th>
+                                                <th> City	 </th>
+                                                <th> State </th>
+                                                <th style="width: 150px;">Balance Amount (INR)</th>
+                                                <th style="width: 150px;">Action </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr>
+                                                <td>{{$index+1}} </td>
+                                                <td>{{item.clientName}}</td>
+                                                <td>{{item.city}}  </td>
+
+                                                <td>
+                                                    {{item.state}}
+                                                </td>
+                                                <td>
+                                                    {{item.mobile}}
+                                                </td>
+                                                 
+                                                <td>
+                                                    <button type="button" class="btn btn-primary waves-effect waves-light" ng-click="ShowLedgerDetail(item.clientID, item.clientName , item.city, item.state )" data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl">Show</button>
+                                                </td>
+
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade bs-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="myExtraLargeModalLabel">Client Details </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+
+
+                                <div class="col-lg-12">
+
+
+                                    <!-- end row -->
+
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered mb-0">
+                                            <thead>
+                                                <tr class="bg-transparent">
+
+                                                    <th style="width: 120px;">#   </th>
+                                                    <th> Client Name </th>
+                                                    <th> City	 </th>
+                                                    <th>Mobile Number</th>
+                                                    <th> 	State </th>
+
+
+                                                    <th style="width: 150px;">Balance Amount (INR)</th>
+
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr>
+
+
+                                                    <td><a href="javascript: void(0);" class="text-dark fw-medium">#1</a> </td>
+                                                    <td>
+                                                        Sameer
+                                                    </td>
+                                                    <td>Indore </td>
+
+                                                    <td>
+                                                        900000999
+                                                    </td>
+                                                    <td>
+                                                        MP
+                                                    </td>
+                                                    <td>
+                                                        50000
+                                                    </td>
+
+
+
+
+
+
+
+                                                </tr>
+
+
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Print </button>
+                                <button type="button" class="btn btn-primary waves-effect waves-light">PDF</button>
+                                <button type="button" class="btn btn-primary waves-effect waves-light">Adjust </button>
+                                <button type="button" class="btn btn-primary waves-effect waves-light">Adjust </button>
+                            </div>
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
+        </div>
+    </div>
+
+</body>
+}
+
+</html>

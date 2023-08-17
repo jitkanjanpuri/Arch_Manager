@@ -1,4 +1,4 @@
-﻿@model MvcSDesign.Models.staff
+﻿@model MvcSDesign.Models.StaffModel
 
   
 @{
@@ -13,8 +13,24 @@
 
 <head>
 
-
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="~/angularjs/registration.js"></script>
     <script type="text/javascript">
+
+        function Reset() {
+            document.getElementById("staffID").value = 0;
+            document.getElementById("name").value = "";
+            document.getElementById("emailID").value = "";
+            document.getElementById("city").value = "";
+            document.getElementById("mobile").value = "";
+            document.getElementById("orgName").value = "";
+            document.getElementById("address").value = "";
+            document.getElementById("phone").value = "";
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+        }
+
+
 
         function Validation() {
             var name = document.getElementById("name").value;
@@ -93,142 +109,259 @@
 
 @using (Html.BeginForm("Registration", "Admin", FormMethod.Post))
 {
-    <body>
+<body>
+    <div ng-app="myApp">
+        <div ng-controller="myController">
 
+            <div class="page-content">
+                <div class="container-fluid">
 
-        <div class="page-content">
-            <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <a href="@Url.Action("CompanyProfile", "Admin")" class="btn btn-primary"><span>Company Profile</span></a>
+                                <a href="@Url.Action("Index", "Client")" class="btn btn-primary"><span>Client</span></a>
+                                @*<a href="@Url.Action("ShowClient", "Client")" class="btn btn-primary"><span>Client Show </span></a>*@
+                                <a href="@Url.Action("Registration", "Admin")" class="btn btn-primary"><span>Staff</span></a>
+                                @*<a href="@Url.Action("Receipt", "Admin")" class="btn btn-primary"><span>Receipt</span></a>*@
 
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <a href="@Url.Action("CompanyProfile", "Admin")" class="btn btn-primary"><span>Company Profile</span></a>
-                            <a href="@Url.Action("Index", "Client")" class="btn btn-primary"><span>Client</span></a>
-                            <a href="@Url.Action("ShowClient", "Client")" class="btn btn-primary"><span>Client Show </span></a>
-                            <a href="@Url.Action("Registration", "Admin")" class="btn btn-primary"><span>Staff</span></a>
-                            <a href="@Url.Action("ShowStaff", "Admin")" class="btn btn-primary"><span>Staff Show</span></a>
-
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <br />
-                <div class="row">
-                    <div class="col-12">
-                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0 font-size-18">Staff</h4>
+                    <br />
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h1 class="h3 my-4 text-gray-800">Staff</h1>
+
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div>
-                                    <div class="row">
-                                        <span style="color:red;">  @ViewBag.message</span>
-                                        <div class="col-xl-4 col-md-4">
-                                            <div class="form-group mb-3">
-                                                <label>Name </label>
-                                                @Html.TextBoxFor(model => model.name, new { @class = "form-control", style = "", placeholder = "Name" })
-                                                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-2 col-md-2">
-                                            <div class="form-group mb-3">
-                                                <label>Designation	</label>
-                                                @Html.DropDownListFor(model => model.designation, Model.designerList, new { @class = "form-control", placeholder = "Designation" })
-                                            </div>
-
-                                        </div>
-
-
-                                        <div class="col-xl-6 col-md-6">
-                                            <div class="form-group mb-3">
-                                                <label>Address  </label>
-                                                @Html.TextBoxFor(model => model.address, new { @class = "form-control", placeholder = "Addresss" })
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-xl-4 col-md-4">
-                                            <div class="form-group mb-3">
-                                                <label> City   </label>
-                                                @Html.TextBoxFor(model => model.city, new { @class = "form-control", placeholder = " Father Name" })
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xl-4 col-md-4">
-                                            <div class="form-group mb-3">
-                                                <label>Mobile Number </label>
-                                                @Html.TextBoxFor(model => model.mobile, new { @class = "form-control", @maxlength = "10", style = "", @onkeypress = "IsNumber()", placeholder = "Mobile Number" })
-                                                @Html.ValidationMessageFor(model => model.mobile, "", new { @class = "text-danger" })
-
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xl-4 col-md-4">
-                                            <div class="form-group mb-3">
-                                                <label> Phone  </label>
-                                                @Html.TextBoxFor(model => model.phone, new { @class = "form-control", @onkeypress = "PhoneIsNumber", placeholder = "Phone Number" })
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-4 col-md-4">
-                                            <div class="form-group mb-3">
-                                                <label> Email ID  </label>
-                                                @Html.TextBoxFor(model => model.emailID, new { @class = "form-control", placeholder = "Email ID " })
-                                                @Html.ValidationMessageFor(model => model.emailID, "", new { @class = "text-danger" })
-
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-2 col-md-2">
-                                            <div class="form-group mb-3">
-                                                <label>Roll Type	</label>
-                                                @Html.DropDownListFor(model => model.rolltype, Model.rollList, new { @class = "form-control", placeholder = "Designation" })
-
-
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xl-3 col-md-4">
-                                            <div class="form-group mb-3">
-                                                <label> User name  </label>
-                                                @Html.TextBoxFor(model => model.username, new { @class = "form-control", placeholder = "user name" })
-                                                @Html.ValidationMessageFor(model => model.emailID, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-md-4">
-                                            <div class="form-group mb-3">
-                                                <label> Password  </label>
-                                                @Html.TextBoxFor(model => model.password, new { @class = "form-control", placeholder = "Password " })
-                                                @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
                                     <div>
-                                        <label id="lblError" class="text-danger"></label>
+                                        <div class="row">
+                                            <span style="color:red;">  @ViewBag.message</span>
+                                            @Html.HiddenFor(x => x.staffID)
+                                            <div class="col-xl-6 col-md-4">
+                                                <div class="form-group mb-3">
+                                                    <label>Name </label>
+                                                    @Html.TextBoxFor(model => model.name, new { @class = "form-control", style = "", placeholder = "Name" })
+                                                    @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-md-2">
+                                                <div class="form-group mb-3">
+                                                    <label>Designation	</label>
+                                                    @Html.DropDownListFor(model => model.designation, Model.designerList, new { @class = "form-control", placeholder = "Designation" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label>Address  </label>
+                                                    @Html.TextBoxFor(model => model.address, new { @class = "form-control", placeholder = "Addresss" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-md-4">
+                                                <div class="form-group mb-3">
+                                                    <label> City   </label>
+                                                    @Html.TextBoxFor(model => model.city, new { @class = "form-control", placeholder = " Father Name" })
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-6 col-md-4">
+                                                <div class="form-group mb-3">
+                                                    <label>Mobile Number </label>
+                                                    @Html.TextBoxFor(model => model.mobile, new { @class = "form-control", @maxlength = "10", style = "", @onkeypress = "IsNumber()", placeholder = "Mobile Number" })
+                                                    @Html.ValidationMessageFor(model => model.mobile, "", new { @class = "text-danger" })
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-6 col-md-4">
+                                                <div class="form-group mb-3">
+                                                    <label> Phone  </label>
+                                                    @Html.TextBoxFor(model => model.phone, new { @class = "form-control", @onkeypress = "PhoneIsNumber", placeholder = "Phone Number" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-md-4">
+                                                <div class="form-group mb-3">
+                                                    <label> Email ID  </label>
+                                                    @Html.TextBoxFor(model => model.emailID, new { @class = "form-control", placeholder = "Email ID " })
+                                                    @Html.ValidationMessageFor(model => model.emailID, "", new { @class = "text-danger" })
+
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-md-2">
+                                                <div class="form-group mb-3">
+                                                    <label>Roll Type	</label>
+                                                    @Html.DropDownListFor(model => model.rolltype, Model.rollList, new { @class = "form-control", placeholder = "Designation" })
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-6 col-md-4">
+                                                <div class="form-group mb-3">
+                                                    <label> User name  </label>
+                                                    @Html.TextBoxFor(model => model.username, new { @class = "form-control", placeholder = "user name" })
+                                                    @Html.ValidationMessageFor(model => model.emailID, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-md-4">
+                                                <div class="form-group mb-3">
+                                                    <label> Password  </label>
+                                                    @Html.TextBoxFor(model => model.password, new { @class = "form-control", placeholder = "Password " })
+                                                    @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label id="lblError" class="text-danger"></label>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" id="btnRest" onclick="Reset()" class="btn btn-info">Reset</button> &nbsp; &nbsp;
+                                            <button type="submit" class="btn btn-primary" onclick="return Validation();">Save</button>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary" onclick="return Validation();">Save</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-2 d-flex align-items-center">
+                                    <span class="m-0 font-weight-bold text-primary">Staff list</span>
+                                </div>
+
+                                <div class="row col-lg-12" style="margin-left:10px;">
+                                    <div class="col-xl-4 col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label>Staff Name </label>
+                                            <input type="text" ng-model="txtName" class="form-control" placeholder="Staff Name " />
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-1 col-md-6">
+                                        <label> . </label>
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-primary" ng-click="SearchRegistration()">Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xl-12 col-md-12 text-center">
+                                        <label> <span class="text-danger font-size-16 font-weight-bold">{{errRecord}}</span> </label>
+                                    </div>
+                                </div>
+                                <div class="text-center" ng-hide="loading">
+                                    <button type="button" class="btn btn-dark waves-effect waves-light">
+                                        <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                                    </button>
+                                </div>
+
+
+                                <div>
+                                    <!--table start-->
+                                    <div class="table-responsive">
+                                        <table datatable="" class="table table-bordered table-hover datatable" ui-jq="dataTable" ui-options="dataTableOpt" id="registrationTable" width="100%" cellspacing="0">
+                                            <thead class="bg-warning text-white">
+                                                <tr>
+                                                    <th>
+                                                    </th>
+                                                    <th>Name</th>
+                                                    @*<th>City	</th>
+                            <th>Phone</th>*@
+                                                    <th>Mobile</th>
+                                                    <th>Email</th>
+                                                    <th>Designation</th>
+                                                    @*<th>Roll</th>*@
+                                                    <th>User name</th>
+                                                    <th>Password</th>
+
+                                                    <th>Delete </th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+
+                                                <tr ng-repeat="item in stafflist.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage))">
+                                                    <td>
+                                                        <input type="checkbox" ng-model="item.selected" value="{{item.staffID}}" aria-label="Checkbox for following text input" ng-click="editRecord(item)">
+                                                    </td>
+                                                    <th> {{item.name}}    </th>
+                                                    @*<td> {{item.city}} </td>
+                            <td> {{item.phone}}  </td>*@
+                                                    <td> {{item.mobile}}</td>
+                                                    <td> {{item.emailID}} </td>
+                                                    <td>
+                                                        {{item.designation}}
+                                                    </td>
+                                                    @*<td> {{item.rolltype}}  </td>*@
+                                                    <td> {{item.username}}  </td>
+                                                    <td> {{item.password}} </td>
+
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger waves-effect waves-light w-sm" ng-click="ShowDelete(item.staffID , item.name)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center3">
+                                                            <i class="fas fa-trash"></i>   <span class="text"></span>
+                                                        </button>
+                                                    </td>
+                                            </tbody>
+                                        </table>
+                                        View <select ng-model="viewby" ng-change="setItemsPerPage(viewby)"> <option>5</option><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select> records at a time.
+
+                                        <pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" class="pagination-sm" items-per-page="itemsPerPage"></pagination>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="modal fade bs-example-modal-center3" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+
+                                <div class="modal-body">
+
+                                    <div class="modal-header">
+                                        <h3 class="modal-title">Delete Designer</h3>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+
+                                    <br /><br />
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <span style="font-size:14pt;">  Are you want to delete <b>{{designername}}</b>  ? </span><br><br>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-success waves-effect waves-light" ng-click="RegistrationDelete()">Yes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     
                 </div>
+
             </div>
-        </div>
-     
-        @if (ViewBag.message == "success")
-        {
+         </div>
+     </div>
+
+    @if (ViewBag.message == "success")
+    {
         <script type="text/javascript">
             window.onload = function () {
                 alert("Data successfully saved");
             }
         </script>
-        }
-    </body>
+    }
+</body>
 }
 </html>
 

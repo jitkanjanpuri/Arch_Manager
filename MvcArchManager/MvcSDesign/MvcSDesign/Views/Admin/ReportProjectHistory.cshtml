@@ -10,7 +10,7 @@
 
 <head>
 
-    <script src="~/angularjs/ReportProjectHistory1.js"></script>
+    <script src="~/angularjs/ReportProjectHistory.js"></script>
     <script type="text/javascript">
 
         function IsNumber(e) {
@@ -29,7 +29,7 @@
 </head>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("ReportProjectHistory","Report",FormMethod.Post))
 
 {
     <body>
@@ -44,6 +44,7 @@
                                 <div class="form-group">
                                     <a href="@Url.Action("ReportClientLedger", "Admin")" class="btn btn-primary"><span>Client Ledger</span></a>
                                     <a href="@Url.Action("ReportClientReceive", "Admin")" class="btn btn-primary"><span>Client Receive </span></a>
+                                    <a href="@Url.Action("ReportOutstanding", "Admin")" class="btn btn-primary"><span> Outstanding  </span></a>
                                     <a href="@Url.Action("ReportTechnical", "Admin")" class="btn btn-primary"><span>Technical</span></a>
                                     <a href="@Url.Action("ReportQuotation", "Admin")" class="btn btn-primary"><span> Quotation  </span></a>
                                     @*<a href="@Url.Action("ReportMonthQuotation", "Admin")" class="btn btn-primary"><span> Month Quotation </span></a>*@
@@ -66,23 +67,39 @@
 
                         <div class="row">
 
-                            <div class="col-xl-2 col-md-2">
-                                <div class="form-group mb-2">
-                                 
-                                    <label> Project ID</label>
-                                    <input class="form-control" ng-model="pid" onkeypress="return IsNumber();">
-
-                                </div>
-                            </div>
-                             
+                           
                             <div class="col-xl-2 col-md-2">
                                 <div class="form-group mb-3">
-                                    <label> . </label>
-                                    <div class="form-group">
-                                        <button type="button" class="btn btn-primary" ng-click="SearchQuotation()">Search</button>
-                                    </div>
+                                    <input type="radio" ng-model="opt" value="projectID" class="form-check-input">
+                                    <label>Project ID </label>
+                                    <input type="text" ng-model="varProjectID" class="form-control" placeholder="Project ID" onkeypress="IsNumber()" />
                                 </div>
                             </div>
+
+                            <div class="col-xl-2 col-md-3">
+                                <div class="form-group mb-3">
+                                    <input type="radio" ng-model="opt" value="name" class="form-check-input">
+                                    <label>Client Name  </label>
+                                    <input type="text" ng-model="varName" class="form-control" placeholder="Name" />
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-3">
+                                <div class="form-group mb-3">
+                                    <input type="radio" ng-model="opt" value="projectName" class="form-check-input">
+                                    <label>Project Name  </label>
+                                    <input type="text" ng-model="varProjectName" class="form-control" placeholder="Project Name" />
+                                </div>
+                            </div>
+                            <div class="col-xl-1 col-md-6">
+                                <label> . </label>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary" ng-click="Search()">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-left ">
+                            <span class="text-danger text-left" style="font-size: 14pt">{{searchdmsg}}</span>
                         </div>
 
                         <div class="text-center" ng-hide="loading">
@@ -90,16 +107,14 @@
                                 <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
                             </button>
                         </div>
-                        <div class="text-left ">
-                            <span class="text-danger text-left  " style="font-size:14pt">{{searchdmsg}}</span>
-                        </div>
+                        <hr />
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table class="table align-middle datatable dt-responsive table-bordered  nowrap" style=" border: 1px solid black; border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
-                                                <thead>
+                                                 <thead class="bg-warning text-white">
                                                     <tr class="bg-transparent">
                                                         <th>#</th>
                                                         <th>Date</th>
@@ -115,7 +130,7 @@
 
                                                     <tr ng-repeat="item in uploadlist">
                                                         <td>
-                                                            <span> {{item.sno}}  </span>
+                                                            <span> {{$index+1}}  </span>
                                                         </td>
                                                         <td>
                                                             <span>{{item.dtstr}} </span>

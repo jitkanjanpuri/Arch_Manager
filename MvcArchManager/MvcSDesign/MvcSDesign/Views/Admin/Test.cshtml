@@ -1,748 +1,303 @@
-﻿@{
-    ViewBag.Title = "Test";
+﻿ 
+
+@model MvcSDesign.Models.clientModel
+<html>
+@{
+    ViewBag.Title = "Registration";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
- 
+<head>
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Project Requirement Form</title>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="~/adminAngular/registration.js"></script>
 
-    <!-- CSS -->
-    <link href="~/assets/formrequirement/style.css" rel="stylesheet" />
-    <script src="~/assets/formrequirement/jquery.min.js"></script>
-    <script src="~/assets/formrequirement/jquery-ui.min.js"></script>
-
-    <script src="~/assets/formrequirement/script.js"></script>
-    <script src="~/Scripts/jquery-3.6.1.js"></script>
-    <style type="text/css">
-        html {
-            height: 100%;
-        }
-
-        /*Background color*/
-        #grad1 {
-            background-color: : #9C27B0;
-            background-image: linear-gradient(120deg, #FF4081, #81D4FA);
-        }
-
-        /*form styles*/
-        /*#msform {
-            text-align: center;
-            position: relative;
-            margin-top: 20px;
-        }
-
-            #msform fieldset .form-card {
-                background: white;
-                border: 0 none;
-                border-radius: 0px;
-                box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
-                padding: 20px 40px 30px 40px;
-                box-sizing: border-box;
-                width: 94%;
-                margin: 0 3% 20px 3%;*/
-                /*stacking fieldsets above each other*/
-                /*position: relative;
-            }
-
-            #msform fieldset {
-                background: white;
-                border: 0 none;
-                border-radius: 0.5rem;
-                box-sizing: border-box;
-                width: 100%;
-                margin: 0;
-                padding-bottom: 20px;*/
-                /*stacking fieldsets above each other*/
-                /*position: relative;
-            }*/
-
-                /*Hide all except first fieldset*/
-                /*#msform fieldset:not(:first-of-type) {
-                    display: none;
-                }
-
-                #msform fieldset .form-card {
-                    text-align: left;
-                    color: #9E9E9E;
-                }
-
-            #msform input, #msform textarea {
-                padding: 0px 8px 4px 8px;
-                border: none;
-                border-bottom: 1px solid #ccc;
-                border-radius: 0px;
-                margin-bottom: 25px;
-                margin-top: 2px;
-                width: 100%;
-                box-sizing: border-box;
-                font-family: montserrat;
-                color: #2C3E50;
-                font-size: 16px;
-                letter-spacing: 1px;
-            }
-
-                #msform input:focus, #msform textarea:focus {
-                    -moz-box-shadow: none !important;
-                    -webkit-box-shadow: none !important;
-                    box-shadow: none !important;
-                    border: none;
-                    font-weight: bold;
-                    border-bottom: 2px solid skyblue;
-                    outline-width: 0;
-                }*/
-
-            /*Blue Buttons*/
-            /*#msform .action-button {
-                width: 100px;
-                background: skyblue;
-                font-weight: bold;
-                color: white;
-                border: 0 none;
-                border-radius: 0px;
-                cursor: pointer;
-                padding: 10px 5px;
-                margin: 10px 5px;
-            }
-
-                #msform .action-button:hover, #msform .action-button:focus {
-                    box-shadow: 0 0 0 2px white, 0 0 0 3px skyblue;
-                }*/
-
-            /*Previous Buttons*/
-            /*#msform .action-button-previous {
-                width: 100px;
-                background: #616161;
-                font-weight: bold;
-                color: white;
-                border: 0 none;
-                border-radius: 0px;
-                cursor: pointer;
-                padding: 10px 5px;
-                margin: 10px 5px;
-            }
-
-                #msform .action-button-previous:hover, #msform .action-button-previous:focus {
-                    box-shadow: 0 0 0 2px white, 0 0 0 3px #616161;
-                }*/
-
-
-        #msform {
-            text-align: center;
-            position: relative;
-            margin-top: 20px;
-        }
-
-            #msform fieldset .form-card {
-                background: white;
-                border: 0 none;
-                border-radius: 0px;
-                box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
-                padding: 20px 40px 30px 40px;
-                box-sizing: border-box;
-                width: 94%;
-                margin: 0 3% 20px 3%;
-                /*stacking fieldsets above each other*/
-                position: relative;
-            }
-
-            #msform fieldset {
-                background: white;
-                border: 0 none;
-                border-radius: 0.5rem;
-                box-sizing: border-box;
-                width: 100%;
-                margin: 0;
-                padding-bottom: 20px;
-                /*stacking fieldsets above each other*/
-                position: relative;
-            }
-
-                /*Hide all except first fieldset*/
-                #msform fieldset:not(:first-of-type) {
-                    display: none;
-                }
-
-                #msform fieldset .form-card {
-                    text-align: left;
-                    color: #9E9E9E;
-                }
-
-            #msform input, #msform textarea {
-                padding: 0px 8px 4px 8px;
-                border: none;
-                border-bottom: 1px solid #ccc;
-                border-radius: 0px;
-                margin-bottom: 25px;
-                margin-top: 2px;
-                width: 100%;
-                box-sizing: border-box;
-                font-family: montserrat;
-                color: #2C3E50;
-                font-size: 16px;
-                letter-spacing: 1px;
-            }
-
-                #msform input:focus, #msform textarea:focus {
-                    -moz-box-shadow: none !important;
-                    -webkit-box-shadow: none !important;
-                    box-shadow: none !important;
-                    border: none;
-                    font-weight: bold;
-                    border-bottom: 2px solid skyblue;
-                    outline-width: 0;
-                }
-
-            /*Blue Buttons*/
-            #form2 .action-button {
-                width: 100px;
-                background: skyblue;
-                font-weight: bold;
-                color: white;
-                border: 0 none;
-                border-radius: 0px;
-                cursor: pointer;
-                padding: 10px 5px;
-                margin: 10px 5px;
-            }
-
-                #msform .action-button:hover, #msform .action-button:focus {
-                    box-shadow: 0 0 0 2px white, 0 0 0 3px skyblue;
-                }
-
-            /*Previous Buttons*/
-            #form1 .action-button-previous {
-                width: 100px;
-                background: #616161;
-                font-weight: bold;
-                color: white;
-                border: 0 none;
-                border-radius: 0px;
-                cursor: pointer;
-                padding: 10px 5px;
-                margin: 10px 5px;
-            }
-
-                #form1 .action-button-previous:hover, #msform .action-button-previous:focus {
-                    box-shadow: 0 0 0 2px white, 0 0 0 3px #616161;
-                }
-
-
-
-
-        /*Dropdown List Exp Date*/
-        select.list-dt {
-            border: none;
-            outline: 0;
-            border-bottom: 1px solid #ccc;
-            padding: 2px 5px 3px 5px;
-            margin: 2px;
-        }
-
-            select.list-dt:focus {
-                border-bottom: 2px solid skyblue;
-            }
-
-        /*The background card*/
-        .card {
-            z-index: 0;
-            border: none;
-            border-radius: 0.5rem;
-            position: relative;
-        }
-
-        /*FieldSet headings*/
-        .fs-title {
-            font-size: 25px;
-            color: #2C3E50;
-            margin-bottom: 10px;
-            font-weight: bold;
-            text-align: left;
-        }
-
-        /*progressbar*/
-        #progressbar {
-            margin-bottom: 30px;
-            overflow: hidden;
-            color: lightgrey;
-        }
-
-            #progressbar .active {
-                color: #000000;
-            }
-
-            #progressbar li {
-                list-style-type: none;
-                font-size: 12px;
-                width: 25%;
-                float: left;
-                position: relative;
-            }
-
-            /*Icons in the ProgressBar*/
-            #progressbar #account:before {
-                font-family: FontAwesome;
-                content: "\f023";
-            }
-
-            #progressbar #personal:before {
-                font-family: FontAwesome;
-                content: "\f007";
-            }
-
-            #progressbar #payment:before {
-                font-family: FontAwesome;
-                content: "\f09d";
-            }
-
-            #progressbar #confirm:before {
-                font-family: FontAwesome;
-                content: "\f00c";
-            }
-
-            /*ProgressBar before any progress*/
-            #progressbar li:before {
-                width: 50px;
-                height: 50px;
-                line-height: 45px;
-                display: block;
-                font-size: 18px;
-                color: #ffffff;
-                background: lightgray;
-                border-radius: 50%;
-                margin: 0 auto 10px auto;
-                padding: 2px;
-            }
-
-            /*ProgressBar connectors*/
-            #progressbar li:after {
-                content: '';
-                width: 100%;
-                height: 2px;
-                background: lightgray;
-                position: absolute;
-                left: 0;
-                top: 25px;
-                z-index: -1;
-            }
-
-            /*Color number of the step and the connector before it*/
-            #progressbar li.active:before, #progressbar li.active:after {
-                background: skyblue;
-            }
-
-        /*Imaged Radio Buttons*/
-        .radio-group {
-            position: relative;
-            margin-bottom: 25px;
-        }
-
-        .radio {
-            display: inline-block;
-            width: 204;
-            height: 104;
-            border-radius: 0;
-            background: lightblue;
-            box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
-            box-sizing: border-box;
-            cursor: pointer;
-            margin: 8px 2px;
-        }
-
-            .radio:hover {
-                box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.3);
-            }
-
-            .radio.selected {
-                box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1);
-            }
-
-        /*Fit image in bootstrap div*/
-        .fit-image {
-            width: 100%;
-            object-fit: cover;
-        }
-    </style>
-    <script type="text/javascript">
-
-        //function getRecord() {
-        //    var xmlhttp = new XMLHttpRequest;
-        //    var pid = document.getElementById("txtProjectID_I").value;
-        //    if (pid == "") return;
-        //    var url = "checkProjectType.ashx?pid=" + pid;
-        //    xmlhttp.open("GET", url, false);
-        //    xmlhttp.send();
-
-        //    var ch = xmlhttp.responseText;
-        //    if (ch == "N") {
-        //        document.getElementById("rdCornerPlotYes").disabled = true;
-        //        document.getElementById("rdCornerPlotNo").disabled = true;
-        //    }
-
-
-        //    url = "searchprojecthandler.ashx?pid=" + pid;
-        //    xmlhttp.open("GET", url, false);
-        //    xmlhttp.send();
-        //    url = xmlhttp.responseText;
-        //    if (url != "") {
-        //        var ch = url.split('#');
-        //        document.getElementById("txtWorkingStatus_I").value = ch[0];
-
-        //        if (ch[1].toString() == "Yes")
-        //            document.getElementById("rdSlabDetailYes").checked = true;
-        //        else
-        //            document.getElementById("rdSlabDetailNo").checked = true;
-
-        //        document.getElementById("txtSlabHeight_I").value = ch[2];
-        //        document.getElementById("txtPlinthHeight_I").value = ch[3];
-        //        document.getElementById("txtPorchHeight_I").value = ch[4];
-        //        document.getElementById("ddlElevationPattern").value = ch[5];
-
-
-        //        if (ch[7].toString() == "Yes")
-        //            document.getElementById("rdTowerRoomYes").checked = true;
-        //        else
-        //            document.getElementById("rdTowerRoomNo").checked = true;
-
-        //        if (ch[8].toString() == "Yes")
-        //            document.getElementById("rdCornerPlotYes").checked = true;
-        //        else
-        //            document.getElementById("rdCornerPlotNo").checked = true;
-
-        //        document.getElementById("txtPlotFaceSide_I").value = ch[9];
-
-        //        if (ch[10].toString() == "Yes")
-        //            document.getElementById("rdBoundaryWallDesignYes").checked = true;
-        //        else
-        //            document.getElementById("rdBoundaryWallDesignNo").checked = true;
-
-
-
-        //        document.getElementById("txtAnyOther_I").value = ch[11];
-        //        document.getElementById("txtDoorLintel_I").value = ch[12];
-        //        document.getElementById("txtWindowSill_I").value = ch[13];
-        //        document.getElementById("txtWindowLintel_I").value = ch[14];
-
-        //        if (ch[11].length != 0) {
-        //            document.getElementById("img1").style.display = "block";
-        //            document.getElementById("img1").src = ch[11];
-        //        }
-
-        //        document.getElementById("txtStatus").style.display = "block";
-        //        document.getElementById("txtStatus").value = "Update";
-        //        document.getElementById("txtStatus").style.display = "none";
-        //    }
-        //    else {
-        //        document.getElementById("txtStatus").value = "Save";
-        //    }
-        //}
-        $(document).ready(function () {
-
-            var current_fs, next_fs, previous_fs; //fieldsets
-            var opacity;
-
-
-            $(".next").click(function () {
-
-                current_fs = $(this).parent();
-                next_fs = $(this).parent().next();
-                //formvalidation();
-                if (formvalidation() == 1) {
-                    return;
-                }
-
-
-                //Add Class Active
-                $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
-
-                //show the next fieldset
-                next_fs.show();
-                //hide the current fieldset with style
-                current_fs.animate({ opacity: 0 }, {
-                    step: function (now) {
-                        // for making fielset appear animation
-                        opacity = 1 - now;
-
-                        current_fs.css({
-                            'display': 'none',
-                            'position': 'relative'
-                        });
-                        next_fs.css({ 'opacity': opacity });
-                    },
-                    duration: 600
-                });
-            });
-
-            $(".previous").click(function () {
-
-                current_fs = $(this).parent();
-                previous_fs = $(this).parent().prev();
-
-                //Remove class active
-                $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
-
-                //show the previous fieldset
-                previous_fs.show();
-
-                //hide the current fieldset with style
-                current_fs.animate({ opacity: 0 }, {
-                    step: function (now) {
-                        // for making fielset appear animation
-                        opacity = 1 - now;
-
-                        current_fs.css({
-                            'display': 'none',
-                            'position': 'relative'
-                        });
-                        previous_fs.css({ 'opacity': opacity });
-                    },
-                    duration: 600
-                });
-            });
-
-            $('.radio-group .radio').click(function () {
-                $(this).parent().find('.radio').removeClass('selected');
-                $(this).addClass('selected');
-            });
-
-            $(".submit").click(function () {
+    <script>
+        function IsNumeric(evt) {
+            var iKeyCode = (evt.which) ? evt.which : evt.keyCode
+            if (iKeyCode != 46 && iKeyCode > 31 && (iKeyCode < 48 || iKeyCode > 57))
                 return false;
-            })
 
-        });
+            return true;
+        }
+        function validationCheck() {
 
-        function formvalidation() {
+            var name = document.getElementById("name").value;
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            var cellNo = document.getElementById("cellNo").value;
+            var countryCode = document.getElementById("countryCode").value;
 
-            var error = 0;
+            var whatsappno = document.getElementById("whatsappno").value;
+            var gmailID = document.getElementById("gmailID").value;
+            var gmailPassword = document.getElementById("gmailPassword").value;
 
-            var atv = $('fieldset.active #txtProjectID').length;
-            alert("Active " + atv);
-            var element = $('#txtProjectID').val();
-            if (element==undefined || element== '' || !$.isNumeric(element)) {
-                $('.error-msg').fadeIn();
-                error = 1;
-                return error;
+            var reg = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
+
+            if (name.length == 0) {
+                alert("Please enter name");
+                return false;
             }
-             
-            element = $('#txtWorkingStatus').val();
-            if (element == undefined ||  element == '') {
-                element.next('.error-msg').fadeIn();
-                error = 1;
+            else if ((cellNo == "") || (cellNo.length == 0)) {
+                alert("Please enter cell no");
+                document.getElementById("name").focus();
+                return false;
             }
-            
-            element = $('#txtSlabHeight').val();
-            alert("1. 1 " + element)
-            if (element == undefined || element == '') {
-                alert("3.2")
-                element.next('.error-msg').fadeIn();
-                error = 1;
+            else if ((cellNo == "") || (cellNo.length < 10)) {
+                alert("Please enter 15 digit cell no");
+                document.getElementById("cellNo").focus();
+                return false;
             }
-            alert("2")
-             
-            //element = $('#txtPlinthHeight').val();
-            //if (element == undefined || element == '') {
-            //    element.next('.error-msg').fadeIn();
-            //    error = 1;
-            //}
-
-            //alert("3");
-
-             
-
-            //element = $('#txtPorchHeight').val();
-            //if (element.val() == '') {
-            //    element.next('.error-msg').fadeIn();
-            //    error = 1;
-            //}
-
-
-             
-           
-
-            //element = $('#txtDoorLintel').val();
-            //if (element.val() == '') {
-            //    element.next('.error-msg').fadeIn();
-            //    error = 1;
-            //}
+            else if ((username == "") || (username.length == 0)) {
+                alert("Please enter user name");
+                document.getElementById("username").focus();
+                return false;
+            }
+            else if (username.length < 4) {
+                alert("Please enter atleast 4 character user name");
+                document.getElementById("username").focus();
+                return false;
+            }
+            else if ((password == "") || (password.length == 0)) {
+                alert("Please enter password");
+                document.getElementById("password").focus();
+                return false;
+            }
+            else if (password.length < 4) {
+                alert("Please enter atleast 4 character password");
+                document.getElementById("password").focus();
+                return false;
+            }
 
 
+            else if ((countryCode == "") || (countryCode.length == 0)) {
+                alert("Please enter country code ");
+                document.getElementById("countryCode").focus();
+                return false;
+            }
+            else if ((whatsappno == "") || (whatsappno.length == 0) || (whatsappno.length < 10)) {
+                alert("Please enter digit WhatsApp no ");
+                document.getElementById("whatsappno").focus();
+                return false;
+            }
+            else if (gmailID.length == 0) {
+                alert("Please enter GMail ID");
+                document.getElementById("gmailID").focus();
+                return false;
+            }
 
+            else if (gmailPassword.length == 0) {
+                alert("Please enter GMail password");
+                document.getElementById("gmailPassword").focus();
+                return false;
+            }
 
-             
-
-            //element = $('#txtWindowSill').val();
-            //if (element.val() == '') {
-            //    element.next('.error-msg').fadeIn();
-            //    error = 1;
-            //}
-
-
-             
-            //element = $('#txtWindowLintel').val();
-            //if (element.val() == '') {
-            //    element.next('.error-msg').fadeIn();
-            //    error = 1;
-            //}
-
-
-             
-            //element = $('#txtPlotFaceSide').val();
-            //if (element.val() == '') {
-            //    element.next('.error-msg').fadeIn();
-            //    error = 1;
-            //}
-
-
-
-            
-
-            return error;
+            if (!isValidEmailAddress(gmailID)) {
+                alert("Invalid email ID");
+                return false;
+            }
+            return true;
         }
 
+        function isValidEmailAddress(emailAddress) {
+            var pattern = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
+
+            return pattern.test(emailAddress);
+        }
     </script>
 
+
+
 </head>
-<body>
-    
-    <br /><br />
-    <div class="container-fluid" id="grad1" style="background-color:white">
-        <div class="row justify-content-center mt-0">
-            <div class="col-11 col-sm-9 col-md-7 col-lg-6 text-center p-0 mt-3 mb-2">
-                <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                    <h2><strong>Project Requirement Form</strong></h2>
-                    <div class="row">
-                        <div class="col-md-12 mx-0">
-                            <form id="form1">
-                                <!-- progressbar -->
-                                <ul id="progressbar">
-                                    <li class="active" id="account"><strong></strong></li>
-                                    <li id="personal"><strong></strong></li>
-                                    <li id="payment"><strong></strong></li>
-                                    <li id="confirm"><strong></strong></li>
-                                </ul>
-                                <!-- fieldsets -->
-                                <fieldset>
-                                    <div class="form-card">
-                                        <h2 class="fs-title"></h2>
-                                        <input type="text" class="form-control" name="txtProjectID" id="txtProjectID" placeholder="Project ID" />
-                                        <span class="error-msg">This field is required and numeric value only</span>
-                                        <label><span style="color:black">2. Specify the <b>actual working status </b> of the site</span><span class="required">*</span> </label>
-                                        <input type="text" class="form-control" name="txtWorkingStatus" id="txtWorkingStatus" placeholder="" />
-                                        <span class="error-msg">This field is required </span>
 
-                                        <label><span style="color:black">3. Specify the <b>slab height </b> (In feet)</span><span class="required">*</span></label>
-                                        <input type="text" class="form-control" name="txtSlabHeight" id="txtSlabHeight" placeholder="" />
-                                        <span class="error-msg">This field is required </span>
-                                        @*<input type="text" name="cpwd" placeholder="Specify the <b>slab height</b> " /*@
-                                    </div>
-                                    <input type="button" name="next" class="next action-button" value="Next Step" />
-                                </fieldset>
-                                <fieldset>
-                                    <div class="form-card">
-                                        <h2 class="fs-title"></h2>
-                                        <label><span style="color:black">4. Specify the <b>height of the plinth</b> (In Feet)</span></label>
-                                        <input type="text" class="form-control" name="txtPlinthHeight" id="txtPlinthHeight" placeholder=" " />
-                                        <label><span style="color:black">5. Specify the <b> height of porch </b> (In Feet) </span></label>
-                                        <input type="text" class="form-control" name="txtPorchHeigh" id="txtPorchHeigh" placeholder="" />
-                                        <label><span style="color:black">6. Specify the <b> desired design pattern </b> for the elevation</span></label>
+@using (@Html.BeginForm("Index", "Registration", FormMethod.Post, new { enctype = "multipart/form-data", id = "myform", name = "myform" }))
+{
 
-                                        <select class="form-control" name="ddlElevationPattern" id="ddlElevationPattern">
-                                            <option selected="selected" value="">Select</option>
-                                            <option value="Traditional">Traditional</option>
-                                            <option value="Modern">Modern</option>
-                                            <option value="Green Façade">Green Façade</option>
-                                            <option value="Geometrical">Geometrical</option>
-                                        </select>
-                                        <label><span style="color:black">7. <b> Door lintel </b> level <i> (In Feet)</i> </span></label>
-                                        <input type="text" class="form-control" name="txtDoorLintel" id="txtDoorLintel" placeholder="" />
-                                    </div>
-                                    <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                    <input type="button" name="next" class="next action-button" value="Next Step" />
-                                </fieldset>
-                                <fieldset>
-                                    <div class="form-card">
-                                        <h2 class="fs-title"></h2>
+    <body id="page-top" class="sidebar-toggled">
+        <div ng-app="myApp">
+            <div ng-controller="myCont">
+                <div id="wrapper">
+                    <div id="content-wrapper" class="d-flex flex-column overflow-hidden">
+                        <div id="content">
+                            <div class="container-fluid">
+                                <button id="sidebarToggleTop" class="mt-3 btn btn-link d-md-none rounded-circle mr-3">
+                                    <i class="fa fa-bars"></i>
+                                </button>
 
-                                        <label style="color:black">8. <b> Window sill </b> level <i> (In Feet)</i> </label>
-                                        <input type="text" class="form-control" name="txtWindowSill" id="txtWindowSill" placeholder="" />
-                                        <label style="color:black">9. <b>Window lintel </b> level <i> (In Feet)</i> <span class="required">*</span></label>
-                                        <input class="form-control" id="txtWindowLinte" name="txtWindowLinte" type="text" />
-                                        <label style="color:black">10. Is the <b>tower room</b> is executed at Stairs ? <span class="required">*</span></label>
-                                        <div class="radio-group">
-                                            <table style="width:300px;">
-                                                <tr>
-                                                    <td>
-                                                        <label style="color:black; width:70px;"><input id="rdTowerRoomYes" type="radio" name="TowerRoom" value="Yes" style="width:40px;" /> Yes</label>
-                                                    </td>
-                                                    <td>
-                                                        <label style="color:black ; width:70px;"><input id="rdTowerRoomNo" type="radio" name="TowerRoom" value="No" style="width:40px;" checked="checked" /> No</label>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                <!-- Content Row -->
+                                <h1 class="h3 my-4 text-gray-800">Registration</h1>
+                                <div class="row">
+
+                                    <div class="col-lg-6">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <form id="pristine-valid-example" novalidate method="post">
+                                                    <div>
+
+                                                        <div class="row">
+
+                                                            <div class="col-xl-6 col-md-3">
+                                                                <div class="form-group mb-3">
+                                                                    <label>Client Name </label>
+
+                                                                    @Html.TextBoxFor(x => x.clientName, new { @class = "form-control", placeholder = "Client Name " })
+                                                                    @Html.ValidationMessageFor(x => x.clientName, "", new { @class = "text-danger" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-6 col-md-3">
+                                                                <div class="form-group mb-3">
+                                                                    <label>Organization</label>
+
+                                                                    @Html.TextBoxFor(model => model.orgName, new { @class = "form-control", @onkeypress = "OnlyNumeric(this)", placeholder = "Organization" })
+
+                                                                    @Html.ValidationMessageFor(x => x.clientName, "", new { @class = "text-danger" })
+                                                                
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-6 col-md-3">
+                                                                <div class="form-group mb-3">
+                                                                    <label>Address  </label>
+
+                                                                    @Html.TextAreaFor(model => model.address, 2, 80, new { @class = "form-control", placeholder = "Address" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-6 col-md-3">
+                                                                <div class="form-group mb-3">
+                                                                    <label> City *  </label>
+
+                                                                    @Html.TextBoxFor(model => model.city, new { @class = "form-control", placeholder = "City" })
+                                                                    @Html.ValidationMessageFor(model => model.city, "", new { style = "color:red;" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-6 col-md-3">
+                                                                <div class="form-group mb-3">
+                                                                    <label>State *   </label>
+                                                                    @*@Html.DropDownListFor(model => model.state, Model.statelist, new { @class = "form-control" })
+                                                                    @Html.ValidationMessageFor(model => model.state, "", new { style = "color:red;" })*@
+                                                                </div>
+                                                            </div>
+                                                            <!-- end row -->
+                                                            <div class="col-xl-6 col-md-3">
+                                                                <div class="form-group mb-3">
+                                                                    <label>Mobile Number </label>
+                                                                    @Html.TextBoxFor(model => model.mobile, new { @class = "form-control", @maxlength = "10", style = "", @onkeypress = "IsNumber()", placeholder = "Mobile no" })
+                                                                    @Html.ValidationMessageFor(model => model.mobile, "", new { style = "color:red;" })
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-xl-6 col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label> Phone  </label>
+                                                                    @Html.TextBoxFor(model => model.phone, new { @class = "form-control", @type = "number", placeholder = "Phone" })
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-6 col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label> Email ID  </label>
+                                                                    @Html.TextBoxFor(model => model.emailID, new { @class = "form-control", placeholder = "Email ID" })
+                                                                    @Html.ValidationMessageFor(model => model.emailID, "", new { style = "color:red;" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <label id="lblErr" class="text-danger"></label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="submit" id="tbnSubmit" onclick="return SaveValidation()" class="btn btn-primary">Save</button>
+                                                        </div>
+
+                                                    </div>
+                                                </form>
+
+                                            </div>
                                         </div>
-                                        <label style="color:black">11. Do you want <b>side elevations </b>?</label>
-                                        <div class="radio-group" style="width:300px;">
-                                            <table style="width:300px;">
-                                                <tr>
-                                                    <td>
-                                                        <label for="rdCornerPlotYes" style="color: black; width: 70px;"><input id="rdCornerPlotYes" type="radio" name="CornerPlot" value="Yes" style="width:40px;" /> Yes</label>
-                                                    </td>
-                                                    <td>
-                                                        <label for="rdCornerPlotNo" style="color: black; width: 70px;"><input id="rdCornerPlotNo" type="radio" name="CornerPlot" value="No" checked="checked" style="width:40px;" /> No</label>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-2 d-flex align-items-center">
+                                                <span class="m-0 font-weight-bold text-primary">Registered Users</span>
+                                                <form action="" method="post" class="ml-auto">
+                                                    <button type="button" id="delete-selected-btn" ng-disabled="btnDelete" class=" btn btn-danger btn-icon-split open-confirmation-from">
+                                                        <span class="icon text-white-50"><i class="fas fa-trash"></i></span>
+                                                        <span class="text">Delete Selected</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <div class="card-body">
+                                                <!--table start-->
+                                                <div class="table-responsive">
+                                                    <table datatable="" class="table table-bordered table-hover datatable" ui-jq="dataTable" ui-options="dataTableOpt" id="registrationTable" width="100%" cellspacing="0">
+                                                        <thead class="bg-warning text-white">
+                                                            <tr>
+                                                                @*<th>#</th>*@
+                                                                <th>
+                                                                    <input type="checkbox" aria-label="Checkbox for following text input">
+                                                                </th>
+                                                                <th>Username</th>
+                                                                <th>Name</th>
+                                                                <th>Cell No.</th>
+                                                                <th>Gmail Id</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="item in reglist.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage))">
+                                                                @*<td>
+            <input type="checkbox" ng-model="item.selected" value="{{item.registrationID}}" ng-change="enableDeleteButton()" aria-label="Checkbox for following text input" ng-click="editRecord(item)">
+
+        </td>
+        <td>{{item.username}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.cellNo}}</td>
+        <td>{{item.gmailID }}</td>*@
+
+                                                                <td>
+                                                                    <input type="checkbox" ng-model="item.selected" value="{{item.registrationID}}" ng-change="enableDeleteButton()" aria-label="Checkbox for following text input" ng-click="editRecord(item)">
+
+                                                                </td>
+                                                                <td>Chetan Parihar</td>
+                                                                <td>Chetan</td>
+                                                                <td>982723047  </td>
+                                                                <td>chetan.parihar@gmail.com</td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                    View <select ng-model="viewby" ng-change="setItemsPerPage(viewby)"> <option>5</option><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select> records at a time.
+
+                                                    <pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" class="pagination-sm" items-per-page="itemsPerPage"></pagination>
+
+                                                </div>
+                                                <!--table end-->
+                                            </div>
                                         </div>
                                     </div>
-                                    <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                    
-                                    <input type="button" name="next" class="next action-button" value="Next Step" />
-                                </fieldset>
-                                <fieldset>
-                                    <div class="form-card">
-                                        <h2 class="fs-title"></h2>
-
-                                        <label style="color:black">12. Mention the <b>facing side </b> of the plot  </label>
-                                        <input type="text" class="form-control" name="txtPlotFaceSide" id="txtPlotFaceSide" placeholder="" />
-
-                                        <label style="color:black">13. Do you want <b>boundary wall design </b>? <span class="required">*</span></label>
-                                        <div class="radio-group">
-                                            <table style="width:300px;">
-                                                <tr>
-                                                    <td>
-                                                        <label style="color:black; width:70px;"><input id="rdBoundaryWallDesignYes" type="radio" name="BoundaryWall" value="Yes" style="width:40px;" /> Yes</label>
-                                                    </td>
-                                                    <td>
-                                                        <label style="color:black ; width:70px;"><input id="rdBoundaryWallDesignNo" type="radio" name="BoundaryWall" value="No" style="width:40px;" checked="checked" /> No</label>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                             
-                                        </div>
-                                         
-                                        <label style="color:black">14. Any Other</label>
-                                        <textarea maxlength="500" id="txtAnyOther" name="txtAnyOther"></textarea>
+                                </div>
+                                
+                                @*<div class="modal-content confirmation-popup shadow">
+                                    <div class="modal-header bg-primary text-white">
+                                        <h5 class="modal-title">Are you sure, you want to delete ?</h5>
                                     </div>
-                                    <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                    <input type="button" name="submit" class="action-button" value="Submit" />
-                                   
-                                </fieldset>
-                            </form>
+                                    <div class="modal-footer bg-warning">
+                                        <input type="button" class="btn btn-danger confirmed-action-cp" value="Yes" ng-click="DeleteReg()" />
+                                        <button type="button" class="btn btn-secondary close-confirmation-popup">No</button>
+                                    </div>
+                                </div>*@
+                                
+                            </div>
+
                         </div>
+                        <!-- End of Content Wrapper -->
+
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    
 
+    </body>
 
-</body>
+}
 </html>
-
+ 

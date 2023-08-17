@@ -1,0 +1,169 @@
+﻿@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+    ViewBag.Title = "Report Month Quotation";
+}
+
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <script src="~/angularjs/reportmonthquotation.js"></script>
+
+</head>
+@using (@Html.BeginForm())
+{
+<body>
+    <div ng-app="myApp">
+        <div ng-controller="myCtrl">
+            <div class="page-content">
+                <div class="container-fluid">
+
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <a href="@Url.Action("ReportClientLedger", "Admin")" class="btn btn-primary"><span>Client Ledger</span></a>
+                                <a href="@Url.Action("ReportClientReceive", "Admin")" class="btn btn-primary"><span>Client Receive </span></a>
+                                <a href="@Url.Action("ReportTechnical", "Admin")" class="btn btn-primary"><span>Technical</span></a>
+                                <a href="@Url.Action("ReportQuotation", "Admin")" class="btn btn-primary"><span> Quotation  </span></a>
+                                @*<a href="@Url.Action("ReportMonthQuotation", "Admin")" class="btn btn-primary"><span> Month Quotation </span></a>*@
+                                @*<a href="@Url.Action("ReportBalanceAdjust", "Admin")" class="btn btn-primary"><span> Balance Adjust  </span></a>*@
+                                <a href="@Url.Action("ReportSiteVisit", "Admin")" class="btn btn-primary"><span> Site Visit   </span></a>
+                                <a href="@Url.Action("ReportProjectHistory", "Admin")" class="btn btn-primary"><span> Project History  </span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0 font-size-18">Monthly Quotation </h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <div class="row">
+                        <div class="col-xl-4 col-md-6">
+                            <div class="form-group mb-3">
+                                <label>Project type</label>
+                                <select class="form-control" ng-model="ptype" ng-options="item for item in arrProjectType"></select>
+                            </div>
+                        </div>
+                        <div class="col-xl-1 col-md-6">
+                            <label> . </label>
+                            <div class="form-group">
+                                <button type="button" ng-click="ShowAllQuotation()" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center" ng-hide="loading">
+                        <button type="button" class="btn btn-dark waves-effect waves-light">
+                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                        </button>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="row">
+                                    <div class="col-xl-2 text-right">
+                                        <br />
+                                        <div class="form-group">
+                                             
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-2 text-right">
+                                       <br />
+                                        <div class="form-group">
+                                            <label class="text-black "> <b>Pending quotation : {{pendingquotation}} </b></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-2 col-md-3 text-right">
+                                        <br />
+                                        <div class="form-group">
+                                            <label> <b>Confirm quotation : {{confirmquotation}} </b></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-md-3 text-right">
+                                        <br />
+                                        <div class="form-group">
+                                            <label> <b>Total pending quotation amount : {{pendingquotationamount}} </b></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-md-3 text-right">
+                                        <br />
+                                        <div class="form-group">
+                                            <label> <b>Total Confirm quotation amount : {{confirmquotationamount}} </b></label>
+                                        </div>
+                                    </div>
+
+                                    
+
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered mb-0">
+
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                    <th>Project ID</th>
+                                                    <th>Project Name</th>
+                                                    <th>Project Type</th>
+                                                    <th>Prj Level</th>
+                                                    <th>Plot size</th>
+                                                    <th>Amount</th>
+                                                    <th>Satatus</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item  in quotationlist">
+                                                    <th> {{$index+1}}</th>
+                                                    <td> {{item.clientName}}</td>
+                                                    <td> {{item.projectID}}</td>
+                                                    <td>  {{item.projectName}}</td>
+                                                    <td>  {{item.projectType}} </td>
+                                                    <td>  {{item.projectLevel}} </td>
+                                                    <td>  {{item.plotSize}} </td>
+                                                    <td>  {{item.amount}} </td>
+                                                    <td>  {{item.status}} </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                        @*<table class="table table-bordered mb-0">
+                                            <tr>
+                                                <td style="width:200px;"></td>
+
+                                                <td style="width:350px; ">
+                                                    <span style="height:30px;font-family:Museo Sans 300 ;font-size:10pt; color:black"><b>Total pending quotation amount : {{pendingquotationamount}} </b></span>
+                                                </td>
+                                                <td style="width:350px; ">
+                                                    <span style="height:30px;font-family:Museo Sans 300 ;font-size:10pt; color:black"><b> Total Confirm quotation amount : {{confirmquotationamount}} </b></span>
+                                                </td>
+                                            </tr>
+                                        </table>*@
+
+                                    </div>
+                                </div>
+                                <div class="text-center ">
+                                    <span class="text-danger text-center font-size:16  " style="">{{recordmsg}}</span>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+   }
+
+</html>

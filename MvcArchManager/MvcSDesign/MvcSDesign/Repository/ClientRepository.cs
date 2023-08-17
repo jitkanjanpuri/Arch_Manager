@@ -26,29 +26,55 @@ namespace MvcSDesign.Repository
 
 
 
-        public  void InsertData(client cnt)
+        public  void InsertData(clientModel cnt)
         {
             tblClient obj = new tblClient();
             try
             {
-                var res = _dbContext.tblCompanyProfiles.FirstOrDefault();
-                int companyID = 0;
-                if(res !=null)
+                if (cnt.clientID == 0)
                 {
-                    companyID = res.companyID;
+                    var res = _dbContext.tblCompanyProfiles.FirstOrDefault();
+                    int companyID = 0;
+                    if (res != null)
+                    {
+                        companyID = res.companyID;
+                    }
+                    obj.companyID = companyID;
+                    obj.clientName = cnt.clientName.Trim();
+                    obj.orgName = cnt.orgName.Trim();
+                    obj.address = cnt.address.Trim();
+                    obj.city = cnt.city.Trim();
+                    obj.phone = cnt.phone;
+                    obj.mobile = cnt.mobile;
+                    obj.emailID = cnt.emailID.Trim();
+                    obj.state = cnt.state;
+                    obj.remark = "-";
+                    _dbContext.tblClients.Add(obj);
                 }
-                obj.companyID = companyID;
-                obj.clientName = cnt.clientName.Trim();
-                obj.orgName = cnt.orgName.Trim();
-                obj.address = cnt.address.Trim();
-                obj.city = cnt.city.Trim();
-                obj.phone = cnt.phone;
-                obj.mobile = cnt.mobile;
-                obj.emailID = cnt.emailID.Trim();
-                obj.state = cnt.state;
-                obj.remark = "-";
+                else
+                {
+                    //var res = _dbContext.tblCompanyProfiles.FirstOrDefault();
+                    //int companyID = 0;
+                    //if (res != null)
+                    //{
+                    //    companyID = res.companyID;
+                    //}
+                    //obj.companyID = companyID;
 
-                _dbContext.tblClients.Add(obj);
+                    var res = _dbContext.tblClients.Where(x => x.clientID == cnt.clientID).FirstOrDefault();
+                    if (res != null)
+                    {
+                        res.clientName = cnt.clientName.Trim();
+                        res.orgName = cnt.orgName.Trim();
+                        res.address = cnt.address.Trim();
+                        res.city = cnt.city.Trim();
+                        res.phone = cnt.phone;
+                        res.mobile = cnt.mobile;
+                        res.emailID = cnt.emailID.Trim();
+                        res.state = cnt.state;
+                        res.remark = "-";
+                    }
+                }
                 _dbContext.SaveChanges();
             }
             catch (SqlException ex) {
@@ -177,17 +203,17 @@ namespace MvcSDesign.Repository
         //    return "";
         //}
 
-        public string ClientNameValidation(string name, string emailID)
+        public string ClientNameValidation(clientModel obj)
         {
-            
+            //string name, string emailID
             try
             {
-                var res = _dbContext.tblClients.Where(x => x.clientName == name).FirstOrDefault();
+                var res = _dbContext.tblClients.Where(x => ((x.clientName == obj.clientName)&&(x.clientID != obj.clientID))).FirstOrDefault();
                 if (res != null)
                 {
                     return "Client name already exist";
                 }
-                var res1 = _dbContext.tblClients.Where(x => x.emailID == emailID).FirstOrDefault();
+                var res1 = _dbContext.tblClients.Where(x => ((x.emailID == obj.emailID) && (x.clientID != obj.clientID))).FirstOrDefault();
                 if (res1 != null)
                 {
                     return "Client's emailID already exist";
@@ -197,33 +223,14 @@ namespace MvcSDesign.Repository
             return "";
         }
         
-        public IEnumerable<client> SearchClientByName(string opt, string name, string cityname)
+        public IEnumerable<clientModel> SearchClientByName(string name)
         {
-            List<client> lst = new List<client>(); 
-            if (opt == "name")  {
-                var res = (from item in _dbContext.tblClients
-                           where (item.clientName.Contains(name))
-                           select new client
-                           {
-                               clientID = item.clientID,
-                               clientName = item.clientName,
-                               orgName = item.orgName,
-                               address = item.address,
-                               city = item.city,
-                               mobile = item.mobile,
-                               phone = item.phone,
-                               emailID = item.emailID,
-                               state = item.state
-
-                           }).ToList();
-                lst = res.ToList();
-            }
-
-            else if (opt == "city")
+            List<clientModel> lst = new List<clientModel>();
+            try
             {
                 var res = (from item in _dbContext.tblClients
-                           where (item.city.Contains(cityname))
-                           select new client
+                           where (item.clientName.Contains(name))
+                           select new clientModel
                            {
                                clientID = item.clientID,
                                clientName = item.clientName,
@@ -234,28 +241,141 @@ namespace MvcSDesign.Repository
                                phone = item.phone,
                                emailID = item.emailID,
                                state = item.state
-
                            }).ToList();
                 lst = res.ToList();
-
             }
+            catch (Exception ex) { }
             return lst;
         }
 
+
+        public IEnumerable<clientModel> SearchClientByNameOrPID(string opt, string name, string pid, string projectName)
+        { 
+            List<clientModel> lst = new List<clientModel>();
+            try
+            {
+                if (opt == "name")
+                { 
+                    var res = ( from item in _dbContext.tblClients
+                                where (item.clientName.Contains(name))
+                                select new clientModel
+                                   {
+                                       clientID = item.clientID,
+                                       clientName = item.clientName,
+                                       orgName = item.orgName,
+                                       address = item.address,
+                                       city = item.city,
+                                       mobile = item.mobile,
+                                       phone = item.phone,
+                                       emailID = item.emailID,
+                                       state = item.state
+                                   }).ToList();
+                      lst = res.ToList();
+                }
+
+                else if (opt == "projectID")
+                {
+                    int varpid = int.Parse(pid);
+                    var res = ( from item in _dbContext.tblClients
+                                join pd in _dbContext.tblProjectDetails
+                                on item.clientID equals pd.clientID
+                                where (pd.projectID == varpid)
+                                select new clientModel
+                                {
+                                   clientID = item.clientID,
+                                   clientName = item.clientName,
+                                   orgName = item.orgName,
+                                   address = item.address,
+                                   city = item.city,
+                                   mobile = item.mobile,
+                                   phone = item.phone,
+                                   emailID = item.emailID,
+                                   state = item.state
+
+                               }).ToList();
+                    lst = res.ToList();
+                }
+                else if (opt == "projectName")
+                {
+                    var res = (from item in _dbContext.tblClients
+                               join pd in _dbContext.tblProjectDetails
+                               on item.clientID equals pd.clientID
+                               where (pd.projectname.Contains(projectName))
+                               select new clientModel
+                               {
+                                   clientID = item.clientID,
+                                   clientName = item.clientName,
+                                   orgName = item.orgName,
+                                   address = item.address,
+                                   city = item.city,
+                                   mobile = item.mobile,
+                                   phone = item.phone,
+                                   emailID = item.emailID,
+                                   state = item.state
+
+                               }).ToList();
+                    lst = res.ToList();
+
+                }
+
+
+            }
+            catch (Exception ex) { }
+            return lst;
+        }
+
+
+        public IEnumerable<clientModel> GetState()
+        {
+            List<clientModel> lst = new List<clientModel>();
+            try
+            {
+                lst = (from st in _dbContext.tblStates
+                       select new clientModel
+                       {
+                           state = st.stateName
+                       }).ToList();
+
+            }
+            catch (Exception ex) { }
+            return lst;
+        }
         public IEnumerable<tblClient> getByName(string name)
         {
             return _dbContext.tblClients.Where(s => s.clientName.Contains(name)).ToList();
         }
 
-        public IEnumerable<tblClient> getAll()
+        public IEnumerable<clientModel> GetAll()
         {
-            return _dbContext.tblClients.ToList().OrderBy(x => x.clientName);
+            List<clientModel> lst = new List<clientModel>();
+            try
+            {
+                 lst = ( from cm in _dbContext.tblClients
+                         orderby cm.clientID descending
+                         select new clientModel
+                            {
+                                clientID = cm.clientID,
+                                clientName = cm.clientName,
+                                orgName = cm.orgName,
+                                address = cm.address,
+                                city = cm.city,
+                                mobile = cm.mobile,
+                                phone = cm.phone,
+                                emailID = cm.emailID,
+                                state = cm.state
+                            }).Take(10).ToList();
+               
+            }
+            catch (Exception ex) { }
+
+            return lst;
+
         }
 
-        public IEnumerable<client> getClient_PromMail(string name, string city)
+        public IEnumerable<clientModel> getClient_PromMail(string name, string city)
         {
 
-            List<client> clist = new List<client>();
+            List<clientModel> clist = new List<clientModel>();
             try
             {
                
@@ -263,7 +383,7 @@ namespace MvcSDesign.Repository
                 {
                     var varlist = (from cl in _dbContext.tblClients
                                    where ((cl.clientName.Contains(name)) && (cl.city.Contains(city)))
-                                   select new client
+                                   select new clientModel
                                    {
                                        clientID = cl.clientID,
                                        clientName = cl.clientName,
@@ -279,7 +399,7 @@ namespace MvcSDesign.Repository
                 {
                     var varlist = (from cl in _dbContext.tblClients
                                    where (cl.clientName.Contains(name))
-                                   select new client
+                                   select new clientModel
                                    {
                                        clientID = cl.clientID,
                                        clientName = cl.clientName,
@@ -295,7 +415,7 @@ namespace MvcSDesign.Repository
                 {
                     var varlist = (from cl in _dbContext.tblClients
                                    where (cl.city.Contains(city))
-                                   select new client
+                                   select new clientModel
                                    {
                                        clientID = cl.clientID,
                                        clientName = cl.clientName,
@@ -317,9 +437,9 @@ namespace MvcSDesign.Repository
         }
 
         
-        public client GetClient(int clientID)
+        public clientModel GetClient(int clientID)
         {
-           client clist = new client();
+           clientModel clist = new clientModel();
             try
             {
                 var cnt = _dbContext.tblClients.Where(x => x.clientID == clientID).FirstOrDefault();
@@ -339,7 +459,7 @@ namespace MvcSDesign.Repository
            return clist;
         }
 
-        public string Update(client cnt)
+        public string Update(clientModel cnt)
        {
            try
            {
@@ -512,61 +632,59 @@ namespace MvcSDesign.Repository
             List<operation> reqlist = new List<operation>();
             try
             {
-                var prj = from pd in _dbContext.tblProjectDetails
+                reqlist = (from pd in _dbContext.tblProjectDetails
                           join cl in _dbContext.tblClients
                           on pd.clientID equals cl.clientID
                           where (pd.projectID == projectID)
-                          select new
+                          select new operation
                           {
                               dt = pd.dt,
-                              clientid = cl.clientID,
-                              clientname = cl.clientName,
+                              clientID = cl.clientID,
+                              clientName = cl.clientName,
                               emailID = cl.emailID,
                               address = cl.address,
                               city = cl.city + " , " + cl.state,
                               projectID = pd.projectID,
-                              projectname = pd.projectname,
+                              projectName = pd.projectname,
                               projectType = pd.projectType,
                               package = pd.package,
                               projectLevel = pd.projectLevel,
                               plotSize = pd.plotSize,
                               amount = pd.amount,
-                              remark = pd.remark
+                              remark = pd.remark,
+                              finalizeAmount = (long) pd.finalizeAmount,
+                              status = pd.status
+                          }).ToList();
 
-                          };
 
+                 
+                //foreach (var item in prj)
+                //{
+                //    reqlist.Add(new operation
+                //    {
+                //        dt = item.dt,
+                //        clientID = item.clientid,
+                //        clientName = item.clientname,
+                //        emailID = item.emailID,
+                //        designerName = item.address,
+                //        rowcolor = item.city,
+                //        projectID = item.projectID,
+                //        projectName = item.projectname,
+                //        projectType = item.projectType,
+                //        package = item.package,
+                //        projectLevel = item.projectLevel,
+                //        plotSize = item.plotSize,
+                //        amount = item.amount,
+                //        remark = item.remark,
+                //        finalizeAmount = (long)item.finalizeAmount,
+                //        status = it
+                //    });
 
-                //status = for cient email
-
-                //designerName = for cient address
-
-                //rowcolor = for city
-                foreach (var item in prj)
-                {
-                    reqlist.Add(new operation
-                    {
-                        dt = item.dt,
-                        clientID = item.clientid,
-                        clientName = item.clientname,
-                        status = item.emailID,
-                        designerName = item.address,
-                        rowcolor = item.city,
-                        projectID = item.projectID,
-                        projectName = item.projectname,
-                        projectType = item.projectType,
-                        package = item.package,
-                        projectLevel = item.projectLevel,
-                        plotSize = item.plotSize,
-                        amount = item.amount,
-                        remark = item.remark
-
-                    });
-
-                }
+                //}
 
             }
             catch (Exception ex) { }
-            return reqlist.ToList();
+            return reqlist;
         }
          
       

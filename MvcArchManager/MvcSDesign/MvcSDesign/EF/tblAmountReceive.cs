@@ -16,10 +16,10 @@ namespace MvcSDesign.EF
     {
         public int amountReceiveID { get; set; }
         public System.DateTime dt { get; set; }
-        public int clientID { get; set; }
         public int amount { get; set; }
         public string remark { get; set; }
+        public long projectID { get; set; }
     
-        public virtual tblClient tblClient { get; set; }
+        public virtual tblProjectDetail tblProjectDetail { get; set; }
     }
 }

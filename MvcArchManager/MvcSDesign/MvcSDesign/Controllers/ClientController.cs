@@ -23,10 +23,10 @@ namespace MvcSDesign.Controllers
 {
     public class ClientController : Controller
     {
-         
+        ConvertNumberToWord objNTW = new ConvertNumberToWord();
         IClient IClnt;
         IAdmin IAdn;
-        client obj = new client();
+        clientModel obj = new clientModel();
         ClientRepository objCR;//= new ClientRepository();
         public ClientController()
         {
@@ -34,9 +34,9 @@ namespace MvcSDesign.Controllers
             IAdn = new AdminRepository(new ArchManagerDBEntities());
 
         }
-        public JsonResult CheckClientExists(client obj)
+        public JsonResult CheckClientExists(clientModel obj)
         {
-            string ch = IClnt.ClientNameValidation(obj.clientName, obj.emailID);
+            string ch = IClnt.ClientNameValidation(obj);
             return Json(ch, JsonRequestBehavior.AllowGet);
         }
 
@@ -59,37 +59,29 @@ namespace MvcSDesign.Controllers
             return View(obj);
         }
 
+
+
+
         IEnumerable<SelectListItem> getStateList()
         {
             var st = new List<SelectListItem>();
-            st.Add(new SelectListItem { Text = "Andhra Pradesh" });
-            st.Add(new SelectListItem { Text = "Assam" });
-            st.Add(new SelectListItem { Text = "Bihar" });
-            st.Add(new SelectListItem { Text = "Chhattisgarh" });
-            st.Add(new SelectListItem { Text = "Delhi" });
-            st.Add(new SelectListItem { Text = "Goa" });
-            st.Add(new SelectListItem { Text = "Gujarat" });
-            st.Add(new SelectListItem { Text = "Haryana" });
-            st.Add(new SelectListItem { Text = "Jharkhand" });
-            st.Add(new SelectListItem { Text = "Karnataka" });
-            st.Add(new SelectListItem { Text = "Kerala" });
-            st.Add(new SelectListItem { Text = "Madhya Pradesh" });
-            st.Add(new SelectListItem { Text = "Maharashtra" });
-            st.Add(new SelectListItem { Text = "Orissa" });
-            st.Add(new SelectListItem { Text = "Punjab" });
-            st.Add(new SelectListItem { Text = "Rajasthan" });
-            st.Add(new SelectListItem { Text = "Tamil Nadu" });
-            st.Add(new SelectListItem { Text = "Uttar Pradesh" });
-            st.Add(new SelectListItem { Text = "Uttarakhand" });
-            st.Add(new SelectListItem { Text = "West Bengal" });
+          
+            var res = IClnt.GetState();
+            foreach(var item in res)
+            {
+                st.Add(new SelectListItem
+                {
+                    Text = item.state
+                });
+            }
 
             return st;
-         
+
         }
 
 
         [HttpPost]
-        public ActionResult Index(client obj )
+        public ActionResult Index(clientModel obj )
         {
             try
             {
@@ -180,41 +172,30 @@ namespace MvcSDesign.Controllers
             return Json(rec, JsonRequestBehavior.AllowGet);
              
         }
-        
-        public JsonResult SearchClient(string opt , string name , string cityname)
-        { 
-            return Json(IClnt.SearchClientByName(opt, name, cityname), JsonRequestBehavior.AllowGet);
+
+        public JsonResult SearchClient(string name)
+        {
+            return Json(IClnt.SearchClientByName(name), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult AllClient(string name)
-        {
-            //var lst = IClnt.getAll();
-            //List<tblClient> obj = new List<tblClient>();
-            //foreach (var item in lst)
-            //{
-            //    obj.Add(new tblClient
-            //    {
-            //        clientID = item.clientID,
-            //        clientName = item.clientName,
-            //        orgName = item.orgName,
-            //        address = item.address,
-            //        city = item.city,
-            //        mobile = item.mobile,
-            //        phone = item.phone,
-            //        emailID = item.emailID
-            //    });
-            //}
+        //public JsonResult SearchClientByNameOrPID(string opt, string name, string pid, string pname) 
+        //{
 
-            return Json(obj, JsonRequestBehavior.AllowGet);
+        //    return Json(IClnt.SearchClientByNameOrPID(opt, name, pid, pname), JsonRequestBehavior.AllowGet);
+        //}
+
+        public JsonResult AllClient()
+        {
+            return Json(IClnt.GetAll(), JsonRequestBehavior.AllowGet);
 
         }
 
-        public JsonResult ClientEmailValidation(string emailID)
-        {
-            bool emailExist = IClnt.ClientEmailValidation(emailID);
-            return Json(emailExist, JsonRequestBehavior.AllowGet);
+        //public JsonResult ClientEmailValidation(string emailID)
+        //{
+        //    bool emailExist = IClnt.ClientEmailValidation(emailID);
+        //    return Json(emailExist, JsonRequestBehavior.AllowGet);
            
-        }
+        //}
 
         public JsonResult UpdateClient(string cid, string name, string orgName , string address, string city ,string state,  string phone , string mobile, string emailID)
         {
@@ -293,6 +274,8 @@ namespace MvcSDesign.Controllers
                         obj1.projectname = item.projectName;
                         obj1.city = item.rowcolor;
                         obj1.dt = item.dt;
+                        obj1.finalizeAmount = item.finalizeAmount;
+                        obj1.status = item.status;
                     }
                     pth = CreateQuotationPDF(obj1, int.Parse(pid), ref pth);
                 //}
@@ -361,6 +344,7 @@ namespace MvcSDesign.Controllers
                         obj.address = item.designerName;
                         obj.city = item.rowcolor;
                         obj.dt = item.dt;
+                        obj.finalizeAmount = 0;
                     }
                     SendQuotation(obj, int.Parse(pid));
                     ch = "success";
@@ -413,14 +397,7 @@ namespace MvcSDesign.Controllers
             quotation obj = new quotation();
             try
             {
-                //if (ddlPackage == "1")
-                //    ddlPackage = "3D View";
-                //else if (ddlPackage == "2")
-                //    ddlPackage = "One 2D Elevation , One 3D View";
-                //else
-                //    ddlPackage = "Two 2D Elevation, Two 3D View ";
-
-                client cl = IClnt.GetClient(int.Parse(txtCID));
+                clientModel cl = IClnt.GetClient(int.Parse(txtCID));
 
                 obj.clientID = txtCID;
                 obj.projectType = "-";
@@ -454,7 +431,7 @@ namespace MvcSDesign.Controllers
             operation obj = new operation();
             DataTable dt = new DataTable();
             DateTime todayDt = DateTime.Now;
-            client cl = new client();
+            clientModel cl = new clientModel();
             int pid = 0;
             string cname = "", emailID = "", citystate = "";
             dt.Columns.Add("projectDetails");
@@ -862,7 +839,15 @@ namespace MvcSDesign.Controllers
             pdfcell.FixedHeight = 20;
             table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk(qut.amount.ToString(), fnt)));
+
+            if (qut.status.ToLower() == "request")
+            {
+                pdfcell = new PdfPCell(new Phrase(new Chunk(qut.amount.ToString(), fnt)));
+            }
+            else
+            {
+                pdfcell = new PdfPCell(new Phrase(new Chunk(qut.finalizeAmount.ToString(), fnt)));
+            }
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
             pdfcell.Border = 0;
@@ -943,7 +928,17 @@ namespace MvcSDesign.Controllers
             pdfcell.FixedHeight = 20;
             table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk(qut.amount.ToString(), fnt)));
+            //pdfcell = new PdfPCell(new Phrase(new Chunk(qut.amount.ToString(), fnt)));
+
+            if (qut.status.ToLower() == "request")
+            {
+                pdfcell = new PdfPCell(new Phrase(new Chunk(qut.amount.ToString(), fnt)));
+            }
+            else
+            {
+                pdfcell = new PdfPCell(new Phrase(new Chunk(qut.finalizeAmount.ToString(), fnt)));
+            }
+
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
             pdfcell.Border = 0;
@@ -971,7 +966,16 @@ namespace MvcSDesign.Controllers
             pdfcell.FixedHeight = 20;
             table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk(qut.amount.ToString(), fnt)));
+            //pdfcell = new PdfPCell(new Phrase(new Chunk(qut.amount.ToString(), fnt)));
+
+            if (qut.status.ToLower() == "request")
+            {
+                pdfcell = new PdfPCell(new Phrase(new Chunk(qut.amount.ToString(), fnt)));
+            }
+            else
+            {
+                pdfcell = new PdfPCell(new Phrase(new Chunk(qut.finalizeAmount.ToString(), fnt)));
+            }
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
             pdfcell.BorderWidthTop = 1;
@@ -982,9 +986,16 @@ namespace MvcSDesign.Controllers
             table1.AddCell(pdfcell);
             para1.Add(table1);
 
+            if (qut.status.ToLower() == "request")
+            {
+                amountInWord =  objNTW.ConvertWholeNumber(qut.amount.ToString());
+            }
+            else
+            {
+                amountInWord = objNTW.ConvertWholeNumber(qut.finalizeAmount.ToString());
+            }
 
 
-            amountInWord = ConvertWholeNumber(qut.amount.ToString());
             fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
             ph1 = new Phrase(String.Format(Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + "     In words :  " + amountInWord + " Rs. Only"), fnt);
             para1.Add(ph1);
@@ -1560,7 +1571,7 @@ namespace MvcSDesign.Controllers
 
                 para1.Add(table1);
 
-                amountInword = ConvertWholeNumber(amount.ToString());
+                amountInword = objNTW.ConvertWholeNumber(amount.ToString());
 
                 fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
                 ph1 = new Phrase(String.Format(Environment.NewLine + "                         In words :  " + amountInword + " Rs. Only"), fnt);
@@ -1639,192 +1650,192 @@ namespace MvcSDesign.Controllers
             Session["username"] = "";
             return RedirectToAction("Index", "Login");
         }
-        private static String ConvertWholeNumber(String Number)
-        {
-            string word = "";
-            try
-            {
-                bool beginsZero = false;//tests for 0XX
-                bool isDone = false;//test if already translated
-                double dblAmt = (Convert.ToDouble(Number));
-                //if ((dblAmt > 0) && number.StartsWith("0"))
-                if (dblAmt > 0)
-                {//test for zero or digit zero in a nuemric
-                    beginsZero = Number.StartsWith("0");
+        //private static String ConvertWholeNumber(String Number)
+        //{
+        //    string word = "";
+        //    try
+        //    {
+        //        bool beginsZero = false;//tests for 0XX
+        //        bool isDone = false;//test if already translated
+        //        double dblAmt = (Convert.ToDouble(Number));
+        //        //if ((dblAmt > 0) && number.StartsWith("0"))
+        //        if (dblAmt > 0)
+        //        {//test for zero or digit zero in a nuemric
+        //            beginsZero = Number.StartsWith("0");
 
-                    int numDigits = Number.Length;
-                    int pos = 0;//store digit grouping
-                    String place = "";//digit grouping name:hundres,thousand,etc...
-                    switch (numDigits)
-                    {
-                        case 1://ones' range
+        //            int numDigits = Number.Length;
+        //            int pos = 0;//store digit grouping
+        //            String place = "";//digit grouping name:hundres,thousand,etc...
+        //            switch (numDigits)
+        //            {
+        //                case 1://ones' range
 
-                            word = ones(Number);
-                            isDone = true;
-                            break;
-                        case 2://tens' range
-                            word = tens(Number);
-                            isDone = true;
-                            break;
-                        case 3://hundreds' range
-                            pos = (numDigits % 3) + 1;
-                            place = " Hundred ";
-                            break;
-                        case 4://thousands' range
-                        case 5:
-                        case 6:
-                            pos = (numDigits % 4) + 1;
-                            place = " Thousand ";
-                            break;
-                        case 7://millions' range
-                        case 8:
-                        case 9:
-                            pos = (numDigits % 7) + 1;
-                            place = " Million ";
-                            break;
-                        case 10://Billions's range
-                        case 11:
-                        case 12:
+        //                    word = ones(Number);
+        //                    isDone = true;
+        //                    break;
+        //                case 2://tens' range
+        //                    word = tens(Number);
+        //                    isDone = true;
+        //                    break;
+        //                case 3://hundreds' range
+        //                    pos = (numDigits % 3) + 1;
+        //                    place = " Hundred ";
+        //                    break;
+        //                case 4://thousands' range
+        //                case 5:
+        //                case 6:
+        //                    pos = (numDigits % 4) + 1;
+        //                    place = " Thousand ";
+        //                    break;
+        //                case 7://millions' range
+        //                case 8:
+        //                case 9:
+        //                    pos = (numDigits % 7) + 1;
+        //                    place = " Million ";
+        //                    break;
+        //                case 10://Billions's range
+        //                case 11:
+        //                case 12:
 
-                            pos = (numDigits % 10) + 1;
-                            place = " Billion ";
-                            break;
-                        //add extra case options for anything above Billion...
-                        default:
-                            isDone = true;
-                            break;
-                    }
-                    if (!isDone)
-                    {//if transalation is not done, continue...(Recursion comes in now!!)
-                        if (Number.Substring(0, pos) != "0" && Number.Substring(pos) != "0")
-                        {
-                            try
-                            {
-                                word = ConvertWholeNumber(Number.Substring(0, pos)) + place + ConvertWholeNumber(Number.Substring(pos));
-                            }
-                            catch { }
-                        }
-                        else
-                        {
-                            word = ConvertWholeNumber(Number.Substring(0, pos)) + ConvertWholeNumber(Number.Substring(pos));
-                        }
+        //                    pos = (numDigits % 10) + 1;
+        //                    place = " Billion ";
+        //                    break;
+        //                //add extra case options for anything above Billion...
+        //                default:
+        //                    isDone = true;
+        //                    break;
+        //            }
+        //            if (!isDone)
+        //            {//if transalation is not done, continue...(Recursion comes in now!!)
+        //                if (Number.Substring(0, pos) != "0" && Number.Substring(pos) != "0")
+        //                {
+        //                    try
+        //                    {
+        //                        word = ConvertWholeNumber(Number.Substring(0, pos)) + place + ConvertWholeNumber(Number.Substring(pos));
+        //                    }
+        //                    catch { }
+        //                }
+        //                else
+        //                {
+        //                    word = ConvertWholeNumber(Number.Substring(0, pos)) + ConvertWholeNumber(Number.Substring(pos));
+        //                }
 
-                        //check for trailing zeros
-                        //if (beginsZero) word = " and " + word.Trim();
-                    }
-                    //ignore digit grouping names
-                    if (word.Trim().Equals(place.Trim())) word = "";
-                }
-            }
-            catch { }
-            return word.Trim();
-        }
-        private static String tens(String Number)
-        {
-            int _Number = Convert.ToInt32(Number);
-            String name = null;
-            switch (_Number)
-            {
-                case 10:
-                    name = "Ten";
-                    break;
-                case 11:
-                    name = "Eleven";
-                    break;
-                case 12:
-                    name = "Twelve";
-                    break;
-                case 13:
-                    name = "Thirteen";
-                    break;
-                case 14:
-                    name = "Fourteen";
-                    break;
-                case 15:
-                    name = "Fifteen";
-                    break;
-                case 16:
-                    name = "Sixteen";
-                    break;
-                case 17:
-                    name = "Seventeen";
-                    break;
-                case 18:
-                    name = "Eighteen";
-                    break;
-                case 19:
-                    name = "Nineteen";
-                    break;
-                case 20:
-                    name = "Twenty";
-                    break;
-                case 30:
-                    name = "Thirty";
-                    break;
-                case 40:
-                    name = "Fourty";
-                    break;
-                case 50:
-                    name = "Fifty";
-                    break;
-                case 60:
-                    name = "Sixty";
-                    break;
-                case 70:
-                    name = "Seventy";
-                    break;
-                case 80:
-                    name = "Eighty";
-                    break;
-                case 90:
-                    name = "Ninety";
-                    break;
-                default:
-                    if (_Number > 0)
-                    {
-                        name = tens(Number.Substring(0, 1) + "0") + " " + ones(Number.Substring(1));
-                    }
-                    break;
-            }
-            return name;
-        }
-        private static String ones(String Number)
-        {
-            int _Number = Convert.ToInt32(Number);
-            String name = "";
-            switch (_Number)
-            {
+        //                //check for trailing zeros
+        //                //if (beginsZero) word = " and " + word.Trim();
+        //            }
+        //            //ignore digit grouping names
+        //            if (word.Trim().Equals(place.Trim())) word = "";
+        //        }
+        //    }
+        //    catch { }
+        //    return word.Trim();
+        //}
+        //private static String tens(String Number)
+        //{
+        //    int _Number = Convert.ToInt32(Number);
+        //    String name = null;
+        //    switch (_Number)
+        //    {
+        //        case 10:
+        //            name = "Ten";
+        //            break;
+        //        case 11:
+        //            name = "Eleven";
+        //            break;
+        //        case 12:
+        //            name = "Twelve";
+        //            break;
+        //        case 13:
+        //            name = "Thirteen";
+        //            break;
+        //        case 14:
+        //            name = "Fourteen";
+        //            break;
+        //        case 15:
+        //            name = "Fifteen";
+        //            break;
+        //        case 16:
+        //            name = "Sixteen";
+        //            break;
+        //        case 17:
+        //            name = "Seventeen";
+        //            break;
+        //        case 18:
+        //            name = "Eighteen";
+        //            break;
+        //        case 19:
+        //            name = "Nineteen";
+        //            break;
+        //        case 20:
+        //            name = "Twenty";
+        //            break;
+        //        case 30:
+        //            name = "Thirty";
+        //            break;
+        //        case 40:
+        //            name = "Fourty";
+        //            break;
+        //        case 50:
+        //            name = "Fifty";
+        //            break;
+        //        case 60:
+        //            name = "Sixty";
+        //            break;
+        //        case 70:
+        //            name = "Seventy";
+        //            break;
+        //        case 80:
+        //            name = "Eighty";
+        //            break;
+        //        case 90:
+        //            name = "Ninety";
+        //            break;
+        //        default:
+        //            if (_Number > 0)
+        //            {
+        //                name = tens(Number.Substring(0, 1) + "0") + " " + ones(Number.Substring(1));
+        //            }
+        //            break;
+        //    }
+        //    return name;
+        //}
+        //private static String ones(String Number)
+        //{
+        //    int _Number = Convert.ToInt32(Number);
+        //    String name = "";
+        //    switch (_Number)
+        //    {
 
-                case 1:
-                    name = "One";
-                    break;
-                case 2:
-                    name = "Two";
-                    break;
-                case 3:
-                    name = "Three";
-                    break;
-                case 4:
-                    name = "Four";
-                    break;
-                case 5:
-                    name = "Five";
-                    break;
-                case 6:
-                    name = "Six";
-                    break;
-                case 7:
-                    name = "Seven";
-                    break;
-                case 8:
-                    name = "Eight";
-                    break;
-                case 9:
-                    name = "Nine";
-                    break;
-            }
-            return name;
-        }
+        //        case 1:
+        //            name = "One";
+        //            break;
+        //        case 2:
+        //            name = "Two";
+        //            break;
+        //        case 3:
+        //            name = "Three";
+        //            break;
+        //        case 4:
+        //            name = "Four";
+        //            break;
+        //        case 5:
+        //            name = "Five";
+        //            break;
+        //        case 6:
+        //            name = "Six";
+        //            break;
+        //        case 7:
+        //            name = "Seven";
+        //            break;
+        //        case 8:
+        //            name = "Eight";
+        //            break;
+        //        case 9:
+        //            name = "Nine";
+        //            break;
+        //    }
+        //    return name;
+        //}
 
 
  
@@ -1841,12 +1852,21 @@ namespace MvcSDesign.Controllers
             return View();
         }
 
- 
-
         public ActionResult ReportClientLadger()
         {
 
             return View();
         }
+
+        public ActionResult Test()
+        {
+
+            return View();
+        }
+        //public ActionResult Dashboard()
+        //{
+        //    clientModel obj = new clientModel();
+        //    return View(obj);
+        //}
     }
 }

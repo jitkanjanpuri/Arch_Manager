@@ -14,7 +14,7 @@
     <title>Project Requirement Form</title>
 
 
-    <script src="~/angularjs/prf1.js"></script>
+    <script src="~/angularjs/prf.js"></script>
 
     <link href="~/assets/formrequirement/style.css" rel="stylesheet" />
     <script src="~/assets/formrequirement/jquery.min.js"></script>
@@ -27,113 +27,7 @@
             height: 100%;
         }
 
-        /*Background color*/
-        #grad1 {
-            /* background-color: : #9C27B0;*/
-            /* background-image: linear-gradient(120deg, #FF4081, #81D4FA);*/
-        }
-
-        /*form styles*/
-        /*#msform {
-            text-align: center;
-            position: relative;
-            margin-top: 20px;
-        }
-
-            #msform fieldset .form-card {
-                background: white;
-                border: 0 none;
-                border-radius: 0px;
-                box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
-                padding: 20px 40px 30px 40px;
-                box-sizing: border-box;
-                width: 94%;
-                margin: 0 3% 20px 3%;*/
-        /*stacking fieldsets above each other*/
-        /*position: relative;
-            }
-
-            #msform fieldset {
-                background: white;
-                border: 0 none;
-                border-radius: 0.5rem;
-                box-sizing: border-box;
-                width: 100%;
-                margin: 0;
-                padding-bottom: 20px;*/
-        /*stacking fieldsets above each other*/
-        /*position: relative;
-            }*/
-
-        /*Hide all except first fieldset*/
-        /*#msform fieldset:not(:first-of-type) {
-                    display: none;
-                }
-
-                #msform fieldset .form-card {
-                    text-align: left;
-                    color: #9E9E9E;
-                }
-
-            #msform input, #msform textarea {
-                padding: 0px 8px 4px 8px;
-                border: none;
-                border-bottom: 1px solid #ccc;
-                border-radius: 0px;
-                margin-bottom: 25px;
-                margin-top: 2px;
-                width: 100%;
-                box-sizing: border-box;
-                font-family: montserrat;
-                color: #2C3E50;
-                font-size: 16px;
-                letter-spacing: 1px;
-            }
-
-                #msform input:focus, #msform textarea:focus {
-                    -moz-box-shadow: none !important;
-                    -webkit-box-shadow: none !important;
-                    box-shadow: none !important;
-                    border: none;
-                    font-weight: bold;
-                    border-bottom: 2px solid skyblue;
-                    outline-width: 0;
-                }*/
-
-        /*Blue Buttons*/
-        /*#msform .action-button {
-                width: 100px;
-                background: skyblue;
-                font-weight: bold;
-                color: white;
-                border: 0 none;
-                border-radius: 0px;
-                cursor: pointer;
-                padding: 10px 5px;
-                margin: 10px 5px;
-            }
-
-                #msform .action-button:hover, #msform .action-button:focus {
-                    box-shadow: 0 0 0 2px white, 0 0 0 3px skyblue;
-                }*/
-
-        /*Previous Buttons*/
-        /*#msform .action-button-previous {
-                width: 100px;
-                background: #616161;
-                font-weight: bold;
-                color: white;
-                border: 0 none;
-                border-radius: 0px;
-                cursor: pointer;
-                padding: 10px 5px;
-                margin: 10px 5px;
-            }
-
-                #msform .action-button-previous:hover, #msform .action-button-previous:focus {
-                    box-shadow: 0 0 0 2px white, 0 0 0 3px #616161;
-                }*/
-
+        
 
         #msform {
             text-align: center;
@@ -715,8 +609,8 @@
                                 <a href="@Url.Action("PRF", "Admin")" class="btn btn-primary"><span>PRF</span></a>
                                 @*<a href="@Url.Action("Operation", "Admin")" class="btn btn-primary"><span> Operation  </span></a>*@
                                 <a href="@Url.Action("SiteVisit", "Admin")" class="btn btn-primary"><span>Site Visit </span></a>
-                                <a href="@Url.Action("CurrentWorking", "Admin")" class="btn btn-primary"><span> Current working  </span></a>
-
+                                <a href="@Url.Action("CurrentWorking", "Admin")" class="btn btn-primary"><span> Operation </span></a>
+                                <a href="@Url.Action("Receipt", "Admin")" class="btn btn-primary"><span>Receipt</span></a>
                             </div>
                         </div>
                     </div>
@@ -738,18 +632,24 @@
                             <div class="form-group mb-3">
                                 <input type="radio" ng-model="opt" value="projectID" class="form-check-input">
                                 <label>Project ID </label>
-                                <input type="text" ng-model="varProjectID" class="form-control" placeholder="Project ID " onkeypress="IsNumber()" />
+                                <input type="text" ng-model="varProjectID" class="form-control" placeholder="Project ID" onkeypress="IsNumber()" />
                             </div>
                         </div>
 
-                        <div class="col-xl-3 col-md-3">
+                        <div class="col-xl-2 col-md-3">
                             <div class="form-group mb-3">
                                 <input type="radio" ng-model="opt" value="name" class="form-check-input">
-                                <label>Name  </label>
-                                <input type="text" ng-model="name" class="form-control" placeholder="Name" />
+                                <label>Client Name  </label>
+                                <input type="text" ng-model="varName" class="form-control" placeholder="Name" />
                             </div>
                         </div>
-
+                        <div class="col-xl-2 col-md-3">
+                            <div class="form-group mb-3">
+                                <input type="radio" ng-model="opt" value="projectName" class="form-check-input">
+                                <label>Project Name  </label>
+                                <input type="text" ng-model="varProjectName" class="form-control" placeholder="Name" />
+                            </div>
+                        </div>
                         <div class="col-xl-1 col-md-6">
                             <label> . </label>
                             <div class="form-group">
@@ -757,28 +657,24 @@
                             </div>
                         </div>
                     </div>
-
-
+                    <div class="text-center" ng-hide="loading">
+                        <button type="button" class="btn btn-dark waves-effect waves-light">
+                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                        </button>
+                    </div>
+                    <hr />
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-
-                                    </div>
-                                    <div class="text-center" ng-hide="loading">
-                                        <button type="button" class="btn btn-dark waves-effect waves-light">
-                                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
-                                        </button>
-                                    </div>
-
+                                
+                                    
                                     <div class="text-center">
                                         <span style="font-size:14pt;" class="text-danger">{{record}}</span>
                                     </div>
 
                                     <div class="table-responsive">
                                         <table class="table align-middle datatable dt-responsive table-bordered  nowrap" style=" border: 1px solid black; border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
-                                            <thead>
+                                            <thead class="bg-warning text-white">
                                                 <tr class="bg-transparent">
                                                     <th style="">  Sno  </th>
                                                     <th style="">  Project ID </th>
@@ -796,7 +692,7 @@
                                                     <td>
                                                         <span style="color:black "> {{$Index+1}} </span>
                                                     </td>
-                                                    
+
                                                     <td>
                                                         <span style="color: black ">  {{item.projectID}}  </span>
                                                     </td>
@@ -823,7 +719,7 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </div>
+                                     
                                 </div>
                             </div>
                         </div>
@@ -841,145 +737,145 @@
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                             
-                                                <div class="row justify-content-center mt-0">
-                                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center p-0 mt-3 mb-2">
 
-                                                        <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                                                            @*<h2><strong></strong></h2>*@
-                                                            <div class="row">
-                                                                <div class="col-md-12 mx-0">
-                                                                    <form id="form1">
-                                                                        <!-- progressbar -->
-                                                                        <ul id="progressbar">
-                                                                            <li class="active" id="account"><strong></strong></li>
-                                                                            <li id="personal"><strong></strong></li>
-                                                                            <li id="payment"><strong></strong></li>
-                                                                            <li id="confirm"><strong></strong></li>
-                                                                        </ul>
-                                                                        <!-- fieldsets -->
-                                                                        <fieldset>
-                                                                            <div class="form-card">
-                                                                                <h2 class="fs-title"></h2>
-                                                                                <input type="text" class="form-control" name="txtProjectID" id="txtProjectID" placeholder="Project ID" onkeypress="IsNumber()" readonly />
-                                                                                <span class="error-msg">This field is required and numeric value only</span>
-                                                                                <label><span style="color:black">2. Specify the <b>actual working status </b> of the site</span><span class="required">*</span> </label>
-                                                                                <input type="text" class="form-control" name="txtWorkingStatus" id="txtWorkingStatus" placeholder="" />
-                                                                                <span class="error-msg">This field is required </span>
+                                            <div class="row justify-content-center mt-0">
+                                                <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center p-0 mt-3 mb-2">
 
-                                                                                <label><span style="color:black">3. Specify the <b>slab height </b> (In feet)</span><span class="required">*</span></label>
-                                                                                <input type="text" class="form-control" name="txtSlabHeight" id="txtSlabHeight" placeholder="" />
-                                                                                <span class="error-msg">This field is required </span>
+                                                    <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                                                        @*<h2><strong></strong></h2>*@
+                                                        <div class="row">
+                                                            <div class="col-md-12 mx-0">
+                                                                <form id="form1">
+                                                                    <!-- progressbar -->
+                                                                    <ul id="progressbar">
+                                                                        <li class="active" id="account"><strong></strong></li>
+                                                                        <li id="personal"><strong></strong></li>
+                                                                        <li id="payment"><strong></strong></li>
+                                                                        <li id="confirm"><strong></strong></li>
+                                                                    </ul>
+                                                                    <!-- fieldsets -->
+                                                                    <fieldset>
+                                                                        <div class="form-card">
+                                                                            <h2 class="fs-title"></h2>
+                                                                            <input type="text" class="form-control" name="txtProjectID" id="txtProjectID" placeholder="Project ID" onkeypress="IsNumber()" readonly />
+                                                                            <span class="error-msg">This field is required and numeric value only</span>
+                                                                            <label><span style="color:black">2. Specify the <b>actual working status </b> of the site</span><span class="required">*</span> </label>
+                                                                            <input type="text" class="form-control" name="txtWorkingStatus" id="txtWorkingStatus" placeholder="" />
+                                                                            <span class="error-msg">This field is required </span>
+
+                                                                            <label><span style="color:black">3. Specify the <b>slab height </b> (In feet)</span><span class="required">*</span></label>
+                                                                            <input type="text" class="form-control" name="txtSlabHeight" id="txtSlabHeight" placeholder="" />
+                                                                            <span class="error-msg">This field is required </span>
+                                                                        </div>
+                                                                        <input type="button" name="next" class="next action-button" value="Next Step" />
+                                                                    </fieldset>
+                                                                    <fieldset>
+                                                                        <div class="form-card">
+                                                                            <h2 class="fs-title"></h2>
+                                                                            <label><span style="color:black">4. Specify the <b>height of the plinth</b> (In Feet)</span></label>
+                                                                            <input type="text" class="form-control" name="txtPlinthHeight" id="txtPlinthHeight" placeholder=" " />
+                                                                            <span class="error-msg">This field is required </span>
+
+                                                                            <label><span style="color:black">5. Specify the <b> height of porch </b> (In Feet) </span></label>
+                                                                            <input type="text" class="form-control" name="txtPorchHeigh" id="txtPorchHeigh" placeholder="" />
+                                                                            <span class="error-msg">This field is required </span>
+
+                                                                            <label><span style="color:black">6. Specify the <b> desired design pattern </b> for the elevation</span></label>
+
+                                                                            <select class="form-control" name="ddlElevationPattern" id="ddlElevationPattern">
+                                                                                <option selected="selected" value="">Select</option>
+                                                                                <option value="Traditional">Traditional</option>
+                                                                                <option value="Modern">Modern</option>
+                                                                                <option value="Green Façade">Green Façade</option>
+                                                                                <option value="Geometrical">Geometrical</option>
+                                                                            </select>
+                                                                            <label><span style="color:black">7. <b> Door lintel </b> level <i> (In Feet)</i> </span></label>
+                                                                            <input type="text" class="form-control" name="txtDoorLintel" id="txtDoorLintel" placeholder="" />
+                                                                            <span class="error-msg">This field is required </span>
+
+                                                                        </div>
+                                                                        <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                                                                        <input type="button" name="next" class="next action-button" value="Next Step" />
+                                                                    </fieldset>
+                                                                    <fieldset>
+                                                                        <div class="form-card">
+                                                                            <h2 class="fs-title"></h2>
+
+                                                                            <label style="color:black">8. <b> Window sill </b> level <i> (In Feet)</i> </label>
+                                                                            <input type="text" class="form-control" name="txtWindowSill" id="txtWindowSill" placeholder="" />
+                                                                            <span class="error-msg">This field is required </span>
+
+                                                                            <label style="color:black">9. <b>Window lintel </b> level <i> (In Feet)</i> <span class="required">*</span></label>
+                                                                            <input class="form-control" id="txtWindowLinte" name="txtWindowLinte" type="text" />
+                                                                            <span class="error-msg">This field is required </span>
+
+
+                                                                            <label style="color:black">10. Is the <b>tower room</b> is executed at Stairs ? <span class="required">*</span></label>
+                                                                            <div class="radio-group">
+                                                                                <table style="width:300px;">
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            <label style="color:black; width:70px;"><input id="rdTowerRoomYes" type="radio" name="TowerRoom" value="Yes" style="width:40px;" /> Yes</label>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <label style="color:black ; width:70px;"><input id="rdTowerRoomNo" type="radio" name="TowerRoom" value="No" style="width:40px;" checked="checked" /> No</label>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
                                                                             </div>
-                                                                            <input type="button" name="next" class="next action-button" value="Next Step" />
-                                                                        </fieldset>
-                                                                        <fieldset>
-                                                                            <div class="form-card">
-                                                                                <h2 class="fs-title"></h2>
-                                                                                <label><span style="color:black">4. Specify the <b>height of the plinth</b> (In Feet)</span></label>
-                                                                                <input type="text" class="form-control" name="txtPlinthHeight" id="txtPlinthHeight" placeholder=" " />
-                                                                                <span class="error-msg">This field is required </span>
+                                                                            <label style="color:black">11. Do you want <b>side elevations </b>?</label>
+                                                                            <div class="radio-group" style="width:300px;">
+                                                                                <table style="width:300px;">
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            <label for="rdCornerPlotYes" style="color: black; width: 70px;"><input id="rdCornerPlotYes" type="radio" name="CornerPlot" value="Yes" style="width:40px;" /> Yes</label>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <label for="rdCornerPlotNo" style="color: black; width: 70px;"><input id="rdCornerPlotNo" type="radio" name="CornerPlot" value="No" checked="checked" style="width:40px;" /> No</label>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                        <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
 
-                                                                                <label><span style="color:black">5. Specify the <b> height of porch </b> (In Feet) </span></label>
-                                                                                <input type="text" class="form-control" name="txtPorchHeigh" id="txtPorchHeigh" placeholder="" />
-                                                                                <span class="error-msg">This field is required </span>
+                                                                        <input type="button" name="next" class="next action-button" value="Next Step" />
+                                                                    </fieldset>
+                                                                    <fieldset>
+                                                                        <div class="form-card">
+                                                                            <h2 class="fs-title"></h2>
 
-                                                                                <label><span style="color:black">6. Specify the <b> desired design pattern </b> for the elevation</span></label>
-
-                                                                                <select class="form-control" name="ddlElevationPattern" id="ddlElevationPattern">
-                                                                                    <option selected="selected" value="">Select</option>
-                                                                                    <option value="Traditional">Traditional</option>
-                                                                                    <option value="Modern">Modern</option>
-                                                                                    <option value="Green Façade">Green Façade</option>
-                                                                                    <option value="Geometrical">Geometrical</option>
-                                                                                </select>
-                                                                                <label><span style="color:black">7. <b> Door lintel </b> level <i> (In Feet)</i> </span></label>
-                                                                                <input type="text" class="form-control" name="txtDoorLintel" id="txtDoorLintel" placeholder="" />
-                                                                                <span class="error-msg">This field is required </span>
+                                                                            <label style="color:black">12. Mention the <b>facing side </b> of the plot  </label>
+                                                                            <input type="text" class="form-control" name="txtPlotFaceSide" id="txtPlotFaceSide" placeholder="" />
+                                                                            <span class="error-msg">This field is required </span>
+                                                                            <label style="color:black">13. Do you want <b>boundary wall design </b>? <span class="required">*</span></label>
+                                                                            <div class="radio-group">
+                                                                                <table style="width:300px;">
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            <label style="color:black; width:70px;"><input id="rdBoundaryWallDesignYes" type="radio" name="BoundaryWall" value="Yes" style="width:40px;" /> Yes</label>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <label style="color:black ; width:70px;"><input id="rdBoundaryWallDesignNo" type="radio" name="BoundaryWall" value="No" style="width:40px;" checked="checked" /> No</label>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
 
                                                                             </div>
-                                                                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                                                            <input type="button" name="next" class="next action-button" value="Next Step" />
-                                                                        </fieldset>
-                                                                        <fieldset>
-                                                                            <div class="form-card">
-                                                                                <h2 class="fs-title"></h2>
 
-                                                                                <label style="color:black">8. <b> Window sill </b> level <i> (In Feet)</i> </label>
-                                                                                <input type="text" class="form-control" name="txtWindowSill" id="txtWindowSill" placeholder="" />
-                                                                                <span class="error-msg">This field is required </span>
-                                                                                
-                                                                                <label style="color:black">9. <b>Window lintel </b> level <i> (In Feet)</i> <span class="required">*</span></label>
-                                                                                <input class="form-control" id="txtWindowLinte" name="txtWindowLinte" type="text" />
-                                                                                <span class="error-msg">This field is required </span>
-                                                                                
-                                                                                
-                                                                                <label style="color:black">10. Is the <b>tower room</b> is executed at Stairs ? <span class="required">*</span></label>
-                                                                                <div class="radio-group">
-                                                                                    <table style="width:300px;">
-                                                                                        <tr>
-                                                                                            <td>
-                                                                                                <label style="color:black; width:70px;"><input id="rdTowerRoomYes" type="radio" name="TowerRoom" value="Yes" style="width:40px;" /> Yes</label>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <label style="color:black ; width:70px;"><input id="rdTowerRoomNo" type="radio" name="TowerRoom" value="No" style="width:40px;" checked="checked" /> No</label>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </table>
-                                                                                </div>
-                                                                                <label style="color:black">11. Do you want <b>side elevations </b>?</label>
-                                                                                <div class="radio-group" style="width:300px;">
-                                                                                    <table style="width:300px;">
-                                                                                        <tr>
-                                                                                            <td>
-                                                                                                <label for="rdCornerPlotYes" style="color: black; width: 70px;"><input id="rdCornerPlotYes" type="radio" name="CornerPlot" value="Yes" style="width:40px;" /> Yes</label>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <label for="rdCornerPlotNo" style="color: black; width: 70px;"><input id="rdCornerPlotNo" type="radio" name="CornerPlot" value="No" checked="checked" style="width:40px;" /> No</label>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </table>
-                                                                                </div>
-                                                                            </div>
-                                                                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                                                                            <label style="color:black">14. Any Other</label>
+                                                                            <textarea maxlength="500" id="txtAnyOther" name="txtAnyOther"></textarea>
+                                                                        </div>
+                                                                        <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                                                                        <input type="button" onclick="Save()" class="action-button" value="Submit" />
 
-                                                                            <input type="button" name="next" class="next action-button" value="Next Step" />
-                                                                        </fieldset>
-                                                                        <fieldset>
-                                                                            <div class="form-card">
-                                                                                <h2 class="fs-title"></h2>
-
-                                                                                <label style="color:black">12. Mention the <b>facing side </b> of the plot  </label>
-                                                                                <input type="text" class="form-control" name="txtPlotFaceSide" id="txtPlotFaceSide" placeholder="" />
-                                                                                <span class="error-msg">This field is required </span>
-                                                                                <label style="color:black">13. Do you want <b>boundary wall design </b>? <span class="required">*</span></label>
-                                                                                <div class="radio-group">
-                                                                                    <table style="width:300px;">
-                                                                                        <tr>
-                                                                                            <td>
-                                                                                                <label style="color:black; width:70px;"><input id="rdBoundaryWallDesignYes" type="radio" name="BoundaryWall" value="Yes" style="width:40px;" /> Yes</label>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <label style="color:black ; width:70px;"><input id="rdBoundaryWallDesignNo" type="radio" name="BoundaryWall" value="No" style="width:40px;" checked="checked" /> No</label>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </table>
-
-                                                                                </div>
-
-                                                                                <label style="color:black">14. Any Other</label>
-                                                                                <textarea maxlength="500" id="txtAnyOther" name="txtAnyOther"></textarea>
-                                                                            </div>
-                                                                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                                                            <input type="button" onclick="Save()" class="action-button" value="Submit" />
-
-                                                                        </fieldset>
-                                                                    </form>
-                                                                </div>
+                                                                    </fieldset>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

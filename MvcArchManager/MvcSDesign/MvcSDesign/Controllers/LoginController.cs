@@ -52,7 +52,7 @@ namespace MvcSDesign.Controllers
         public string userVarification(logincls lgn)
         {
             
-            staff st = new staff();
+            StaffModel st = new StaffModel();
             st = _IAdn.getLogin(lgn);
 
             if (st != null)

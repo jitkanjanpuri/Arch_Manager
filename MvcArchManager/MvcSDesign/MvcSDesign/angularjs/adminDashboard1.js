@@ -13,7 +13,7 @@ app.controller("cntr", function ($scope, $http, $interval) {
         var dts = [];
         var slist, tmpList;
         var arr1 = {};
-        $scope.bgcolorArr = ["#DC828F", "#F7CE76", "#E8D6CF", "#8C7386", "#9C9359", "#5CE497"];
+        $scope.bgcolorArr = ["#469EFB", "#469EFB", "#469EFB", "#469EFB", "#469EFB", "#469EFB"];
         $scope.staffArr = [];
         $scope.lableArr = [];
         $scope.dataArr = [];
@@ -94,7 +94,7 @@ app.controller("cntr", function ($scope, $http, $interval) {
 
 
     function getProjectCount(data1) {
-      
+
         var ctx2 = document.getElementById('chartProjectCount');
         if (ctx2) {
             var ctx2 = ctx2.getContext('2d');

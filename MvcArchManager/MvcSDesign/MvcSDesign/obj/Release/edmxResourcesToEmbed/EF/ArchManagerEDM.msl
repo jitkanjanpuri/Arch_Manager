@@ -1,17 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="ArchManagerDBModelStoreContainer" CdmEntityContainer="ArchManagerDBEntities">
-    <EntitySetMapping Name="tblAmountReceives">
-      <EntityTypeMapping TypeName="ArchManagerDBModel.tblAmountReceive">
-        <MappingFragment StoreEntitySet="tblAmountReceive">
-          <ScalarProperty Name="amountReceiveID" ColumnName="amountReceiveID" />
-          <ScalarProperty Name="dt" ColumnName="dt" />
-          <ScalarProperty Name="clientID" ColumnName="clientID" />
-          <ScalarProperty Name="amount" ColumnName="amount" />
-          <ScalarProperty Name="remark" ColumnName="remark" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="tblClients">
       <EntityTypeMapping TypeName="ArchManagerDBModel.tblClient">
         <MappingFragment StoreEntitySet="tblClient">
@@ -225,6 +214,25 @@
           <ScalarProperty Name="tm" ColumnName="tm" />
           <ScalarProperty Name="dt" ColumnName="dt" />
           <ScalarProperty Name="taskID" ColumnName="taskID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblStates">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblState">
+        <MappingFragment StoreEntitySet="tblState">
+          <ScalarProperty Name="stateName" ColumnName="stateName" />
+          <ScalarProperty Name="stateID" ColumnName="stateID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblAmountReceives">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblAmountReceive">
+        <MappingFragment StoreEntitySet="tblAmountReceive">
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="amountReceiveID" ColumnName="amountReceiveID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

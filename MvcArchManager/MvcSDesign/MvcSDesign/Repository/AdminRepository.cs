@@ -22,6 +22,7 @@ namespace MvcSDesign.Repository
 {
     public class AdminRepository :IAdmin
     {
+        ConvertNumberToWord objNTW = new ConvertNumberToWord();
         ArchManagerDBEntities _dbContext;
         CultureInfo cinfo = new CultureInfo("en-US");
         public AdminRepository(ArchManagerDBEntities sd)
@@ -125,47 +126,66 @@ namespace MvcSDesign.Repository
         }
 
 
-        public string InsertRegistration(staff st)
+        public string InsertRegistration(StaffModel st)
         {
             try
             {
-                var res = _dbContext.tblStaffs.Where(x => x.name == st.name.Trim()).FirstOrDefault();
-                if(res !=null)
+                if (st.staffID == 0)
                 {
-                    return "Staff name already exist";
+                    var res = _dbContext.tblStaffs.Where(x => x.name == st.name.Trim()).FirstOrDefault();
+                    if (res != null)
+                    {
+                        return "Staff name already exist";
+                    }
+                    var res1 = _dbContext.tblStaffs.Where(x => x.username == st.username.Trim()).FirstOrDefault();
+                    if (res != null)
+                    {
+                        return "User name is already exist";
+                    }
+                    tblStaff tsf = new tblStaff();
+                    tsf.name = st.name;
+                    tsf.designation = st.designation;
+                    tsf.address = st.address;
+                    tsf.city = st.city;
+                    tsf.phone = st.phone;
+                    tsf.mobile = st.mobile;
+                    tsf.emailID = st.emailID;
+                    tsf.username = st.username;
+                    tsf.password = st.password;
+                    tsf.active = true;
+                    tsf.rolltype = st.rolltype;
+                    _dbContext.tblStaffs.Add(tsf);
                 }
-                var res1 = _dbContext.tblStaffs.Where(x => x.username == st.username.Trim()).FirstOrDefault();
-                if (res != null)
+                else
                 {
-                    return "User name is already exist";
+                    var obj = _dbContext.tblStaffs.Where(x => x.staffID == st.staffID).FirstOrDefault();
+                    
+                    obj.name = st.name.Trim();
+                    obj.designation = (st.designation == null) ? "-" : st.designation.Trim();
+                    obj.address = (st.address == null) ? "-" : st.address.Trim();
+                    obj.city = st.city.Trim();
+                    obj.phone = (st.phone == null) ? "-" : st.phone.Trim();
+                    obj.mobile = st.mobile.Trim();
+                    obj.rolltype = st.rolltype;
+                    obj.emailID = st.emailID.Trim();
+                    obj.username = st.username;
+                    obj.password = st.password;
+                   // _dbContext.Entry(st).State = System.Data.Entity.EntityState.Modified;
                 }
-                tblStaff tsf = new tblStaff();
-                tsf.name = st.name;
-                tsf.designation = st.designation;
-                tsf.address = st.address;
-                tsf.city = st.city;
-                tsf.phone = st.phone;
-                tsf.mobile = st.mobile;
-                tsf.emailID = st.emailID;
-                tsf.username = st.username;
-                tsf.password = st.password;
-                tsf.active = true;
-                tsf.rolltype = st.rolltype;
-                _dbContext.tblStaffs.Add(tsf);
                 _dbContext.SaveChanges();
                 return "";
             }
             catch (Exception ex) { return ex.Message; }
         }
 
-        public IEnumerable<staff> SearchRegistration(string name)
+        public IEnumerable<StaffModel> SearchRegistration(string name)
         {
-            List<staff> lst = new List<staff>();
+            List<StaffModel> lst = new List<StaffModel>();
             try
             {
                 var res = ( from item in _dbContext.tblStaffs
                             where item.name.Contains(name)
-                            select new staff
+                            select new StaffModel
                             {
                                staffID = item.staffID,
                                name = item.name,
@@ -188,9 +208,41 @@ namespace MvcSDesign.Repository
             return lst;
         }
 
-        public staff getLogin(logincls lgn)
+
+        public IEnumerable<StaffModel> GatAllRegistration()
         {
-            staff obj = new staff();
+            List<StaffModel> lst = new List<StaffModel>();
+            try
+            {
+                var res = (from item in _dbContext.tblStaffs
+                          
+                           select new StaffModel
+                           {
+                               staffID = item.staffID,
+                               name = item.name,
+                               designation = item.designation,
+                               address = item.address,
+                               city = item.city,
+                               mobile = item.mobile,
+                               phone = item.phone,
+                               emailID = item.emailID,
+                               username = item.username,
+                               password = item.password,
+                               rolltype = item.rolltype,
+                               active = (bool)item.active,
+                           }).Take(10).ToList();
+                lst = res.ToList();
+            }
+            catch (Exception ex)
+            { }
+
+            return lst;
+        }
+
+
+        public StaffModel getLogin(logincls lgn)
+        {
+            StaffModel obj = new StaffModel();
             try
             {
                 var rec = _dbContext.tblStaffs.Where(st => (st.username == lgn.username) && (st.password == lgn.pwd)).FirstOrDefault();
@@ -206,7 +258,7 @@ namespace MvcSDesign.Repository
             return obj;
         }
 
-        public string RegistrationUpdate(staff obj)
+        public string RegistrationUpdate(StaffModel obj)
         {
             try
             {
@@ -571,7 +623,7 @@ namespace MvcSDesign.Repository
             return "";
         }
 
-        public IEnumerable<operation> SearchSiteVisitByNameOrProjectID(string opt, string projectID, string name)
+        public IEnumerable<operation> SearchSiteVisitByNameOrProjectID(string opt, string projectID, string name, string pname)
         {
             List<operation> lst = new List<operation>();
             try
@@ -600,7 +652,7 @@ namespace MvcSDesign.Repository
 
 
                 }
-                else
+                else if (opt == "name")
                 {
                     lst = (from pl in _dbContext.tblProjectDetails
                            join cl in _dbContext.tblClients on pl.clientID equals cl.clientID
@@ -624,6 +676,29 @@ namespace MvcSDesign.Repository
 
                 }
 
+                else 
+                {
+                    lst = (from pl in _dbContext.tblProjectDetails
+                           join cl in _dbContext.tblClients on pl.clientID equals cl.clientID
+                           where (pl.projectname.Contains(pname))
+                           select new operation
+                           {
+                               dt = pl.dt,
+                               clientID = cl.clientID,
+                               clientName = cl.clientName,
+                               projectName = pl.projectname,
+                               projectID = pl.projectID,
+                               projectType = pl.projectType,
+                               package = pl.package,
+                               projectLevel = pl.projectLevel,
+                               plotSize = pl.plotSize,
+                               amount = pl.amount,
+                               projectlocation = pl.projectlocation,
+
+
+                           }).ToList();
+
+                }
             }
             catch (Exception ex) { }
             
@@ -1160,9 +1235,6 @@ namespace MvcSDesign.Repository
                   
                 gMailAccount = "";
                 password = "";
-              ///  GetCompanyGmail(ref gMailAccount, ref password);
-
-               
                 var res = ( from pd in _dbContext.tblProjectDetails
                             join cl in _dbContext.tblClients on pd.clientID equals cl.clientID
                             join pm in _dbContext.tblProjectManagements on pd.projectID equals pm.projectID
@@ -1197,7 +1269,7 @@ namespace MvcSDesign.Repository
 
                 }
                 var profile = _dbContext.tblCompanyProfiles.FirstOrDefault();
-                if(profile == null)
+                if (profile == null)
                 {
                     return "Company profile is not available";
                 }
@@ -1235,21 +1307,11 @@ namespace MvcSDesign.Repository
                 objMail.IsBodyHtml = true;
                 objMail.Priority = MailPriority.High;
 
-                //get first character of each word in subcategory
-
-
-               
-
-                //fnamesub = subcategory.Replace(" ", "_");
-                
-
-
                 str += "<br /> <br /> Greetings!";
-                
-                objMail.Subject = " 🏚 " + subcategory + "_" + pid + "_" + "_" + clientName + "_" + plotSize;
-                str += "<br /> <br /> Kindly find our submission of " + subcategory +" of Project ID  " + pid + ".";
 
-               
+                objMail.Subject = " 🏚 " + subcategory + "_" + pid + "_" + "_" + clientName + "_" + plotSize;
+                str += "<br /> <br /> Kindly find our submission of " + subcategory + " of Project ID  " + pid + ".";
+
 
                 if (subcategory.Contains("Revised"))
                 {
@@ -1274,23 +1336,23 @@ namespace MvcSDesign.Repository
 
 
 
-                ch = HostingEnvironment.MapPath("~//ProjectLocation//client_" + clientID.ToString() + "//proj_" + pid.ToString() + "//" + category + "//" + subcategory );
+                ch = HostingEnvironment.MapPath("~//ProjectLocation//client_" + clientID.ToString() + "//proj_" + pid.ToString() + "//" + category + "//" + subcategory);
                 for (i = 0; i < arrFiles.Length; i++)
                 {
                     filename = arrFiles[i];
                     string tempfilename = "", ext = "";
-                   
-                    
+
+
                     string filetmp = ch + "/I/" + filename; // check file is available in option of elevation otherwise search in another folder
 
                     if (File.Exists(filetmp))
                     {
                         ext = Path.GetExtension(filename);
-                        tempfilename = ch + "/" + pid + "_"+ fnamesub + ext;
+                        tempfilename = ch + "/" + pid + "_" + fnamesub + ext;
                         if (File.Exists(tempfilename))
                         {
                             //check if file already exist in Elevation path
-                            tempfilename = ch + "/" + pid +"_"+ fnamesub + "_rev_1" + ext;
+                            tempfilename = ch + "/" + pid + "_" + fnamesub + "_rev_1" + ext;
                             if (File.Exists(tempfilename))
                             {
 
@@ -1298,7 +1360,7 @@ namespace MvcSDesign.Repository
                                 j = 2;
                                 while (flag1)
                                 {
-                                    tempfilename = ch + "/" + pid + "_" + fnamesub+ "_rev_" + j.ToString() + ext;
+                                    tempfilename = ch + "/" + pid + "_" + fnamesub + "_rev_" + j.ToString() + ext;
                                     if (!File.Exists(tempfilename))
                                     {
                                         flag1 = false;
@@ -1337,9 +1399,9 @@ namespace MvcSDesign.Repository
 
                     str += "<br/><br/> Your feedback is very important to us.  <br/> <br /> Thank you for your business. <br/><br/>";
                     str += " <br /> <br /> Thank you for the opportunity to serve you. We look forward for further communication with you.  ";
-                   
+
                     str += " <br /> <br /> Best Regards <br /><br /> ";
-                    str += " "+ profile.orgName +"   <br /> ";
+                    str += " " + profile.orgName + "   <br /> ";
 
                     str += "<br/> <i>Please note that this is a system generated mail and does not require signature. </i> ";
                     objMail.Body = str;
@@ -1348,7 +1410,7 @@ namespace MvcSDesign.Repository
                     //client.UseDefaultCredentials = false;
                     //client.Credentials = loginInfo;
                     //client.Send(objMail);
-                
+
                     SmtpClient client = new SmtpClient("smtp.hostinger.com");
                     client.EnableSsl = true;
                     client.UseDefaultCredentials = false;
@@ -1358,8 +1420,8 @@ namespace MvcSDesign.Repository
                 }
                 try
                 {
-                  filepath = ch + "/I/";
-                   Directory.Delete(filepath, true);
+                    filepath = ch + "/I/";
+                    Directory.Delete(filepath, true);
                 }
                 catch (Exception ex) { }
                 return "Y";
@@ -1941,8 +2003,17 @@ namespace MvcSDesign.Repository
                 {
                     try
                     {
-                        var rec = context.tblProjectManagements.Where(pm => ((pm.projectID == obj.projectID) && (pm.category == obj.category) && (pm.subcategory == obj.subcategory))).FirstOrDefault();
-                        if (rec != null)
+                        var rec = context.tblProjectDetails.Where(pd=>pd.projectID == obj.projectID).FirstOrDefault();
+                        if (rec == null)
+                        {
+                            return "Project is not available ";
+                        }
+                        if(rec.status.ToLower() == "request")
+                        {
+                            return "Request pending in Project Management, please check it";
+                        }
+                        var rec1 = context.tblProjectManagements.Where(pm => ((pm.projectID == obj.projectID) && (pm.category == obj.category) && (pm.subcategory == obj.subcategory))).FirstOrDefault();
+                        if (rec1 != null)
                         {
                             return "Project already in queue for same category";
                         }
@@ -2094,8 +2165,7 @@ namespace MvcSDesign.Repository
         }
 
 
-        //Amount receive from Client
-        public string AmountReceive(int cid, string amount, string remark)
+        public string AmountReceive(int cid , int projectID, string amount, string remark, string flagGmail)
         {
             using (var context = new ArchManagerDBEntities())
             {
@@ -2107,10 +2177,9 @@ namespace MvcSDesign.Repository
                         tblClientLedger cl = new tblClientLedger();
                         int balance = 0;
                         obj.dt = DateTime.Now;
-                        obj.clientID = cid;
+                        obj.projectID = projectID;
                         obj.amount = int.Parse(amount);
                         obj.remark = remark.Trim();
-
                         context.tblAmountReceives.Add(obj);
                         context.SaveChanges();
                         try
@@ -2133,18 +2202,463 @@ namespace MvcSDesign.Repository
                         context.SaveChanges();
 
                         dbTransaction.Commit();
-
+                        if (flagGmail == "true") SendReceipt(obj.amountReceiveID);
+                        //if (flagGmail == "true") SendReceipt(4);
                     }
-                    catch (Exception ex)
+
+
+                    catch (System.Data.Entity.Validation.DbEntityValidationException e)
                     {
-                        dbTransaction.Rollback();
-                        return ex.Message;
+                        string validationErrors = "DbEntityValidationException ValidationErrors: ";
+                        foreach (var k in e.EntityValidationErrors)
+                        {
+                            foreach (var e1 in k.ValidationErrors)
+                            {
+                                validationErrors += string.Format("{0} - {1}; ", e1.PropertyName, e1.ErrorMessage);
+                            }
+                        }
                     }
                 }
             }
-
             return "Success";
         }
+
+
+        public string SendReceipt(int recID)
+        {
+            try
+            {
+                Document doc = new Document();
+                Paragraph para1 = new Paragraph();
+                Phrase ph1 = new Phrase();
+                iTextSharp.text.Font fnt = new iTextSharp.text.Font();
+                SqlDataAdapter adsDs = new SqlDataAdapter();
+                DataSet ds = new DataSet();
+                PdfPTable table1 = new PdfPTable(2);
+                PdfPCell pdfcell;// As PdfPCell
+
+                string str = "", logofile="",  projectName ="", dtStr ="", city ="", clientMailId = "", clientName = "", pdfname = "";
+                int i ,   receivedAmount =0;
+                string[] arr = new string[10];
+                long finalizeAmount =0 , projectID = 0, totalRecAmount =0 ;
+
+
+                var resProfile = _dbContext.tblCompanyProfiles.FirstOrDefault();
+                if(resProfile == null)
+                {
+                    return "Company profile is not available";
+                         
+                }
+
+                var res = (from pd in _dbContext.tblProjectDetails
+                           join cl in _dbContext.tblClients on pd.clientID equals cl.clientID
+                           join amt in _dbContext.tblAmountReceives on pd.projectID equals amt.projectID
+                           where (amt.amountReceiveID == recID)
+                           select new
+                           {
+                               dtStr = amt.dt.Day + "-" + amt.dt.Month + "-" + amt.dt.Year,
+                               clientName = cl.clientName,
+                               clientMailID = cl.emailID,
+                               plotSize = pd.plotSize,
+                               city = cl.city,
+                               projectID = pd.projectID,
+                               projectName = pd.projectname,
+                               finalizeAmount = pd.finalizeAmount,
+                               receivedAmount = amt.amount
+                           }).ToList();
+                if (res == null)
+                {
+                    return "Record not found";
+                }
+                foreach (var item in res)
+                {
+                    clientName = item.clientName;
+                    clientMailId = item.clientMailID;
+                    dtStr = item.dtStr;
+                    city = item.city;
+                    projectName = item.projectName;
+                    projectID = item.projectID;
+                    finalizeAmount = (long)item.finalizeAmount;
+                    receivedAmount = item.receivedAmount;
+                }
+                var profile = _dbContext.tblCompanyProfiles.FirstOrDefault();
+                if (profile == null)
+                {
+                    return "Company profile is not available";
+                }
+
+                
+                var cl1 = _dbContext.tblAmountReceives.Where(x =>((x.projectID == projectID) && (x.amountReceiveID != recID))) .ToList();
+                foreach (var item1 in cl1)
+                {
+                    totalRecAmount += item1.amount;
+                }
+
+                NetworkCredential loginInfo = new NetworkCredential(resProfile.emailID, resProfile.pwd);
+                MailMessage objMail = new MailMessage();
+
+                if (clientMailId.IndexOf(',') > 0)
+                    arr = clientMailId.Split(',');
+                else if (clientMailId.IndexOf(';') > 0)
+                    arr = clientMailId.Split(';');
+                else if (clientMailId.IndexOf('/') > 0)
+                    arr = clientMailId.Split('/');
+                else
+                    str = clientMailId;
+
+                if (str.Length > 0)
+                    objMail.To.Add(new MailAddress(clientMailId));
+                else
+                {
+                    for (i = 0; i < arr.Length; i++)
+                    {
+                        objMail.To.Add(new MailAddress(arr[i]));
+                    }
+                }
+
+
+                CultureInfo CInfo = Thread.CurrentThread.CurrentCulture;
+                TextInfo TInfo = CInfo.TextInfo;
+                clientName = TInfo.ToTitleCase(clientName);
+
+                clientName = clientName.Replace(" ", "_");
+                str = "Dear " + clientName;
+
+                objMail.From = new MailAddress(resProfile.emailID);
+                objMail.IsBodyHtml = true;
+                objMail.Priority = MailPriority.High;
+
+                str += "<br /> <br /> Greetings!";
+                objMail.CC.Add(new MailAddress("jitkanjanpuri@gmail.com"));
+                
+                pdfname = HostingEnvironment.MapPath("~//PDF_Files//Receipt_" + projectID + ".pdf");
+                if (File.Exists(pdfname))
+                {
+                    try
+                    {
+                        System.GC.Collect();
+                        System.GC.WaitForPendingFinalizers();
+                        File.Delete(pdfname);
+                    }
+                    catch (Exception ex) { }
+                }
+
+
+                var dir1 = new DirectoryInfo(HostingEnvironment.MapPath("~//Images/logoimage"));
+                try
+                {
+                    foreach (var file in dir1.GetFiles())
+                    {
+                        logofile = file.Name;
+                    }
+                }
+                catch (Exception ex) { }
+
+
+
+                PdfWriter.GetInstance(doc, new FileStream(pdfname, FileMode.Create));
+                doc.Open();
+                para1.Alignment = Element.ALIGN_LEFT;
+                para1.SetLeading(0.0F, 1.0F);
+
+                para1.Alignment = Element.ALIGN_LEFT;
+                para1.SetLeading(0.0F, 1.0F);
+
+                pdfcell = null;
+                table1 = new PdfPTable(2);
+                int[] cellWidthPercentage = new int[] { 50, 50 };
+                table1.WidthPercentage = 100;
+                table1.HorizontalAlignment = Element.ALIGN_CENTER;
+
+                table1.SetWidths(cellWidthPercentage);
+
+                fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 14, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.Border = 0;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+                table1.AddCell(pdfcell);
+
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(resProfile.orgName, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+                pdfcell.Border = 0;
+                table1.AddCell(pdfcell);
+
+                fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.Border = 0;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(resProfile.address, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+                pdfcell.Border = 0;
+                table1.AddCell(pdfcell);
+
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+                pdfcell.Border = 0;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(resProfile.city + " - " + resProfile.pincode + " " + resProfile.state, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+                pdfcell.Border = 0;
+                table1.AddCell(pdfcell);
+
+
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+                pdfcell.Border = 0;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Tel: " + resProfile.phoneno + " , Cell : " + resProfile.mobileno, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+                pdfcell.Border = 0;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+                pdfcell.Border = 0;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(" Email : " + resProfile.emailID, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+                pdfcell.Border = 0;
+                table1.AddCell(pdfcell);
+
+                para1.Add(table1);
+
+
+                table1 = new PdfPTable(2);
+                int[] cellWidthPercentage2 = new int[] { 70, 30 };
+                table1.WidthPercentage = 100;
+
+                table1.SetWidths(cellWidthPercentage2);
+
+                pdfcell = null;
+                fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(clientName.ToLower()), fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                pdfcell.BorderWidthLeft = 0;
+                pdfcell.BorderWidthRight = 0;
+                pdfcell.BorderWidthBottom = 0;
+
+                table1.AddCell(pdfcell);
+
+                fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 9, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Date " + dtStr, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
+                //pdfcell.Border = 1;
+                pdfcell.BorderWidthLeft = 0;
+                pdfcell.BorderWidthRight = 0;
+                pdfcell.BorderWidthBottom = 0;
+
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(city, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                pdfcell.Border = 0;
+
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                pdfcell.Border = 0;
+
+                table1.AddCell(pdfcell);
+
+                para1.Add(table1);
+
+                fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                ph1 = new Phrase(Environment.NewLine + Environment.NewLine + "Receipt No : " + recID.ToString(), fnt);
+                para1.Add(ph1);
+                ph1 = new Phrase(Environment.NewLine + "Date : " + DateTime.Today.Date.ToString("dd/MM/yyyy") + Environment.NewLine + Environment.NewLine, fnt);
+                para1.Add(ph1);
+
+                table1 = new PdfPTable(7);
+                int[] cellWidthPercentage3 = new int[] { 5, 15, 25,20, 20,15,15 };
+                table1.WidthPercentage = 100;
+                table1.HorizontalAlignment = 0;
+                table1.SetWidths(cellWidthPercentage3);
+
+                pdfcell = null;
+                fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("SNo", fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+
+                     
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Project ID", fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Project Name", fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Amount", fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Amount Received", fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Old Deposit", fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk("Balance", fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                table1.AddCell(pdfcell);
+
+                fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                 
+                pdfcell = new PdfPCell(new Phrase(new Chunk("1", fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                table1.AddCell(pdfcell);
+                
+                pdfcell = new PdfPCell(new Phrase(new Chunk(projectID.ToString(), fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                table1.AddCell(pdfcell);
+
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(projectName, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(finalizeAmount.ToString(), fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(receivedAmount.ToString(), fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(totalRecAmount.ToString(), fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk((finalizeAmount- (totalRecAmount + receivedAmount )).ToString(), fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                table1.AddCell(pdfcell);
+                 
+                para1.Add(table1);
+
+                fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                ph1 = new Phrase(String.Format(Environment.NewLine + "Total of amount received in words :  " +  objNTW.ConvertWholeNumber(receivedAmount.ToString()) + " Only"), fnt);
+                para1.Add(ph1);
+
+                ph1 = new Phrase(String.Format(Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + "For " + resProfile.orgName.ToUpper()), fnt);
+                para1.Add(ph1);
+
+
+                ph1 = new Phrase(String.Format(Environment.NewLine + Environment.NewLine + Environment.NewLine +  resProfile.orgName), fnt);
+                para1.Add(ph1);
+
+
+                ph1 = new Phrase(String.Format(Environment.NewLine + "Authorized signatory"), fnt);
+                para1.Add(ph1);
+
+
+                fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.ITALIC, BaseColor.BLACK);
+                ph1 = new Phrase(String.Format(Environment.NewLine + Environment.NewLine + Environment.NewLine + "                      Please note that this is a system generated mail and does not require signature."), fnt);
+                para1.Add(ph1);
+
+
+                iTextSharp.text.Image jpg;
+                jpg = iTextSharp.text.Image.GetInstance(HostingEnvironment.MapPath("~//Images/logoimage/" + logofile));
+
+                jpg.Alignment = iTextSharp.text.Image.ALIGN_RIGHT;
+                jpg.ScaleToFit(90.0F, 90.0F);
+                jpg.SetAbsolutePosition(doc.PageSize.Width - 560, 740.0F);
+                doc.Add(jpg);
+
+
+                doc.Add(para1);
+                doc.Close();
+                doc.Dispose();
+                doc = null;
+
+                Attachment at = new Attachment(pdfname);
+                objMail.Attachments.Add(at);
+
+                str = "<br/> Dear " + clientName + "  <br />" +
+                        "<br/> Greetings! <br />" +
+                        "<br  /> Payment for project ID " + projectID + " was successful. Please find attached receipt.<br  /> <br  /> ";
+
+                str += " Best Regards  <br /><br />  ";
+                str += " DesignLAB International, India <br /><br /> ";
+
+                str += "<br/> <i>Please note that this is a system generated mail and does not require signature. </i> ";
+                objMail.Subject = "🧾 Receipt_" + projectID;
+                objMail.Body = str;
+
+
+
+                SmtpClient client = new SmtpClient("smtp.hostinger.com");
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = false;
+                client.Credentials = loginInfo;
+                client.Port = 587;// 465;
+                client.Send(objMail);
+
+
+                return "Y";
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException e)
+                {
+                    string validationErrors = "DbEntityValidationException ValidationErrors: ";
+                    foreach (var k in e.EntityValidationErrors)
+                    {
+                        foreach (var e1 in k.ValidationErrors)
+                        {
+                            validationErrors += string.Format("{0} - {1}; ", e1.PropertyName, e1.ErrorMessage);
+                        }
+                    }
+                }
+            return "";
+        }
+
+       
+
+
+
+
+
 
 
         public string SavePayDesigner(int sid, int amount, string remark)
@@ -2216,9 +2730,9 @@ namespace MvcSDesign.Repository
             catch (Exception ex) { return ex.Message; }
             return "";
         }
-        public IEnumerable<client> RptClientLedger(string cname)
+        public IEnumerable<clientModel> RptClientLedger(string cname)
         {
-            List<client> obj = new List<client>();
+            List<clientModel> obj = new List<clientModel>();
             int i = 1;
             try
             {
@@ -2251,7 +2765,7 @@ namespace MvcSDesign.Repository
 
                         if (balance != 0)
                         {
-                            obj.Add(new client
+                            obj.Add(new clientModel
                             {
                                 sno = i,
                                 clientID = item.clientID,
@@ -2288,7 +2802,7 @@ namespace MvcSDesign.Repository
                         }
                         catch (Exception ex) { }
 
-                        obj.Add(new client
+                        obj.Add(new clientModel
                         {
                             sno = i,
                             clientID = item.clientID,
@@ -2424,112 +2938,252 @@ namespace MvcSDesign.Repository
 
         public IEnumerable<operation> RptClientReceive(string cname, string fromDt, string toDt)
         {
-            List<operation> obj = new List<operation>();
+            List<operation> rec = new List<operation>();
             try
             {
                 CultureInfo cinfo = new CultureInfo("en-US");
                 DateTime dt1 = DateTime.Parse(fromDt, cinfo);
                 DateTime dt2 = DateTime.Parse(toDt, cinfo);
                 dt2 = dt2.AddDays(1);
-
-
-                int amount = 0, i = 1, amt = 0;
+                 
                 if ((cname == null) || (cname == ""))
                 {
-                    var query = from cl in _dbContext.tblClients
-                                orderby (cl.clientName)
-                                select new
+                    //var query = from cl in _dbContext.tblClients
+                    //            orderby (cl.clientName)
+                    //            select new
+                    //            {
+                    //                clientID = cl.clientID,
+                    //                clientName = cl.clientName,
+                    //                city = cl.city,
+                    //                state = cl.state
+                    //            };
+
+
+
+                    //foreach (var item in query)
+                    //{
+                    //    amount = 0;
+                    //    try
+                    //    {
+                    //        var cl = _dbContext.tblClientLedgers.Where(x => ((x.clientID == item.clientID) && ((x.dt >= dt1) && (x.dt <= dt2)))).ToList();
+                    //        foreach (var item1 in cl)
+                    //        {
+                    //            amount += item1.receivedAmount;
+                    //        }
+                    //    }
+                    //    catch (Exception ex) { }
+
+                    //    if (amount != 0)
+                    //    {
+                    //        amt += amount;
+                    //        obj.Add(new operation
+                    //        {
+                    //            sno = i,
+                    //            clientID = item.clientID,
+                    //            clientName = item.clientName,
+                    //            city = item.city,
+                    //            status = item.state,
+                    //            receivedAmount = amount,
+                    //            balance = amt
+                    //        });
+                    //        i++;
+                    //    }
+                    //}
+
+
+                    rec = (from op in _dbContext.tblAmountReceives 
+                               join pd in _dbContext.tblProjectDetails
+                               on op.projectID equals pd.projectID
+                               join cl in _dbContext.tblClients
+                               on pd.clientID equals cl.clientID
+                               where ((op.dt >= dt1) && (op.dt <= dt2))
+                               select new operation
                                 {
+                                    dtstr = op.dt.Day +"-" + op.dt.Month +"-" + op.dt.Year, 
                                     clientID = cl.clientID,
                                     clientName = cl.clientName,
-                                    city = cl.city,
-                                    state = cl.state
-                                };
-
-
-
-                    foreach (var item in query)
-                    {
-                        amount = 0;
-                        try
-                        {
-                            var cl = _dbContext.tblClientLedgers.Where(x => ((x.clientID == item.clientID) && ((x.dt >= dt1) && (x.dt <= dt2)))).ToList();
-                            foreach (var item1 in cl)
-                            {
-                                amount += item1.receivedAmount;
-                            }
-                        }
-                        catch (Exception ex) { }
-
-                        if (amount != 0)
-                        {
-                            amt += amount;
-                            obj.Add(new operation
-                            {
-                                sno = i,
-                                clientID = item.clientID,
-                                clientName = item.clientName,
-                                city = item.city,
-                                status = item.state,
-                                receivedAmount = amount,
-                                balance = amt
-                            });
-                            i++;
-                        }
-                    }
+                                    projectID = op.projectID,
+                                    receivedAmount = op.amount,
+                                }).ToList();
                 }
 
                 else
                 {
-                    var query = from cl in _dbContext.tblClients
-                                where (cl.clientName.Contains(cname.Trim()))
-                                orderby (cl.clientName)
-                                select new
-                                {
-                                    clientID = cl.clientID,
-                                    clientName = cl.clientName,
-                                    city = cl.city,
-                                    state = cl.state
-                                };
+                    //var query = from cl in _dbContext.tblClients
+                    //            where (cl.clientName.Contains(cname.Trim()))
+                    //            orderby (cl.clientName)
+                    //            select new
+                    //            {
+                    //                clientID = cl.clientID,
+                    //                clientName = cl.clientName,
+                    //                city = cl.city,
+                    //                state = cl.state
+                    //            };
 
 
 
+                    //foreach (var item in query)
+                    //{
+                    //    amount = 0;
+                    //    try
+                    //    {
+                    //        var cl = _dbContext.tblClientLedgers.Where(x => ((x.clientID == item.clientID) && ((x.dt >= dt1) && (x.dt <= dt2)))).ToList();
+                    //        foreach (var item1 in cl)
+                    //        {
+                    //            amount += item1.receivedAmount;
+                    //        }
+                    //    }
+                    //    catch (Exception ex) { }
+
+                    //    if (amount != 0)
+                    //    {
+                    //        amt += amount;
+                    //        obj.Add(new operation
+                    //        {
+                    //            sno = i,
+                    //            clientID = item.clientID,
+                    //            clientName = item.clientName,
+                    //            city = item.city,
+                    //            status = item.state,
+                    //            receivedAmount = amount,
+                    //            balance = amt
+                    //        });
+                    //        i++;
+                    //    }
+                    //}
+
+                    rec = (from op in _dbContext.tblAmountReceives
+                               join pd in _dbContext.tblProjectDetails
+                               on op.projectID equals pd.projectID
+                               join cl in _dbContext.tblClients
+                               on pd.clientID equals cl.clientID
+                               where ((cl.clientName.Contains(cname)) && ((op.dt >= dt1) && (op.dt <= dt2)))
+                               select new operation
+                               {
+                                   dtstr = op.dt.Day + "-" + op.dt.Month + "-" + op.dt.Year,
+                                   clientID = cl.clientID,
+                                   projectID = op.projectID,
+                                   clientName = cl.clientName,
+                                   receivedAmount = op.amount,
+                               }).ToList();
+
+                }
+
+            }
+            catch (Exception ex) { }
+            return rec;
+
+        }
+
+        public IEnumerable<operation> RptOutstanding(string cname, string fromDt, string toDt)
+        {
+            List<operation> rec = new List<operation>();
+            try
+            {
+                CultureInfo cinfo = new CultureInfo("en-US");
+                DateTime dt1 = DateTime.Parse(fromDt, cinfo);
+                DateTime dt2 = DateTime.Parse(toDt, cinfo);
+                dt2 = dt2.AddDays(1);
+                long amount = 0;
+                if ((cname == null) || (cname == ""))
+                {
+                    var query = (from pd in _dbContext.tblProjectDetails
+                                 join cl in _dbContext.tblClients
+                                 on pd.clientID equals cl.clientID
+                                 where ((pd.dt >= dt1) && (pd.dt <= dt2))
+                                 select new
+                                 {
+                                     dt = pd.dt,
+                                     clientID = cl.clientID,
+                                     clientName = cl.clientName,
+                                     city = cl.city,
+                                     state = cl.state,
+                                     projectID = pd.projectID,
+                                     projectLevel = pd.projectLevel,
+                                     projectName = pd.projectname,
+                                     finalizeAmount = pd.finalizeAmount
+
+                                 }).ToList();
                     foreach (var item in query)
                     {
                         amount = 0;
                         try
                         {
-                            var cl = _dbContext.tblClientLedgers.Where(x => ((x.clientID == item.clientID) && ((x.dt >= dt1) && (x.dt <= dt2)))).ToList();
+                            var cl = _dbContext.tblAmountReceives.Where(x => x.projectID == item.projectID).ToList();
                             foreach (var item1 in cl)
                             {
-                                amount += item1.receivedAmount;
+                                amount += item1.amount;
                             }
                         }
                         catch (Exception ex) { }
-
-                        if (amount != 0)
+                        rec.Add(new operation
                         {
-                            amt += amount;
-                            obj.Add(new operation
-                            {
-                                sno = i,
-                                clientID = item.clientID,
-                                clientName = item.clientName,
-                                city = item.city,
-                                status = item.state,
-                                receivedAmount = amount,
-                                balance = amt
-                            });
-                            i++;
-                        }
+                            dtstr = item.dt.Day + "-" + item.dt.Month + "-" + item.dt.Year,
+                            clientID = item.clientID,
+                            clientName = item.clientName,
+                            projectID = item.projectID,
+                            projectName = item.projectName,
+                            finalizeAmount = (long)item.finalizeAmount,
+                            receivedAmount = amount,
+                            balance = (long)(item.finalizeAmount - amount)
+                        });
                     }
+
                 }
+
+                else
+                {
+                    var query = (from pd in _dbContext.tblProjectDetails
+                                 join cl in _dbContext.tblClients
+                                 on pd.clientID equals cl.clientID
+                                 where (cl.clientName.Contains(cname))
+                                 select new
+                                 {
+                                     dt = pd.dt,
+                                     clientID = cl.clientID,
+                                     clientName = cl.clientName,
+                                     city = cl.city,
+                                     state = cl.state,
+                                     projectID = pd.projectID,
+                                     projectLevel = pd.projectLevel,
+                                     projectName = pd.projectname,
+                                     finalizeAmount = pd.finalizeAmount
+
+                                 }).ToList();
+                    foreach (var item in query)
+                    {
+                        amount = 0;
+                        try
+                        {
+                            var cl = _dbContext.tblAmountReceives.Where(x => x.projectID == item.projectID).ToList();
+                            foreach (var item1 in cl)
+                            {
+                                amount += item1.amount;
+                            }
+                        }
+                        catch (Exception ex) { }
+                        rec.Add(new operation
+                        {
+                            dtstr = item.dt.Day + "-" + item.dt.Month + "-" + item.dt.Year,
+                            clientID = item.clientID,
+                            clientName = item.clientName,
+                            projectID = item.projectID,
+                            projectName = item.projectName,
+                            finalizeAmount = (long)item.finalizeAmount,
+                            receivedAmount = amount,
+                            balance = (long)(item.finalizeAmount - amount)
+                        });
+                    }
+
+                }
+
 
             }
             catch (Exception ex) { }
-            return obj.ToList();
+            return rec;
 
         }
+
 
         public int ClientPreviousBalance(string clinetID, string dt)
         {
@@ -2547,9 +3201,9 @@ namespace MvcSDesign.Repository
         }
 
 
-        public IEnumerable<staff> RptDesignerLedger(string dname)
+        public IEnumerable<StaffModel> RptDesignerLedger(string dname)
         {
-            List<staff> obj = new List<staff>();
+            List<StaffModel> obj = new List<StaffModel>();
             int i = 1;
             try
             {
@@ -2569,7 +3223,7 @@ namespace MvcSDesign.Repository
 
                     foreach (var item in query)
                     {
-                        obj.Add(new staff
+                        obj.Add(new StaffModel
                         {
                             sno = i,
                             staffID = item.staffID,
@@ -2598,7 +3252,7 @@ namespace MvcSDesign.Repository
 
                     foreach (var item in query)
                     {
-                        obj.Add(new staff
+                        obj.Add(new StaffModel
                         {
                             sno = i,
                             staffID = item.staffID,
@@ -2627,12 +3281,12 @@ namespace MvcSDesign.Repository
 
                 dt2 = DateTime.Today.AddDays(1);
                 string[] arr = new string[] { "" };
-                string   allQty = "", projectTypeItems="Elevation";
+                string   allQty = "", projectTypeItems="Task";
                 
 
                 var res = (from st in _dbContext.tblStaffs
                            where (st.rolltype == "User")
-                           select new staff
+                           select new StaffModel
                            {
                                staffID = st.staffID,
                                name = st.name,
@@ -2673,9 +3327,9 @@ namespace MvcSDesign.Repository
         }
 
 
-        public List<staff> getTopPerformers()
+        public List<StaffModel> getTopPerformers()
         {
-            List<staff> obj = new List<staff>();
+            List<StaffModel> obj = new List<StaffModel>();
 
             try
             {
@@ -2686,7 +3340,7 @@ namespace MvcSDesign.Repository
 
                 var res = (from st in _dbContext.tblStaffs
                            where (st.rolltype == "User")
-                           select new staff
+                           select new StaffModel
                            {
                                staffID = st.staffID,
                                name = st.name,
@@ -2707,7 +3361,7 @@ namespace MvcSDesign.Repository
                     if (res1.Count > 0)
                     {
                         obj.Add(
-                              new staff
+                              new StaffModel
                               {
                                   name = item.name,
                                   sno = res1.Count / 30,
@@ -2823,106 +3477,17 @@ namespace MvcSDesign.Repository
             return obj;
         }
 
-        public IEnumerable<operation> RptQuotation(string dt1, string dt2, string searchOpt, string projectID, string cname)
+        public IEnumerable<operation> RptQuotation(string dt1, string dt2, string searchOpt, string projectID, string cname, string pname)
         {
             List<operation> reqlist = new List<operation>();
             CultureInfo cinfo = new CultureInfo("en-US");
             DateTime fromDt = DateTime.Parse(dt1, cinfo);
             DateTime toDt = DateTime.Parse(dt2, cinfo);
             toDt = toDt.AddDays(1);
-            int amt = 0;
+            long amt = 0;
             try
             {
-                //if (searchOpt == "projectType")
-                //{
-                //    if (ptype == "All")
-                //    {
-
-                //        var prj = from pd in _dbContext.tblProjectDetails
-                //                  join cl in _dbContext.tblClients
-                //                  on pd.clientID equals cl.clientID
-                //                  where ((pd.dt >= fromDt) && (pd.dt <= toDt))
-                //                  select new
-                //                  {
-                //                      clientid = cl.clientID,
-                //                      clientname = cl.clientName,
-                //                      projectID = pd.projectID,
-                //                      projectType = pd.projectType,
-                //                      package = pd.package,
-                //                      projectLevel = pd.projectLevel,
-                //                      plotSize = pd.plotSize,
-                //                      amount = pd.amount,
-                //                      remark = pd.remark,
-                //                  };
-
-                //        int i = 1;
-
-                //        foreach (var item in prj)
-                //        {
-                //            amt += item.amount;
-                //            reqlist.Add(new operation
-                //            {
-                //                sno = i,
-                //                clientID = item.clientid,
-                //                projectID = item.projectID,
-                //                clientName = item.clientname,
-                //                projectType = item.projectType,
-                //                package = item.package,
-                //                projectLevel = item.projectLevel,
-                //                plotSize = item.plotSize,
-                //                amount = item.amount,
-                //                remark = item.remark,
-                //                balance = amt,
-                //            });
-                //            i++;
-                //        }
-
-
-
-                //    }
-
-                //    else
-                //    {
-                //        var prj = from pd in _dbContext.tblProjectDetails
-                //                  join cl in _dbContext.tblClients
-                //                  on pd.clientID equals cl.clientID
-                //                  where ((pd.projectType == ptype) && ((pd.dt >= fromDt) && (pd.dt <= toDt)))
-                //                  select new
-                //                  {
-                //                      clientid = cl.clientID,
-                //                      clientname = cl.clientName,
-                //                      projectID = pd.projectID,
-                //                      projectType = pd.projectType,
-                //                      package = pd.package,
-                //                      projectLevel = pd.projectLevel,
-                //                      plotSize = pd.plotSize,
-                //                      amount = pd.amount,
-                //                      remark = pd.remark
-                //                  };
-                //        int i = 1;
-
-                //        foreach (var item in prj)
-                //        {
-                //            amt += item.amount;
-                //            reqlist.Add(new operation
-                //            {
-                //                sno = i,
-                //                clientID = item.clientid,
-                //                projectID = item.projectID,
-                //                clientName = item.clientname,
-                //                projectType = item.projectType,
-                //                package = item.package,
-                //                projectLevel = item.projectLevel,
-                //                plotSize = item.plotSize,
-                //                amount = item.amount,
-                //                remark = item.remark,
-                //                balance = amt,
-
-                //            });
-                //            i++;
-                //        }
-                //    //}
-                //}
+               
                 if (searchOpt == "projectID")
                 {
                     int pid = int.Parse(projectID);
@@ -2936,17 +3501,23 @@ namespace MvcSDesign.Repository
                                   clientname = cl.clientName,
                                   projectID = pd.projectID,
                                   projectType = pd.projectType,
+                                  projectName = pd.projectname,
                                   package = pd.package,
                                   projectLevel = pd.projectLevel,
                                   plotSize = pd.plotSize,
                                   amount = pd.amount,
-                                  remark = pd.remark
+                                  remark = pd.remark,
+                                  status = pd.status,
+                                  finalizeAmount = pd.finalizeAmount
                               };
                     int i = 1;
 
                     foreach (var item in prj)
                     {
-                        amt += item.amount;
+                        if (item.status == "request")
+                            amt += item.amount;
+                        else
+                            amt += (long)(item.finalizeAmount);
                         reqlist.Add(new operation
                         {
                             sno = i,
@@ -2954,12 +3525,15 @@ namespace MvcSDesign.Repository
                             projectID = item.projectID,
                             clientName = item.clientname,
                             projectType = item.projectType,
+                            projectName = item.projectName,
                             package = item.package,
                             projectLevel = item.projectLevel,
                             plotSize = item.plotSize,
                             amount = item.amount,
                             remark = item.remark,
-                            balance = amt
+                            balance = amt,
+                            status = item.status,
+                            finalizeAmount =(long) item.finalizeAmount
                         });
                         i++;
                     }
@@ -2970,24 +3544,30 @@ namespace MvcSDesign.Repository
                     var prj = from pd in _dbContext.tblProjectDetails
                               join cl in _dbContext.tblClients
                               on pd.clientID equals cl.clientID
-                              where (cl.clientName.Contains(cname))
+                              where (((pd.dt>= fromDt)&& (pd.dt <= toDt)) && (cl.clientName.Contains(cname)))
                               select new
                               {
                                   clientid = cl.clientID,
                                   clientname = cl.clientName,
                                   projectID = pd.projectID,
                                   projectType = pd.projectType,
+                                  projectName = pd.projectname,
                                   package = pd.package,
                                   projectLevel = pd.projectLevel,
                                   plotSize = pd.plotSize,
                                   amount = pd.amount,
-                                  remark = pd.remark
+                                  remark = pd.remark,
+                                  status = pd.status,
+                                  finalizeAmount = pd.finalizeAmount
                               };
                     int i = 1;
 
                     foreach (var item in prj)
                     {
-                        amt += item.amount;
+                        if (item.status == "request")
+                            amt += item.amount;
+                        else
+                            amt += (long)(item.finalizeAmount);
                         reqlist.Add(new operation
                         {
                             sno = i,
@@ -2995,18 +3575,70 @@ namespace MvcSDesign.Repository
                             projectID = item.projectID,
                             clientName = item.clientname,
                             projectType = item.projectType,
+                            projectName = item.projectName,
+                            status = item.status,
                             package = item.package,
                             projectLevel = item.projectLevel,
                             plotSize = item.plotSize,
                             amount = item.amount,
                             remark = item.remark,
-                            balance = amt
+                            balance = amt,
+                            finalizeAmount = (long)item.finalizeAmount
                         });
                         i++;
                     }
 
                 }
+                else if (searchOpt == "projectName")
+                {
+                    var prj = from pd in _dbContext.tblProjectDetails
+                              join cl in _dbContext.tblClients
+                              on pd.clientID equals cl.clientID
+                              where (((pd.dt >= fromDt) && (pd.dt <= toDt)) && (pd.projectname.Contains(pname)))
+                              select new
+                              {
+                                  clientid = cl.clientID,
+                                  clientname = cl.clientName,
+                                  projectID = pd.projectID,
+                                  projectType = pd.projectType,
+                                  projectName = pd.projectname,
+                                  package = pd.package,
+                                  projectLevel = pd.projectLevel,
+                                  plotSize = pd.plotSize,
+                                  amount = pd.amount,
+                                  remark = pd.remark,
+                                  status = pd.status,
+                                  finalizeAmount = pd.finalizeAmount
+                              };
+                    int i = 1;
 
+                    foreach (var item in prj)
+                    {
+                        if (item.status == "request")
+                            amt += item.amount;
+                        else
+                            amt += (long)(item.finalizeAmount);
+                        reqlist.Add(new operation
+                        {
+                            sno = i,
+                            clientID = item.clientid,
+                            projectID = item.projectID,
+                            clientName = item.clientname,
+                            projectType = item.projectType,
+                            projectName = item.projectName,
+                            status = item.status,
+                            package = item.package,
+                            projectLevel = item.projectLevel,
+                            plotSize = item.plotSize,
+                            amount = item.amount,
+                            remark = item.remark,
+                            balance = amt,
+                            finalizeAmount = (long)item.finalizeAmount
+                        });
+                        i++;
+                    }
+
+                }
 
             }
             catch (Exception ex) { }
@@ -3014,25 +3646,49 @@ namespace MvcSDesign.Repository
             return reqlist.ToList();
 
         }
-
-        public IEnumerable<operation> RptSiteVisit(int projectID)
+     
+        public IEnumerable<operation> RptSiteVisit(string opt, string projectID, string cname, string pname)
         {
             List<operation> reqlist = new List<operation>();
             try
             {
-                 
-                    
-                    var prj = from sv in _dbContext.tblProjectSiteVisits
+                if (opt == "projectID")
+                {
+                    int pid = int.Parse(projectID);
+                    reqlist = (from sv in _dbContext.tblProjectSiteVisits
+                               join pd in _dbContext.tblProjectDetails
+                               on sv.projectID equals pd.projectID
+                               join cl in _dbContext.tblClients
+                               on pd.clientID equals cl.clientID
+                               where (pd.projectID == pid)
+                               select new operation
+                               {
+                                   dtstr = sv.dt.Day +"-"+ sv.dt.Month +"-"+ sv.dt.Year,
+                                   clientID = cl.clientID,
+                                   clientName = cl.clientName,
+                                   projectID = pd.projectID,
+                                   projectName = pd.projectname,
+                                   projectType = pd.projectType,
+                                   package = pd.package,
+                                   projectLevel = pd.projectLevel,
+                                   plotSize = pd.plotSize,
+                                   remark = sv.remark,
+                                   filename = sv.sitePhotoFile
+                               }).ToList();
+                }
+                else if(opt =="name")
+                {
+                    reqlist = (from sv in _dbContext.tblProjectSiteVisits
                               join pd in _dbContext.tblProjectDetails
                               on sv.projectID equals pd.projectID
                               join cl in _dbContext.tblClients
                               on pd.clientID equals cl.clientID
-                              where (pd.projectID == projectID)
-                              select new
+                              where (cl.clientName.Contains(cname))
+                              select new operation
                               {
-                                  dt = sv.dt,
-                                  clientid = cl.clientID,
-                                  clientname = cl.clientName,
+                                  dtstr = sv.dt.Day + "-" + sv.dt.Month + "-" + sv.dt.Year,
+                                  clientID = cl.clientID,
+                                  clientName = cl.clientName,
                                   projectID = pd.projectID,
                                   projectName = pd.projectname,
                                   projectType = pd.projectType,
@@ -3040,93 +3696,148 @@ namespace MvcSDesign.Repository
                                   projectLevel = pd.projectLevel,
                                   plotSize = pd.plotSize,
                                   remark = sv.remark,
-                                  sitePhotoFile = sv.sitePhotoFile
-                              };
-                    int i = 1;
-
-                    foreach (var item in prj)
-                    {
-                        
-                        reqlist.Add(new operation
-                        {
-                            sno = i,
-                            dtstr = item.dt.Day +"-"+ item.dt.Month +"-"+ item.dt.Year,
-                            clientID = item.clientid,
-                            projectID = item.projectID,
-                            clientName = item.clientname,
-                            projectType = item.projectType,
-                            projectName= item.projectName,
-                            package = item.package,
-                            projectLevel = item.projectLevel,
-                            plotSize = item.plotSize,
-                            filename = item.sitePhotoFile,
-                            remark = item.remark,
-                            
-                        });
-                        i++;
-                    }
+                                  filename = sv.sitePhotoFile
+                              }).ToList();
+                }
+                else if (opt == "projectName")
+                {
+                    reqlist = (from sv in _dbContext.tblProjectSiteVisits
+                              join pd in _dbContext.tblProjectDetails
+                              on sv.projectID equals pd.projectID
+                              join cl in _dbContext.tblClients
+                              on pd.clientID equals cl.clientID
+                              where (pd.projectname.Contains(pname))
+                              select new operation
+                              {
+                                  dtstr = sv.dt.Day + "-" + sv.dt.Month + "-" + sv.dt.Year,
+                                  clientID = cl.clientID,
+                                  clientName = cl.clientName,
+                                  projectID = pd.projectID,
+                                  projectName = pd.projectname,
+                                  projectType = pd.projectType,
+                                  package = pd.package,
+                                  projectLevel = pd.projectLevel,
+                                  plotSize = pd.plotSize,
+                                  remark = sv.remark,
+                                  filename = sv.sitePhotoFile
+                              }).ToList();
+                }
+                    
                   
             }
             catch (Exception ex) { }
 
-            return reqlist.ToList();
+            return reqlist;
 
         }
 
-        public IEnumerable<operation> RptProjectHistory(int projectID)
+        public IEnumerable<operation> RptProjectHistory(string opt, string projectID, string cname, string pname)
         {
             List<operation> reqlist = new List<operation>();
             try
             {
-
-
-                var prj = from puf in _dbContext.tblProjectUploadFiles
-                          join pd in _dbContext.tblProjectDetails
-                          on puf.projectID equals pd.projectID
-                          join cl in _dbContext.tblClients
-                          on pd.clientID equals cl.clientID
-                          where (pd.projectID == projectID)
-                          select new
-                          {
-                              id = puf.uploadfileID,
-                              dt = puf.dt,
-                              clientid = cl.clientID,
-                              clientname = cl.clientName,
-                              projectID = pd.projectID,
-                              projectName = pd.projectname,
-                              projectType = pd.projectType,
-                              package = pd.package,
-                              projectLevel = pd.projectLevel,
-                              plotSize = pd.plotSize,
-                              category = puf.category,
-                              subcategory = puf.subcategory,
-                              filename = puf.filename
-                          };
-                int i = 1;
-
-                foreach (var item in prj)
+                if (opt == "projectID")
                 {
-
-                    reqlist.Add(new operation
-                    {
-                        sno = i,
-                        dtstr = item.dt.Day + "-" + item.dt.Month + "-" + item.dt.Year,
-                        pmID = item.id,
-                        clientID = item.clientid,
-                        projectID = item.projectID,
-                        clientName = item.clientname,
-                        projectType = item.projectType,
-                        projectName = item.projectName,
-                        package = item.package,
-                        projectLevel = item.projectLevel,
-                        plotSize = item.plotSize,
-                        filename = item.filename,
-                        category = item.category,
-                        subcategory = item.subcategory,
-
-                    });
-                    i++;
+                    int pid = int.Parse(projectID);
+                    reqlist = (from puf in _dbContext.tblProjectUploadFiles
+                               join pd in _dbContext.tblProjectDetails
+                               on puf.projectID equals pd.projectID
+                               join cl in _dbContext.tblClients
+                               on pd.clientID equals cl.clientID
+                               where (pd.projectID == pid)
+                               select new operation
+                               {
+                                   pmID = puf.uploadfileID,
+                                   dtstr = puf.dt.Day + "-" + puf.dt.Month + "-" + puf.dt.Year,
+                                   clientID = cl.clientID,
+                                   clientName = cl.clientName,
+                                   projectID = pd.projectID,
+                                   projectName = pd.projectname,
+                                   projectType = pd.projectType,
+                                   package = pd.package,
+                                   projectLevel = pd.projectLevel,
+                                   plotSize = pd.plotSize,
+                                   category = puf.category,
+                                   subcategory = puf.subcategory,
+                                   filename = puf.filename
+                               }).ToList();
                 }
+                else if (opt == "name")
+                {
+                    reqlist = (from puf in _dbContext.tblProjectUploadFiles
+                               join pd in _dbContext.tblProjectDetails
+                               on puf.projectID equals pd.projectID
+                               join cl in _dbContext.tblClients
+                               on pd.clientID equals cl.clientID
+                               where (cl.clientName.Contains(cname))
+                               select new operation
+                               {
+                                   pmID = puf.uploadfileID,
+                                   dtstr = puf.dt.Day + "-" + puf.dt.Month + "-" + puf.dt.Year,
+                                   clientID = cl.clientID,
+                                   clientName = cl.clientName,
+                                   projectID = pd.projectID,
+                                   projectName = pd.projectname,
+                                   projectType = pd.projectType,
+                                   package = pd.package,
+                                   projectLevel = pd.projectLevel,
+                                   plotSize = pd.plotSize,
+                                   category = puf.category,
+                                   subcategory = puf.subcategory,
+                                   filename = puf.filename
+                               }).ToList();
+                }
+                else if (opt == "projectName")
+                {
+                    reqlist = (from puf in _dbContext.tblProjectUploadFiles
+                               join pd in _dbContext.tblProjectDetails
+                               on puf.projectID equals pd.projectID
+                               join cl in _dbContext.tblClients
+                               on pd.clientID equals cl.clientID
+                               where (pd.projectname.Contains(pname))
+                               select new operation
+                               {
+                                   pmID = puf.uploadfileID,
+                                   dtstr = puf.dt.Day + "-" + puf.dt.Month + "-" + puf.dt.Year,
+                                   clientID = cl.clientID,
+                                   clientName = cl.clientName,
+                                   projectID = pd.projectID,
+                                   projectName = pd.projectname,
+                                   projectType = pd.projectType,
+                                   package = pd.package,
+                                   projectLevel = pd.projectLevel,
+                                   plotSize = pd.plotSize,
+                                   category = puf.category,
+                                   subcategory = puf.subcategory,
+                                   filename = puf.filename
+                               }).ToList();
+                }
+
+                //int i = 1;
+
+                //foreach (var item in prj)
+                //{
+
+                //    reqlist.Add(new operation
+                //    {
+                //        sno = i,
+                //        dtstr = item.dt.Day + "-" + item.dt.Month + "-" + item.dt.Year,
+                //        pmID = item.id,
+                //        clientID = item.clientid,
+                //        projectID = item.projectID,
+                //        clientName = item.clientname,
+                //        projectType = item.projectType,
+                //        projectName = item.projectName,
+                //        package = item.package,
+                //        projectLevel = item.projectLevel,
+                //        plotSize = item.plotSize,
+                //        filename = item.filename,
+                //        category = item.category,
+                //        subcategory = item.subcategory,
+
+                //    });
+                //    i++;
+                //}
 
             }
             catch (Exception ex) { }

@@ -1,0 +1,209 @@
+﻿@{
+    ViewBag.Title = "Amount Receive";
+}
+
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<link href="~/css/font-awesome.min.css" rel="stylesheet" />
+<link href="~/css/font-awesome.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="~/Scripts/angular.js"></script>
+
+<script src="~/Scripts/jquery-3.0.0.js"></script>
+ 
+<script src="~/angularjs/amountReceive.js"></script>
+
+
+<style type="text/css">
+    .myButtonSubmit {
+        -moz-box-shadow: 0px 1px 0px 0px #f0f7fa;
+        -webkit-box-shadow: 0px 1px 0px 0px #f0f7fa;
+        box-shadow: 0px 1px 0px 0px #f0f7fa;
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #008CBA), color-stop(1, #008CBA));
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#33bdef', endColorstr='#019ad2',GradientType=0);
+        background-color: #008CBA;
+        -moz-border-radius: 6px;
+        -webkit-border-radius: 6px;
+        border-radius: 6px;
+        border: 1px solid #008CBA;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: Arial;
+        font-size: 15px;
+       
+        padding: 6px 24px;
+        text-decoration: none;
+        text-shadow: 0px -1px 0px #008CBA;
+    }
+
+        .myButtonSubmit:hover {
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #008CBA), color-stop(1, #008CBA));
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#019ad2', endColorstr='#33bdef',GradientType=0);
+            background-color: #008CBA;
+        }
+
+        .myButtonSubmit:active {
+            position: relative;
+            top: 1px;
+        }
+</style>
+
+<script type="text/javascript">
+
+    function Validation() {
+
+        var cid = document.getElementById("txtCID").value;
+        var amount = document.getElementById("txtAmount").value;
+
+        if (cid.length == 0) {
+            alert("Please select client for amount receive");
+            return false;
+        }
+        
+        else if ((amount.length == 0) || (amount.trim() == "0")) {
+            alert("Please enter amount");
+            return false;
+        }
+        return true;
+
+    }
+
+    function IsNumber(e) {
+
+        var theEvent = event || window.event;
+        var key = theEvent.keyCode || theEvent.which;
+        key = String.fromCharCode(key);
+        var regex = /[0-9]|\./;
+
+        if (!regex.test(key)) {
+            theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
+        }
+    }
+
+</script>
+
+<br /><br /><br /><br />
+<h2 style="font-family:Arial; font-size:18pt;margin-left:50px">Amount receive</h2>
+
+@using (@Html.BeginForm())
+{
+
+    
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <div id="searchParameters" style="margin-left:10px;">
+                    <div class="panel-group">
+                        <div class="panel panel-primary" style="margin-left: 40px; width:900px; height:350px;">
+                            <div class="panel-heading" style="font-family: Arial; font-size: 12pt;">Search name  </div>
+                            <div class="panel-body" style="margin-top:-10px">
+
+                                <table style="margin-left:0px; width:850px; border:0px ; ">
+                                    <tr>
+                                        <td style="width:50px; vertical-align:bottom;border:0px solid black; ">
+                                            <span style="font-family:Arial; font-size:10pt;">  Name  </span>
+                                        </td>
+                                        <td style="width:200px;border:0px solid black; ">
+                                            <input type="text" class="form-control" ng-model="txtName" style="font-family:Arial; font-size:10px;height:30px; width:180px;" />
+                                        </td>
+
+                                        <td>
+                                            <input type="button" value="Search" class="form-control" ng-click="Search()" style="background-color:#C9E1F2; width:80px;height:30px;font-family:Museo Sans 300; font-size:10pt;" />
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br />
+                                <div class="slider" style="width: 880px;  height:200px; margin-left:0px;  overflow: auto;  border: 3px solid #656A6F  ;background-color:white ">
+                                    <table class="table" style="width: 860px;">
+                                        <tr style="font-family:Arial;font-size:10pt;height: 30px; background-color:#37383A ; color:#FFFFFF ;border: solid 1px #659EC7;">
+                                            <td>CID</td>
+                                            <td>Name</td>
+                                            <td>Mobile</td>
+                                            <td>City</td>
+                                            <td>Email</td>
+                                            <td>Select</td>
+                                        </tr>
+                                        <tr ng-repeat="item  in recordlist">
+                                            <td style="margin-left:0px; width:100px;"> {{item.clientID}}</td>
+                                            <td style="margin-left:0px;width:200px;"> {{item.clientName}}</td>
+                                            <td style="margin-left:0px;width:70px;">  {{item.mobile}}</td>
+                                            <td style="margin-left:0px;width:70px;">  {{item.city}} </td>
+                                            <td style="margin-left:0px;width:80px;">  {{item.emailID}} </td>
+
+                                            <td> <input type="button" value="Select" ng-click="ShowClient(item.clientID, item.clientName)" class="myButtonSubmit" style="width:80px;height:25px; font-family:Museo Sans 300; font-size:8pt;text-align:center" />   </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <table style="margin-left:40px; width:800px; border:0px; ">
+                                <tr>
+                                    <td style="width:30px; vertical-align:bottom;border:0px solid black; ">
+                                        <span style="font-family:Arial; font-size:10pt;">  CID  </span>
+                                    </td>
+                                    <td style="width:80px;border:0px solid black; ">
+                                        <input type="text" class="form-control" ng-model="txtCID" id="txtCID" name="txtCID" style="font-family:Arial; font-size:10px;height:30px; width:150px;background-color:#00FFFF "   />
+                                    </td>
+                                    <td style="width:50px; vertical-align:bottom;border:0px solid black; ">
+                                        <span style="font-family:Arial; font-size:10pt;">  Name  </span>
+                                    </td>
+                                    <td style="width:200px;border:0px solid black; ">
+                                        <input type="text" class="form-control" ng-model="txtCName" id="txtCName" style="font-family:Arial; font-size:10px;height:30px; width:180px;background-color:#00FFFF " readonly />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-responsive table-bordered" style="background-color:#dee3ef; margin-left:50px; margin-top:-20px; width:900px;  border: 3px solid #E3E3E3;   box-shadow: 2px 2px; ">
+           
+            <tr>
+                <td style="width:100px;"></td>
+
+                <td style="width:100px;">
+                    <span style="height:30px;font-family:Museo Sans 300 ;font-size:10pt;">  Amount</span>
+                </td>
+                <td>
+                    <input type="text" class="form-control" id="txtAmount" name="txtAmount" onkeypress="return IsNumber();" style="font-family:Arial; font-size:10px; width:130px;height:30px" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width:100px;"></td>
+                <td style="width:100px;">
+                    <span style="height:30px;font-family:Museo Sans 300 ;font-size:10pt;">  Comment</span>
+                </td>
+                <td style="width:100px;">
+
+                    <textarea id="comment" class="form-control" name="comment" rows="2" cols="35" style="font-family:Museo Sans 300 ;font-size:10pt;"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <input type="submit" value="Submit" id="btnSubmit" onclick="return Validation();" class="myButtonSubmit" style=" width:300px;font-family:Museo Sans 300; font-size:10pt" />
+                </td>
+            </tr>
+        </table>
+   
+
+  if (ViewBag.message != "")
+    {
+        <script type="text/javascript">
+                 window.onload = function () {
+                     alert("@ViewBag.message");
+                 }
+        </script>
+    } 
+}
+
+
+
+

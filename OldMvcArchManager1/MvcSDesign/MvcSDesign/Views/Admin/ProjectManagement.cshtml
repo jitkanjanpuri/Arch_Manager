@@ -1,0 +1,290 @@
+﻿ 
+
+@{
+    ViewBag.Title = "SDesign";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+
+}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <script src="~/angularjs/projectmanagement1.js"></script>
+    <script type="text/javascript">
+
+        function IsNumber(e) {
+
+            var theEvent = event || window.event;
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+            var regex = /[0-9]|\./;
+
+            if (!regex.test(key)) {
+                theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
+            }
+        }
+    </script>
+
+
+</head>
+@using (@Html.BeginForm())
+{
+    <body>
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <div class="page-content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <a href="@Url.Action("Quotation", "Client")" class="btn btn-primary"><span>Quotation </span></a>
+                                    <a href="@Url.Action("ProjectManagement", "Admin")" class="btn btn-primary"><span>Prj Management </span></a>
+                                    <a href="@Url.Action("PRF", "Admin")" class="btn btn-primary"><span>PRF</span></a>
+                                    @*<a href="@Url.Action("Operation", "Admin")" class="btn btn-primary"><span> Operation  </span></a>*@
+                                    <a href="@Url.Action("SiteVisit", "Admin")" class="btn btn-primary"><span>Site Visit </span></a>
+                                    <a href="@Url.Action("CurrentWorking", "Admin")" class="btn btn-primary"><span> Current working  </span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+
+
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <div class="page-title-right">
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Project Management</h4>
+                                    </div>
+
+
+
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table align-middle datatable dt-responsive table-bordered nowrap" style="border: 1px solid black; border-color:black; border-spacing: 0 8px; width: 100%;">
+
+
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Project ID</th>
+                                                        <th>Client name</th>
+                                                        @*<th>Project Type</th>
+                                                        <th>Package</th>*@
+                                                        <th>Plot size</th>
+                                                        <th>Level</th>
+
+                                                        <th>Amount</th>
+                                                        <th>Remark</th>
+                                                        <th>Action </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    <tr ng-repeat="item in projectquotationlist">
+                                                        <td>
+                                                            <span> {{item.sno}}  </span>
+                                                        </td>
+                                                        <td>
+                                                            <span style=""> {{item.projectID}}  </span>
+                                                        </td>
+
+                                                        <td>
+                                                            <span style=" ">  {{item.clientName}}  </span>
+                                                        </td>
+                                                        @*<td>
+                                                            <span style=" ">  {{item.projectType }}  </span>
+                                                        </td>
+                                                        <td>
+                                                            <span style=" "> {{item.package}} </span>
+                                                        </td>*@
+                                                        <td>
+                                                            <span style=""> {{item.plotSize}} </span>
+                                                        </td>
+                                                        <td>
+                                                            <span style=""> {{item.projectLevel}} </span>
+                                                        </td>
+                                                        <td>
+                                                            <span style=""> {{item.amount}} </span>
+                                                        </td>
+                                                        <td>
+                                                            <span style=""> {{item.remark}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="PdfOpen(item.projectID , item.projectType )">
+                                                                 PDF
+                                                            </button>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-success waves-effect waves-light w-sm" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2" ng-click="ShowPanel(item)">
+                                                                Confirm
+                                                            </button>
+                                                        </td>
+                                                        @*<td>
+                                                            <button type="button" class="btn btn-light waves-effect waves-light w-sm" ng-click="QuotationSend(item.projectID , item.projectType)">
+                                                                 Send
+                                                            </button>
+                                                        </td>*@
+                                                        <td>
+                                                            <button type="button" class="btn btn-danger waves-effect waves-light w-sm" ng-click="ShowDeleteModel( item.projectID)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center3">
+                                                                 Delete
+                                                            </button>
+
+
+                                                        </td>
+
+
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="modal fade bs-example-modal-center2" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Project Finalize</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div>
+                                                    <form id="pristine-valid-example" novalidate method="post">
+                                                        <input type="hidden" />
+                                                        <div class="row">
+
+                                                            <div class="col-xl-12 col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label>Project ID </label>
+
+                                                                    <input type="text" ng-model="projectID" readonly class="form-control" placeholder="Projet ID" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-12 col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label>Client name	 </label>
+                                                                    <input type="text" ng-model="clientName" class="form-control" readonly />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-12 col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label>Amount</label>
+                                                                    <input type="text" ng-model="amount" class="form-control" placeholder="  " readonly />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xl-12 col-md-6">
+                                                                <div class="form-group mb-3">
+                                                                    <label>Finalize amount</label>
+                                                                    <input type="text" ng-model="finalAmount" class="form-control" onkeypress="return IsNumber();" placeholder="Finalize Amount  " />
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" ng-click="UpdateQuotation()" class="btn btn-primary waves-effect waves-light">Submit</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="modal fade bs-example-modal-preview" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Quotation preview</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body" style="height:500px;">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div>
+                                                    <form id="pristine-valid-example" novalidate method="post">
+                                                        <div class="text-center" ng-hide="loading">
+                                                            <button type="button" class="btn btn-dark waves-effect waves-light">
+                                                                <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                                                            </button>
+                                                        </div>
+                                                        <div class="row">
+
+                                                            <embed ng-src={{pdfFilePath}} width="790" height="450" />
+
+
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="modal fade bs-example-modal-center3" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+
+                                    <div class="modal-body">
+
+                                        <div class="modal-header">
+                                            <h3 class="modal-title">Delete Project</h3>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+                                        <br /><br />
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <span style="font-size:14pt;">  Are you want to delect project ID <b>{{projectID}}</b> ? </span><br><br>
+                                            </div>
+
+                                            <div class="modal-footer">
+
+
+                                                <button type="button" class="btn btn-success waves-effect waves-light" ng-click="QuotationDelete()">Yes</button>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div> <!-- container-fluid -->
+                </div>
+            </div>
+        </div>
+    </body>
+}
+
+</html>

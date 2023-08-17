@@ -17,6 +17,7 @@ namespace MvcSDesign.Models
         public int clientID { get; set; }
         public long projectID { get; set; }
         public string clientName { get; set; }
+        public string address { get; set; }
         public string designerName { get; set; }
         public string projectName { get; set; }
         public string projectType { get; set; }
@@ -34,9 +35,9 @@ namespace MvcSDesign.Models
         public string package { get; set; }
         public string plotSize { get; set; }
         public int amount { get; set; }
-        public int receivedAmount { get; set; }
+        public long receivedAmount { get; set; }
         public int paidAmount { get; set; }
-        public int balance { get; set; }
+        public long balance { get; set; }
 
         public int? oldBalance { get; set; }
 
@@ -53,7 +54,7 @@ namespace MvcSDesign.Models
         public string[] arr { get; set; }
         public string filename { get; set; }
 
-
+        public long finalizeAmount { get; set; }
 
     }
 }

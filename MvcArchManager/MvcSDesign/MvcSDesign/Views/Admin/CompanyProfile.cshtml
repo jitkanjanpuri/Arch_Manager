@@ -14,12 +14,12 @@
 
     <script src="~/Scripts/jquery-3.6.1.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
-     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+   
 
     @section Scripts {
-            @Scripts.Render("~/bundles/jqueryval")
-      }
+        @Scripts.Render("~/bundles/jqueryval")
+    }
 
     <script type="text/javascript">
 
@@ -40,7 +40,7 @@
 
             document.getElementById("lblErr").innerHTML = "";
 
-            
+
             if (name.trim().length == 0) {
                 document.getElementById("lblErr").innerHTML = "Enter name";
                 document.getElementById("name").focus();
@@ -81,14 +81,14 @@
                 document.getElementById("mobile").focus();
                 return false;
             }
-          
-            
+
+
             else if (emailID == null) {
                 document.getElementById("lblErr").innerHTML = "Enter mobile no";
                 document.getElementById("emailID").focus();
                 return false;
             }
-             
+
             if (validateEmail(emailID) == false) {
 
                 document.getElementById("lblErr").innerHTML = "Invalid email ID";
@@ -97,7 +97,7 @@
             }
 
 
-             return true;
+            return true;
         }
         function validateEmail(email) {
             var regex = /^([a-zA-Z0-9_.+-])+\@@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -131,9 +131,9 @@
                         <div class="form-group">
                             <a href="@Url.Action("CompanyProfile", "Admin")" class="btn btn-primary"><span>Company Profile</span></a>
                             <a href="@Url.Action("Index", "Client")" class="btn btn-primary"><span>Client</span></a>
-                            <a href="@Url.Action("ShowClient", "Client")" class="btn btn-primary"><span>Client Show </span></a>
+                            @*<a href="@Url.Action("ShowClient", "Client")" class="btn btn-primary"><span>Client Show </span></a>*@
                             <a href="@Url.Action("Registration", "Admin")" class="btn btn-primary"><span>Staff</span></a>
-                            <a href="@Url.Action("ShowStaff", "Admin")" class="btn btn-primary"><span>Staff Show</span></a>
+                            @*<a href="@Url.Action("Receipt", "Admin")" class="btn btn-primary"><span>Receipt</span></a>*@
 
                         </div>
                     </div>
@@ -143,8 +143,9 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0 font-size-18">Company Profile</h4>
-                        </div>
+                            @*<h4 class="mb-sm-0 font-size-18">Company Profile</h4>*@
+                            <h1 class="h3 my-4 text-gray-800">Company Profile</h1>
+                        </div>  
                     </div>
                 </div>
                 <div class="row">

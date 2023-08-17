@@ -52,14 +52,14 @@
                                     <a href="@Url.Action("PRF", "Admin")" class="btn btn-primary"><span>PRF </span></a>
                                     @*<a href="@Url.Action("Operation", "Admin")" class="btn btn-primary"><span> Operation  </span></a>*@
                                     <a href="@Url.Action("SiteVisit", "Admin")" class="btn btn-primary"><span>Site Visit </span></a>
-                                    <a href="@Url.Action("CurrentWorking", "Admin")" class="btn btn-primary"><span> Current working  </span></a>
-
+                                    <a href="@Url.Action("CurrentWorking", "Admin")" class="btn btn-primary"><span> Operation </span></a>
+                                    <a href="@Url.Action("Receipt", "Admin")" class="btn btn-primary"><span>Receipt</span></a>
                                 </div>
                             </div>
                         </div>
                         <br />
                          
-                        <div class="row">
+                       <div class="row">
                          <div class="col-md-6 mb-3">
                             <form>
                                 <br />
@@ -90,9 +90,7 @@
                                         </label>
                                     </div>
                                     <div class="col-lg-8 col-7">
-
                                         <select class="form-control" ng-model="dname" ng-options="items.Text for items in designerList" style=""></select>
-
 
                                     </div>
                                 </div>
@@ -132,11 +130,7 @@
  
                     <div class="col-lg-12">
                             <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-
-                                    </div>
-                                    <div class="text-center" ng-hide="loading">
+                                   <div class="text-center" ng-hide="loading">
                                         <button type="button" class="btn btn-dark waves-effect waves-light">
                                             <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
                                         </button>
@@ -148,7 +142,7 @@
 
                                     <div class="table-responsive">
                                         <table class="table table-bordered" id="dataTable">
-                                            <thead class="thead-dark">
+                                            <thead class="bg-warning text-white">
                                                 <tr>
                                                     <th scope="col">Project ID </th>
                                                     <th scope="col">Name</th>
@@ -173,7 +167,7 @@
                                                                 <span style="font-size:12pt;">   PRF</span>
                                                             </a>
                                                         </div>
-                                                        
+
                                                     </td>
 
 
@@ -185,7 +179,7 @@
                                                     <td style="background-color:{{item.rowcolor }}">{{item.designerName}}</td>
                                                     <td style="background-color:{{item.rowcolor }}">{{item.status}}</td>
                                                     <td style="background-color:{{item.rowcolor }}">
-                                                       <div ng-if="item.uploadFileName.length != 0">
+                                                        <div ng-if="item.uploadFileName.length != 0">
                                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".bs-example-modal-send" ng-click="ShowFilePopup(item)">
                                                                 <i class="fa fa-download"></i>
                                                             </button>
@@ -197,10 +191,10 @@
                                                                 Assign
                                                             </button>
                                                         </div>
-                                                         
+
                                                     </td>
                                                     <td style="background-color:{{item.rowcolor }}">
-                                                      
+
                                                         <div ng-if="item.projectStatus !='Normal'">
                                                             <button type="button" class="btn btn-primary waves-effect waves-light w-sm" data-bs-toggle="modal" data-bs-target=".bs-example-modal-rollbackPopup" ng-click="RollBack(item)">
                                                                 <i class="fa fa-undo"></i>
@@ -216,7 +210,6 @@
 
                                             </tbody>
                                         </table>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -240,28 +233,32 @@
                                                 <div>
                                                     <a href="@Url.Action("DownloadDWG", "Admin")?filename={{itm}}&pmID={{pmID}}&projectID={{projectID}}">{{itm}} </a>
                                                 </div>
-                                                
+
                                             </label>
                                         </div>
                                         <br /><br />
-                                         
+
                                         <div class="form-group">
                                             <div class="form-group form-check ">
 
                                                 <input class="form-check-input check-kbox" ng-model="chkGMail" type="checkbox" name="chkGMail" id="chkGMail">
                                                 <label class="form-check-label" for="terms-check">
                                                     <span> Mail</span>
-                                                </label>  
-                                             </div>
-                                             <div class="form-group form-check ">
-                                                <input class="form-check-input check-kbox" ng-model="chkWhatsApp" type="checkbox" name="chkWhatsApp" id="chkWhatsApp">
-                                                <label class="form-check-label" for="AttechCNotes">
-                                                    <span> Whats App </span>
                                                 </label>
                                             </div>
-                                             
-                                        </div> 
+                                            <div class="form-group form-check ">
+                                                <input class="form-check-input check-kbox" ng-model="chkWhatsApp" type="checkbox" name="chkWhatsApp" id="chkWhatsApp">
+                                                <label class="form-check-label" for="AttechCNotes">
+                                                    <span> WhatsApp </span>
+                                                </label>
+                                            </div>
 
+                                        </div>
+                                        <div class="text-center" ng-hide="loading1">
+                                            <button type="button" class="btn btn-dark waves-effect waves-light">
+                                                <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                                            </button>
+                                        </div>
                                         <div class="form-group">
                                             <label class="form-check-label">
                                                 <span style="color:red">{{lblError}}</span>
@@ -271,7 +268,7 @@
                                         <div>
                                             <input type="button" value="Send to Client" ng-click="TaskSend()" class="btn btn-primary" />
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>

@@ -4,9 +4,13 @@ app.controller("myController", function ($scope, $http) {
     $scope.loading = true;
    
     $scope.Search = function () {
-        var pid = $scope.varProjectID;
-        var name = $scope.name;
+        
+        
         var opt = $scope.opt;
+        var pid = $scope.varProjectID;
+        var name = $scope.varName;
+        var pname = $scope.varProjectName;
+
         $scope.record = "";
         if (opt == undefined) {
             $scope.record = "Please select at least one option";
@@ -20,6 +24,7 @@ app.controller("myController", function ($scope, $http) {
             $scope.record = "Please enter client name";
             return;
         }
+        $scope.loading = false;
 
          
         $http({
@@ -27,13 +32,15 @@ app.controller("myController", function ($scope, $http) {
             dataType: 'json',
             method: 'POST',
             params: {
-                opt : opt,
+                opt: opt,
                 projectID: pid,
-                cname : name
+                cname: name,
+                pname: pname
             },
             contentType: "application/json;charaset=utf-8"
         }).then(function (d) {
             $scope.sitevisitlist = d.data;
+            $scope.loading = true;
             if (d.data.length ==0) {
                 $scope.record = " Record not available";
                 return false;

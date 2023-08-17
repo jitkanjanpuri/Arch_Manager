@@ -1,34 +1,41 @@
 ﻿var app = angular.module("myApp", [])
-app.controller('myController', function ($scope, $http) {
+app.controller('myController', function ($scope, $http, reg) {
 
 
     $scope.loading = true;
     var varClientID = 0;
 
+    //tech.getRecord().then(function (d) {
+    //    $scope.designerList = d.data;
+    //    $scope.dname = $scope.designerList[0];
+    //});
+    reg.getRecord().then(function () {
+       $scope.reglist = d.data;
+    });
 
     $scope.Search = function () {
         SearchClient();
     }
 
     function SearchClient() {
-        var varname = $scope.txtName;
-        var opt = $scope.opt;
-        var varcityname = $scope.txtSearchCity;
+        //var varname = $scope.txtName;
+        //var opt = $scope.opt;
+        //var varcityname = $scope.txtSearchCity;
 
-        $scope.errRecord = "";
+        //$scope.errRecord = "";
          
-        if (opt == undefined) {
-            $scope.errRecord = "Please select at least one option";
-            return;
-        }
-        else if ((opt == "name") && ((varname == null) || (varname == undefined) || (varname == ""))) {
-            $scope.errRecord = "Please enter name";
-            return;
-        }
-        else if ((opt == "city") && ((varcityname == null) || (varcityname == undefined) || (varcityname == ""))) {
-            $scope.errRecord = "Please enter city";
-            return;
-        }
+        //if (opt == undefined) {
+        //    $scope.errRecord = "Please select at least one option";
+        //    return;
+        //}
+        //else if ((opt == "name") && ((varname == null) || (varname == undefined) || (varname == ""))) {
+        //    $scope.errRecord = "Please enter name";
+        //    return;
+        //}
+        //else if ((opt == "city") && ((varcityname == null) || (varcityname == undefined) || (varcityname == ""))) {
+        //    $scope.errRecord = "Please enter city";
+        //    return;
+        //}
          
        
         $scope.loading = false;
@@ -44,12 +51,12 @@ app.controller('myController', function ($scope, $http) {
             },
             contentType: "application/json; charaset=utf-8"
         }).then(function (d) {
-            $scope.clist = d.data;
-            $scope.loading = true;
+            $scope.reglist = d.data;
+           // $scope.loading = true;
 
-            if ($scope.clist.length == 0) {
-                $scope.errMessage = "Record not found";
-            }
+            //if ($scope.clist.length == 0) {
+            //    $scope.errMessage = "Record not found";
+            //}
 
         }).error(function (err) {
             alert("Error : " + err);
@@ -249,3 +256,20 @@ app.controller('myController', function ($scope, $http) {
     }
 
 });
+app.factory('reg', funcitn($http))
+{
+    var fac = {};
+    fac.getRecord = function () {
+        return $http.get('/Client/SearchClient')
+    }
+    return fac;
+}
+
+//app.factory('tech', function ($http) {
+//    var fac = {};
+//    fac.getRecord = function () {
+//        return $http.get('/Admin/getOperationDesigner');
+//    }
+
+//    return fac;
+//});

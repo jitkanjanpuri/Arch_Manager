@@ -11,7 +11,29 @@
 
 <head>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <script src="~/angularjs/reportclientreceive1.js"></script>
+    <script src="~/angularjs/ReportClientReceive1.js"></script>
+
+    <style type="text/css">
+
+        .pagination-sm .page-link {
+            padding: .25rem .5rem;
+            font-size: .968rem;
+            line-height: 1.5
+        }
+
+        .pagination-sm .page-item:first-child .page-link, .pagination-sm .pagination .page-number:first-child .page-link, .pagination .pagination-sm .page-number:first-child .page-link {
+            border-top-left-radius: .2rem;
+            border-bottom-left-radius: .2rem
+        }
+
+        .pagination-sm .page-item:last-child .page-link, .pagination-sm .pagination .page-number:last-child .page-link, .pagination .pagination-sm .page-number:last-child .page-link {
+            border-top-right-radius: .2rem;
+            border-bottom-right-radius: .2rem
+        }
+    </style>
+
+
+
 </head>
 
 @using (@Html.BeginForm())
@@ -28,6 +50,7 @@
                                 <div class="form-group">
                                     <a href="@Url.Action("ReportClientLedger", "Admin")" class="btn btn-primary"><span>Client Ledger</span></a>
                                     <a href="@Url.Action("ReportClientReceive", "Admin")" class="btn btn-primary"><span>Client Receive </span></a>
+                                    <a href="@Url.Action("ReportOutstanding", "Admin")" class="btn btn-primary"><span> Outstanding  </span></a>
                                     <a href="@Url.Action("ReportTechnical", "Admin")" class="btn btn-primary"><span>Technical</span></a>
                                     <a href="@Url.Action("ReportQuotation", "Admin")" class="btn btn-primary"><span> Quotation  </span></a>
                                     @*<a href="@Url.Action("ReportMonthQuotation", "Admin")" class="btn btn-primary"><span> Month Quotation </span></a>*@
@@ -35,7 +58,7 @@
                                     <a href="@Url.Action("ReportSiteVisit", "Admin")" class="btn btn-primary"><span> Site Visit   </span></a>
                                     <a href="@Url.Action("ReportProjectHistory", "Admin")" class="btn btn-primary"><span> Project History  </span></a>
 
-                                    
+
 
                                 </div>
                             </div>
@@ -54,7 +77,7 @@
 
                         <div class="row">
 
-                            <div class="col-xl-3 col-md-6">
+                            <div class="col-xl-2 col-md-6">
                                 <div class="form-group mb-3">
 
                                     <label>From Date   </label>
@@ -64,7 +87,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-md-6">
+                            <div class="col-xl-2 col-md-6">
                                 <div class="form-group mb-3">
 
                                     <label>To Date   </label>
@@ -74,7 +97,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-md-6">
+                            <div class="col-xl-2 col-md-6">
                                 <div class="form-group mb-3">
 
                                     <label>Client name </label>
@@ -87,12 +110,12 @@
                                     <button type="button" class="btn btn-primary" ng-click="ShowClientReceive()">Search</button>
                                 </div>
                             </div>
-                            <div class="col-xl-2 col-md-6">
+                            @*<div class="col-xl-2 col-md-6">
                                 <br><br>
                                 <div class="form-group">
                                     <label> Total Amount : {{totalclientreceive}} </label>
                                 </div>
-                            </div>
+                            </div>*@
 
 
                         </div>
@@ -112,29 +135,38 @@
 
                                     <div class="table-responsive">
                                         <table class="table align-middle datatable dt-responsive table-bordered nowrap" style="border: 1px solid black; border-spacing: 0 8px; width: 100%;">
-                                            <thead>
-                                                <tr class="bg-transparent">
+                                            <thead class="bg-warning text-white">
+                                                <tr>
 
                                                     <th>#   </th>
-                                                    <th> Client Name </th>
-                                                    <th> City	 </th>
-                                                    <th> State </th>
-                                                    <th> Received</th>
+                                                    <th>Date</th>
+                                                    <th>Project ID</th>
+                                                    <th>Client Name </th>
+                                                    <th>Received</th>
 
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="item in clientReceiveList ">
-                                                    <td>{{$index+1}}</td>
+                                                <tr ng-repeat="item in clientReceiveList.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage)) ">
+                                                    <td> {{$index+1}}</td>
+                                                    <td> {{item.dtstr}}</td>
+                                                    <td> {{item.projectID}}</td>
                                                     <td> {{item.clientName}}</td>
-                                                    <td> {{item.city}}</td>
-                                                    <td> {{item.status}}</td>
                                                     <td> {{item.receivedAmount }} </td>
                                                 </tr>
-
+                                                <tr style="font-weight:bold;font-family:Arial;font-size:10pt;">
+                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
+                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
+                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
+                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;">Total </td>
+                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"><span style="font-size:10pt"> {{totalclientreceive}}   INR</span> </td>
+                                                </tr>
 
                                             </tbody>
                                         </table>
+                                        View <select ng-model="viewby" ng-change="setItemsPerPage(viewby)"><option value="5">5</option><option value="10">10</option><option value="20" selected>20</option><option value="30">30</option><option value="40">40</option><option value="50">50</option></select> records at a time.
+
+                                        <pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" class="pagination-sm" items-per-page="itemsPerPage"></pagination>
 
                                     </div>
                                     <div class="text-center ">

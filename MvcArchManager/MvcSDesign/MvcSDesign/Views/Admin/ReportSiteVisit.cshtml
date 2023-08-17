@@ -9,7 +9,7 @@
 
 <head>
 
-    <script src="~/angularjs/ReportSiteVisit.js"></script>
+    <script src="~/angularjs/ReportSiteVisit1.js"></script>
 
 
     <script type="text/javascript">
@@ -30,13 +30,13 @@
 </head>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("ReportSiteVisit","Report",FormMethod.Post))
 
 {
     <body>
 
         <div ng-app="myApp">
-            <div ng-controller="myController">
+            <div ng-controller="myCntr">
                 <div class="page-content">
                     <div class="container-fluid">
 
@@ -45,6 +45,7 @@
                                 <div class="form-group">
                                     <a href="@Url.Action("ReportClientLedger", "Admin")" class="btn btn-primary"><span>Client Ledger</span></a>
                                     <a href="@Url.Action("ReportClientReceive", "Admin")" class="btn btn-primary"><span>Client Receive </span></a>
+                                    <a href="@Url.Action("ReportOutstanding", "Admin")" class="btn btn-primary"><span> Outstanding  </span></a>
                                     <a href="@Url.Action("ReportTechnical", "Admin")" class="btn btn-primary"><span>Technical</span></a>
                                     <a href="@Url.Action("ReportQuotation", "Admin")" class="btn btn-primary"><span> Quotation  </span></a>
                                     @*<a href="@Url.Action("ReportMonthQuotation", "Admin")" class="btn btn-primary"><span> Month Quotation </span></a>*@
@@ -66,106 +67,122 @@
                         
 
                         <div class="row">
-                            
-                            <div class="col-xl-2 col-md-2">
-                                <div class="form-group mb-2">
-                                    @*<label><input type="radio" ng-model="quotationValue" class="form-check-input" value="projectID" name="quotation" /> Project ID</label>*@
-                                    <label> Project ID</label>
-                                    <input class="form-control" ng-model="pid" onkeypress="return IsNumber();">
 
+                          
+                                <div class="col-xl-2 col-md-2">
+                                    <div class="form-group mb-3">
+                                        <input type="radio" ng-model="opt" value="projectID" class="form-check-input">
+                                        <label>Project ID </label>
+                                        <input type="text" ng-model="varProjectID" class="form-control" placeholder="Project ID" onkeypress="IsNumber()" />
+                                    </div>
                                 </div>
-                            </div> 
-                            <div class="col-xl-2 col-md-2">
-                                <div class="form-group mb-3">
+
+                                <div class="col-xl-2 col-md-3">
+                                    <div class="form-group mb-3">
+                                        <input type="radio" ng-model="opt" value="name" class="form-check-input">
+                                        <label>Client Name  </label>
+                                        <input type="text" ng-model="varName" class="form-control" placeholder="Name" />
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-md-3">
+                                    <div class="form-group mb-3">
+                                        <input type="radio" ng-model="opt" value="projectName" class="form-check-input">
+                                        <label>Project Name  </label>
+                                        <input type="text" ng-model="varProjectName" class="form-control" placeholder="Project Name" />
+                                    </div>
+                                </div>
+                                <div class="col-xl-1 col-md-6">
                                     <label> . </label>
                                     <div class="form-group">
-                                        <button type="button" class="btn btn-primary" ng-click="SearchQuotation()">Search</button>
+                                        <button type="button" class="btn btn-primary" ng-click="Search()">Search</button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="text-center" ng-hide="loading">
-                            <button type="button" class="btn btn-dark waves-effect waves-light">
-                                <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
-                            </button>
-                        </div>
-                        <div class="text-left ">
-                            <span class="text-danger text-left" style="font-size: 14pt">{{searchdmsg}}</span>
-                        </div>
-                        <div class="row">
-                            <div class="col-xl-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                           <table class="table table-bordered mb-0">
-
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Project ID</th>
-                                                    <th>Date</th>
-                                                    <th>Client name</th>
-                                                    <th>Project Name</th>
-                                                    <th>Plot size</th>
-                                                    <th>Level</th>
-                                                    <th>Remark</th>
-                                                    <th>Action </th>
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                                <tr ng-repeat="item in sitevisitlist">
-                                                    <td>
-                                                        <span> {{item.sno}}  </span>
-                                                    </td>
-                                                    <td>
-                                                        <span> {{item.projectID}}  </span>
-                                                    </td>
-                                                    <td>
-                                                        <span>{{item.dtstr}} </span>
-                                                    </td>
-                                                    <td>
-                                                        <span>  {{item.clientName}}  </span>
-                                                    </td>
-                                                    <td>
-                                                        <span>  {{item.projectName }}  </span>
-                                                    </td>
-                                                    <td>
-                                                        <span> {{item.plotSize}} </span>
-                                                    </td>
-                                                    <td>
-                                                        <span> {{item.projectLevel}} </span>
-                                                    </td>
-
-                                                    <td>
-                                                        <span> {{item.remark}}</span>
-                                                    </td>
-                                                    <td>
-
-                                                        <div ng-if="item.filename.length !=0">
-                                                            <a href="@Url.Action("DownloadSiteVist","Admin")?projectID={{item.projectID}}&filename={{item.filename}}" class="btn btn-sm btn-primary" style="width:30px; height:30px;">
-                                                                <i class="fa fa-download"></i>
-                                                            </a>
+                            <div class="text-center" ng-hide="loading">
+                                <button type="button" class="btn btn-dark waves-effect waves-light">
+                                    <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                                </button>
+                            </div>
 
 
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table> 
- 
+
+                            <div class="text-left ">
+                                <span class="text-danger text-left" style="font-size: 14pt">{{searchdmsg}}</span>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered mb-0">
+
+                                                    <thead class="bg-warning text-white">
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Project ID</th>
+                                                            <th>Date</th>
+                                                            <th>Client name</th>
+                                                            <th>Project Name</th>
+                                                            <th>Plot size</th>
+                                                            <th>Level</th>
+                                                            <th>Remark</th>
+                                                            <th>Action </th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        <tr ng-repeat="item in sitevisitlist">
+                                                            <td>
+                                                                <span> {{$index+1}} </span>
+                                                            </td>
+                                                            <td>
+                                                                <span> {{item.projectID}}  </span>
+                                                            </td>
+                                                            <td>
+                                                                <span>{{item.dtstr}} </span>
+                                                            </td>
+                                                            <td>
+                                                                <span>  {{item.clientName}}  </span>
+                                                            </td>
+                                                            <td>
+                                                                <span>  {{item.projectName }}  </span>
+                                                            </td>
+                                                            <td>
+                                                                <span> {{item.plotSize}} </span>
+                                                            </td>
+                                                            <td>
+                                                                <span> {{item.projectLevel}} </span>
+                                                            </td>
+
+                                                            <td>
+                                                                <span> {{item.remark}}</span>
+                                                            </td>
+                                                            <td>
+
+                                                                <div ng-if="item.filename.length !=0">
+                                                                    <a href="@Url.Action("DownloadSiteVist","Admin")?projectID={{item.projectID}}&filename={{item.filename}}" class="btn btn-sm btn-primary" style="width:30px; height:30px;">
+                                                                        <i class="fa fa-download"></i>
+                                                                    </a>
+
+
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="text-center ">
-                                        <span class="text-danger text-center font-size:16  " style="">{{recordmsg}}</span>
-                                    </div>
+                                        <div class="text-center ">
+                                            <span class="text-danger text-center font-size:16  " style="">{{recordmsg}}</span>
+                                        </div>
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>

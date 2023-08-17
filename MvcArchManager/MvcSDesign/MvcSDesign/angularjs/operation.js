@@ -1,14 +1,6 @@
 ﻿var app = angular.module("myApp", []);
 app.controller("myCntr", function ($scope, $http, opt) {
-    //$scope.addNewWindow = true;
-    //$scope.buttonDisable = true;
-    //$scope.withoutAuth_ = [];
-    //$scope.withAuth_ = [];
-    //$scope.historyStatus = "";
-    //$scope.rowHeight = 0;
-    //$scope.thumbnailwidth = 0;
-    //$scope.thumbnailheight = 0;
-    //var projectID = "0";
+     
 
 
 

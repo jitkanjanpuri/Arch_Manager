@@ -1,0 +1,1202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ArchManagerDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblAmountReceive">
+          <Key>
+            <PropertyRef Name="amountReceiveID" />
+          </Key>
+          <Property Name="amountReceiveID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dt" Type="datetime" Nullable="false" />
+          <Property Name="clientID" Type="int" Nullable="false" />
+          <Property Name="amount" Type="int" Nullable="false" />
+          <Property Name="remark" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="tblClient">
+          <Key>
+            <PropertyRef Name="clientID" />
+          </Key>
+          <Property Name="clientID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="clientName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="orgName" Type="varchar" MaxLength="200" />
+          <Property Name="address" Type="varchar" MaxLength="300" />
+          <Property Name="city" Type="varchar" MaxLength="100" />
+          <Property Name="state" Type="varchar" MaxLength="100" />
+          <Property Name="phone" Type="varchar" MaxLength="100" />
+          <Property Name="mobile" Type="varchar" MaxLength="100" />
+          <Property Name="emailID" Type="varchar" MaxLength="100" />
+          <Property Name="remark" Type="varchar" MaxLength="100" />
+          <Property Name="companyID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblClientLedger">
+          <Key>
+            <PropertyRef Name="clientLadgerID" />
+          </Key>
+          <Property Name="clientLadgerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dt" Type="datetime" Nullable="false" />
+          <Property Name="clientID" Type="int" Nullable="false" />
+          <Property Name="projectID" Type="int" Nullable="false" />
+          <Property Name="prjAmount" Type="int" Nullable="false" />
+          <Property Name="receivedAmount" Type="int" Nullable="false" />
+          <Property Name="balance" Type="int" Nullable="false" />
+          <Property Name="remark" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="oldBalance" Type="int" />
+          <Property Name="adjustBalance" Type="int" />
+        </EntityType>
+        <EntityType Name="tblCompanyProfile">
+          <Key>
+            <PropertyRef Name="companyID" />
+          </Key>
+          <Property Name="companyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="orgName" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="gstNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="address" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="city" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="state" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="pincode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="mobileno" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="phoneno" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="emailID" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="pwd" Type="varchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblOperation">
+          <Key>
+            <PropertyRef Name="operationID" />
+          </Key>
+          <Property Name="operationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dt" Type="datetime" Nullable="false" />
+          <Property Name="staffID" Type="int" Nullable="false" />
+          <Property Name="designerAmount" Type="int" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+          <Property Name="remark" Type="varchar" MaxLength="50" />
+          <Property Name="payStatus" Type="varchar" MaxLength="30" />
+          <Property Name="projectCategory" Type="varchar" MaxLength="80" />
+          <Property Name="projectID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblPRF">
+          <Key>
+            <PropertyRef Name="prfID" />
+          </Key>
+          <Property Name="prfID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="workingStatus" Type="nvarchar" MaxLength="500" />
+          <Property Name="slabdetail" Type="nvarchar" MaxLength="200" />
+          <Property Name="slabheight" Type="nvarchar" MaxLength="200" />
+          <Property Name="plinthheight" Type="nvarchar" MaxLength="200" />
+          <Property Name="porchheight" Type="nvarchar" MaxLength="200" />
+          <Property Name="elevationpattern" Type="nvarchar" MaxLength="200" />
+          <Property Name="towerroom" Type="nvarchar" MaxLength="10" />
+          <Property Name="cornerplotplan" Type="nvarchar" MaxLength="50" />
+          <Property Name="plotside" Type="nvarchar" MaxLength="100" />
+          <Property Name="boundrywall" Type="nvarchar" MaxLength="50" />
+          <Property Name="anyother" Type="nvarchar" MaxLength="500" />
+          <Property Name="doorlintel" Type="nvarchar" MaxLength="100" />
+          <Property Name="windowsill" Type="nvarchar" MaxLength="100" />
+          <Property Name="windowlintel" Type="nvarchar" MaxLength="100" />
+          <Property Name="projectID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblProjectDetail">
+          <Key>
+            <PropertyRef Name="projectID" />
+          </Key>
+          <Property Name="projectID" Type="bigint" Nullable="false" />
+          <Property Name="dt" Type="datetime" Nullable="false" />
+          <Property Name="clientID" Type="int" Nullable="false" />
+          <Property Name="projectType" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="projectLevel" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="package" Type="varchar" MaxLength="30" />
+          <Property Name="plotSize" Type="varchar" MaxLength="50" />
+          <Property Name="amount" Type="int" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="20" />
+          <Property Name="remark" Type="varchar" MaxLength="100" />
+          <Property Name="projectname" Type="varchar" MaxLength="100" />
+          <Property Name="projectlocation" Type="varchar(max)" />
+          <Property Name="finalizeAmount" Type="bigint" />
+        </EntityType>
+        <EntityType Name="tblProjectManagement">
+          <Key>
+            <PropertyRef Name="pmID" />
+          </Key>
+          <Property Name="pmID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dt" Type="datetime" Nullable="false" />
+          <Property Name="projectID" Type="bigint" Nullable="false" />
+          <Property Name="category" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="subcategory" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="projectstatus" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="remark" Type="varchar" MaxLength="200" />
+          <Property Name="User_UploadedFileName" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="tblProjectSiteVisit">
+          <Key>
+            <PropertyRef Name="sitevisitID" />
+          </Key>
+          <Property Name="sitevisitID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dt" Type="datetime" Nullable="false" />
+          <Property Name="projectID" Type="bigint" Nullable="false" />
+          <Property Name="sitePhotoFile" Type="varchar" MaxLength="200" />
+          <Property Name="remark" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tblProjectUploadFile">
+          <Key>
+            <PropertyRef Name="uploadfileID" />
+          </Key>
+          <Property Name="uploadfileID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dt" Type="datetime" Nullable="false" />
+          <Property Name="projectID" Type="bigint" />
+          <Property Name="designerID" Type="int" Nullable="false" />
+          <Property Name="category" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="subcategory" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="filename" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblStaff">
+          <Key>
+            <PropertyRef Name="staffID" />
+          </Key>
+          <Property Name="staffID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="designation" Type="varchar" MaxLength="100" />
+          <Property Name="address" Type="varchar" MaxLength="200" />
+          <Property Name="city" Type="varchar" MaxLength="100" />
+          <Property Name="dist" Type="varchar" MaxLength="100" />
+          <Property Name="phone" Type="varchar" MaxLength="50" />
+          <Property Name="mobile" Type="varchar" MaxLength="50" />
+          <Property Name="emailID" Type="varchar" MaxLength="50" />
+          <Property Name="rolltype" Type="varchar" MaxLength="50" />
+          <Property Name="username" Type="varchar" MaxLength="50" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+          <Property Name="active" Type="bit" />
+        </EntityType>
+        <EntityType Name="tblStaffLedger">
+          <Key>
+            <PropertyRef Name="staffLedgerID" />
+          </Key>
+          <Property Name="staffLedgerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dt" Type="datetime" Nullable="false" />
+          <Property Name="staffID" Type="int" Nullable="false" />
+          <Property Name="projectID" Type="int" Nullable="false" />
+          <Property Name="prjAmount" Type="int" Nullable="false" />
+          <Property Name="paidAmount" Type="int" Nullable="false" />
+          <Property Name="balance" Type="int" Nullable="false" />
+          <Property Name="remark" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="tblStaffPaid">
+          <Key>
+            <PropertyRef Name="staffPaidID" />
+          </Key>
+          <Property Name="staffPaidID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dt" Type="datetime" Nullable="false" />
+          <Property Name="staffID" Type="int" Nullable="false" />
+          <Property Name="amount" Type="int" Nullable="false" />
+          <Property Name="remark" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="tblStatus">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblTaskAssign">
+          <Key>
+            <PropertyRef Name="taskID" />
+          </Key>
+          <Property Name="taskID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dt" Type="datetime" Nullable="false" />
+          <Property Name="tm" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="projectID" Type="bigint" Nullable="false" />
+          <Property Name="designerID" Type="int" Nullable="false" />
+          <Property Name="category" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="subcatorgy" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="techRemark" Type="varchar" MaxLength="500" />
+          <Property Name="submitDate" Type="datetime" />
+          <Property Name="submitTime" Type="varchar" MaxLength="50" />
+          <Property Name="submitDesignerID" Type="int" />
+          <Property Name="pmID" Type="int" />
+        </EntityType>
+        <Association Name="FK__tblClient__compa__5EBF139D">
+          <End Role="tblCompanyProfile" Type="Self.tblCompanyProfile" Multiplicity="1" />
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCompanyProfile">
+              <PropertyRef Name="companyID" />
+            </Principal>
+            <Dependent Role="tblClient">
+              <PropertyRef Name="companyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tblOperat__proje__5FB337D6">
+          <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
+          <End Role="tblOperation" Type="Self.tblOperation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProjectDetail">
+              <PropertyRef Name="projectID" />
+            </Principal>
+            <Dependent Role="tblOperation">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAmountReceive_clientID">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
+          <End Role="tblAmountReceive" Type="Self.tblAmountReceive" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="clientID" />
+            </Principal>
+            <Dependent Role="tblAmountReceive">
+              <PropertyRef Name="clientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblClientLadger_clientID">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
+          <End Role="tblClientLedger" Type="Self.tblClientLedger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="clientID" />
+            </Principal>
+            <Dependent Role="tblClientLedger">
+              <PropertyRef Name="clientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblOperation_staffID">
+          <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
+          <End Role="tblOperation" Type="Self.tblOperation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStaff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="tblOperation">
+              <PropertyRef Name="staffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblPRF_projectDetail_projectID">
+          <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
+          <End Role="tblPRF" Type="Self.tblPRF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProjectDetail">
+              <PropertyRef Name="projectID" />
+            </Principal>
+            <Dependent Role="tblPRF">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProjectDetail_ClientID">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
+          <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="clientID" />
+            </Principal>
+            <Dependent Role="tblProjectDetail">
+              <PropertyRef Name="clientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProjectManagement_projectID">
+          <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
+          <End Role="tblProjectManagement" Type="Self.tblProjectManagement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProjectDetail">
+              <PropertyRef Name="projectID" />
+            </Principal>
+            <Dependent Role="tblProjectManagement">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProjectSiteVisit_projectID">
+          <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
+          <End Role="tblProjectSiteVisit" Type="Self.tblProjectSiteVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProjectDetail">
+              <PropertyRef Name="projectID" />
+            </Principal>
+            <Dependent Role="tblProjectSiteVisit">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProjectUploadFile_designerID">
+          <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
+          <End Role="tblProjectUploadFile" Type="Self.tblProjectUploadFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStaff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="tblProjectUploadFile">
+              <PropertyRef Name="designerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProjectUploadFile_projectID">
+          <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="0..1" />
+          <End Role="tblProjectUploadFile" Type="Self.tblProjectUploadFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProjectDetail">
+              <PropertyRef Name="projectID" />
+            </Principal>
+            <Dependent Role="tblProjectUploadFile">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblStaffLedger_staffID">
+          <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
+          <End Role="tblStaffLedger" Type="Self.tblStaffLedger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStaff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="tblStaffLedger">
+              <PropertyRef Name="staffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblStaffPaid_staffID">
+          <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
+          <End Role="tblStaffPaid" Type="Self.tblStaffPaid" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStaff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="tblStaffPaid">
+              <PropertyRef Name="staffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTaskAssign_projectID">
+          <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
+          <End Role="tblTaskAssign" Type="Self.tblTaskAssign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProjectDetail">
+              <PropertyRef Name="projectID" />
+            </Principal>
+            <Dependent Role="tblTaskAssign">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ArchManagerDBModelStoreContainer">
+          <EntitySet Name="tblAmountReceive" EntityType="Self.tblAmountReceive" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblClient" EntityType="Self.tblClient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblClientLedger" EntityType="Self.tblClientLedger" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblCompanyProfile" EntityType="Self.tblCompanyProfile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblOperation" EntityType="Self.tblOperation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblPRF" EntityType="Self.tblPRF" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblProjectDetail" EntityType="Self.tblProjectDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblProjectManagement" EntityType="Self.tblProjectManagement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblProjectSiteVisit" EntityType="Self.tblProjectSiteVisit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblProjectUploadFile" EntityType="Self.tblProjectUploadFile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblStaff" EntityType="Self.tblStaff" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblStaffLedger" EntityType="Self.tblStaffLedger" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblStaffPaid" EntityType="Self.tblStaffPaid" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblStatus" EntityType="Self.tblStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTaskAssign" EntityType="Self.tblTaskAssign" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__tblClient__compa__5EBF139D" Association="Self.FK__tblClient__compa__5EBF139D">
+            <End Role="tblCompanyProfile" EntitySet="tblCompanyProfile" />
+            <End Role="tblClient" EntitySet="tblClient" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tblOperat__proje__5FB337D6" Association="Self.FK__tblOperat__proje__5FB337D6">
+            <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+            <End Role="tblOperation" EntitySet="tblOperation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAmountReceive_clientID" Association="Self.FK_tblAmountReceive_clientID">
+            <End Role="tblClient" EntitySet="tblClient" />
+            <End Role="tblAmountReceive" EntitySet="tblAmountReceive" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblClientLadger_clientID" Association="Self.FK_tblClientLadger_clientID">
+            <End Role="tblClient" EntitySet="tblClient" />
+            <End Role="tblClientLedger" EntitySet="tblClientLedger" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblOperation_staffID" Association="Self.FK_tblOperation_staffID">
+            <End Role="tblStaff" EntitySet="tblStaff" />
+            <End Role="tblOperation" EntitySet="tblOperation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblPRF_projectDetail_projectID" Association="Self.FK_tblPRF_projectDetail_projectID">
+            <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+            <End Role="tblPRF" EntitySet="tblPRF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProjectDetail_ClientID" Association="Self.FK_tblProjectDetail_ClientID">
+            <End Role="tblClient" EntitySet="tblClient" />
+            <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProjectManagement_projectID" Association="Self.FK_tblProjectManagement_projectID">
+            <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+            <End Role="tblProjectManagement" EntitySet="tblProjectManagement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProjectSiteVisit_projectID" Association="Self.FK_tblProjectSiteVisit_projectID">
+            <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+            <End Role="tblProjectSiteVisit" EntitySet="tblProjectSiteVisit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProjectUploadFile_designerID" Association="Self.FK_tblProjectUploadFile_designerID">
+            <End Role="tblStaff" EntitySet="tblStaff" />
+            <End Role="tblProjectUploadFile" EntitySet="tblProjectUploadFile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProjectUploadFile_projectID" Association="Self.FK_tblProjectUploadFile_projectID">
+            <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+            <End Role="tblProjectUploadFile" EntitySet="tblProjectUploadFile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblStaffLedger_staffID" Association="Self.FK_tblStaffLedger_staffID">
+            <End Role="tblStaff" EntitySet="tblStaff" />
+            <End Role="tblStaffLedger" EntitySet="tblStaffLedger" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblStaffPaid_staffID" Association="Self.FK_tblStaffPaid_staffID">
+            <End Role="tblStaff" EntitySet="tblStaff" />
+            <End Role="tblStaffPaid" EntitySet="tblStaffPaid" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTaskAssign_projectID" Association="Self.FK_tblTaskAssign_projectID">
+            <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+            <End Role="tblTaskAssign" EntitySet="tblTaskAssign" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ArchManagerDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblAmountReceive">
+          <Key>
+            <PropertyRef Name="amountReceiveID" />
+          </Key>
+          <Property Name="amountReceiveID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="clientID" Type="Int32" Nullable="false" />
+          <Property Name="amount" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblClient" Relationship="Self.FK_tblAmountReceive_clientID" FromRole="tblAmountReceive" ToRole="tblClient" />
+        </EntityType>
+        <EntityType Name="tblClient">
+          <Key>
+            <PropertyRef Name="clientID" />
+          </Key>
+          <Property Name="clientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="clientName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="orgName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="city" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="state" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="phone" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="emailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="companyID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblAmountReceives" Relationship="Self.FK_tblAmountReceive_clientID" FromRole="tblClient" ToRole="tblAmountReceive" />
+          <NavigationProperty Name="tblCompanyProfile" Relationship="Self.FK__tblClient__compa__5EBF139D" FromRole="tblClient" ToRole="tblCompanyProfile" />
+          <NavigationProperty Name="tblClientLedgers" Relationship="Self.FK_tblClientLadger_clientID" FromRole="tblClient" ToRole="tblClientLedger" />
+          <NavigationProperty Name="tblProjectDetails" Relationship="Self.FK_tblProjectDetail_ClientID" FromRole="tblClient" ToRole="tblProjectDetail" />
+        </EntityType>
+        <EntityType Name="tblClientLedger">
+          <Key>
+            <PropertyRef Name="clientLadgerID" />
+          </Key>
+          <Property Name="clientLadgerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="clientID" Type="Int32" Nullable="false" />
+          <Property Name="projectID" Type="Int32" Nullable="false" />
+          <Property Name="prjAmount" Type="Int32" Nullable="false" />
+          <Property Name="receivedAmount" Type="Int32" Nullable="false" />
+          <Property Name="balance" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="oldBalance" Type="Int32" />
+          <Property Name="adjustBalance" Type="Int32" />
+          <NavigationProperty Name="tblClient" Relationship="Self.FK_tblClientLadger_clientID" FromRole="tblClientLedger" ToRole="tblClient" />
+        </EntityType>
+        <EntityType Name="tblCompanyProfile">
+          <Key>
+            <PropertyRef Name="companyID" />
+          </Key>
+          <Property Name="companyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="orgName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="gstNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="city" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="state" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pincode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="mobileno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phoneno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="emailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="tblClients" Relationship="Self.FK__tblClient__compa__5EBF139D" FromRole="tblCompanyProfile" ToRole="tblClient" />
+          <Property Name="pwd" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tblOperation">
+          <Key>
+            <PropertyRef Name="operationID" />
+          </Key>
+          <Property Name="operationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="staffID" Type="Int32" Nullable="false" />
+          <Property Name="designerAmount" Type="Int32" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="payStatus" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="projectCategory" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="projectID" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="tblProjectDetail" Relationship="Self.FK__tblOperat__proje__5FB337D6" FromRole="tblOperation" ToRole="tblProjectDetail" />
+          <NavigationProperty Name="tblStaff" Relationship="Self.FK_tblOperation_staffID" FromRole="tblOperation" ToRole="tblStaff" />
+        </EntityType>
+        <EntityType Name="tblPRF">
+          <Key>
+            <PropertyRef Name="prfID" />
+          </Key>
+          <Property Name="prfID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="workingStatus" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="slabdetail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="slabheight" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="plinthheight" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="porchheight" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="elevationpattern" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="towerroom" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cornerplotplan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="plotside" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="boundrywall" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="anyother" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="doorlintel" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="windowsill" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="windowlintel" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="projectID" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="tblProjectDetail" Relationship="Self.FK_tblPRF_projectDetail_projectID" FromRole="tblPRF" ToRole="tblProjectDetail" />
+        </EntityType>
+        <EntityType Name="tblProjectDetail">
+          <Key>
+            <PropertyRef Name="projectID" />
+          </Key>
+          <Property Name="projectID" Type="Int64" Nullable="false" />
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="clientID" Type="Int32" Nullable="false" />
+          <Property Name="projectType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="projectLevel" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="package" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="plotSize" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="amount" Type="Int32" Nullable="false" />
+          <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="projectname" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="projectlocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblClient" Relationship="Self.FK_tblProjectDetail_ClientID" FromRole="tblProjectDetail" ToRole="tblClient" />
+          <NavigationProperty Name="tblOperations" Relationship="Self.FK__tblOperat__proje__5FB337D6" FromRole="tblProjectDetail" ToRole="tblOperation" />
+          <NavigationProperty Name="tblPRFs" Relationship="Self.FK_tblPRF_projectDetail_projectID" FromRole="tblProjectDetail" ToRole="tblPRF" />
+          <NavigationProperty Name="tblProjectManagements" Relationship="ArchManagerDBModel.FK_tblProjectManagement_projectID" FromRole="tblProjectDetail" ToRole="tblProjectManagement" />
+          <NavigationProperty Name="tblProjectSiteVisits" Relationship="ArchManagerDBModel.FK_tblProjectSiteVisit_projectID" FromRole="tblProjectDetail" ToRole="tblProjectSiteVisit" />
+          <Property Name="finalizeAmount" Type="Int64" />
+          <NavigationProperty Name="tblProjectUploadFiles" Relationship="ArchManagerDBModel.FK_tblProjectUploadFile_projectID" FromRole="tblProjectDetail" ToRole="tblProjectUploadFile" />
+          <NavigationProperty Name="tblTaskAssigns" Relationship="ArchManagerDBModel.FK_tblTaskAssign_projectID" FromRole="tblProjectDetail" ToRole="tblTaskAssign" />
+        </EntityType>
+        <EntityType Name="tblStaff">
+          <Key>
+            <PropertyRef Name="staffID" />
+          </Key>
+          <Property Name="staffID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="designation" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="city" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="dist" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="emailID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="rolltype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblOperations" Relationship="Self.FK_tblOperation_staffID" FromRole="tblStaff" ToRole="tblOperation" />
+          <NavigationProperty Name="tblStaffLedgers" Relationship="Self.FK_tblStaffLedger_staffID" FromRole="tblStaff" ToRole="tblStaffLedger" />
+          <NavigationProperty Name="tblStaffPaids" Relationship="Self.FK_tblStaffPaid_staffID" FromRole="tblStaff" ToRole="tblStaffPaid" />
+          <Property Name="active" Type="Boolean" />
+          <NavigationProperty Name="tblProjectUploadFiles" Relationship="ArchManagerDBModel.FK_tblProjectUploadFile_designerID" FromRole="tblStaff" ToRole="tblProjectUploadFile" />
+        </EntityType>
+        <EntityType Name="tblStaffLedger">
+          <Key>
+            <PropertyRef Name="staffLedgerID" />
+          </Key>
+          <Property Name="staffLedgerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="staffID" Type="Int32" Nullable="false" />
+          <Property Name="projectID" Type="Int32" Nullable="false" />
+          <Property Name="prjAmount" Type="Int32" Nullable="false" />
+          <Property Name="paidAmount" Type="Int32" Nullable="false" />
+          <Property Name="balance" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblStaff" Relationship="Self.FK_tblStaffLedger_staffID" FromRole="tblStaffLedger" ToRole="tblStaff" />
+        </EntityType>
+        <EntityType Name="tblStaffPaid">
+          <Key>
+            <PropertyRef Name="staffPaidID" />
+          </Key>
+          <Property Name="staffPaidID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="staffID" Type="Int32" Nullable="false" />
+          <Property Name="amount" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblStaff" Relationship="Self.FK_tblStaffPaid_staffID" FromRole="tblStaffPaid" ToRole="tblStaff" />
+        </EntityType>
+        <EntityType Name="tblStatu">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="status" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_tblAmountReceive_clientID">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
+          <End Role="tblAmountReceive" Type="Self.tblAmountReceive" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="clientID" />
+            </Principal>
+            <Dependent Role="tblAmountReceive">
+              <PropertyRef Name="clientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tblClient__compa__5EBF139D">
+          <End Role="tblCompanyProfile" Type="Self.tblCompanyProfile" Multiplicity="1" />
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCompanyProfile">
+              <PropertyRef Name="companyID" />
+            </Principal>
+            <Dependent Role="tblClient">
+              <PropertyRef Name="companyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblClientLadger_clientID">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
+          <End Role="tblClientLedger" Type="Self.tblClientLedger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="clientID" />
+            </Principal>
+            <Dependent Role="tblClientLedger">
+              <PropertyRef Name="clientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProjectDetail_ClientID">
+          <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
+          <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblClient">
+              <PropertyRef Name="clientID" />
+            </Principal>
+            <Dependent Role="tblProjectDetail">
+              <PropertyRef Name="clientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tblOperat__proje__5FB337D6">
+          <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
+          <End Role="tblOperation" Type="Self.tblOperation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProjectDetail">
+              <PropertyRef Name="projectID" />
+            </Principal>
+            <Dependent Role="tblOperation">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblOperation_staffID">
+          <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
+          <End Role="tblOperation" Type="Self.tblOperation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStaff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="tblOperation">
+              <PropertyRef Name="staffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblPRF_projectDetail_projectID">
+          <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
+          <End Role="tblPRF" Type="Self.tblPRF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProjectDetail">
+              <PropertyRef Name="projectID" />
+            </Principal>
+            <Dependent Role="tblPRF">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblStaffLedger_staffID">
+          <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
+          <End Role="tblStaffLedger" Type="Self.tblStaffLedger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStaff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="tblStaffLedger">
+              <PropertyRef Name="staffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblStaffPaid_staffID">
+          <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
+          <End Role="tblStaffPaid" Type="Self.tblStaffPaid" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStaff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="tblStaffPaid">
+              <PropertyRef Name="staffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ArchManagerDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblAmountReceives" EntityType="Self.tblAmountReceive" />
+          <EntitySet Name="tblClients" EntityType="Self.tblClient" />
+          <EntitySet Name="tblClientLedgers" EntityType="Self.tblClientLedger" />
+          <EntitySet Name="tblCompanyProfiles" EntityType="Self.tblCompanyProfile" />
+          <EntitySet Name="tblOperations" EntityType="Self.tblOperation" />
+          <EntitySet Name="tblPRFs" EntityType="Self.tblPRF" />
+          <EntitySet Name="tblProjectDetails" EntityType="Self.tblProjectDetail" />
+          <EntitySet Name="tblStaffs" EntityType="Self.tblStaff" />
+          <EntitySet Name="tblStaffLedgers" EntityType="Self.tblStaffLedger" />
+          <EntitySet Name="tblStaffPaids" EntityType="Self.tblStaffPaid" />
+          <EntitySet Name="tblStatus" EntityType="Self.tblStatu" />
+          <AssociationSet Name="FK_tblAmountReceive_clientID" Association="Self.FK_tblAmountReceive_clientID">
+            <End Role="tblClient" EntitySet="tblClients" />
+            <End Role="tblAmountReceive" EntitySet="tblAmountReceives" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tblClient__compa__5EBF139D" Association="Self.FK__tblClient__compa__5EBF139D">
+            <End Role="tblCompanyProfile" EntitySet="tblCompanyProfiles" />
+            <End Role="tblClient" EntitySet="tblClients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblClientLadger_clientID" Association="Self.FK_tblClientLadger_clientID">
+            <End Role="tblClient" EntitySet="tblClients" />
+            <End Role="tblClientLedger" EntitySet="tblClientLedgers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProjectDetail_ClientID" Association="Self.FK_tblProjectDetail_ClientID">
+            <End Role="tblClient" EntitySet="tblClients" />
+            <End Role="tblProjectDetail" EntitySet="tblProjectDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tblOperat__proje__5FB337D6" Association="Self.FK__tblOperat__proje__5FB337D6">
+            <End Role="tblProjectDetail" EntitySet="tblProjectDetails" />
+            <End Role="tblOperation" EntitySet="tblOperations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblOperation_staffID" Association="Self.FK_tblOperation_staffID">
+            <End Role="tblStaff" EntitySet="tblStaffs" />
+            <End Role="tblOperation" EntitySet="tblOperations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblPRF_projectDetail_projectID" Association="Self.FK_tblPRF_projectDetail_projectID">
+            <End Role="tblProjectDetail" EntitySet="tblProjectDetails" />
+            <End Role="tblPRF" EntitySet="tblPRFs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblStaffLedger_staffID" Association="Self.FK_tblStaffLedger_staffID">
+            <End Role="tblStaff" EntitySet="tblStaffs" />
+            <End Role="tblStaffLedger" EntitySet="tblStaffLedgers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblStaffPaid_staffID" Association="Self.FK_tblStaffPaid_staffID">
+            <End Role="tblStaff" EntitySet="tblStaffs" />
+            <End Role="tblStaffPaid" EntitySet="tblStaffPaids" />
+          </AssociationSet>
+          <EntitySet Name="tblProjectManagements" EntityType="ArchManagerDBModel.tblProjectManagement" />
+          <EntitySet Name="tblProjectSiteVisits" EntityType="ArchManagerDBModel.tblProjectSiteVisit" />
+          <AssociationSet Name="FK_tblProjectManagement_projectID" Association="ArchManagerDBModel.FK_tblProjectManagement_projectID">
+            <End Role="tblProjectDetail" EntitySet="tblProjectDetails" />
+            <End Role="tblProjectManagement" EntitySet="tblProjectManagements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProjectSiteVisit_projectID" Association="ArchManagerDBModel.FK_tblProjectSiteVisit_projectID">
+            <End Role="tblProjectDetail" EntitySet="tblProjectDetails" />
+            <End Role="tblProjectSiteVisit" EntitySet="tblProjectSiteVisits" />
+          </AssociationSet>
+          <EntitySet Name="tblProjectUploadFiles" EntityType="ArchManagerDBModel.tblProjectUploadFile" />
+          <AssociationSet Name="FK_tblProjectUploadFile_projectID" Association="ArchManagerDBModel.FK_tblProjectUploadFile_projectID">
+            <End Role="tblProjectDetail" EntitySet="tblProjectDetails" />
+            <End Role="tblProjectUploadFile" EntitySet="tblProjectUploadFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProjectUploadFile_designerID" Association="ArchManagerDBModel.FK_tblProjectUploadFile_designerID">
+            <End Role="tblStaff" EntitySet="tblStaffs" />
+            <End Role="tblProjectUploadFile" EntitySet="tblProjectUploadFiles" />
+          </AssociationSet>
+          <EntitySet Name="tblTaskAssigns" EntityType="ArchManagerDBModel.tblTaskAssign" />
+          <AssociationSet Name="FK_tblTaskAssign_projectID" Association="ArchManagerDBModel.FK_tblTaskAssign_projectID">
+            <End Role="tblProjectDetail" EntitySet="tblProjectDetails" />
+            <End Role="tblTaskAssign" EntitySet="tblTaskAssigns" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="tblProjectManagement">
+          <Key>
+            <PropertyRef Name="pmID" />
+          </Key>
+          <Property Name="pmID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="projectID" Type="Int64" Nullable="false" />
+          <Property Name="category" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="subcategory" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="projectstatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblProjectDetail" Relationship="ArchManagerDBModel.FK_tblProjectManagement_projectID" FromRole="tblProjectManagement" ToRole="tblProjectDetail" />
+          <Property Name="User_UploadedFileName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tblProjectSiteVisit">
+          <Key>
+            <PropertyRef Name="sitevisitID" />
+          </Key>
+          <Property Name="sitevisitID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="projectID" Type="Int64" Nullable="false" />
+          <Property Name="sitePhotoFile" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblProjectDetail" Relationship="ArchManagerDBModel.FK_tblProjectSiteVisit_projectID" FromRole="tblProjectSiteVisit" ToRole="tblProjectDetail" />
+        </EntityType>
+        <Association Name="FK_tblProjectManagement_projectID">
+          <End Type="ArchManagerDBModel.tblProjectDetail" Role="tblProjectDetail" Multiplicity="1" />
+          <End Type="ArchManagerDBModel.tblProjectManagement" Role="tblProjectManagement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProjectDetail">
+              <PropertyRef Name="projectID" />
+            </Principal>
+            <Dependent Role="tblProjectManagement">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProjectSiteVisit_projectID">
+          <End Type="ArchManagerDBModel.tblProjectDetail" Role="tblProjectDetail" Multiplicity="1" />
+          <End Type="ArchManagerDBModel.tblProjectSiteVisit" Role="tblProjectSiteVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProjectDetail">
+              <PropertyRef Name="projectID" />
+            </Principal>
+            <Dependent Role="tblProjectSiteVisit">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblProjectUploadFile">
+          <Key>
+            <PropertyRef Name="uploadfileID" />
+          </Key>
+          <Property Name="uploadfileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="projectID" Type="Int64" />
+          <Property Name="designerID" Type="Int32" Nullable="false" />
+          <Property Name="category" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="subcategory" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="filename" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblProjectDetail" Relationship="ArchManagerDBModel.FK_tblProjectUploadFile_projectID" FromRole="tblProjectUploadFile" ToRole="tblProjectDetail" />
+          <NavigationProperty Name="tblStaff" Relationship="ArchManagerDBModel.FK_tblProjectUploadFile_designerID" FromRole="tblProjectUploadFile" ToRole="tblStaff" />
+        </EntityType>
+        <Association Name="FK_tblProjectUploadFile_projectID">
+          <End Type="ArchManagerDBModel.tblProjectDetail" Role="tblProjectDetail" Multiplicity="0..1" />
+          <End Type="ArchManagerDBModel.tblProjectUploadFile" Role="tblProjectUploadFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProjectDetail">
+              <PropertyRef Name="projectID" />
+            </Principal>
+            <Dependent Role="tblProjectUploadFile">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProjectUploadFile_designerID">
+          <End Type="ArchManagerDBModel.tblStaff" Role="tblStaff" Multiplicity="1" />
+          <End Type="ArchManagerDBModel.tblProjectUploadFile" Role="tblProjectUploadFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStaff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="tblProjectUploadFile">
+              <PropertyRef Name="designerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblTaskAssign">
+          <Key>
+            <PropertyRef Name="taskID" />
+          </Key>
+          <Property Name="taskID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="tm" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="projectID" Type="Int64" Nullable="false" />
+          <Property Name="designerID" Type="Int32" Nullable="false" />
+          <Property Name="category" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="subcatorgy" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="techRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="submitDate" Type="DateTime" Precision="3" />
+          <Property Name="submitTime" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="submitDesignerID" Type="Int32" />
+          <Property Name="pmID" Type="Int32" />
+          <NavigationProperty Name="tblProjectDetail" Relationship="ArchManagerDBModel.FK_tblTaskAssign_projectID" FromRole="tblTaskAssign" ToRole="tblProjectDetail" />
+        </EntityType>
+        <Association Name="FK_tblTaskAssign_projectID">
+          <End Type="ArchManagerDBModel.tblProjectDetail" Role="tblProjectDetail" Multiplicity="1" />
+          <End Type="ArchManagerDBModel.tblTaskAssign" Role="tblTaskAssign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProjectDetail">
+              <PropertyRef Name="projectID" />
+            </Principal>
+            <Dependent Role="tblTaskAssign">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ArchManagerDBModelStoreContainer" CdmEntityContainer="ArchManagerDBEntities">
+          <EntitySetMapping Name="tblAmountReceives">
+            <EntityTypeMapping TypeName="ArchManagerDBModel.tblAmountReceive">
+              <MappingFragment StoreEntitySet="tblAmountReceive">
+                <ScalarProperty Name="amountReceiveID" ColumnName="amountReceiveID" />
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="clientID" ColumnName="clientID" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblClients">
+            <EntityTypeMapping TypeName="ArchManagerDBModel.tblClient">
+              <MappingFragment StoreEntitySet="tblClient">
+                <ScalarProperty Name="clientID" ColumnName="clientID" />
+                <ScalarProperty Name="clientName" ColumnName="clientName" />
+                <ScalarProperty Name="orgName" ColumnName="orgName" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="emailID" ColumnName="emailID" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="companyID" ColumnName="companyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblClientLedgers">
+            <EntityTypeMapping TypeName="ArchManagerDBModel.tblClientLedger">
+              <MappingFragment StoreEntitySet="tblClientLedger">
+                <ScalarProperty Name="clientLadgerID" ColumnName="clientLadgerID" />
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="clientID" ColumnName="clientID" />
+                <ScalarProperty Name="projectID" ColumnName="projectID" />
+                <ScalarProperty Name="prjAmount" ColumnName="prjAmount" />
+                <ScalarProperty Name="receivedAmount" ColumnName="receivedAmount" />
+                <ScalarProperty Name="balance" ColumnName="balance" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="oldBalance" ColumnName="oldBalance" />
+                <ScalarProperty Name="adjustBalance" ColumnName="adjustBalance" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCompanyProfiles">
+            <EntityTypeMapping TypeName="ArchManagerDBModel.tblCompanyProfile">
+              <MappingFragment StoreEntitySet="tblCompanyProfile">
+                <ScalarProperty Name="pwd" ColumnName="pwd" />
+                <ScalarProperty Name="companyID" ColumnName="companyID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="orgName" ColumnName="orgName" />
+                <ScalarProperty Name="gstNo" ColumnName="gstNo" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="pincode" ColumnName="pincode" />
+                <ScalarProperty Name="mobileno" ColumnName="mobileno" />
+                <ScalarProperty Name="phoneno" ColumnName="phoneno" />
+                <ScalarProperty Name="emailID" ColumnName="emailID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblOperations">
+            <EntityTypeMapping TypeName="ArchManagerDBModel.tblOperation">
+              <MappingFragment StoreEntitySet="tblOperation">
+                <ScalarProperty Name="operationID" ColumnName="operationID" />
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="staffID" ColumnName="staffID" />
+                <ScalarProperty Name="designerAmount" ColumnName="designerAmount" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="payStatus" ColumnName="payStatus" />
+                <ScalarProperty Name="projectCategory" ColumnName="projectCategory" />
+                <ScalarProperty Name="projectID" ColumnName="projectID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPRFs">
+            <EntityTypeMapping TypeName="ArchManagerDBModel.tblPRF">
+              <MappingFragment StoreEntitySet="tblPRF">
+                <ScalarProperty Name="prfID" ColumnName="prfID" />
+                <ScalarProperty Name="workingStatus" ColumnName="workingStatus" />
+                <ScalarProperty Name="slabdetail" ColumnName="slabdetail" />
+                <ScalarProperty Name="slabheight" ColumnName="slabheight" />
+                <ScalarProperty Name="plinthheight" ColumnName="plinthheight" />
+                <ScalarProperty Name="porchheight" ColumnName="porchheight" />
+                <ScalarProperty Name="elevationpattern" ColumnName="elevationpattern" />
+                <ScalarProperty Name="towerroom" ColumnName="towerroom" />
+                <ScalarProperty Name="cornerplotplan" ColumnName="cornerplotplan" />
+                <ScalarProperty Name="plotside" ColumnName="plotside" />
+                <ScalarProperty Name="boundrywall" ColumnName="boundrywall" />
+                <ScalarProperty Name="anyother" ColumnName="anyother" />
+                <ScalarProperty Name="doorlintel" ColumnName="doorlintel" />
+                <ScalarProperty Name="windowsill" ColumnName="windowsill" />
+                <ScalarProperty Name="windowlintel" ColumnName="windowlintel" />
+                <ScalarProperty Name="projectID" ColumnName="projectID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProjectDetails">
+            <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectDetail">
+              <MappingFragment StoreEntitySet="tblProjectDetail">
+                <ScalarProperty Name="finalizeAmount" ColumnName="finalizeAmount" />
+                <ScalarProperty Name="projectID" ColumnName="projectID" />
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="clientID" ColumnName="clientID" />
+                <ScalarProperty Name="projectType" ColumnName="projectType" />
+                <ScalarProperty Name="projectLevel" ColumnName="projectLevel" />
+                <ScalarProperty Name="package" ColumnName="package" />
+                <ScalarProperty Name="plotSize" ColumnName="plotSize" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="projectname" ColumnName="projectname" />
+                <ScalarProperty Name="projectlocation" ColumnName="projectlocation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblStaffs">
+            <EntityTypeMapping TypeName="ArchManagerDBModel.tblStaff">
+              <MappingFragment StoreEntitySet="tblStaff">
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="staffID" ColumnName="staffID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="designation" ColumnName="designation" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="dist" ColumnName="dist" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="emailID" ColumnName="emailID" />
+                <ScalarProperty Name="rolltype" ColumnName="rolltype" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblStaffLedgers">
+            <EntityTypeMapping TypeName="ArchManagerDBModel.tblStaffLedger">
+              <MappingFragment StoreEntitySet="tblStaffLedger">
+                <ScalarProperty Name="staffLedgerID" ColumnName="staffLedgerID" />
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="staffID" ColumnName="staffID" />
+                <ScalarProperty Name="projectID" ColumnName="projectID" />
+                <ScalarProperty Name="prjAmount" ColumnName="prjAmount" />
+                <ScalarProperty Name="paidAmount" ColumnName="paidAmount" />
+                <ScalarProperty Name="balance" ColumnName="balance" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblStaffPaids">
+            <EntityTypeMapping TypeName="ArchManagerDBModel.tblStaffPaid">
+              <MappingFragment StoreEntitySet="tblStaffPaid">
+                <ScalarProperty Name="staffPaidID" ColumnName="staffPaidID" />
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="staffID" ColumnName="staffID" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblStatus">
+            <EntityTypeMapping TypeName="ArchManagerDBModel.tblStatu">
+              <MappingFragment StoreEntitySet="tblStatus">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProjectManagements">
+            <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectManagement">
+              <MappingFragment StoreEntitySet="tblProjectManagement">
+                <ScalarProperty Name="User_UploadedFileName" ColumnName="User_UploadedFileName" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="projectstatus" ColumnName="projectstatus" />
+                <ScalarProperty Name="subcategory" ColumnName="subcategory" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="projectID" ColumnName="projectID" />
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="pmID" ColumnName="pmID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProjectSiteVisits">
+            <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectSiteVisit">
+              <MappingFragment StoreEntitySet="tblProjectSiteVisit">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="sitePhotoFile" ColumnName="sitePhotoFile" />
+                <ScalarProperty Name="projectID" ColumnName="projectID" />
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="sitevisitID" ColumnName="sitevisitID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProjectUploadFiles">
+            <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectUploadFile">
+              <MappingFragment StoreEntitySet="tblProjectUploadFile">
+                <ScalarProperty Name="filename" ColumnName="filename" />
+                <ScalarProperty Name="subcategory" ColumnName="subcategory" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="designerID" ColumnName="designerID" />
+                <ScalarProperty Name="projectID" ColumnName="projectID" />
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="uploadfileID" ColumnName="uploadfileID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTaskAssigns">
+            <EntityTypeMapping TypeName="ArchManagerDBModel.tblTaskAssign">
+              <MappingFragment StoreEntitySet="tblTaskAssign">
+                <ScalarProperty Name="pmID" ColumnName="pmID" />
+                <ScalarProperty Name="submitDesignerID" ColumnName="submitDesignerID" />
+                <ScalarProperty Name="submitTime" ColumnName="submitTime" />
+                <ScalarProperty Name="submitDate" ColumnName="submitDate" />
+                <ScalarProperty Name="techRemark" ColumnName="techRemark" />
+                <ScalarProperty Name="subcatorgy" ColumnName="subcatorgy" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="designerID" ColumnName="designerID" />
+                <ScalarProperty Name="projectID" ColumnName="projectID" />
+                <ScalarProperty Name="tm" ColumnName="tm" />
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="taskID" ColumnName="taskID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

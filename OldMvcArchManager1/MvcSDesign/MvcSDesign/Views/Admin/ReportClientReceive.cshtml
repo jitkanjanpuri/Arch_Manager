@@ -1,0 +1,154 @@
+﻿ 
+
+@{
+    ViewBag.Title = "Client Receive";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+   
+}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="~/angularjs/reportclientreceive1.js"></script>
+</head>
+
+@using (@Html.BeginForm())
+{
+    <body>
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+
+                <div class="page-content">
+                    <div class="container-fluid">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <a href="@Url.Action("ReportClientLedger", "Admin")" class="btn btn-primary"><span>Client Ledger</span></a>
+                                    <a href="@Url.Action("ReportClientReceive", "Admin")" class="btn btn-primary"><span>Client Receive </span></a>
+                                    <a href="@Url.Action("ReportTechnical", "Admin")" class="btn btn-primary"><span>Technical</span></a>
+                                    <a href="@Url.Action("ReportQuotation", "Admin")" class="btn btn-primary"><span> Quotation  </span></a>
+                                    @*<a href="@Url.Action("ReportMonthQuotation", "Admin")" class="btn btn-primary"><span> Month Quotation </span></a>*@
+                                    @*<a href="@Url.Action("ReportBalanceAdjust", "Admin")" class="btn btn-primary"><span> Balance Adjust  </span></a>*@
+                                    <a href="@Url.Action("ReportSiteVisit", "Admin")" class="btn btn-primary"><span> Site Visit   </span></a>
+                                    <a href="@Url.Action("ReportProjectHistory", "Admin")" class="btn btn-primary"><span> Project History  </span></a>
+
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0 font-size-18">Client Receive </h4>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-xl-3 col-md-6">
+                                <div class="form-group mb-3">
+
+                                    <label>From Date   </label>
+
+                                    <div class="input-group">
+                                        <input type="date" id="fromStart" class="form-control" ng-model="fromStart">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="form-group mb-3">
+
+                                    <label>To Date   </label>
+
+                                    <div class="input-group">
+                                        <input type="date" id="toEnd" class="form-control" ng-model="toEnd">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="form-group mb-3">
+
+                                    <label>Client name </label>
+                                    <input type="text" ng-model="txtClientReceive" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-xl-1 col-md-6">
+                                <label> . </label>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary" ng-click="ShowClientReceive()">Search</button>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-6">
+                                <br><br>
+                                <div class="form-group">
+                                    <label> Total Amount : {{totalclientreceive}} </label>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="text-center" ng-hide="loading">
+                        <button type="button" class="btn btn-dark waves-effect waves-light">
+                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                        </button>
+                    </div>
+
+                    <hr>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+
+
+                                    <div class="table-responsive">
+                                        <table class="table align-middle datatable dt-responsive table-bordered nowrap" style="border: 1px solid black; border-spacing: 0 8px; width: 100%;">
+                                            <thead>
+                                                <tr class="bg-transparent">
+
+                                                    <th>#   </th>
+                                                    <th> Client Name </th>
+                                                    <th> City	 </th>
+                                                    <th> State </th>
+                                                    <th> Received</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item in clientReceiveList ">
+                                                    <td>{{$index+1}}</td>
+                                                    <td> {{item.clientName}}</td>
+                                                    <td> {{item.city}}</td>
+                                                    <td> {{item.status}}</td>
+                                                    <td> {{item.receivedAmount }} </td>
+                                                </tr>
+
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <div class="text-center ">
+                                        <span class="text-danger text-center font-size:16  " style="">{{recordmsg}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+}
+</html>
+
+

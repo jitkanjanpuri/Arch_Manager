@@ -1,9 +1,15 @@
 ﻿var app = angular.module("myApp", [])
-app.controller('myController', function ($scope, $http) {
+app.controller('myController', function ($scope, $http, staff) {
 
     $scope.loading = true;
     var varStaffID = 0;
     $scope.nettotal = 0;
+
+
+    stastaffff.getRecord().then(function (d) {
+        $scope.stafflist = d.data;
+
+    });
 
     $scope.Search = function () {
         SearchRegistration();
@@ -38,49 +44,49 @@ app.controller('myController', function ($scope, $http) {
 
     }
 
-    $scope.PayDesigner = function () {
+    //$scope.PayDesigner = function () {
 
-        if (($scope.txtAmount == undefined) || ($scope.txtAmount == "0")) {
-            $scope.errReceive = " Please enter amount";
-            return;
-        }
+    //    if (($scope.txtAmount == undefined) || ($scope.txtAmount == "0")) {
+    //        $scope.errReceive = " Please enter amount";
+    //        return;
+    //    }
 
-        $http({
-            url: "/Admin/SavePayDesigner",
-            dataType: 'json',
-            method: 'POST',
-            params: {
-                sid: varStaffID,
-                amount: $scope.txtAmount,
-                remark: $scope.txtRemark
-            },
-            contentType: "application/json; charaset=utf-8"
-        }).then(function (d) {
-            if (d.data == "") {
+    //    $http({
+    //        url: "/Admin/SavePayDesigner",
+    //        dataType: 'json',
+    //        method: 'POST',
+    //        params: {
+    //            sid: varStaffID,
+    //            amount: $scope.txtAmount,
+    //            remark: $scope.txtRemark
+    //        },
+    //        contentType: "application/json; charaset=utf-8"
+    //    }).then(function (d) {
+    //        if (d.data == "") {
 
-                alert("Designer payment successfully saved");
-                location.reload();
-                return;
-            }
+    //            alert("Designer payment successfully saved");
+    //            location.reload();
+    //            return;
+    //        }
 
-        }).error(function (err) {
-            alert("Error " + err);
-        });
+    //    }).error(function (err) {
+    //        alert("Error " + err);
+    //    });
 
 
-    }
+    //}
 
-    $scope.ShowPayWindow = function (sid, name) {
+    //$scope.ShowPayWindow = function (sid, name) {
 
-        $scope.txtDName = "";
-        $scope.txtsid = "";
-        $scope.txtRemark = "";
+    //    $scope.txtDName = "";
+    //    $scope.txtsid = "";
+    //    $scope.txtRemark = "";
 
-        $scope.paywindow = false;
-        $scope.txtDName = name;
-        $scope.txtsid = sid;
+    //    $scope.paywindow = false;
+    //    $scope.txtDName = name;
+    //    $scope.txtsid = sid;
 
-    }
+    //}
 
     //$scope.CloseAmountReceiveWindow = function () {
     //    $scope.paywindow = true;
@@ -234,4 +240,24 @@ app.controller('myController', function ($scope, $http) {
         });
 
     }
+});
+
+
+//app.factory('staff', function ($http) {
+//    var fac = {};
+//    fac.getRecord = function () {
+//        return $http.getRecord('/Admin/GatAllRegistration')
+//    };
+
+//    return fac;
+//});
+
+
+app.factory('staff', function ($http) {
+    var fac = {};
+    fac.getRecord = function () {
+        return $http.get('/Admin/GatAllRegistration');
+    }
+
+    return fac;
 });

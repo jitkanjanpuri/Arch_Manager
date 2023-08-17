@@ -1,0 +1,639 @@
+﻿
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="~/img/Designlab Icon.png" type="image/x-icon" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="~/img/Designlab Icon.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="~/img/Designlab Icon.png" />
+    <link rel="icon" type="image/png" href="~/img/Designlab Icon.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="~/img/Designlab Icon.png" sizes="16x16" />
+    <link href="~/vendorArch/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+
+    <link href="~/vendorArch/css/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/vendorArch/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="~/vendorArch/css/style.css" rel="stylesheet" />
+    <link href="~/vendorArch/select2/select2.min.css" rel="stylesheet">
+    <title>Dsuite - Admin access</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.1.1/Chart.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload.min.js"></script>
+
+    <script type="text/javascript">
+        function widgetLoad() {
+            var cc = 0;
+            var lblArr = [];
+            var dataArr = [];
+
+            $.ajax({
+                url: "/adminReport/getCCWidget",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (d) {
+                    var slist;
+                    for (var i = 0; i < d.length; i++) {
+                        slist = d[i];
+                        lblArr.push(slist.projectType);
+                        dataArr.push(slist.sno);
+                        cc = cc + parseInt(slist.sno);
+                    }
+                    document.getElementById("lblCC").innerHTML = cc;
+                    var ctx_area_2 = document.getElementById("widgetChart1");
+                    ctx_area_2.height = 130;
+                    var widgetChart1 = new Chart(ctx_area_2, {
+                        type: 'line',
+                        data: {
+                            labels: lblArr,
+                            type: 'Date',
+                            datasets: [{
+                                data: dataArr,
+                                label: 'CC',
+                                backgroundColor: 'rgba(255,255,255,.1)',
+                                borderColor: 'rgba(255,255,255,.55)',
+                            },]
+                        },
+                        options: {
+                            maintainAspectRatio: true,
+                            legend: {
+                                display: false
+                            },
+                            layout: {
+                                padding: {
+                                    left: 0,
+                                    right: 0,
+                                    top: 0,
+                                    bottom: 0
+                                }
+                            },
+                            responsive: true,
+                            scales: {
+                                xAxes: [{
+                                    gridLines: {
+                                        color: 'transparent',
+                                        zeroLineColor: 'transparent'
+                                    },
+                                    ticks: {
+                                        fontSize: 2,
+                                        fontColor: 'transparent'
+                                    }
+                                }],
+                                yAxes: [{
+                                    display: false,
+                                    ticks: {
+                                        display: false,
+                                    }
+                                }]
+                            },
+                            title: {
+                                display: false,
+                            },
+                            elements: {
+                                line: {
+                                    borderWidth: 0
+                                },
+                                point: {
+                                    radius: 0,
+                                    hitRadius: 10,
+                                    hoverRadius: 4
+                                }
+                            }
+                        }
+                    });
+
+                    getQuotation();
+                },
+                error: function () {
+                    alert("Error ");
+                }
+            });
+        }
+
+
+        function getQuotation() {
+            var cc = 0;
+            var lblArr = [];
+            var dataArr = [];
+
+            $.ajax({
+                url: "/adminReport/getQuotationWidget",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (d) {
+                    var slist;
+                    for (var i = 0; i < d.length; i++) {
+                        slist = d[i];
+                        lblArr.push(slist.projectType);
+                        dataArr.push(slist.sno);
+                        cc = cc + parseInt(slist.sno);
+                    }
+                    document.getElementById("lblQt").innerHTML = cc;
+                    var ctx_area_2 = document.getElementById("widgetChart2");
+                    ctx_area_2.height = 130;
+
+                    var widgetChart2 = new Chart(ctx_area_2, {
+                        type: 'line',
+                        data: {
+                            labels: lblArr,
+                            type: 'Date',
+                            datasets: [{
+                                data: dataArr,
+                                label: 'Quotation',
+                                backgroundColor: 'transparent',
+                                borderColor: 'rgba(255,255,255,.55)',
+                            },]
+                        },
+                        options: {
+
+                            maintainAspectRatio: false,
+                            legend: {
+                                display: false
+                            },
+                            responsive: true,
+                            tooltips: {
+                                mode: 'index',
+                                titleFontSize: 12,
+                                titleFontColor: '#000',
+                                bodyFontColor: '#000',
+                                backgroundColor: '#fff',
+                                titleFontFamily: 'Nunito',
+                                bodyFontFamily: 'Nunito',
+                                cornerRadius: 3,
+                                intersect: false,
+                            },
+                            scales: {
+                                xAxes: [{
+                                    gridLines: {
+                                        color: 'transparent',
+                                        zeroLineColor: 'transparent'
+                                    },
+                                    ticks: {
+                                        fontSize: 2,
+                                        fontColor: 'transparent'
+                                    }
+                                }],
+                                yAxes: [{
+                                    display: false,
+                                    ticks: {
+                                        display: false,
+                                    }
+                                }]
+                            },
+                            title: {
+                                display: false,
+                            },
+                            elements: {
+                                line: {
+                                    tension: 0.00001,
+                                    borderWidth: 1
+                                },
+                                point: {
+                                    radius: 4,
+                                    hitRadius: 10,
+                                    hoverRadius: 4
+                                }
+                            }
+                        }
+                    });
+                    getConfirmProject();
+
+                },
+                error: function () {
+                    alert("Error ");
+                }
+
+            });
+        }
+
+        function getConfirmProject() {
+            var cc = 0;
+            var lblArr = [];
+            var dataArr = [];
+
+            $.ajax({
+                url: "/adminReport/getConfirmProjectWidget",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (d) {
+                    var slist;
+
+                    for (var i = 0; i < d.length; i++) {
+                        slist = d[i];
+                        lblArr.push(slist.projectType);
+                        dataArr.push(slist.sno);
+                        cc = cc + parseInt(slist.sno);
+                    }
+                    document.getElementById("lblCP").innerHTML = cc;
+                    var ctx_area_4 = document.getElementById("widgetChart3");
+                    ctx_area_4.height = 130;
+
+
+                    var widgetChart3 = new Chart(ctx_area_4, {
+                        type: 'line',
+                        data: {
+                            labels: lblArr,
+                            type: 'Date',
+                            datasets: [{
+                                data: dataArr,
+                                label: 'Confirm',
+                                backgroundColor: 'transparent',
+                                borderColor: 'rgba(255,255,255,.55)',
+                            },]
+                        },
+                        options: {
+
+                            maintainAspectRatio: false,
+                            legend: {
+                                display: false
+                            },
+                            responsive: true,
+                            tooltips: {
+                                mode: 'index',
+                                titleFontSize: 12,
+                                titleFontColor: '#000',
+                                bodyFontColor: '#000',
+                                backgroundColor: '#fff',
+                                titleFontFamily: 'Nunito',
+                                bodyFontFamily: 'Nunito',
+                                cornerRadius: 3,
+                                intersect: false,
+                            },
+                            scales: {
+                                xAxes: [{
+                                    gridLines: {
+                                        color: 'transparent',
+                                        zeroLineColor: 'transparent'
+                                    },
+                                    ticks: {
+                                        fontSize: 2,
+                                        fontColor: 'transparent'
+                                    }
+                                }],
+                                yAxes: [{
+                                    display: false,
+                                    ticks: {
+                                        display: false,
+                                    }
+                                }]
+                            },
+                            title: {
+                                display: false,
+                            },
+                            elements: {
+                                line: {
+                                    borderWidth: 1
+                                },
+                                point: {
+                                    radius: 4,
+                                    hitRadius: 10,
+                                    hoverRadius: 4
+                                }
+                            }
+                        }
+                    });
+
+                    getSale();
+
+                },
+                error: function () {
+                    alert("Error ");
+                }
+            });
+        }
+
+        function getSale() {
+            var cc = 0;
+            var lblArr = [];
+            var dataArr = [];
+
+            $.ajax({
+                url: "/adminReport/getSaleWidget",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (d) {
+                    var slist;
+
+                    for (var i = 0; i < d.length; i++) {
+                        slist = d[i];
+                        lblArr.push(slist.projectType);
+                        dataArr.push(slist.sno);
+                        cc = cc + parseInt(slist.sno);
+                    }
+                    document.getElementById("lblSales").innerHTML = cc;
+
+                    var ctx_area_5 = document.getElementById("widgetChart4");
+                    ctx_area_5.height = 115;
+                    var widgetChart4 = new Chart(ctx_area_5, {
+                        type: 'bar',
+                        data: {
+                            labels: lblArr,
+                            datasets: [
+                                {
+                                    label: "Sales",
+                                    data: dataArr,
+                                    borderColor: "transparent",
+                                    borderWidth: "0",
+                                    backgroundColor: "rgba(255,255,255,.3)"
+                                }
+                            ]
+                        },
+                        options: {
+                            maintainAspectRatio: true,
+                            legend: {
+                                display: false
+                            },
+                            scales: {
+                                xAxes: [{
+                                    display: false,
+                                    categoryPercentage: 1,
+                                    barPercentage: 0.65
+                                }],
+                                yAxes: [{
+                                    display: false
+                                }]
+                            }
+                        }
+                    });
+
+                },
+                error: function () {
+                    alert("Error ");
+                }
+            });
+
+        }
+
+    </script>
+
+</head>
+
+<body id="page-top" class="sidebar-toggled" >
+
+    <div id="wrapper">
+
+        <!-- Sidebar
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled mt-4" id="accordionSidebar">
+           -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled mt-4" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <div class="bg-white">
+                <div class="sidebar-brand align-items-center rounded-top h-auto p-0 py-5 justify-content-center" style="background-color:#f85c5c">
+                    <a class="text-white nav-link">
+                        <div class="sidebar-brand-icon">
+                            <h2 class="font-911-porscha display-3">D</h2>
+
+                        </div>
+                        <div class="sidebar-brand-text mx-3">
+                            <h3 class="font-911-porscha">DSUITE</h3>
+                        </div>
+                    </a>
+
+                    <p class="d-block text-dark text-lowercase mb-0 text-dark font-weight-normal">Welcome Admin</p>
+                    <div class="d-block py-2"><img src="~/img/admin.jpg" class="rounded-circle mx-auto img-fluid px-2" alt="Admin"></div>
+                    <a class="text-dark text-lowercase" href="/Login/LogOut">
+                        <small>[logout]</small>
+                    </a>
+
+                </div>
+            </div>
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="/Home/Index">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+
+
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider" />
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Operations
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed text-uppercase" href="/adminReport/AdminOperation">
+                    <i class="fas fa-fw fa-building"></i>
+                    <span>Exterior</span>
+                </a>
+
+            </li>
+
+            <!-- Nav Item - Interior Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed text-uppercase" href="/adminReport/AdminInteriorOperation">
+                    <i class="fas fa-fw fa-bed"></i>
+                    <span>INTERIOR</span>
+                </a>
+
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+            <!-- Nav Item - Interior Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed text-uppercase" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" arias-controls="collapsePages">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>QUICK LINKS</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="/bank/Index"><i class="mr-2 fas fa-university"></i> Bank</a>
+                        <a class="collapse-item" href="/Registration/Index"><i class="mr-2 fas fa-user-plus"></i> Registration</a>
+                        <a class="collapse-item" href="/AssignState/Index"><i class="mr-2 fas fa-calendar"></i> State assign</a>
+                        <a class="collapse-item" href="/AdminReport/Receipt"><i class="mr-2 fas fa-file"></i> Receipt</a>
+                        <a class="collapse-item" href="/ConfirmRequest/RollBack"><i class="mr-2 fas fa-undo"></i> Roll back</a>
+                        <a class="collapse-item" href="/Contest/PromoMailGreeting"><i class="mr-2 fas fa-envelope"></i> Promo mails</a>
+                        <a class="collapse-item" href="/Contest/setContest"><i class="mr-2 fas fa-trophy"></i> Contest</a>
+                        <a class="collapse-item" href="/AdminReport/Index"><i class="mr-2 fas fa-chart-pie"></i> Reports</a>
+                        <a class="collapse-item" href="/AdminReport/TechnicalReport"><i class="mr-2 fas fa-flag"></i> Technical report</a>
+
+
+                        @*<a class="text-dark text-lowercase" href="/Login/LogOut">
+                                <small>[logout]</small>
+                            </a>*@
+                    </div>
+                </div>
+            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+            <!-- powered by -->
+            <div class="align-items-center p-0 py-5 justify-content-center text-center">
+                <a class="text-white nav-link">
+                    @*<p class="d-block text-white font-weight-normal">Powered By</p>*@
+                    @*<p class="text-white font-weight-normal"><img src="~/img/logo_Dsuite.png" class="mx-auto img-fluid px-4" alt="Admin"></p>*@
+                </a>
+            </div>
+
+            <!-- Divider -->
+        </ul>
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column overflow-hidden">
+
+
+            <div id="content">
+                <div class="container-fluid">
+                    <button id="sidebarToggleTop" class="mt-3 btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+
+                    <div class="row mt-4">
+
+
+                        <div class="col-xl-3 col-md-6 mb-2">
+                            <div class="card top-cart-1 text-white shadow h-100">
+                                <div class="card-body pb-0">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-3x">  </i>
+                                        </div>
+                                        <div class="col-auto ml-4">
+                                            <div class="h2 mb-0 font-weight-bold"><span id="lblCC"></span> </div>
+                                            <div class="text-xs font-weight-light text-uppercase mb-1">Conversational Calls (Last 6 days)</div>
+                                        </div>
+                                        <div class="overview-chart">
+                                            <canvas id="widgetChart1"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-md-6 mb-2">
+                            <div class="card top-cart-2 text-white shadow h-100">
+                                <div class="card-body pb-0">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col-auto">
+                                            <i class="fas fa-file fa-3x"></i>
+                                        </div>
+                                        <div class="col-auto ml-4">
+                                            <div class="h2 mb-0 font-weight-bold"><span id="lblQt"></span></div>
+                                            <div class="text-xs font-weight-light text-uppercase mb-1">Quotations (Last 6 days)</div>
+                                        </div>
+                                        <div class="overview-chart">
+                                            <canvas id="widgetChart2"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-md-6 mb-2">
+                            <div class="card top-cart-3 text-white shadow h-100">
+                                <div class="card-body pb-0">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col-auto">
+                                            <i class="fas fa-chart-area fa-3x"></i>
+                                        </div>
+                                        <div class="col-auto ml-4">
+                                            <div class="h2 mb-0 font-weight-bold"><span id="lblCP"></span></div>
+                                            <div class="text-xs font-weight-light text-uppercase mb-1">confirmed projects(last 6 days)</div>
+                                        </div>
+                                        <div class="overview-chart">
+                                            <canvas id="widgetChart3"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-md-6 mb-2">
+                            <div class="card top-cart-4 text-white shadow h-100">
+                                <div class="card-body pb-0">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col-auto">
+                                            <i class="fas fa-chart-line fa-3x"></i>
+                                        </div>
+                                        <div class="col-auto ml-4">
+                                            <div class="h2 mb-0 font-weight-bold"><span id="lblSales"></span></div>
+                                            <div class="text-xs font-weight-light text-uppercase mb-1">sales last 12 days</div>
+                                        </div>
+                                        <div class="overview-chart">
+                                            <canvas id="widgetChart4"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content Row -->
+
+
+                    <section class="content-wrapper main-content clear-fix">
+                        @RenderBody()
+                    </section>
+
+                </div>
+            </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright ©️2021-2025 DesignLAB International ®️. All Rights Reserved.</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <script src="~/vendorArch/jquery/jquery.min.js"></script>
+    <script src="~/vendorArch/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="~/vendorArch/jquery-easing/jquery.easing.min.js"></script>
+    <script src="~/vendorArch/js/owl.carousel.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="~/vendorArch/js/sb-admin-2.min.js"></script>
+    <script src="~/vendorArch/chart.js/Chart.min.js"></script>
+    <script src="~/vendorArch/select2/select2.min.js"></script>
+    <script src="~/vendorArch/js/main.js"></script>
+
+
+
+</body>
+
+</html>

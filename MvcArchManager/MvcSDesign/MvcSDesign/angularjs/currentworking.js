@@ -21,6 +21,9 @@ app.controller("myController", function ($scope, $http, cw) {
 
     $scope.lblNewErr = "";
     $scope.loading = true;
+    $scope.loading1 = true;
+
+
     var pmID = 0;
 
 
@@ -147,7 +150,7 @@ app.controller("myController", function ($scope, $http, cw) {
 
         chkGMail = document.getElementById("chkGMail").checked;
         chkWhatsApp = document.getElementById("chkWhatsApp").checked;
-
+        $scope.loading1 = false;
 
         $http({
             url: "/Admin/TaskSendToClient",
@@ -166,6 +169,7 @@ app.controller("myController", function ($scope, $http, cw) {
 
             var slist = d.data[0];//Massage 
             var ptype = slist.Text;
+            $scope.loading1 = true;
             if (ptype == "Y") {
                 $scope.lblError = "File successfully send to client";
             }
@@ -226,7 +230,7 @@ app.controller("myController", function ($scope, $http, cw) {
             contentType: "application/json;charaset=utf-8"
         }).then(function (d) {
             $scope.txtClient1 = d.data;
-
+            $scope.loading = true;
             if (d.data.length == 0) {
                 $scope.lblNewErr = "Project ID is not available";
                 return false;
@@ -305,6 +309,7 @@ app.controller("myController", function ($scope, $http, cw) {
             data: obj,
             contentType: "application/json;charaset=utf-8"
         }).then(function (d) {
+            $scope.loading = true;
             if (d.data == "") {
                 alert("Record successfully saved")
                 location.reload();
@@ -336,7 +341,7 @@ app.controller("myController", function ($scope, $http, cw) {
     }
 
 
-     
+
     //$scope.EditCurWorking = function (item) {
 
     //    $scope.txtProjectID = item.projectID;
@@ -419,10 +424,12 @@ app.controller("myController", function ($scope, $http, cw) {
                 SearchProject();
                 return;
             }
+
+
         });
     };
 
-     
+
 });
 
 app.factory('cw', function ($http) {

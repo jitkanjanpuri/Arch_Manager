@@ -21,6 +21,9 @@ app.controller("myController", function ($scope, $http, cw) {
 
     $scope.lblNewErr = "";
     $scope.loading = true;
+    $scope.loading1 = true;
+
+
     var pmID = 0;
 
 
@@ -51,11 +54,11 @@ app.controller("myController", function ($scope, $http, cw) {
             $scope.subcategoryName = $scope.subcategory[0];
         }
         else if ($scope.category == "First Floor Drawing") {
-            $scope.subcategory = ["Working Drawing", "Revised Working Drawing", "Door and Window Schedule", "Revised Door and Window Schedule", "Lintel Beam", "Revised Lintel Beam", "StairCase Detail Drawing", "Revised Staircase Detail Drawing", "Wall Electrical", "Revised Wall Electrical", "Roof Electrial", "Revised Roof Electrial", "First Floor Shuttering", "Revised First Floor Shuttering", "First Floor Beam and Slab Design", "Revised First Floor Beam and Slab Design", "2D Elevation", "Revised 2D Elevation", "2D Elevation Electrical", "Revised 2D Elevation Electrical", "Toilet Plan and Detail Niche and Other Working Drawing", "Revised Toilet Plan and Detail Niche and Other Working Drawing", "Plumbing Drainage and Rain Water","Revised Plumbing Drainage and Rain Water"];
-            $scope.subcategoryName = $scope.subcategory[0];  
+            $scope.subcategory = ["Working Drawing", "Revised Working Drawing", "Door and Window Schedule", "Revised Door and Window Schedule", "Lintel Beam", "Revised Lintel Beam", "StairCase Detail Drawing", "Revised Staircase Detail Drawing", "Wall Electrical", "Revised Wall Electrical", "Roof Electrial", "Revised Roof Electrial", "First Floor Shuttering", "Revised First Floor Shuttering", "First Floor Beam and Slab Design", "Revised First Floor Beam and Slab Design", "2D Elevation", "Revised 2D Elevation", "2D Elevation Electrical", "Revised 2D Elevation Electrical", "Toilet Plan and Detail Niche and Other Working Drawing", "Revised Toilet Plan and Detail Niche and Other Working Drawing", "Plumbing Drainage and Rain Water", "Revised Plumbing Drainage and Rain Water"];
+            $scope.subcategoryName = $scope.subcategory[0];
         }
         else if ($scope.category == "Second Floor Drawing") {
-            $scope.subcategory = ["Working Drawing", "Revised Working Drawing", "Door and Window Schedule", "Revised Door and Window Schedule", "Lintel Beam", "Revised Lintel Beam", "StairCase Detail Drawing", "Revised StairCase Detail Drawing", "Wall Electrical", "Revised Wall Electrical", "Roof Electrial", "Revised Roof Electrial", "First Floor Shuttering", "Revised First Floor Shuttering", "First Floor Beam and Slab Design", "Revised First Floor Beam and Slab Design", "2D Elevation", "Revised 2D Elevation", "2D Elevation Electrical", "Revised 2D Elevation Electrical", "Toilet Plan and Detail Niche and Other Workinge", "Revised Toilet Plan and Detail Niche and Other Workinge", "Plumbing Drainage and Rain Water", "Revised Plumbing Drainage and Rain Water", "Perapet Wall","Revised Perapet Wall"];
+            $scope.subcategory = ["Working Drawing", "Revised Working Drawing", "Door and Window Schedule", "Revised Door and Window Schedule", "Lintel Beam", "Revised Lintel Beam", "StairCase Detail Drawing", "Revised StairCase Detail Drawing", "Wall Electrical", "Revised Wall Electrical", "Roof Electrial", "Revised Roof Electrial", "First Floor Shuttering", "Revised First Floor Shuttering", "First Floor Beam and Slab Design", "Revised First Floor Beam and Slab Design", "2D Elevation", "Revised 2D Elevation", "2D Elevation Electrical", "Revised 2D Elevation Electrical", "Toilet Plan and Detail Niche and Other Workinge", "Revised Toilet Plan and Detail Niche and Other Workinge", "Plumbing Drainage and Rain Water", "Revised Plumbing Drainage and Rain Water", "Perapet Wall", "Revised Perapet Wall"];
             $scope.subcategoryName = $scope.subcategory[0];
         }
     }
@@ -147,7 +150,7 @@ app.controller("myController", function ($scope, $http, cw) {
 
         chkGMail = document.getElementById("chkGMail").checked;
         chkWhatsApp = document.getElementById("chkWhatsApp").checked;
-
+        $scope.loading1 = false;
 
         $http({
             url: "/Admin/TaskSendToClient",
@@ -166,10 +169,10 @@ app.controller("myController", function ($scope, $http, cw) {
 
             var slist = d.data[0];//Massage 
             var ptype = slist.Text;
-            if(ptype =="Y" )
-             {
+            $scope.loading1 = true;
+            if (ptype == "Y") {
                 $scope.lblError = "File successfully send to client";
-             }            
+            }
 
             $('.bs-example-modal-send').modal('hide');
             SearchProject();
@@ -227,7 +230,7 @@ app.controller("myController", function ($scope, $http, cw) {
             contentType: "application/json;charaset=utf-8"
         }).then(function (d) {
             $scope.txtClient1 = d.data;
-
+            $scope.loading = true;
             if (d.data.length == 0) {
                 $scope.lblNewErr = "Project ID is not available";
                 return false;
@@ -306,6 +309,7 @@ app.controller("myController", function ($scope, $http, cw) {
             data: obj,
             contentType: "application/json;charaset=utf-8"
         }).then(function (d) {
+            $scope.loading = true;
             if (d.data == "") {
                 alert("Record successfully saved")
                 location.reload();
@@ -337,33 +341,6 @@ app.controller("myController", function ($scope, $http, cw) {
     }
 
 
-    //$scope.ShowDesignerTask = function () {
-    //    $scope.loading = false;
-    //    $scope.record = "";
-
-    //    $http({
-    //        url: "/Admin/getCurrentWorkingList",
-    //        method: "POST",
-    //        dataType: "json",
-    //        params: {
-    //            dname: $scope.dname.Value
-    //        },
-    //        contentType: "application/json;charaset=utf-8"
-    //    }).then(function (d) {
-    //        $scope.currentworkinglist = d.data;
-    //        $scope.loading = true;
-    //        statusCount();
-    //        if ($scope.currentworkinglist.length == 0) {
-    //            //  alert("Record not available");
-    //            $scope.record = "Record not available";
-    //            return;
-    //        }
-
-    //    }).error(function (err) {
-    //        alert(" Error " + err);
-    //    });
-
-    //}
 
     //$scope.EditCurWorking = function (item) {
 
@@ -447,36 +424,10 @@ app.controller("myController", function ($scope, $http, cw) {
                 SearchProject();
                 return;
             }
+           
+
         });
     };
-
-
-    //$scope.CompleteCurrentWorking = function () {
-    //    $http({
-    //        url: "/Admin/CompleteCurrentWorking",
-    //        dataType: 'json',
-    //        method: 'POST',
-    //        params: {
-    //            opID: pmID
-    //        },
-    //        contentType: "application/json;charaset=utf-8"
-    //    }).then(function (d) {
-    //        if (d.data.name == "") {
-    //            alert("Project successfully updated")
-
-    //            location.reload();
-    //        }
-    //        else
-    //            alert("Error :" + d.data.name);
-    //    }).error(function (err) {
-    //        alert("Error :" + err);
-    //    });
-
-    //}
-
-
-
-
 
 
 });

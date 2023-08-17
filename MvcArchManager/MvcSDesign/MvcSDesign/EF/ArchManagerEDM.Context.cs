@@ -25,7 +25,6 @@ namespace MvcSDesign.EF
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<tblAmountReceive> tblAmountReceives { get; set; }
         public virtual DbSet<tblClient> tblClients { get; set; }
         public virtual DbSet<tblClientLedger> tblClientLedgers { get; set; }
         public virtual DbSet<tblCompanyProfile> tblCompanyProfiles { get; set; }
@@ -40,5 +39,7 @@ namespace MvcSDesign.EF
         public virtual DbSet<tblProjectSiteVisit> tblProjectSiteVisits { get; set; }
         public virtual DbSet<tblProjectUploadFile> tblProjectUploadFiles { get; set; }
         public virtual DbSet<tblTaskAssign> tblTaskAssigns { get; set; }
+        public virtual DbSet<tblState> tblStates { get; set; }
+        public virtual DbSet<tblAmountReceive> tblAmountReceives { get; set; }
     }
 }

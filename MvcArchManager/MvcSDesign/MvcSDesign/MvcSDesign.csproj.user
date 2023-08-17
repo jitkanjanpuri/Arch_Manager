@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <NameOfLastUsedPublishProfile>F:\Development\Web sites\MvcArchManager\MvcSDesign\MvcSDesign\Properties\PublishProfiles\IISProfile.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>G:\Arch_Manager\MvcArchManager\MvcSDesign\MvcSDesign\Properties\PublishProfiles\MvcDesigner.pubxml</NameOfLastUsedPublishProfile>
     <LastActiveSolutionConfig>Release|Any CPU</LastActiveSolutionConfig>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />

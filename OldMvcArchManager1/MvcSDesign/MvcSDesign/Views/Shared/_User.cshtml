@@ -1,0 +1,421 @@
+﻿
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.Title - Arch Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="This is an example dashboard created using build-in elements and components.">
+    <meta name="msapplication-tap-highlight" content="no">
+    <link href="~/assetsUser/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assetsUser/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <link href="~/assetsUser/css/style.css" rel="stylesheet">
+    <script src="~/assetsUser/js/jquery.min.js"></script>
+    <style type="text/css">
+        .imagePreview {
+            width: 180px;
+            height: 180px;
+            background-position: center center;
+            background-size: cover;
+            -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, .3);
+            display: none;
+        }
+
+        .imagePreview {
+            width: 180px;
+            height: 180px;
+            background-position: center center;
+            background-size: cover;
+            -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, .3);
+            display: none;
+        }
+    </style>
+
+    <script type="text/javascript">
+        function CredentialValidation() {
+            var user = document.getElementById("usernamevalidation").value;
+            var pw = document.getElementById("pwvalidation").value;
+            var mpw = document.getElementById("matchpassword").value;
+            document.getElementById("lblPasswordErr").innerHTML = "";
+            if (pw.length == 0) {
+                document.getElementById("lblPasswordErr").innerHTML = "Please enter password";
+                document.getElementById("pwvalidation").focus();
+
+                $('#confirm_modal').modal('hide');
+                return false;
+            }
+            else if (pw.length < 4 ) {
+                document.getElementById("lblPasswordErr").innerHTML = "Enter atleast 5 password character ";
+                document.getElementById("pwvalidation").focus();
+
+                $('#confirm_modal').modal('hide');
+                return false;
+            }
+
+            else if (mpw.length == 0) {
+                document.getElementById("lblPasswordErr").innerHTML = "Please enter confirm password";
+                document.getElementById("matchpassword").focus();
+
+                $('#confirm_modal').modal('hide');
+                return false;
+            }
+            else if (pw != mpw) {
+                document.getElementById("lblPasswordErr").innerHTML = "Password and confirm password are not match";
+                document.getElementById("pwvalidation").focus();
+                $('#confirm_modal').modal('hide');
+                return false;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/Render/ChangeCredential",
+                data: { pwd: pw },
+                success: function (result) {
+                    location.reload();
+                }
+
+            })
+
+
+            return false;
+        }
+
+        //function ChangeProfilePhoto() {
+
+        //    var fileUploader = document.getElementById("fileUploader").value;
+        //    var desc = document.getElementById("description").value;
+        //    document.getElementById("lblProfileError").innerText = "";
+        //    if (fileUploader.length == 0) {
+        //        document.getElementById("lblProfileError").innerText = "Please select image for profile upload";
+        //        return false;
+        //    }
+        //    else {
+        //        var file_ext = fileUploader.substr(fileUploader.lastIndexOf('.') + 1, fileUploader.length);
+        //        if ((file_ext != "png") && (file_ext != "jpg")) {
+        //            document.getElementById("lblProfileError").innerText = "Please select only png/jpg file for upload";
+        //            return false;
+        //        }
+
+        //        var fileData = new FormData();
+        //        fileData.append("desc", desc);
+        //        var fileUpload = $("#fileUploader").get(0);
+        //        var files = fileUpload.files;
+        //        fileData.append(files[0].name, files[0]);
+        //        $.ajax({
+        //            type: "POST",
+        //            url: "/Render/ChangeProfilePhoto",
+        //            contentType: false,
+        //            processData: false,
+        //            data: fileData,
+        //            success: function (result) {
+        //                //alert(result)
+        //                window.location.reload();
+        //            }
+        //        })
+        //    }
+        //    return true;
+        //}
+
+        //function ShowImagePreview(input) {
+        //    if (input.files && input.files[0]) {
+        //        var reader = new FileReader();
+        //        document.getElementById("lblProfileError").innerText = "";
+        //        var ext = input.files[0].name.split('.').pop();
+        //        if ((ext != "jpg") && (ext != "png")) {
+        //            document.getElementById("lblProfileError").innerText = "Invalid file's format for profile";
+        //            return;
+        //        }
+
+        //        reader.onload = function (e) {
+        //            $('#imagePreview').prop('src', e.target.result);
+        //        };
+        //        reader.readAsDataURL(input.files[0]);
+        //    }
+        //}
+
+        //function fillGraph() {
+        //    $.ajax({
+        //        url: "/Render/fillGraph_Elevation",
+        //        type: "POST",
+        //        success: function (d) {
+        //            document.getElementById("lblTotalElevation").innerHTML = d.elevation;
+        //            $('.elevation-circle').circleProgress({
+        //                value: d.completeElevation,
+        //                fill: { color: '#18A6FC' },
+        //                size: 50,
+        //            }).on('circle-animation-progress', function (event, progress) {
+        //                $(this).find('strong').html(Math.round(d.completeElevation * progress));
+        //            });
+
+        //            document.getElementById("lblRevisedTotalElevation").innerHTML = d.reviseElevation;
+        //            $('.revised-elevation-circle').circleProgress({
+        //                value: d.completeRevisedElevation,
+        //                fill: { color: '#DA3F50' },
+        //                size: 50,
+        //            }).on('circle-animation-progress', function (event, progress) {
+        //                $(this).find('strong').html(Math.round(d.completeRevisedElevation * progress));
+        //            });
+
+        //            $('.traditional-elevation-circle').circleProgress({
+        //                value: 0,
+        //                fill: { color: '#FA7E27' },
+        //                size: 50,
+        //            }).on('circle-animation-progress', function (event, progress) {
+        //                $(this).find('strong').html(Math.round(0 * progress));
+        //            });
+
+        //            $('.revised-traditional-elevation-circle').circleProgress({
+        //                value: 0,
+        //                fill: { color: '#4FC47D' },
+        //                size: 50,
+        //            }).on('circle-animation-progress', function (event, progress) {
+        //                $(this).find('strong').html(Math.round(0 * progress));
+        //            });
+        //        }
+        //    })
+
+        //}
+
+        
+
+    </script>
+</head>
+
+
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <a class="navbar-brand" href="#">
+            <h2 class="archManager-h2">Designer</h2>
+        </a>
+        @{
+
+            string user = "", username = "", profileImage = "", designation = "", description = "";
+            try
+            {
+                //profileImage = "/profile/" + Session["profileImage"].ToString();
+                username = Session["username"].ToString();
+                //user = Session["name"].ToString();
+                //designation = Session["designation"].ToString();
+                //description = Session["description"].ToString();
+
+            }
+            catch (Exception ex) { }
+
+        }
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto my-2">
+                <li class="nav-item">
+                    <a href="/Render/operation" class="nav-link">
+                        <i class="nav-link-icon fa fa-database"> </i>
+                        Operations
+                    </a>
+                </li>
+                <li class="btn-group nav-item">
+                    <a href="#" class="nav-link" data-toggle="modal" data-target="#profileModal">
+                        <i class="nav-link-icon fa fa-user"></i>
+                        Profile
+                    </a>
+                </li>
+                @*<li class="dropdown nav-item">
+                <a href="/Render/Salary" class="nav-link">
+                    <i class="nav-link-icon fa fa-cog"></i>
+                    Salary
+                </a>
+            </li>*@
+            </ul>
+            <div class="app-header-right">
+
+                @*@Html.ActionLink("Log Out", "LogOut", "Login", new { @class = "dropdown-item", tabindex = "0" })*@
+                <span style="font-family:'Times New Roman'; font-size:14pt"><i> @username</i></span>
+                <br />
+                <a href="/Login/LogOut">Log Out</a>
+
+            </div>
+            <div class="app-header-right navbar-nav">
+                <div class="header-btn-lg pr-0 ml-0">
+                    <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                            <div class="widget-content-left">
+
+
+                                <div class="btn-group">
+                                    <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn mr-3">
+                                        @*<img width="42" height="42" style="object-fit:cover" class="rounded-circle" src=@profileImage alt="">
+                                    <i class="fa fa-angle-down ml-2 opacity-8"></i>*@
+                                    </a>
+                                    <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu">
+                                        @Html.ActionLink("Log Out", "logout", "Render", new { @class = "dropdown-item", tabindex = "0" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget-content-left ml-3 header-user-info">
+                                <div class="widget-heading nav-link p-0">
+                                    @user   @*@HttpContext.Current.User.Identity.Name*@
+                                </div>
+                                <div class="widget-subheading nav-link p-0">
+                                    @designation
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container-fluid mt-3">
+        <div class="app-main__outer">
+            <div class="app-main__inner">
+                <div class="row">
+                </div>
+
+                <div>
+                    @RenderBody()
+                    <hr />
+
+                </div>
+
+                <!-- Table end--->
+            </div>
+        </div>
+    </div>
+
+    <!-- profile tabs end-->
+    <footer class="footer text-center">
+        <div class="container">
+            <span class="text-muted">All rights reserved. &copy; 2023-28. Arch Manager</span>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="confirm_modal" aria-labelledby="confirm_modalLabel" aria-hidden="true" style="z-index:9999">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <p>Do you want to change your password ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="return CredentialValidation()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- profile tabs start-->
+    <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+
+                    @*<img src=@profileImage class="img-fluid rounded-circle" id="imagePreview">*@
+                    <h3 class="text-white">@username</h3>
+                    <p class="text-white">@description</p>
+                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                        <li class="nav-item mr-3">
+                            <a class="nav-link active li-item" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Credentials</a>
+                        </li>
+                        @*<li class="nav-item">
+                            <a class="nav-link li-item" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Profile</a>
+                        </li>*@
+                    </ul>
+                </div>
+                <div class="modal-body">
+
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                            <div class="form-section">
+                                <form action="" method="">
+                                    <h4>Designer</h4>
+                                    <div class="form-group d-flex">
+                                        <label for="exampleInputEmail1" class="lable-tabs">Login</label>
+                                        <input type="text" class="form-control  input-control ml-3" id="usernamevalidation" readonly value="@username">
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label for="exampleInputPassword1" class="lable-tabs">Password</label>
+                                        <input type="password" class="form-control  input-control ml-3" id="pwvalidation">
+                                    </div>
+                                    <div class="form-group d-flex">
+                                        <label for="matchpassword" class="lable-tabs">Confirm password</label>
+                                        <input type="password" class="form-control  input-control ml-3" id="matchpassword">
+                                    </div>
+                                    <div class="form-group">
+                                        <p class="text-center"></p>
+                                        <p class="text-center" id="lblPasswordErr" style="color:red; font-size:12pt;"> </p>
+                                    </div>
+
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirm_modal">Submit</button>
+                                </form>
+                            </div>
+                            @*<div class="row">
+                                <div class="col-md-5 mx-auto">
+                                    <button type="button" class="btn mt-5 btn-cancel" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-primary mt-5 tabpanel btn-view" aria-labelledby="pills-profile-tab">View Profile</button>
+                                </div>
+                            </div>*@
+                        </div>
+                        @*<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                            <div class="form-section">
+                                <form action="" method="">
+                                    <h4>Department DLab Tech</h4>
+                                    <div class="form-group d-flex">
+                                        <label for="exampleInputprofile1" class="lable-tabs">Profile</label>
+                                        <input type='file' id="fileUploader" name="fileUploader" onchange="ShowImagePreview(this);" class="form-control input-control ml-3" accept="image/jpg" />
+                                    </div>
+                                    <ul class="form-ul d-flex p-0 mt-4">
+                                        <li><p>Star rating</p></li>
+                                        <li><i class="fas fa-star"></i></li>
+                                        <li><i class="fas fa-star"></i></li>
+                                        <li><i class="fas fa-star"></i></li>
+                                        <li><i class="fas fa-star"></i></li>
+                                        <li><i class="fas fa-star"></i></li>
+                                    </ul>
+                                    <div class="form-group d-flex">
+                                        <label for="exampleInputprofile1" class="lable-tabs">Description</label>
+                                        <textarea class="form-control input-control ml-3" rows="1" maxlength="250" id="description" name="description">@description</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <p class="text-center" for="exampleInputprofile5"></p>
+                                        <p class="text-center" id="lblProfileError" style="color:red; font-size:12pt;"> </p>
+                                    </div>
+                                    <button type="submit" onclick="return ChangeProfilePhoto()" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5 mx-auto">
+                                    <button type="button" class="btn mt-5 btn-cancel" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-primary mt-5 tabpanel btn-view" aria-labelledby="pills-profile-tab">View Profile</button>
+                                </div>
+                            </div>
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- profile tabs end-->
+    <!-- modal tabs end -->
+    <!---------- selary form section ------------->
+    <script type="text/javascript" src="~/assetsUser/js/jquery.min.js"></script>
+    <script type="text/javascript" src="~/assetsUser/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="~/assetsUser/js/chart.min.js"></script>
+    <script type="text/javascript" src="~/assetsUser/js/circle-progress.min.js"></script>
+
+  
+
+</body>
+
+</html>

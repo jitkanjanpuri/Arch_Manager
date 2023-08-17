@@ -17,7 +17,7 @@ using System.Globalization;
 using System.Web.Hosting;
 using System.Drawing;
 using System.IO;
-using Org.BouncyCastle.Ocsp;
+//using Org.BouncyCastle.Ocsp;
 
 namespace MvcSDesign.Controllers
 {
@@ -28,7 +28,7 @@ namespace MvcSDesign.Controllers
 
         public static DataTable clientDetailRecord;//= new DataTable();
         IAdmin _IAmn;
-        staff obj = new staff();
+        StaffModel obj = new StaffModel();
        
 
         public AdminController()
@@ -170,81 +170,52 @@ namespace MvcSDesign.Controllers
         }
 
         
-       //public JsonResult getCCWidget()
-       // {
-       //     List<quotation> prjType = new List<quotation>();
-       //     try
-       //     {
-       //         DataSet ds = new DataSet();
-              
-       //         prjType.Add(
-       //                 new quotation
-       //                 {
-       //                     projectType = "5-01-2023",
-       //                     sno = 7
-       //                 });
-       //         prjType.Add(
-       //                 new quotation
-       //                 {
-       //                     projectType = "6-01-2023",
-       //                     sno = 4
-       //                 });
-       //         prjType.Add(
-       //                 new quotation
-       //                 {
-       //                     projectType = "7-01-2023",
-       //                     sno = 9
-       //                 });
+       
+        //public JsonResult getHighestMonthSale()
+        //{
+        //    List<quotation> prjType = new List<quotation>();
+        //    try
+        //    {
+        //        DataTable ds = new DataTable();
+        //        prjType.Add(
+        //                     new quotation
+        //                     {
+        //                         clientname = "Rajiv",
+        //                         targetAmount =100,
+        //                         receiveAmount = 70 ,
+        //                         amount =200,
+        //                         depositAmount = 100,
+        //                         dtstr ="Jan"
+        //                     }
+        //                );
 
-       //     }
-       //     catch (Exception ex) { }
-       //     return Json(prjType, JsonRequestBehavior.AllowGet);
-       // }
-        public JsonResult getHighestMonthSale()
-        {
-            List<quotation> prjType = new List<quotation>();
-            try
-            {
-                DataTable ds = new DataTable();
-                prjType.Add(
-                             new quotation
-                             {
-                                 clientname = "Rajiv",
-                                 targetAmount =100,
-                                 receiveAmount = 70 ,
-                                 amount =200,
-                                 depositAmount = 100,
-                                 dtstr ="Jan"
-                             }
-                        );
+        //        prjType.Add(
+        //                  new quotation
+        //                  {
+        //                      clientname = "Manoj",
+        //                      targetAmount = 150,
+        //                      receiveAmount = 110,
+        //                      amount =200,
+        //                      depositAmount = 100,
+        //                      dtstr = "Jan"
+        //                  }
+        //             );
+        //        prjType.Add(
+        //                 new quotation
+        //                 {
+        //                     clientname = "Sanjiv",
+        //                     targetAmount = 50,
+        //                     receiveAmount = 20,
+        //                     amount = 200,
+        //                     depositAmount = 100,
+        //                     dtstr = "Jan"
+        //                 }
+        //            );
 
-                prjType.Add(
-                          new quotation
-                          {
-                              clientname = "Manoj",
-                              targetAmount = 150,
-                              receiveAmount = 110,
-                              amount =200,
-                              depositAmount = 100,
-                              dtstr = "Jan"
-                          }
-                     );
-                prjType.Add(
-                         new quotation
-                         {
-                             clientname = "Sanjiv",
-                             targetAmount = 50,
-                             receiveAmount = 20,
-                             amount = 200,
-                             depositAmount = 100,
-                             dtstr = "Jan"
-                         }
-                    );
-
-            }
-            catch (Exception ex) { }
-            return Json(prjType, JsonRequestBehavior.AllowGet);
-        }
+        //    }
+        //    catch (Exception ex) { }
+        //    return Json(prjType, JsonRequestBehavior.AllowGet);
+        //}
 
 
         public JsonResult getQuotation()
@@ -523,48 +494,21 @@ namespace MvcSDesign.Controllers
             return View();
         }
 
-
-        public JsonResult SearchSiteVisitByNameOrProjectID(string opt, string projectID, string cname)
+        public JsonResult SearchSiteVisitByNameOrProjectID(string opt, string projectID, string cname, string pname)
         {
-            return Json(_IAmn.SearchSiteVisitByNameOrProjectID(opt, projectID, cname), JsonRequestBehavior.AllowGet);
+            return Json(_IAmn.SearchSiteVisitByNameOrProjectID(opt, projectID, cname, pname), JsonRequestBehavior.AllowGet);
         }
-
-
-
 
         public JsonResult SearchByProjectIDOrName(string opt, string projectID, string cname)
         {
-             
             List<tblClient> obj = new List<tblClient>();
             var lst = _IAmn.SearchByProjectIDOrName(opt, projectID, cname);
-            //int i = 1;
-            //foreach (var item in lst)
-            //{
-            //    obj.Add(new tblClient
-            //    {
-            //        clientID = item.clientID,
-            //        clientName = item.clientName,
-            //        orgName = item.orgName,
-            //        address = item.address,
-            //        city = item.city,
-            //        mobile = item.mobile,
-            //        phone = item.phone,
-            //        emailID = item.emailID,
-            //        state = item.state
-
-            //    });
-            //    i++;
-            //}
             return Json(lst, JsonRequestBehavior.AllowGet);
         }
-
-
-        
         public JsonResult SearchCurrentWorking(string dname, string category,   string subcategory)
         {
             return Json(_IAmn.GetCurrentWorking(dname, category, subcategory), JsonRequestBehavior.AllowGet);
         }
-
         public FileResult DownloadDWG(string filename, string pmID, string projectID)
         {
             string ext = Path.GetExtension(filename);
@@ -696,7 +640,7 @@ namespace MvcSDesign.Controllers
 
         public ActionResult Registration()
         {
-            staff obj = new staff();
+            StaffModel obj = new StaffModel();
             try
             {
                 //string ch = Session["user"].ToString();
@@ -772,7 +716,7 @@ namespace MvcSDesign.Controllers
 
 
         [HttpPost]
-        public ActionResult Registration(staff st)
+        public ActionResult Registration(StaffModel st)
         {
             try
             {
@@ -801,7 +745,7 @@ namespace MvcSDesign.Controllers
                 }
 
             }
-            staff obj = new staff();
+            StaffModel obj = new StaffModel();
             obj.designerList = GetDesignerList();
             obj.rollList = GetRollList();
             return View(obj);
@@ -827,6 +771,10 @@ namespace MvcSDesign.Controllers
             
 
             return Json(_IAmn.SearchRegistration(name), JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GatAllRegistration()
+        {
+            return Json(_IAmn.GatAllRegistration(), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult SearchAddProject(string projectID)
@@ -972,6 +920,11 @@ namespace MvcSDesign.Controllers
         {
             return View();
         }
+        public ActionResult Receipt()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         public ActionResult PayDesigner(HttpPostedFileBase planfile)
@@ -998,10 +951,9 @@ namespace MvcSDesign.Controllers
         }
 
 
-        public JsonResult AmountReceive(string clientID, string amount, string remark)
+        public JsonResult AmountReceive(string clientID, string projectID, string amount, string remark, string gmail)
         {
-            string ch =  _IAmn.AmountReceive(int.Parse(clientID), amount, remark);
-            return Json(ch, JsonRequestBehavior.AllowGet);  
+            return Json(_IAmn.AmountReceive(int.Parse(clientID), int.Parse(projectID), amount, remark, gmail), JsonRequestBehavior.AllowGet);  
         }
         
         public JsonResult getDesignerProjectAmount(string designerID)
@@ -1038,25 +990,6 @@ namespace MvcSDesign.Controllers
             return View(); 
         }
 
-        //public JsonResult SaveGMail(string gmailID, string pwd)
-        //{
-        //    //return Json(_IAmn.SaveGMail(gmailID.Trim(), pwd.Trim()) , JsonRequestBehavior.AllowGet);
-
-            
-            
-        //    return Json("", JsonRequestBehavior.AllowGet);
-        //}
-        //public JsonResult getGmailAccount()
-        //{
-        //    IEnumerable<GMail> obj1;//= _IAmn.getGmail();
-        //    return Json("", JsonRequestBehavior.AllowGet);
-        //}
-
-        //public JsonResult RemoveGMailAccount(string id)
-        //{
-        //    string name = "";// _IAmn.RemoveGMailAccount(int.Parse(id));
-        //    return Json(name, JsonRequestBehavior.AllowGet);
-        //}
 
      
         public JsonResult SaveBalanceAdjust( string clientID , string balance, string amount, string remark)
@@ -1131,6 +1064,11 @@ namespace MvcSDesign.Controllers
         {
             var rep = _IAmn.RptClientReceive(cname, fromDt, toDt );
             return Json(rep, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult RptOutstanding(string cname, string fromDt, string toDt)
+        {
+            return Json(_IAmn.RptOutstanding(cname, fromDt, toDt), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult RptTechnical(string designerID, string fromDt, string toDt)
@@ -1624,20 +1562,19 @@ namespace MvcSDesign.Controllers
             return Json(rep, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult RptQuotation(string dt1 , string dt2 , string searchOpt, string projectID , string cname)
+        public JsonResult RptQuotation(string dt1 , string dt2 , string searchOpt, string projectID , string cname, string pname)
         {
-            var prj = _IAmn.RptQuotation( dt1, dt2, searchOpt, projectID, cname);
-            return Json(prj, JsonRequestBehavior.AllowGet);
+            return Json(_IAmn.RptQuotation(dt1, dt2, searchOpt, projectID, cname, pname), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult RptSiteVisit( string projectID)
+        public JsonResult RptSiteVisit(string opt, string projectID, string cname, string pname)
         {
-            return Json(_IAmn.RptSiteVisit(int.Parse(projectID)), JsonRequestBehavior.AllowGet);
+            return Json(_IAmn.RptSiteVisit(opt, projectID, cname, pname), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult RptProjectHistory(string projectID)
+        public JsonResult RptProjectHistory(string opt, string projectID, string cname, string pname)
         {
-            return Json(_IAmn.RptProjectHistory(int.Parse(projectID)), JsonRequestBehavior.AllowGet);
+            return Json(_IAmn.RptProjectHistory(opt, projectID, cname, pname), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult ShowBalanceAdjust(string dt1, string dt2, string cname)
@@ -1646,7 +1583,6 @@ namespace MvcSDesign.Controllers
             return Json(bal, JsonRequestBehavior.AllowGet);
 
         }
-         
         public ActionResult GMailSetting()
         {
             //GMail obj= _IAmn.getGMailAccount();
@@ -1676,7 +1612,11 @@ namespace MvcSDesign.Controllers
 
             return View();
         }
-       
+        public ActionResult ReportOutstanding()
+        {
+
+            return View();
+        }
         public ActionResult ReportDesignerLedger()
         {
 
@@ -1710,7 +1650,8 @@ namespace MvcSDesign.Controllers
         }
         public ActionResult Test()
         {
-            return View();
+            clientModel obj = new clientModel();
+            return View(obj);
         }
         
         public JsonResult DashBoard_getProjectType()

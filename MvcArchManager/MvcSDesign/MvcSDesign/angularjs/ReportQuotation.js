@@ -130,7 +130,11 @@ app.controller("myController", function ($scope, $http,  $window) {
             for (var i = 0; i < $scope.quotationlist.length; i++) {
                 arr = $scope.quotationlist[i];
 
-                total = total + arr["amount"];
+                if(arr["status"]=="request")
+                    total = total + arr["amount"];
+                else
+                    total = total + arr["finalizeAmount"];
+
             }
             $scope.totalAmount = total;
 

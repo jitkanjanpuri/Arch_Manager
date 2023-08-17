@@ -18,17 +18,18 @@ namespace MvcSDesign.Repository
         string SaveCompanyProfile(CompanyModel obj);
         CompanyModel GetCompanyProfile();
 
-        string InsertRegistration(staff st);
-        string RegistrationUpdate(staff obj);
+        string InsertRegistration(StaffModel st);
+        IEnumerable<StaffModel> GatAllRegistration();
+        string RegistrationUpdate(StaffModel obj);
         string RegistrationDelete(int staffID);
-        IEnumerable<staff> SearchRegistration(string name);
+        IEnumerable<StaffModel> SearchRegistration(string name);
         IEnumerable<operation> GetCurrentWorking(string dname, string category, string subcategory);
 
         string AddSearchProject_ClientName(int projectID);
 
         //Dashboard
         List<operation> DashBoard_getProjectType();
-        List<staff> getTopPerformers();
+        List<StaffModel> getTopPerformers();
         List<quotation> getQuotation();
 
         IEnumerable<operation> Dashboard_getMonthQuotation();
@@ -64,19 +65,19 @@ namespace MvcSDesign.Repository
 
         string SendTaskMailToClien(int pmID,int pid, string[] arrFiles, out string uploadedFileName, string gmail);
         string DeleteProjectManagement(int pmID, string uploadedFileName);
-        string AmountReceive(int cid, string amount, string remark);
+        string AmountReceive(int cid, int projectID, string amount, string remark, string flagGmail);
         string SavePayDesigner(int sid, int amount, string remark);
         string ProjectAssigning(operation op);
         operation SearchAddProject(int projectID);
         string SaveNewProject(operation obj);
-        staff getLogin(logincls lgn);
+        StaffModel getLogin(logincls lgn);
         bool DesignerNameValidation(string name);
         bool DesignerEmailValidation(string mailID);
 
 
         //Site Visit
         string SaveSiteVisit(int projectID, string fname,  string remark);
-        IEnumerable<operation> SearchSiteVisitByNameOrProjectID(string opt, string projectID, string name);
+        IEnumerable<operation> SearchSiteVisitByNameOrProjectID(string opt, string projectID, string name, string pname);
         string DownloadSiteVist(int projectID, string filename);
 
         string DownloadUploadFile(int projectID, int uploafFileID,  string filename);
@@ -84,19 +85,22 @@ namespace MvcSDesign.Repository
 
         //Report
 
-        IEnumerable<client> RptClientLedger(string cname);
+        IEnumerable<clientModel> RptClientLedger(string cname);
         IEnumerable<operation> RptClientLedgerDetail(int clientID, string fromDt, string toDt, ref DataTable clientDetailRecord);
-        IEnumerable<staff> RptDesignerLedger(string dname);
+        IEnumerable<StaffModel> RptDesignerLedger(string dname);
         IEnumerable<operation> RptDesignerLedgerDetail(int sid, string fromDt, string toDt);
         IEnumerable<operation> getDesignerWorkingList(int reg);
 
-        IEnumerable<operation> RptQuotation(string dt1, string dt2, string searchOpt, string projectID, string cname);
+        IEnumerable<operation> RptQuotation(string dt1, string dt2, string searchOpt, string projectID, string cname, string pname);
         IEnumerable<operation> RptClientReceive(string cname, string fromDt, string toDt);
 
-        IEnumerable<operation> RptSiteVisit(int projectID);
+        IEnumerable<operation> RptSiteVisit(string opt, string projectID, string name, string pname);
 
-        IEnumerable<operation> RptProjectHistory(int projectID);
+        IEnumerable<operation> RptProjectHistory(string opt, string projectID, string name, string pname);
 
+        //IEnumerable<operation> SearchSiteVisitByNameOrProjectID(string opt, string projectID, string name, string pname);
+        //IEnumerable<operation> RptSearch(string opt, int projectID, string name, string pname);
+        IEnumerable<operation> RptOutstanding(string cname, string fromDt, string toDt);
         IEnumerable<operation> RptTechnical(string dnama, string fromDt, string toDt);
 
         IEnumerable<operation> ShowBalanceAdjust(string dt1, string dt2, string cname);

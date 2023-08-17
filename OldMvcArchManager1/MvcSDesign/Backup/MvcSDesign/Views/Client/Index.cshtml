@@ -1,0 +1,481 @@
+﻿@model MvcSDesign.Models.client
+
+@{
+    ViewBag.Title = "Client";
+}
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+@*
+<script src="~/Scripts/bootstrap337.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+
+
+<script src="~/Scripts/jquery-1.9.1.js"></script>
+<script src="~/Scripts/jquery-1.9.1.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<link href="~/css/font-awesome.min.css" rel="stylesheet" />
+<link href="~/css/font-awesome.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="~/Scripts/angular.js"></script>
+<script src="~/Scripts/angular.min.js"></script>
+
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+<script src="~/emailclientTest.js"></script>
+    
+    *@
+
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<link href="~/css/font-awesome.min.css" rel="stylesheet" />
+<link href="~/css/font-awesome.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+
+
+<style type="text/css">
+    .myButtonSubmit {
+        -moz-box-shadow: 0px 1px 0px 0px #f0f7fa;
+        -webkit-box-shadow: 0px 1px 0px 0px #f0f7fa;
+        box-shadow: 0px 1px 0px 0px #f0f7fa;
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #008CBA), color-stop(1, #008CBA));
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#33bdef', endColorstr='#019ad2',GradientType=0);
+        background-color: #008CBA;
+        -moz-border-radius: 6px;
+        -webkit-border-radius: 6px;
+        border-radius: 6px;
+        border: 1px solid #008CBA;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: Arial;
+        font-size: 15px;
+        font-weight: bold;
+        padding: 6px 24px;
+        text-decoration: none;
+        text-shadow: 0px -1px 0px #008CBA;
+    }
+
+  .myButtonSubmit:hover {
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #008CBA), color-stop(1, #008CBA));
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#019ad2', endColorstr='#33bdef',GradientType=0);
+            background-color: #008CBA;
+        }
+
+   .myButtonSubmit:active {
+            position: relative;
+            top: 1px;
+        }
+
+    .myButtonSearch {
+        -moz-box-shadow: 0px 1px 0px 0px #f0f7fa;
+        -webkit-box-shadow: 0px 1px 0px 0px #f0f7fa;
+        box-shadow: 0px 1px 0px 0px #f0f7fa;
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #7D6C6C), color-stop(1,#7D6C6C));
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#33bdef', endColorstr='#019ad2',GradientType=0);
+        background-color: #7D6C6C;
+        -moz-border-radius: 6px;
+        -webkit-border-radius: 6px;
+        border-radius: 6px;
+        border: 1px solid #F47D7D;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: Arial;
+        font-size: 10pt;
+        padding: 6px 24px;
+        text-decoration: none;
+        text-shadow: 0px -1px 0px #7D6C6C;
+    }
+
+  .myButtonSearch:hover {
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #7D6C6C), color-stop(1, #7D6C6C));
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#019ad2', endColorstr='#33bdef',GradientType=0);
+            background-color: #1E90FF;
+        }
+
+  .myButtonSearch:active {
+            position: relative;
+            top: 1px;
+        }
+</style>
+
+<script type="text/javascript">
+
+    //function SaveClient() {
+    //    var nm = $("#proprietorName").val();
+    //    var orgName = $("#organizationName").val();
+    //    var addr = $("#address").val();
+    //    var city1 = $("#city").val();
+    //    var ph1 = $("#cell").val();
+    //    var ph2 = $("#phone").val();
+    //    var email = $("#emailID").val();
+    //    var state = $("#state option:selected").text();
+    //    $("#lblError").text("");
+
+    //    if (nm.trim().length == 0) {
+    //        $("#lblError").text("Enter proprietor name");
+    //        $("#proprietorName").focus();
+    //        return;
+    //    }
+    //    else if (orgName.trim().length == 0) {
+    //        $("#lblError").text("Enter organisation name");
+    //        $("#organizationName").focus();
+    //        return;
+    //    }
+    //    else if (addr.trim().length == 0) {
+    //        $("#lblError").text("Enter address ");
+    //        $("#address").focus();
+    //        return;
+    //    }
+    //    else if (city1.trim().length == 0) {
+    //        $("#lblError").text("Enter city ");
+    //        $("#city").focus();
+    //        return;
+    //    }
+    //    else if (ph1.trim().length == 0) {
+
+    //        $("#lblError").text("Enter phone ");
+    //        $("#cell").focus()
+    //        return;
+    //    }
+
+    //    if (validateEmail(email) == false) {
+    //        $("#lblError").text("Invalid email ID ");
+    //        return false;
+    //    }
+
+
+    //    $.ajax({
+    //        url: "/CallLogEntry/ClientSave",
+    //        type: "POST",
+    //        data: { clientname: nm, org: orgName, address: addr, city: city1, phone1: ph1, phone2: ph2, mailID: email, statename: state },
+    //        success: function (data) {
+
+    //            if (data.proprietorName == "success") {
+    //                $("#proprietorName").val("");
+    //                $("#organizationName").val("");
+    //                $("#address").val("");
+    //                $("#city").val("");
+    //                $("#cell").val("");
+    //                $("#phone").val("");
+    //                $("#emailID").val("");
+
+    //            }
+    //            else {
+    //                $("#lblError").text(data.proprietorName);
+    //            }
+
+    //        },
+    //        error: function () {
+    //            alert("Cannot update reminder");
+    //        }
+    //    });
+
+    //    ("#lblError").text("");
+    //}
+
+
+    //function validateEmail(email) {
+    //    var regex = /^([a-zA-Z0-9_.+-])+\@@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    //    return regex.test(email);
+    //}
+
+
+
+    //function OnlyNumeric(e) {
+    //    var theEvent = event || window.event;
+    //    var key = theEvent.keyCode || theEvent.which;
+    //    key = String.fromCharCode(key);
+    //    var regex = /[0-9]|\./;
+
+    //    if (regex.test(key)) {
+    //        theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = true);
+    //    }
+    //}
+
+    //function SpecialCharacterStop(s, e) {
+    //    if ((e.htmlEvent.keyCode >= 33) && (e.htmlEvent.keyCode <= 47) || (e.htmlEvent.keyCode == 61) || (e.htmlEvent.keyCode == 63) || (e.htmlEvent.keyCode == 64) || (e.htmlEvent.keyCode == 94) || (e.htmlEvent.keyCode == 96) || (e.htmlEvent.keyCode == 126)) {
+    //        e.htmlEvent.returnValue = false;
+    //    }
+    //}
+
+
+
+    //function PhoneIsNumber(e) {
+
+    //    var theEvent = event || window.event;
+    //    var key = theEvent.keyCode || theEvent.which;
+    //    key = String.fromCharCode(key);
+    //    var regex = /[0-9]|\./;
+
+    //    if (!regex.test(key)) {
+    //        theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
+    //    }
+    //}
+</script>
+
+
+
+@using (Html.BeginForm())
+{
+    <h3>  Client</h3>
+
+
+    <div ng-app="myApp">
+        <div ng-controller="myController">
+
+            <div class="panel panel-default" style="width: 50%; padding: 10px; margin: 10px">
+
+                <div id="Tabs" role="tabpanel">
+
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="active">
+                            <a href="#personal" aria-controls="personal" role="tab" data-toggle="tab">
+                                Add
+                            </a>
+                        </li>
+                        <li><a href="#employment" aria-controls="employment" role="tab" data-toggle="tab">Edit email</a></li>
+                        <li><a href="#search" aria-controls="search" role="tab" data-toggle="tab">Search</a></li>
+                    </ul>
+
+                    <div class="tab-content" style="padding-top: 20px">
+                        <div role="tabpanel" class="tab-pane active" id="personal" style="background-color:#F8F8FF">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <span style="font-family:Museo Sans 300;">Client Name </span>
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.clientname, new { style = "width:260px; height:35px; font-family:Museo Sans 300; font-size:10pt", @onkeypress = "OnlyNumeric(this)" })
+                                        @Html.ValidationMessageFor(model => model.clientname)
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <span style="font-family:Museo Sans 300;">Organization </span>
+
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.organizationName, new { style = "width:260px; height:35px; font-family:Museo Sans 300; font-size:10pt", @onkeypress = "OnlyNumeric(this)" })
+                                        @Html.ValidationMessageFor(model => model.organizationName)
+                                    </td>
+                                </tr>
+
+
+
+                                <tr>
+                                    <td style ="vertical-align:middle">
+                                        <span style="font-family:Museo Sans 300;">Address </span>
+
+                                    </td>
+
+                                    <td >
+                                        @Html.TextAreaFor(model => model.address,5,80, new { style = "width:260px;  font-family:Museo Sans 300; font-size:10pt;  " })
+                                        @Html.ValidationMessageFor(model => model.address)
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>
+                                        <span style="font-family:Museo Sans 300;">City </span>
+
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.city, new { style = "width:260px; height:35px; font-family:Museo Sans 300; font-size:10pt" })
+                                        @Html.ValidationMessageFor(model => model.city)
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <span style="font-family:Museo Sans 300;">State </span>
+
+                                    </td>
+                                    @*<td>
+                                        @Html.DropDownListFor(model => model.state, Model.statelist, new { style = "width:260px; height:28px; font-family:Museo Sans 300; font-size:10pt" })
+                                        @Html.ValidationMessageFor(model => model.state)
+                                    </td>*@
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <span style="font-family:Museo Sans 300;">Phone </span>
+
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.phone, new { style = "width:260px; height:35px; font-family:Museo Sans 300; font-size:10pt", @onkeypress = "PhoneIsNumber" })
+                                        @Html.ValidationMessageFor(model => model.phone)
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <span style="font-family:Museo Sans 300;">Mobile </span>
+
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(model => model.phone, new { @type = "number", style = "width:260px; height:35px; font-family:Arial; font-size:10pt", })
+                                        @Html.ValidationMessageFor(model => model.mobile)
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <span style="font-family:Museo Sans 300;">Email ID <span style="color:red">*</span> </span>
+
+                                    </td>
+                                    <td>
+                                            @Html.TextBoxFor(model => model.emailID, new { style = "width:260px; height:35px; font-family:Museo Sans 300; font-size:10pt" })
+                                            @Html.ValidationMessageFor(model => model.emailID)
+                                      </td>
+                                </tr>
+                                <tr>
+                                    <td> </td>
+                                    <td>
+                                        <label id="lblError" style=" font-family:Museo Sans 300; font-size:10pt; color:red" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input type="button" value="Submit" onclick="SaveClient();" class="myButtonSubmit" style="width:260px;font-family:Museo Sans 300; font-size:10pt;" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane" id="employment" style="background-color:#F8F8FF">
+                            <table class="table" style="width:680px; ">
+                                <tr>
+                                    <td style="width:100px; vertical-align:bottom;"><span style="font-family:Arial; font-size:10pt;"> Client  Name </span></td>
+                                    <td style="width:350px;">
+                                        <input type="text" ng-model="txtName" style="font-family:Arial; font-size:12px;height:30px; width:290px;" />
+                                    </td>
+                                    <td>
+                                        <input type="button" value="Search" class="myButtonSearch" ng-click="Search()" style="width:80px;font-family:Museo Sans 300; font-size:8pt;" />
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="slider">
+                                <table class="table">
+                                    <tr style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#37383A ; color:#FFFFFF ;border: solid 1px #659EC7;">
+                                        <td>UID</td>
+                                        <td>Name</td>
+                                        <td>Phone</td>
+                                        <td>City</td>
+                                        <td>Email</td>
+                                        <td>Edit</td>
+                                    </tr>
+                                    @*<tr ng-repeat="item  in clist  ">
+                                            <td> {{item.UID}}</td>
+                                            <td> {{item.proprietorName}}</td>
+                                            <td> {{item.phon1}}</td>
+                                            <td> {{item.city}} </td>
+                                            <td> {{item.phone3}} </td>
+                                            <td> <input type="button" value="Edit" ng-click="GetValue(item.UID , item.phon1, item.phone3 )" class="myButtonSubmit" style="width:60px;height:25px; font-family:Museo Sans 300; font-size:8pt" />   </td>
+                                        </tr>*@
+                                </table>
+                            </div>
+                            <table class="table" style="width:550px; ">
+
+                                <tr>
+                                    <td style="vertical-align:bottom"><span style="font-family:Arial; font-size:10pt;"> Email ID</span></td>
+                                    <td>
+                                        <input type="text" ng-model="txtEmailID" style="font-family:Arial; font-size:12px;  height:30px;  width:290px;" />
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align:bottom"><span style="font-family:Arial; font-size:10pt;"> Phone </span></td>
+                                    <td>
+                                        <input type="text" ng-model="txtPhon1" style="font-family:Arial; font-size:12px;  height:30px;  width:290px;" />
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td> <input type="text" ng-model="txtUID" ng-readonly="true" style="font-family:Arial; font-size:10px;  height:10px; width:10px; color:white; background-color: #F8FAFA;border:0;" /></td>
+                                    <td>
+                                        <input type="button" value="Update" ng-click="UpdateRecord()" class="myButtonSubmit" style="width:80px;font-family:Museo Sans 300; font-size:8pt;" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane" id="search" style="background-color:#F8F8FF">
+                            <table class="table" style="width:680px; border:0px solid black; ">
+                                <tr>
+                                    <td style="width:60px; vertical-align:bottom;border:0px solid black; "><span style="font-family:Arial; font-size:10pt;font-weight:bold;">  Name  </span></td>
+                                    <td style="width:120px;border:0px solid black; ">
+                                        <input type="text" ng-model="txtClientName" style="font-family:Arial; font-size:12px;height:30px; width:160px;" />
+                                    </td>
+                                    <td style=" margin-left:0px; width:70px; vertical-align:bottom;border:0px solid black; "><span style="font-family:Arial; font-size:10pt;font-weight:bold;">  Email ID  </span></td>
+                                    <td style="width:100px;border:0px solid black;">
+                                        <input type="text" ng-model="txtClientEmailID" style=" font-family:Arial; font-size:12px;height:30px; width:160px;" />
+                                    </td>
+                                    <td style="width:150px;border:0px solid black;"></td>
+
+                                </tr>
+                                <tr>
+                                    <td style=" vertical-align:bottom;"><span style="font-family:Arial; font-size:10pt;font-weight:bold;">  Phone no </span></td>
+                                    <td style="">
+                                        <input type="text" ng-model="txtClientPhoneno" style="font-family:Arial; font-size:12px;height:30px;width:160px; " />
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <input type="button" value="Search" class="myButtonSearch" ng-click="RecordShow()" style="width:80px;font-family:Museo Sans 300; font-size:8pt;" />
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="slider" style="width: 640px;  height: 380px; overflow: auto;   ">
+                                <table class="table" style="width: 640px;">
+                                    <tr style="  font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#37383A ; color:#FFFFFF ;border: solid 1px #659EC7;">
+                                        <td style="width:90px;">UID</td>
+                                        <td style="width:150px;">Name</td>
+                                        <td style="width:100px;">Phone</td>
+                                        <td style="width:100px;">City</td>
+                                        <td style="width:150px;">Email</td>
+
+                                    </tr>
+
+                                </table>
+                                @*<table class="table" style="width: 640px;">
+
+                                        <tr ng-repeat="item  in recordlist">
+                                            <td style="margin-left:0px; width:90px;"> {{item.UID}}</td>
+                                            <td style="margin-left:0px;width:150px;"> {{item.proprietorName}}</td>
+                                            <td style="margin-left:0px;width:100px;"> {{item.phon1}}</td>
+                                            <td style="margin-left:0px;width:100px;"> {{item.city}} </td>
+                                            <td style="margin-left:0px;width:150px;"> {{item.phone3}} </td>
+                                        </tr>
+                                    </table>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+}

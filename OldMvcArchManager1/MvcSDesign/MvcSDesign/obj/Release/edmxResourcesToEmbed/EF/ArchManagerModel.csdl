@@ -1,0 +1,359 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ArchManagerDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tblAmountReceive">
+    <Key>
+      <PropertyRef Name="amountReceiveID" />
+    </Key>
+    <Property Name="amountReceiveID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="clientID" Type="Int32" Nullable="false" />
+    <Property Name="amount" Type="Int32" Nullable="false" />
+    <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblClient" Relationship="Self.FK_tblAmountReceive_clientID" FromRole="tblAmountReceive" ToRole="tblClient" />
+  </EntityType>
+  <EntityType Name="tblClient">
+    <Key>
+      <PropertyRef Name="clientID" />
+    </Key>
+    <Property Name="clientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="clientName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="orgName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="address" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="city" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="state" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="phone" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="emailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblAmountReceives" Relationship="Self.FK_tblAmountReceive_clientID" FromRole="tblClient" ToRole="tblAmountReceive" />
+    <NavigationProperty Name="tblClientLedgers" Relationship="Self.FK_tblClientLadger_clientID" FromRole="tblClient" ToRole="tblClientLedger" />
+    <NavigationProperty Name="tblProjectDetails" Relationship="Self.FK_tblProjectDetail_ClientID" FromRole="tblClient" ToRole="tblProjectDetail" />
+    <Property Name="companyID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tblCompanyProfile" Relationship="ArchManagerDBModel.FK__tblClient__compa__5EBF139D" FromRole="tblClient" ToRole="tblCompanyProfile" />
+  </EntityType>
+  <EntityType Name="tblClientLedger">
+    <Key>
+      <PropertyRef Name="clientLadgerID" />
+    </Key>
+    <Property Name="clientLadgerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="clientID" Type="Int32" Nullable="false" />
+    <Property Name="projectID" Type="Int32" Nullable="false" />
+    <Property Name="prjAmount" Type="Int32" Nullable="false" />
+    <Property Name="receivedAmount" Type="Int32" Nullable="false" />
+    <Property Name="balance" Type="Int32" Nullable="false" />
+    <Property Name="remark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="oldBalance" Type="Int32" />
+    <Property Name="adjustBalance" Type="Int32" />
+    <NavigationProperty Name="tblClient" Relationship="Self.FK_tblClientLadger_clientID" FromRole="tblClientLedger" ToRole="tblClient" />
+  </EntityType>
+  <EntityType Name="tblCompanyProfile">
+    <Key>
+      <PropertyRef Name="companyID" />
+    </Key>
+    <Property Name="companyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="orgName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="gstNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="city" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="state" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="pincode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="mobileno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="phoneno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="emailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="tblClients" Relationship="ArchManagerDBModel.FK__tblClient__compa__5EBF139D" FromRole="tblCompanyProfile" ToRole="tblClient" />
+  </EntityType>
+  <EntityType Name="tblGmailAccount">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="gmailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="pwd" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblOperation">
+    <Key>
+      <PropertyRef Name="operationID" />
+    </Key>
+    <Property Name="operationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="projectID" Type="Int32" Nullable="false" />
+    <Property Name="staffID" Type="Int32" Nullable="false" />
+    <Property Name="designerAmount" Type="Int32" />
+    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="remark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="payStatus" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="projectCategory" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblProjectDetail" Relationship="Self.FK_tblOperation_projectID" FromRole="tblOperation" ToRole="tblProjectDetail" />
+    <NavigationProperty Name="tblStaff" Relationship="Self.FK_tblOperation_staffID" FromRole="tblOperation" ToRole="tblStaff" />
+  </EntityType>
+  <EntityType Name="tblProfile">
+    <Key>
+      <PropertyRef Name="profileID" />
+    </Key>
+    <Property Name="profileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="companyName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="profession" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="mobileno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="emailID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblProjectDetail">
+    <Key>
+      <PropertyRef Name="projectID" />
+    </Key>
+    <Property Name="projectID" Type="Int32" Nullable="false" />
+    <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="clientID" Type="Int32" Nullable="false" />
+    <Property Name="projectType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="projectLevel" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="package" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="plotSize" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="amount" Type="Int32" Nullable="false" />
+    <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="projectname" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblClient" Relationship="Self.FK_tblProjectDetail_ClientID" FromRole="tblProjectDetail" ToRole="tblClient" />
+    <NavigationProperty Name="tblOperations" Relationship="Self.FK_tblOperation_projectID" FromRole="tblProjectDetail" ToRole="tblOperation" />
+    <Property Name="projectlocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblPRFs" Relationship="ArchManagerDBModel.FK__tblPRF__projectI__60A75C0F" FromRole="tblProjectDetail" ToRole="tblPRF" />
+  </EntityType>
+  <EntityType Name="tblStaff">
+    <Key>
+      <PropertyRef Name="staffID" />
+    </Key>
+    <Property Name="staffID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="designation" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="city" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="dist" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="emailID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="rolltype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblOperations" Relationship="Self.FK_tblOperation_staffID" FromRole="tblStaff" ToRole="tblOperation" />
+    <NavigationProperty Name="tblStaffLedgers" Relationship="Self.FK_tblStaffLedger_staffID" FromRole="tblStaff" ToRole="tblStaffLedger" />
+    <NavigationProperty Name="tblStaffPaids" Relationship="Self.FK_tblStaffPaid_staffID" FromRole="tblStaff" ToRole="tblStaffPaid" />
+  </EntityType>
+  <EntityType Name="tblStaffLedger">
+    <Key>
+      <PropertyRef Name="staffLedgerID" />
+    </Key>
+    <Property Name="staffLedgerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="staffID" Type="Int32" Nullable="false" />
+    <Property Name="projectID" Type="Int32" Nullable="false" />
+    <Property Name="prjAmount" Type="Int32" Nullable="false" />
+    <Property Name="paidAmount" Type="Int32" Nullable="false" />
+    <Property Name="balance" Type="Int32" Nullable="false" />
+    <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblStaff" Relationship="Self.FK_tblStaffLedger_staffID" FromRole="tblStaffLedger" ToRole="tblStaff" />
+  </EntityType>
+  <EntityType Name="tblStaffPaid">
+    <Key>
+      <PropertyRef Name="staffPaidID" />
+    </Key>
+    <Property Name="staffPaidID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="staffID" Type="Int32" Nullable="false" />
+    <Property Name="amount" Type="Int32" Nullable="false" />
+    <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblStaff" Relationship="Self.FK_tblStaffPaid_staffID" FromRole="tblStaffPaid" ToRole="tblStaff" />
+  </EntityType>
+  <EntityType Name="tblStatu">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="status" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_tblAmountReceive_clientID">
+    <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
+    <End Role="tblAmountReceive" Type="Self.tblAmountReceive" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblClient">
+        <PropertyRef Name="clientID" />
+      </Principal>
+      <Dependent Role="tblAmountReceive">
+        <PropertyRef Name="clientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblClientLadger_clientID">
+    <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
+    <End Role="tblClientLedger" Type="Self.tblClientLedger" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblClient">
+        <PropertyRef Name="clientID" />
+      </Principal>
+      <Dependent Role="tblClientLedger">
+        <PropertyRef Name="clientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblProjectDetail_ClientID">
+    <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
+    <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblClient">
+        <PropertyRef Name="clientID" />
+      </Principal>
+      <Dependent Role="tblProjectDetail">
+        <PropertyRef Name="clientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblOperation_projectID">
+    <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
+    <End Role="tblOperation" Type="Self.tblOperation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProjectDetail">
+        <PropertyRef Name="projectID" />
+      </Principal>
+      <Dependent Role="tblOperation">
+        <PropertyRef Name="projectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblOperation_staffID">
+    <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
+    <End Role="tblOperation" Type="Self.tblOperation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblStaff">
+        <PropertyRef Name="staffID" />
+      </Principal>
+      <Dependent Role="tblOperation">
+        <PropertyRef Name="staffID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblStaffLedger_staffID">
+    <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
+    <End Role="tblStaffLedger" Type="Self.tblStaffLedger" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblStaff">
+        <PropertyRef Name="staffID" />
+      </Principal>
+      <Dependent Role="tblStaffLedger">
+        <PropertyRef Name="staffID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblStaffPaid_staffID">
+    <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
+    <End Role="tblStaffPaid" Type="Self.tblStaffPaid" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblStaff">
+        <PropertyRef Name="staffID" />
+      </Principal>
+      <Dependent Role="tblStaffPaid">
+        <PropertyRef Name="staffID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ArchManagerDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tblAmountReceives" EntityType="Self.tblAmountReceive" />
+    <EntitySet Name="tblClients" EntityType="Self.tblClient" />
+    <EntitySet Name="tblClientLedgers" EntityType="Self.tblClientLedger" />
+    <EntitySet Name="tblCompanyProfiles" EntityType="Self.tblCompanyProfile" />
+    <EntitySet Name="tblGmailAccounts" EntityType="Self.tblGmailAccount" />
+    <EntitySet Name="tblOperations" EntityType="Self.tblOperation" />
+    <EntitySet Name="tblProfiles" EntityType="Self.tblProfile" />
+    <EntitySet Name="tblProjectDetails" EntityType="Self.tblProjectDetail" />
+    <EntitySet Name="tblStaffs" EntityType="Self.tblStaff" />
+    <EntitySet Name="tblStaffLedgers" EntityType="Self.tblStaffLedger" />
+    <EntitySet Name="tblStaffPaids" EntityType="Self.tblStaffPaid" />
+    <EntitySet Name="tblStatus" EntityType="Self.tblStatu" />
+    <AssociationSet Name="FK_tblAmountReceive_clientID" Association="Self.FK_tblAmountReceive_clientID">
+      <End Role="tblClient" EntitySet="tblClients" />
+      <End Role="tblAmountReceive" EntitySet="tblAmountReceives" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblClientLadger_clientID" Association="Self.FK_tblClientLadger_clientID">
+      <End Role="tblClient" EntitySet="tblClients" />
+      <End Role="tblClientLedger" EntitySet="tblClientLedgers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblProjectDetail_ClientID" Association="Self.FK_tblProjectDetail_ClientID">
+      <End Role="tblClient" EntitySet="tblClients" />
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblOperation_projectID" Association="Self.FK_tblOperation_projectID">
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetails" />
+      <End Role="tblOperation" EntitySet="tblOperations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblOperation_staffID" Association="Self.FK_tblOperation_staffID">
+      <End Role="tblStaff" EntitySet="tblStaffs" />
+      <End Role="tblOperation" EntitySet="tblOperations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblStaffLedger_staffID" Association="Self.FK_tblStaffLedger_staffID">
+      <End Role="tblStaff" EntitySet="tblStaffs" />
+      <End Role="tblStaffLedger" EntitySet="tblStaffLedgers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblStaffPaid_staffID" Association="Self.FK_tblStaffPaid_staffID">
+      <End Role="tblStaff" EntitySet="tblStaffs" />
+      <End Role="tblStaffPaid" EntitySet="tblStaffPaids" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tblClient__compa__5EBF139D" Association="ArchManagerDBModel.FK__tblClient__compa__5EBF139D">
+      <End Role="tblCompanyProfile" EntitySet="tblCompanyProfiles" />
+      <End Role="tblClient" EntitySet="tblClients" />
+    </AssociationSet>
+    <EntitySet Name="tblPRFs" EntityType="ArchManagerDBModel.tblPRF" />
+    <AssociationSet Name="FK__tblPRF__projectI__60A75C0F" Association="ArchManagerDBModel.FK__tblPRF__projectI__60A75C0F">
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetails" />
+      <End Role="tblPRF" EntitySet="tblPRFs" />
+    </AssociationSet>
+  </EntityContainer>
+  <Association Name="FK__tblClient__compa__5EBF139D">
+    <End Type="ArchManagerDBModel.tblCompanyProfile" Role="tblCompanyProfile" Multiplicity="1" />
+    <End Type="ArchManagerDBModel.tblClient" Role="tblClient" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblCompanyProfile">
+        <PropertyRef Name="companyID" />
+      </Principal>
+      <Dependent Role="tblClient">
+        <PropertyRef Name="companyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="tblPRF">
+    <Key>
+      <PropertyRef Name="prfID" />
+    </Key>
+    <Property Name="prfID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="projectID" Type="Int64" Nullable="false" />
+    <Property Name="workingStatus" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="slabdetail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="slabheight" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="plinthheight" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="porchheight" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="elevationpattern" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="totalfloor" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="towerroom" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cornerplotplan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="plotside" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="boundrywall" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="pencilsketch" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="colorcombination" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="anyother" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="doorlintel" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="windowsill" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="windowlintel" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tblProjectDetail" Relationship="ArchManagerDBModel.FK__tblPRF__projectI__60A75C0F" FromRole="tblPRF" ToRole="tblProjectDetail" />
+  </EntityType>
+  <Association Name="FK__tblPRF__projectI__60A75C0F">
+    <End Type="ArchManagerDBModel.tblProjectDetail" Role="tblProjectDetail" Multiplicity="1" />
+    <End Type="ArchManagerDBModel.tblPRF" Role="tblPRF" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProjectDetail">
+        <PropertyRef Name="projectID" />
+      </Principal>
+      <Dependent Role="tblPRF">
+        <PropertyRef Name="projectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

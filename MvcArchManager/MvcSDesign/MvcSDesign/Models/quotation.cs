@@ -43,7 +43,7 @@ namespace MvcSDesign.Models
 
         public int sno { get; set; }
 
-
+        public long finalizeAmount { get; set; }
 
 
         public int targetAmount { get; set; }

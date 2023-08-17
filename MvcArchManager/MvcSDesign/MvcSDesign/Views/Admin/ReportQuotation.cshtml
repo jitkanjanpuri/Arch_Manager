@@ -8,7 +8,7 @@
 
 <head>
 
-    <script src="~/angularjs/ReportQuotation.js"></script>
+    <script src="~/angularjs/ReportQuotation1.js"></script>
 
 
     <script type="text/javascript">
@@ -44,6 +44,7 @@
                             <div class="form-group">
                                 <a href="@Url.Action("ReportClientLedger", "Admin")" class="btn btn-primary"><span>Client Ledger</span></a>
                                 <a href="@Url.Action("ReportClientReceive", "Admin")" class="btn btn-primary"><span>Client Receive </span></a>
+                                <a href="@Url.Action("ReportOutstanding", "Admin")" class="btn btn-primary"><span> Outstanding  </span></a>
                                 <a href="@Url.Action("ReportTechnical", "Admin")" class="btn btn-primary"><span>Technical</span></a>
                                 <a href="@Url.Action("ReportQuotation", "Admin")" class="btn btn-primary"><span> Quotation  </span></a>
                                 @*<a href="@Url.Action("ReportMonthQuotation", "Admin")" class="btn btn-primary"><span> Month Quotation </span></a>*@
@@ -63,21 +64,17 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xl-3 col-md-2">
+                        <div class="col-xl-2 col-md-2">
                             <div class="form-group mb-3">
-
                                 <label>From Date   </label>
-
                                 <div class="input-group">
                                     <input type="date" id="fromStart" class="form-control" ng-model="fromStart">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-md-2">
+                        <div class="col-xl-2 col-md-2">
                             <div class="form-group mb-3">
-
                                 <label>To Date   </label>
-
                                 <div class="input-group">
                                     <input type="date" id="toEnd" class="form-control" ng-model="toEnd">
                                 </div>
@@ -87,12 +84,7 @@
 
 
                     <div class="row">
-                        @*<div class="col-xl-2 col-md-2">
-                            <div class="form-group mb-2">
-                                <label><input type="radio" ng-model="quotationValue" class="form-check-input" name="quotation" value="projectType" checked="checked" /> Project Type</label>
-                                <select class="form-control" ng-model="ptype" ng-options="item for item in arrProjectType" ></select> 
-                            </div>
-                        </div>*@
+                        
                         <div class="col-xl-2 col-md-2">
                             <div class="form-group mb-2">
                                 <label><input type="radio" ng-model="quotationValue" class="form-check-input" value="projectID" name="quotation" /> Project ID</label>
@@ -101,21 +93,26 @@
                             </div>
                         </div>
 
-                         <div class="col-xl-2 col-md-2">
-                                <div class="form-group mb-3">
-                                    <label><input type="radio" ng-model="quotationValue" value="clientName" name="quotation" class="form-check-input" />Client name </label>
-                                    <input class="form-control" ng-model="txtName">
-
+                        <div class="col-xl-2 col-md-2">
+                            <div class="form-group mb-3">
+                                <label><input type="radio" ng-model="quotationValue" value="clientName" name="quotation" class="form-check-input" />Client Name </label>
+                                <input class="form-control" ng-model="txtName">
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-2">
+                            <div class="form-group mb-3">
+                                <label><input type="radio" ng-model="quotationValue" value="projectName" name="quotation" class="form-check-input" />Project Name </label>
+                                <input class="form-control" ng-model="txtProjectName">
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-2">
+                            <div class="form-group mb-3">
+                                <label> . </label>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary" ng-click="SearchQuotation()">Search</button>
                                 </div>
                             </div>
-                            <div class="col-xl-2 col-md-2">
-                                <div class="form-group mb-3">
-                                    <label> . </label>
-                                    <div class="form-group">
-                                        <button type="button" class="btn btn-primary" ng-click="SearchQuotation()">Search</button>
-                                    </div>
-                                </div>
-                            </div> 
+                        </div>
                     </div>
 
                     <div class="text-center" ng-hide="loading">
@@ -126,35 +123,29 @@
                     <div class="text-center ">
                         <span class="text-danger text-center font-size:16  " style="">{{searchdmsg}}</span>
                     </div>
+                    <hr />
                     <div class="row">
                         <div class="col-xl-12">
                             <div class="card">
-                                @*<div class="card-header">
-                                    <h4 class="card-title">Quotation Report</h4>
-
-                                </div>*@
                                 <div class="card-body">
-                                    <div style="display: flex; justify-content: flex-end">
+                                    @*<div style="display: flex; justify-content: flex-end">
                                         <span class=" text-right font-size:20; font-weight-bold; " style=" margin-right:100px; font-weight:bold">Total amount  {{totalAmount}}</span>
-                                    </div>
+                                    </div>*@
                                     <div class="table-responsive">
                                         <table class="table table-bordered mb-0">
+                                            <thead class="bg-warning text-white">
+                                              <tr>
+                                                <th>#</th>
+                                                <th>Project ID</th>
+                                                <th>Client name</th>
+                                                <th>Project Name</th>
+                                                <th>Plot size</th>
+                                                <th>Level</th>
+                                                <th>Amount</th>
+                                                <th>Remark</th>
+                                                <th>Action </th>
 
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Project ID</th>
-                                                    <th>Client name</th>
-                                                    <th>Project Name</th>
-                                                    @*<th>Package</th>*@
-                                                    <th>Plot size</th>
-                                                    <th>Level</th>
-
-                                                    <th>Amount</th>
-                                                    <th>Remark</th>
-                                                    <th>Action </th>
-
-                                                </tr>
+                                              </tr>
                                             </thead>
                                             <tbody>
 
@@ -170,11 +161,8 @@
                                                         <span>  {{item.clientName}}  </span>
                                                     </td>
                                                     <td>
-                                                        <span>  {{item.projectType }}  </span>
+                                                        <span>  {{item.projectName }}  </span>
                                                     </td>
-                                                    @*<td>
-                                                        <span> {{item.package}} </span>
-                                                    </td>*@
                                                     <td>
                                                         <span> {{item.plotSize}} </span>
                                                     </td>
@@ -182,7 +170,12 @@
                                                         <span> {{item.projectLevel}} </span>
                                                     </td>
                                                     <td>
-                                                        <span> {{item.amount}} </span>
+                                                        <div ng-if="item.status =='request'">
+                                                            <span> {{item.amount}} </span>
+                                                        </div>
+                                                        <div ng-if="item.status !='request'">
+                                                            <span> {{item.finalizeAmount}} </span>
+                                                        </div>
                                                     </td>
                                                     <td>
                                                         <span> {{item.remark}}</span>
@@ -190,10 +183,22 @@
                                                     <td>
 
                                                         <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="PdfOpen(item.projectID , item.projectType )">
-                                                            @*<i class="mdi mdi-download d-block font-size-16"></i>*@ PDF
+                                                            @*<i class="fas fa-file-pdf" style='font-size:24px;color:red'></i>*@PDF
                                                         </button>
                                                     </td>
                                                 </tr>
+                                                <tr style="font-weight:bold;font-family:Arial;font-size:10pt;">
+                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
+                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
+                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
+                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
+                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
+                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;">Total </td>
+                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"><span style="font-size:10pt"> {{totalAmount}}   INR</span> </td>
+                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
+                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
+                                                </tr>
+
                                             </tbody>
                                         </table>
                                     </div>

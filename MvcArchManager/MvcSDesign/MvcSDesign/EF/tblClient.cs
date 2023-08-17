@@ -17,7 +17,6 @@ namespace MvcSDesign.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tblClient()
         {
-            this.tblAmountReceives = new HashSet<tblAmountReceive>();
             this.tblClientLedgers = new HashSet<tblClientLedger>();
             this.tblProjectDetails = new HashSet<tblProjectDetail>();
         }
@@ -34,8 +33,6 @@ namespace MvcSDesign.EF
         public string remark { get; set; }
         public int companyID { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblAmountReceive> tblAmountReceives { get; set; }
         public virtual tblCompanyProfile tblCompanyProfile { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblClientLedger> tblClientLedgers { get; set; }

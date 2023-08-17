@@ -3,9 +3,13 @@ app.controller("myController", function ($scope, $http) {
 
     $scope.loading = true;
     $scope.Search = function () {
-        var pid = $scope.varProjectID;
-        var name = $scope.name;
+
         var opt = $scope.opt;
+        var pid = $scope.varProjectID;
+        var name = $scope.varName;
+        var pname = $scope.varProjectName;
+
+
         $scope.record = "";
         if (opt == undefined) {
             $scope.record = "Please select at least one option";
@@ -19,8 +23,15 @@ app.controller("myController", function ($scope, $http) {
             $scope.record = "Please enter client name";
             return;
         }
+        else if ((opt == "projectName") && ((pname == null) || (pname == undefined) || (pname == ""))) {
+            $scope.record = "Please enter project name";
+            return;
+        }
 
 
+         
+
+        $scope.loading = false;
         $http({
             url: '/Admin/SearchSiteVisitByNameOrProjectID',
             dataType: 'json',
@@ -28,11 +39,13 @@ app.controller("myController", function ($scope, $http) {
             params: {
                 opt: opt,
                 projectID: pid,
-                cname: name
+                cname: name,
+                pname: pname
             },
             contentType: "application/json;charaset=utf-8"
         }).then(function (d) {
             $scope.sitevisitlist = d.data;
+            $scope.loading = true;
             if (d.data.length == 0) {
                 $scope.record = " Record not available";
                 return false;
@@ -54,7 +67,7 @@ app.controller("myController", function ($scope, $http) {
             },
             contentType: "application/json; charaset=utf-8"
         }).then(function (d) {
-           
+
             document.getElementById("txtWorkingStatus").value = d.data.workingStatus;
             document.getElementById("txtSlabHeight").value = d.data.slabheight;
 
@@ -68,12 +81,11 @@ app.controller("myController", function ($scope, $http) {
             document.getElementById("txtWindowLinte").value = d.data.windowlintel;
             document.getElementById("txtAnyOther").value = d.data.anyother;
             document.getElementById("txtPlotFaceSide").value = d.data.plotside;
-          
+
             if (d.data.towerroom == "Yes") {
                 document.getElementById("rdTowerRoomYes").checked = true;
             }
-            else
-            {
+            else {
                 document.getElementById("rdTowerRoomNo").checked = true;
             }
 
