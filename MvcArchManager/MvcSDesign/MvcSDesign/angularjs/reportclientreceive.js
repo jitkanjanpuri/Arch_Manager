@@ -1,5 +1,5 @@
 ﻿var app = angular.module("myApp", []);
-app.controller("myController", function ($scope, $http) {
+app.controller("myController", function ($scope, $http, $window ) {
 
     $scope.loading = true;
     $scope.totalclientreceive = "0";
@@ -38,7 +38,7 @@ app.controller("myController", function ($scope, $http) {
         $scope.recordmsg = "";
         $scope.loading = false;
         var slist;
-         
+
         $http({
             url: "/Admin/RptClientReceive",
             dataType: 'json',
@@ -67,7 +67,7 @@ app.controller("myController", function ($scope, $http) {
                 slist = $scope.clientReceiveList[i];
                 total += slist.receivedAmount;
             }
-            
+
             $scope.totalclientreceive = total;
         }).error(function (err) {
             alert(" Error : " + err);
@@ -75,5 +75,28 @@ app.controller("myController", function ($scope, $http) {
 
     }
 
+    $scope.ReceiptPrint = function (item) {
+        
+        $http({
+            url: "/Admin/RptClientReceivePrint",
+            dataType: 'json',
+            method: 'POST',
+            params: {
+                recID: item.pmID
+            },
+            contentType: "application/json;charaset=utf-8"
+        }).then(function (d) {
+            $scope.loading = true;
+            var arr = location.href.split('/');
+            var url = "http://" + arr[2] + "/pdf_files/" + d.data.replace('"', '');
+            url = url.replace('"', '');
+            alert("Domain " + url);
+            $window.open(url, '_blank');
+ 
+        }).error(function (err) {
+            alert(" Error : " + err);
+        });
+
+    }
 
 });

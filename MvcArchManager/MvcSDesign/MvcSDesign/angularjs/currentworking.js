@@ -229,6 +229,10 @@ app.controller("myController", function ($scope, $http, cw) {
             },
             contentType: "application/json;charaset=utf-8"
         }).then(function (d) {
+            if (d.data.status == "") {
+                $scope.lblNewErr = "Request is pending in Project Management";
+                return false;
+            }
             $scope.txtClient1 = d.data;
             $scope.loading = true;
             if (d.data.length == 0) {

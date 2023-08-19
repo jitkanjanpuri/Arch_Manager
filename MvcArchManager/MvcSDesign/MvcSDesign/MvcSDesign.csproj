@@ -333,7 +333,7 @@
     <Content Include="angularjs\report1.js" />
     <Content Include="angularjs\ReportBalanceAdjust.js" />
     <Content Include="angularjs\ReportClientLedger.js" />
-    <Content Include="angularjs\reportclientreceive.js" />
+    <Content Include="angularjs\ReportClientReceive.js" />
     <Content Include="angularjs\ReportClientReceive1.js" />
     <Content Include="angularjs\ReportDesinger.js" />
     <Content Include="angularjs\reportmonthquotation.js" />

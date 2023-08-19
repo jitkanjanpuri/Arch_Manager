@@ -9,7 +9,7 @@
 <html lang="en">
 
 <head>
-    <script src="~/angularjs/Receipt.js"></script>
+    <script src="~/angularjs/Receipt1.js"></script>
 
     <style>
         table, th, td {
@@ -137,7 +137,7 @@
                                                         <th>Project Name</th>
                                                         <th>Plot size	</th>
                                                         <th>Plot level</th>
-                                                        <th>Action </th>
+                                                        <th style="width:50px;" >Action </th">
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -149,10 +149,12 @@
                                                         <td> {{item.projectName}}</td>
                                                         <td> {{item.plotSize}}</td>
                                                         <td> {{item.projectLevel}}</td>
-                                                        <td>
-                                                            <button type="button" class="btn btn-success waves-effect waves-light w-sm" style="width:20px;" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2" ng-click="ShowAmountReceive(item)">
+                                                        <td style="width:50px;">
+                                                            <button type="button" class="btn btn-info waves-effect " style="width:40px;" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2" ng-click="ShowAmountReceive(item)">
                                                                 <i class="fas fa-rupee"></i>
                                                             </button>
+ 
+
                                                         </td>
 
                                                     </tr>
@@ -237,7 +239,7 @@
 
 
                                             <div class="modal-footer">
-                                                <button type="button" ng-click="AmountReceiveSave();" ng-hide="btnHide" class="btn btn-primary waves-effect waves-light">Submit</button>
+                                                <button type="button" ng-click="AmountReceiveSave();" ng-disabled="btnHide" class="btn btn-primary waves-effect waves-light">Submit</button>
                                             </div>
 
                                         </div>
@@ -255,3 +257,4 @@
 }
 </html>
 
+ 

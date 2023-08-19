@@ -577,9 +577,9 @@ namespace MvcSDesign.Repository
 
 
 
-        public string AddSearchProject_ClientName(int projectID)
+        public operation AddSearchProject_ClientName(int projectID)
         {
-            string cname = "";
+            operation obj = new operation();
             try
             {
                 
@@ -588,15 +588,17 @@ namespace MvcSDesign.Repository
                            where (pd.projectID == projectID)
                            select new
                            {
-                               clientName = c.clientName
+                               clientName = c.clientName,
+                               status = pd.status
                            }).ToList();
                foreach(var item in res)
                 {
-                    cname = item.clientName;
+                    obj.clientName =  item.clientName;
+                    obj.status = item.status;
                 }
             }
             catch (Exception ex) { }
-            return cname;
+            return obj;
         }
 
        
@@ -647,6 +649,7 @@ namespace MvcSDesign.Repository
                                plotSize = pl.plotSize,
                                amount = pl.amount,
                                projectlocation = pl.projectlocation,
+                               status = pl.status
                                
                            }).ToList();
 
@@ -670,7 +673,7 @@ namespace MvcSDesign.Repository
                                plotSize = pl.plotSize,
                                amount = pl.amount,
                                projectlocation = pl.projectlocation,
-                               
+                               status = pl.status
 
                            }).ToList();
 
@@ -694,7 +697,7 @@ namespace MvcSDesign.Repository
                                plotSize = pl.plotSize,
                                amount = pl.amount,
                                projectlocation = pl.projectlocation,
-
+                               status = pl.status
 
                            }).ToList();
 
@@ -2165,7 +2168,21 @@ namespace MvcSDesign.Repository
         }
 
 
-        public string AmountReceive(int cid , int projectID, string amount, string remark, string flagGmail)
+        public void SaveStatus(string ch)
+        {
+            tblStatu obj = new tblStatu();
+            try
+            {
+
+                obj.status = ch;
+
+                _dbContext.tblStatus.Add(obj);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex) { }
+        }
+
+        public string SaveAmountReceive(int cid , int projectID, string amount, string remark, string flagGmail)
         {
             using (var context = new ArchManagerDBEntities())
             {
@@ -2202,7 +2219,7 @@ namespace MvcSDesign.Repository
                         context.SaveChanges();
 
                         dbTransaction.Commit();
-                        if (flagGmail == "true") SendReceipt(obj.amountReceiveID);
+                        if (flagGmail == "true") SendReceipt(obj.amountReceiveID, "N");
                         //if (flagGmail == "true") SendReceipt(4);
                     }
 
@@ -2224,7 +2241,7 @@ namespace MvcSDesign.Repository
         }
 
 
-        public string SendReceipt(int recID)
+        public string SendReceipt(int recID, string prfFlag)
         {
             try
             {
@@ -2281,12 +2298,7 @@ namespace MvcSDesign.Repository
                     finalizeAmount = (long)item.finalizeAmount;
                     receivedAmount = item.receivedAmount;
                 }
-                var profile = _dbContext.tblCompanyProfiles.FirstOrDefault();
-                if (profile == null)
-                {
-                    return "Company profile is not available";
-                }
-
+                
                 
                 var cl1 = _dbContext.tblAmountReceives.Where(x =>((x.projectID == projectID) && (x.amountReceiveID != recID))) .ToList();
                 foreach (var item1 in cl1)
@@ -2613,31 +2625,36 @@ namespace MvcSDesign.Repository
                 doc.Dispose();
                 doc = null;
 
-                Attachment at = new Attachment(pdfname);
-                objMail.Attachments.Add(at);
+                if (prfFlag == "N")
+                {
+                    Attachment at = new Attachment(pdfname);
+                    objMail.Attachments.Add(at);
 
-                str = "<br/> Dear " + clientName + "  <br />" +
-                        "<br/> Greetings! <br />" +
-                        "<br  /> Payment for project ID " + projectID + " was successful. Please find attached receipt.<br  /> <br  /> ";
+                    str = "<br/> Dear " + clientName + "  <br />" +
+                            "<br/> Greetings! <br />" +
+                            "<br  /> Payment for project ID " + projectID + " was successful. Please find attached receipt.<br  /> <br  /> ";
 
-                str += " Best Regards  <br /><br />  ";
-                str += " DesignLAB International, India <br /><br /> ";
+                    str += " Best Regards  <br /><br />  ";
+                    str += resProfile.orgName; /*" DesignLAB International, India <br /><br /> ";*/
 
-                str += "<br/> <i>Please note that this is a system generated mail and does not require signature. </i> ";
-                objMail.Subject = "🧾 Receipt_" + projectID;
-                objMail.Body = str;
-
-
-
-                SmtpClient client = new SmtpClient("smtp.hostinger.com");
-                client.EnableSsl = true;
-                client.UseDefaultCredentials = false;
-                client.Credentials = loginInfo;
-                client.Port = 587;// 465;
-                client.Send(objMail);
+                    str += "<br /> <br /> <br/> <i>Please note that this is a system generated mail and does not require signature. </i> ";
+                    objMail.Subject = "🧾 Receipt_" + projectID;
+                    objMail.Body = str;
 
 
-                return "Y";
+
+                    SmtpClient client = new SmtpClient("smtp.hostinger.com");
+                    client.EnableSsl = true;
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = loginInfo;
+                    client.Port = 587;// 465;
+                    client.Send(objMail);
+                    return "Y";
+                }
+                else
+                {
+                    return pdfname;
+                }
             }
             catch (System.Data.Entity.Validation.DbEntityValidationException e)
                 {
@@ -2999,7 +3016,8 @@ namespace MvcSDesign.Repository
                                where ((op.dt >= dt1) && (op.dt <= dt2))
                                select new operation
                                 {
-                                    dtstr = op.dt.Day +"-" + op.dt.Month +"-" + op.dt.Year, 
+                                    dtstr = op.dt.Day +"-" + op.dt.Month +"-" + op.dt.Year,
+                                    pmID = op.amountReceiveID,
                                     clientID = cl.clientID,
                                     clientName = cl.clientName,
                                     projectID = op.projectID,
@@ -3061,6 +3079,7 @@ namespace MvcSDesign.Repository
                                select new operation
                                {
                                    dtstr = op.dt.Day + "-" + op.dt.Month + "-" + op.dt.Year,
+                                   pmID = op.amountReceiveID,
                                    clientID = cl.clientID,
                                    projectID = op.projectID,
                                    clientName = cl.clientName,

@@ -25,7 +25,7 @@ namespace MvcSDesign.Repository
         IEnumerable<StaffModel> SearchRegistration(string name);
         IEnumerable<operation> GetCurrentWorking(string dname, string category, string subcategory);
 
-        string AddSearchProject_ClientName(int projectID);
+        operation AddSearchProject_ClientName(int projectID);
 
         //Dashboard
         List<operation> DashBoard_getProjectType();
@@ -53,8 +53,9 @@ namespace MvcSDesign.Repository
         string SaveProjectAssigned(string projectID, string clientID, string projectCategory, string designerAmount);
 
         string ProjectRollBack(int pmID);
-         
-        IEnumerable<operation> getDesignerProjectAmount(int designerID);
+
+        void SaveStatus(string ch);
+       IEnumerable<operation> getDesignerProjectAmount(int designerID);
         string DesignerAmountCancel(int operationID);
         string CompleteCurrentWorking(int operationID);
 
@@ -65,7 +66,9 @@ namespace MvcSDesign.Repository
 
         string SendTaskMailToClien(int pmID,int pid, string[] arrFiles, out string uploadedFileName, string gmail);
         string DeleteProjectManagement(int pmID, string uploadedFileName);
-        string AmountReceive(int cid, int projectID, string amount, string remark, string flagGmail);
+        string SaveAmountReceive(int cid, int projectID, string amount, string remark, string flagGmail);
+        string SendReceipt(int recID, string prfFlag);
+
         string SavePayDesigner(int sid, int amount, string remark);
         string ProjectAssigning(operation op);
         operation SearchAddProject(int projectID);

@@ -38,6 +38,10 @@ app.controller("myCtrl", function ($scope, $http) {
         $scope.statuslist = null;
         $scope.totalclientreceive = "0";
         $scope.recordmsg = "";
+
+        $scope.finaltotal = "0";
+        $scope.total = "0";
+        $scope.bal = "0";
         $scope.loading = false;
         var slist;
 

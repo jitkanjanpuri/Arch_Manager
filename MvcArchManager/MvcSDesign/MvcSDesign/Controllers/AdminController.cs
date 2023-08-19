@@ -310,9 +310,9 @@ namespace MvcSDesign.Controllers
 
                         ch = subfolder + "//Compound Wall";
                         Directory.CreateDirectory(ch);
-                
+
+                //First Floor
                 if (level == "Ground") goto Here;
-                    //First Floor
                 subfolder = pth + "//First Floor Drawing";
                 Directory.CreateDirectory(subfolder);
 
@@ -356,7 +356,7 @@ namespace MvcSDesign.Controllers
 
                 if (level == "G+1") goto Here;
                 subfolder = pth + "//Second Floor Drawing";
-                 Directory.CreateDirectory(subfolder);
+                Directory.CreateDirectory(subfolder);
 
                     ch = subfolder + "//Working Drawing";
                     Directory.CreateDirectory(ch);
@@ -733,7 +733,7 @@ namespace MvcSDesign.Controllers
             
             if (ModelState.IsValid)
             {
-               string ch = _IAmn.InsertRegistration(st);
+                string ch = _IAmn.InsertRegistration(st);
                 if (ch != "")
                 {
                     ViewBag.message = ch;
@@ -786,10 +786,7 @@ namespace MvcSDesign.Controllers
 
         public JsonResult SaveNewProject(operation obj)
         {
-            
-            return Json(_IAmn.SaveNewProject(obj), JsonRequestBehavior.AllowGet);
-
-           
+           return Json(_IAmn.SaveNewProject(obj), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult RegistrationUpdate(string staffID, string name, string designation, string address, string city, string phone, string mobile, string emailID, string user, string password)
@@ -951,9 +948,9 @@ namespace MvcSDesign.Controllers
         }
 
 
-        public JsonResult AmountReceive(string clientID, string projectID, string amount, string remark, string gmail)
+        public JsonResult SaveAmountReceive(string clientID, string projectID, string amount, string remark, string gmail)
         {
-            return Json(_IAmn.AmountReceive(int.Parse(clientID), int.Parse(projectID), amount, remark, gmail), JsonRequestBehavior.AllowGet);  
+            return Json(_IAmn.SaveAmountReceive(int.Parse(clientID), int.Parse(projectID), amount, remark, gmail), JsonRequestBehavior.AllowGet);  
         }
         
         public JsonResult getDesignerProjectAmount(string designerID)
@@ -1065,6 +1062,13 @@ namespace MvcSDesign.Controllers
             var rep = _IAmn.RptClientReceive(cname, fromDt, toDt );
             return Json(rep, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult RptClientReceivePrint(string recID)
+        {
+            string ch = _IAmn.SendReceipt(int.Parse(recID), "Y");
+            ch = Path.GetFileName(ch);
+            return Json(ch, JsonRequestBehavior.AllowGet);
+        }
+
 
         public JsonResult RptOutstanding(string cname, string fromDt, string toDt)
         {

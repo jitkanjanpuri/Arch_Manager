@@ -1,14 +1,17 @@
 ﻿var app = angular.module("myApp", [])
 app.controller('myController', function ($scope, $http, projectlist, $window) {
     var clientID = 0;
+    var projectLevel = "";
     $scope.loading = true;
-    $scope.pdfPreviewWindow = true;
+
+    $scope.loadingMail = false;
+
     projectlist.getRecord().then(function (d) {
         $scope.projectquotationlist = d.data;
     },
-      //function () {
-      //    alert('Failed'); // Failed
-      //  }
+        //function () {
+        //    alert('Failed'); // Failed
+        //  }
     );
 
     function ShowQuotation() {
@@ -28,13 +31,14 @@ app.controller('myController', function ($scope, $http, projectlist, $window) {
     }
 
     $scope.ShowPanel = function (item) {
-        clientid = item.clientid;
+        clientID = item.clientID;
+        projectLevel = item.projectLevel;
         $scope.projectID = item.projectID;
         $scope.clientName = item.clientName;
         $scope.amount = item.amount;
         $scope.finalAmount = 0;
     }
-    
+
 
     $scope.UpdateQuotation = function () {
 
@@ -48,19 +52,22 @@ app.controller('myController', function ($scope, $http, projectlist, $window) {
             alert("Please enter finalize amount");
             return
         }
-
+        $scope.loading = false;
+        $scope.loadingMail = true;
         $http({
             url: "/Admin/SaveProjectManagement",
             method: 'POST',
             dataType: 'json',
             params: {
-                clientid: clientid,
+                clientid: clientID,
+                level: projectLevel,
                 projectID: varpid,
                 finalAmount: varfamount
             },
             contentType: 'application/json;charaset=utf-8'
         }).then(function (d) {
-
+            $scope.loading = true;
+            $scope.loadingMail = false;
             if (d.data == "success") {
                 location.reload();
                 return;
@@ -101,7 +108,7 @@ app.controller('myController', function ($scope, $http, projectlist, $window) {
                 alert("Error ");
             }
         });
-         
+
     }
 
     $scope.PdfOpen = function (varpid, varprojectType) {

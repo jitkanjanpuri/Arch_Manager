@@ -108,8 +108,9 @@
                     alert("Error " + err);
                 }
             });
-
-            return false;
+            $("#tbnSubmit").attr("disabled", true);
+            $("#btnSubmit").hide();
+            return true;
         }
         function validateEmail(email) {
             var regex = /^([a-zA-Z0-9_.+-])+\@@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -127,6 +128,10 @@
                 theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
             }
         }
+        
+        function ActiveSubmitBtn() {
+            $("#tbnSubmit").removeAttr("disabled")
+        }
 
     </script>
 
@@ -134,7 +139,7 @@
 
 @using (Html.BeginForm("Index", "Client", FormMethod.Post, new { id = "frmID" }))
 {
-<body>
+<body onload="ActiveSubmitBtn()">
     <div ng-app="myApp">
         <div ng-controller="myController">
             <div class="page-content">
@@ -311,8 +316,8 @@
                                                     <td> {{item.mobile}}</td>
                                                     <td> {{item.emailID}} </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger waves-effect waves-light w-sm" ng-click="ShowDelete(item.clientID , item.clientName)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center3">
-                                                            <i class="fas fa-trash"></i>   <span class="text"></span>
+                                                        <button type="button" class="btn btn-danger waves-effect" ng-click="ShowDelete(item.clientID , item.clientName)" style="width:40px;" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center3">
+                                                            <i class="fas fa-trash"></i>  
                                                         </button>
                                                         @*<button type="button" class="btn btn-success btn-circle table-action-btn all-in-dropdown-btn" ng-click="editWindow(item.bankID, item.accountName, item.bankName, item.branch, item.ifsc )">
                                                             <i class="fas fa-ellipsis-h"></i>

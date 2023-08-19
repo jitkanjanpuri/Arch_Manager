@@ -17,10 +17,10 @@ app.controller('myController', function ($scope, $http) {
         var varname = $scope.txtName;
         $scope.err = "";
         if ((varname == "") || (varname == undefined)) {
-            $scope.err=   "Please enter client name";
+            $scope.err = "Please enter client name";
             return false;
         }
-        $scope.loading = true;
+        $scope.loading = false;
         $http({
             url: "/Client/getClient",
             dataType: 'json',
@@ -44,6 +44,14 @@ app.controller('myController', function ($scope, $http) {
 
     }
 
+    $scope.SetClientID = function (id, name) {
+        document.getElementById("txtCID").value = id;
+        document.getElementById("txtExteriorCName").value = name;
+
+        document.getElementById("txtInteriorCID").value = id;
+        document.getElementById("txtInteriorName").value = name;
+
+    }
 
     $scope.ShowClient = function (cid, cname, emailID, address, city, state) {
         $scope.txtCID = cid;

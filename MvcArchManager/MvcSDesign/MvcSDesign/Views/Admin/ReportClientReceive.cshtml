@@ -11,7 +11,7 @@
 
 <head>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <script src="~/angularjs/ReportClientReceive1.js"></script>
+    <script src="~/angularjs/ReportClientReceive.js"></script>
 
     <style type="text/css">
 
@@ -143,6 +143,7 @@
                                                     <th>Project ID</th>
                                                     <th>Client Name </th>
                                                     <th>Received</th>
+                                                    <th>Action</th>
 
                                                 </tr>
                                             </thead>
@@ -152,14 +153,22 @@
                                                     <td> {{item.dtstr}}</td>
                                                     <td> {{item.projectID}}</td>
                                                     <td> {{item.clientName}}</td>
-                                                    <td> {{item.receivedAmount }} </td>
+                                                    <td style="text-align:right">  {{item.receivedAmount}}  </td>
+                                                   
+                                                    <td style="width:70px;">
+                                                        <button type="button" class="btn btn-info waves-effect" style="width:40px;" ng-click="ReceiptPrint(item)">
+                                                            <i class="fas fa-print"></i>
+                                                        </button>
+                                                    </td> 
+                                                    
                                                 </tr>
                                                 <tr style="font-weight:bold;font-family:Arial;font-size:10pt;">
-                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
-                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
-                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
+                                                    <td style="background-color: #302B2B; border: solid 1px #659EC7;"></td>
+                                                    <td style="background-color: #302B2B; border: solid 1px #659EC7;"></td>
+                                                    <td style="background-color: #302B2B; border: solid 1px #659EC7;"></td>
                                                     <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;">Total </td>
-                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"><span style="font-size:10pt"> {{totalclientreceive}}   INR</span> </td>
+                                                    <td style="font-weight: bold; font-family: Arial; font-size: 10pt; height: 30px; background-color: #302B2B; color: #FFFFFF; border: solid 1px #659EC7; text-align: right"><span style="font-size:10pt"> {{totalclientreceive}}   INR</span> </td>
+                                                    <td style="background-color: #302B2B; border: solid 1px #659EC7;"></td>
                                                 </tr>
 
                                             </tbody>

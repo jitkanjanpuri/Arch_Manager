@@ -180,9 +180,14 @@
                                                                 <span style="color: black "> {{item.projectLevel}} </span>
                                                             </td>
                                                             <td>
-                                                                <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="ShowCurrentWorking(item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-confirm">
-                                                                    Action
-                                                                </button>
+                                                                <div ng-if="item.status =='request'">
+                                                                    <span style="color: black ">Request is pending in Project Manager </span>
+                                                                </div>
+                                                                <div ng-if="item.status !='request'">
+                                                                    <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="ShowCurrentWorking(item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-confirm">
+                                                                        Action
+                                                                    </button>
+                                                                </div>
                                                             </td>
 
                                                         </tr>

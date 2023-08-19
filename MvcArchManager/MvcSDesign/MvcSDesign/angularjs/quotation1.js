@@ -1,111 +1,227 @@
-﻿var app = angular.module("myApp", [])
-app.controller('myController', function ($scope, $http) {
-
-    $scope.arrProjectType = ["All", "Exterior", "Interior", "3D_Floor", "Structure", "Planning", "Gujarat", "Walkthrough", "Bird_Eye_View", "Interactive_View(Exterior)", "Interactive_View(Interior)"];
-
-    $scope.ptype = $scope.arrProjectType[0];
-    $scope.loading = true;
-    $scope.err = "";
-
-    $scope.pendingquotationamount = 0;
-    $scope.confirmquotationamount = 0;
-    $scope.pendingquotation = 0;
-    $scope.confirmquotation = 0;
+﻿var app = angular.module("myApp", []);
+app.controller("myCntr", function ($scope, $http, opt) {
 
 
-    $scope.Search = function () {
-        var varname = $scope.txtName;
-        $scope.err = "";
-        if ((varname == "") || (varname == undefined)) {
-            $scope.err = "Please enter client name";
-            return false;
-        }
-        $scope.loading = false;
-        $http({
-            url: "/Client/getClient",
-            dataType: 'json',
-            method: 'POST',
-            params: {
-                name: varname
-            },
-            contentType: "application/json; charaset=utf-8"
-        }).then(function (d) {
-            $scope.recordlist = d.data;
-            $scope.loading = true;
-            if ($scope.recordlist.lenght == 0) {
-                $scope.err = "! Record not found";
-
-            }
-        }).error(function (err) {
-            alert("Error : " + err);
 
 
+
+    opt.getRecord().then(function (d) {
+        var perday = d.data / 30;
+        var perdayval = perday / 10;
+        $('.average-per-day-circle').circleProgress({
+            value: perdayval,
+            fill: { gradient: ['#5ce497', '#469EFB'] },
+            size: 260,
+        }).on('circle-animation-progress', function (event, progress) {
+            $(this).find('strong').html(Math.round(perday * progress));
         });
 
-    }
+        showWeeklyPerformance();
 
-    $scope.SetClientID = function (id, name) {
-        document.getElementById("txtCID").value = id;
-        document.getElementById("txtExteriorCName").value = name;
-
-        document.getElementById("txtInteriorCID").value = id;
-        document.getElementById("txtInteriorName").value = name;
-
-    }
-
-    $scope.ShowClient = function (cid, cname, emailID, address, city, state) {
-        $scope.txtCID = cid;
-        $scope.txtCName = cname;
-        $scope.txtEmailID = emailID;
-        $scope.txtAdddress = address;
-        $scope.txtCityState = city + ", " + state;
+    });
 
 
-    }
-    $scope.ShowAllQuotation = function () {
-        var varptype = $scope.ptype;
-        var pendingqty = 0;
-        var pendingamount = 0;
-        var confirmqty = 0;
-        var confirmamount = 0;
-        var qlist;
+
+    function showWeeklyPerformance() {
+
+        $scope.dtArr = [];
+        $scope.prjcntArr = [];
+        $scope.achieveArr = [];
+        var slist;
         $http({
-            url: "/Client/getMonthQuotation",
-            dataType: 'json',
-            method: 'POST',
+            url: "/Render/getWeeklyPerformance",
+            dataType: "json",
+            method: "POST",
+            contentType: "application/json; charaset =utf-8"
+        }).then(function (d) {
+            for (var i = 0; i < d.data.length; i++) {
+                slist = d.data[i];
+                $scope.dtArr.push(slist.dtstr);
+                $scope.prjcntArr.push(slist.amount);
+                $scope.achieveArr.push(slist.amount);
+            }
+            var ctx = document.getElementById('dvMonthTarget');
+            if (ctx) {
+                var mq = window.matchMedia("(max-width: 570px)");
+                if (mq.matches) {
+                    ctx.height = 600;
+                }
+                else {
+                    ctx.height = 160;
+                }
+
+
+                var chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        datasets: [{
+                            label: 'Submitted Projects',
+                            data: $scope.prjcntArr,
+                            backgroundColor: '#469EFB',
+                            order: 2,
+                        }, {
+                            label: 'Average Line',
+                            borderColor: '#5CE497',
+                            backgroundColor: 'transparent',
+                            data: $scope.achieveArr,
+                            type: 'line',
+                            order: 1
+                        }],
+                        labels: $scope.dtArr,
+                    },
+
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    stepSize: 2
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+
+            //   getProjectCategoryPerformance();
+
+        });
+    }
+    function getProjectCategoryPerformance() {
+        var slist;
+        $scope.prjTypeArr = [];
+        $scope.draftArr = [];
+        $scope.revisedArr = [];
+        $scope.finalArr = [];
+        $http({
+            url: "/Render/getProjectCategoryPerformance",
+            dataType: "json",
+            method: "POST",
+            contentType: "application/json; charaset =utf-8"
+        }).then(function (d) {
+            for (var i = 0; i < d.data.length; i++) {
+                slist = d.data[i];
+                $scope.prjTypeArr.push(slist.projectType);
+                $scope.draftArr.push(slist.draft);
+                $scope.revisedArr.push(slist.revised);
+                $scope.finalArr.push(slist.final);
+            }
+
+
+            var ctx2 = document.getElementById('stacked-bars-chart').getContext('2d');
+            if (ctx2) {
+                var mq = window.matchMedia("(max-width: 570px)");
+
+
+                if (mq.matches) {
+                    ctx2.height = 200;
+
+                }
+                else {
+
+                    ctx2.height = 100;
+                }
+                var barChartData = new Chart(ctx2, {
+                    type: 'horizontalBar',
+                    data: {
+                        labels: $scope.prjTypeArr,
+                        datasets: [{
+                            label: 'Draft View',
+                            backgroundColor: "#DC828F",
+                            data: $scope.draftArr
+                        }, {
+                            label: 'Revised View',
+                            backgroundColor: "#F7CE76",
+                            data: $scope.revisedArr
+                        }, {
+                            label: 'Final View',
+                            backgroundColor: "#8C7386",
+                            data: $scope.finalArr,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            xAxes: [{
+                                stacked: true,
+                            }],
+                            yAxes: [{
+                                stacked: true
+                            }]
+                        }
+                    }
+                });
+            }
+        });
+
+
+
+    }
+
+
+
+
+    $scope.ShowHistory = function (id) {
+        $scope.projectID = id;
+        $scope.imglist = null;
+        $scope.historyStatus = "";
+        $scope.rowHeight = 0;
+        $scope.chkThumbnail = false;
+        $scope.buttonDisable = true;
+        $scope.thumbnailwidth = 400;
+        $scope.thumbnailheight = 400;
+        projectID = id;
+        $http({
+            url: "/Render/getThumbnail",
+            dataType: "json",
+            method: "POST",
             params: {
-                ptype: varptype
+                projectID: $scope.projectID
             },
             contentType: "application/json;charaset=utf-8"
         }).then(function (d) {
-            $scope.quotationlist = d.data;
-            if ($scope.quotationlist.length == 0) {
-                alert("Record not available");
-            }
 
-            for (var i = 0; i < $scope.quotationlist.length; i++) {
-                qlist = $scope.quotationlist[i];
-
-                if (qlist.status == "Pending") {
-                    pendingqty++;
-                    pendingamount += qlist.amount;
-                }
-                else {
-                    confirmqty++;
-                    confirmamount += qlist.amount;
-                }
-            }
-
-            $scope.pendingquotationamount = pendingamount;
-            $scope.confirmquotationamount = confirmamount;
-            $scope.pendingquotation = pendingqty;
-            $scope.confirmquotation = confirmqty;
+            $scope.imglist = d.data;
 
         }).error(function (err) {
-            alert(" Error  : " + err);
+            alert("Error " + err);
         });
+    }
+
+    $scope.closeHistory = function () {
+        $scope.projectID = "";
+        $scope.imglist = null;
 
     }
 
+    $scope.buttonActive = function () {
+        if ($scope.chkThumbnail == true)
+            $scope.buttonDisable = false;
+        else
+            $scope.buttonDisable = true;
+    }
+
+
+    $scope.acceptTerms = function () {
+        if ($scope.chkThumbnail == true) {
+            $scope.withoutAuth_[projectID] = true;
+            $scope.withAuth_[projectID] = true;
+
+        }
+        else {
+            $scope.lblTermErr = "Please select check box";
+        }
+
+    }
+
+
+});
+
+app.factory('opt', function ($http) {
+    var fac = {};
+    fac.getRecord = function () {
+        return $http.get("/Render/fillMonthlyPerformance");
+    }
+    return fac;
 
 });

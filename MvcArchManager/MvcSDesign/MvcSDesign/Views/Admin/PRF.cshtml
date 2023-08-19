@@ -711,9 +711,15 @@
                                                         <span style="color: black "> {{item.projectLevel}} </span>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="ShowCurrentWorking(item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-confirm">
-                                                            Action
-                                                        </button>
+                                                        <div ng-if="item.status =='request'">
+                                                            <span style="color: black ">Request is pending in Project Manager </span>
+                                                        </div>
+                                                        <div ng-if="item.status !='request'">
+
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="ShowCurrentWorking(item)" style="width:40px;"  data-bs-toggle="modal" data-bs-target=".bs-example-modal-confirm">
+                                                                PRF
+                                                            </button>
+                                                        </div>
                                                     </td>
 
                                                 </tr>
@@ -742,7 +748,7 @@
                                                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center p-0 mt-3 mb-2">
 
                                                     <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                                                        @*<h2><strong></strong></h2>*@
+                                                        
                                                         <div class="row">
                                                             <div class="col-md-12 mx-0">
                                                                 <form id="form1">

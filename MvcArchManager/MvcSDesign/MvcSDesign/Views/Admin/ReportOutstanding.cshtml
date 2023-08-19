@@ -12,7 +12,7 @@
 
 
 
-    <script src="~/angularjs/ReportOutstanding1.js"></script>
+    <script src="~/angularjs/ReportOutstanding.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
     </script>
     <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
@@ -174,18 +174,18 @@
                                                     
                                                     <td>{{item.projectName}}</td>
                                                     <td>{{item.clientName}}</td>
-                                                    <td>{{item.finalizeAmount}}</td>
-                                                    <td>{{item.receivedAmount}} </td>
-                                                    <td>{{item.balance}}</td>
+                                                    <td style="text-align:right">{{item.finalizeAmount}}</td>
+                                                    <td style="text-align:right">{{item.receivedAmount}} </td>
+                                                    <td style="text-align:right">{{item.balance}}</td>
                                                 </tr>
                                                 <tr style="font-weight:bold;font-family:Arial;font-size:10pt;">
                                                     <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
                                                     <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
                                                     <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
                                                     <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;">Total </td>
-                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;">{{finaltotal}} </td>
-                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"> {{total}}</td>
-                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;" > {{bal}}</td>
+                                                    <td style="font-weight: bold; font-family: Arial; font-size: 10pt; height: 30px; background-color: #302B2B; color: #FFFFFF; border: solid 1px #659EC7; text-align:right ">{{finaltotal}} </td>
+                                                    <td style="font-weight: bold; font-family: Arial; font-size: 10pt; height: 30px; background-color: #302B2B; color: #FFFFFF; border: solid 1px #659EC7; text-align: right"> {{total}}</td>
+                                                    <td style="font-weight: bold; font-family: Arial; font-size: 10pt; height: 30px; background-color: #302B2B; color: #FFFFFF; border: solid 1px #659EC7; text-align: right" > {{bal}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

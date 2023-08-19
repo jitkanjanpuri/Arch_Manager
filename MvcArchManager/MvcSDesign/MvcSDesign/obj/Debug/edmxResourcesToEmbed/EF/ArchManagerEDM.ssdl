@@ -6,9 +6,9 @@
     </Key>
     <Property Name="amountReceiveID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="dt" Type="datetime" Nullable="false" />
-    <Property Name="clientID" Type="int" Nullable="false" />
     <Property Name="amount" Type="int" Nullable="false" />
     <Property Name="remark" Type="varchar" MaxLength="100" />
+    <Property Name="projectID" Type="bigint" Nullable="false" />
   </EntityType>
   <EntityType Name="tblClient">
     <Key>
@@ -188,6 +188,13 @@
     <Property Name="amount" Type="int" Nullable="false" />
     <Property Name="remark" Type="varchar" MaxLength="100" />
   </EntityType>
+  <EntityType Name="tblState">
+    <Key>
+      <PropertyRef Name="stateID" />
+    </Key>
+    <Property Name="stateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="stateName" Type="varchar" MaxLength="200" />
+  </EntityType>
   <EntityType Name="tblStatus">
     <Key>
       <PropertyRef Name="id" />
@@ -236,15 +243,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_tblAmountReceive_clientID">
-    <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
+  <Association Name="FK_tblAmountReceive_projectID">
+    <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
     <End Role="tblAmountReceive" Type="Self.tblAmountReceive" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="tblClient">
-        <PropertyRef Name="clientID" />
+      <Principal Role="tblProjectDetail">
+        <PropertyRef Name="projectID" />
       </Principal>
       <Dependent Role="tblAmountReceive">
-        <PropertyRef Name="clientID" />
+        <PropertyRef Name="projectID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -394,6 +401,7 @@
     <EntitySet Name="tblStaff" EntityType="Self.tblStaff" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblStaffLedger" EntityType="Self.tblStaffLedger" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblStaffPaid" EntityType="Self.tblStaffPaid" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblState" EntityType="Self.tblState" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblStatus" EntityType="Self.tblStatus" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblTaskAssign" EntityType="Self.tblTaskAssign" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK__tblClient__compa__5EBF139D" Association="Self.FK__tblClient__compa__5EBF139D">
@@ -404,8 +412,8 @@
       <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
       <End Role="tblOperation" EntitySet="tblOperation" />
     </AssociationSet>
-    <AssociationSet Name="FK_tblAmountReceive_clientID" Association="Self.FK_tblAmountReceive_clientID">
-      <End Role="tblClient" EntitySet="tblClient" />
+    <AssociationSet Name="FK_tblAmountReceive_projectID" Association="Self.FK_tblAmountReceive_projectID">
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
       <End Role="tblAmountReceive" EntitySet="tblAmountReceive" />
     </AssociationSet>
     <AssociationSet Name="FK_tblClientLadger_clientID" Association="Self.FK_tblClientLadger_clientID">

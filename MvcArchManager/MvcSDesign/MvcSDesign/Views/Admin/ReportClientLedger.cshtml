@@ -159,15 +159,15 @@
                                                     <td> {{item.clientName}} </td>
                                                     <td> {{item.city}} </td>
                                                     <td> {{item.state}} </td>
-                                                    <td> {{item.mobile}} </td>
-                                                    <td> <input type="button" class="btn btn-primary waves-effect waves-light" value="Show" ng-click="ShowLedgerDetail(item.clientID, item.clientName , item.city, item.state )" data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl" /> </td>
+                                                    <td style="text-align:right"> {{item.mobile}} </td>
+                                                    <td> <input type="button" class="btn btn-info waves-effect waves-light" value="Show" ng-click="ShowLedgerDetail(item.clientID, item.clientName , item.city, item.state )" data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl" /> </td>
                                                 </tr>
                                                 <tr style="font-weight:bold;font-family:Arial;font-size:10pt;">
                                                     <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
                                                     <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
                                                     <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
                                                     <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;">Total </td>
-                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"><span style="font-size:10pt"> {{totalclientbalance}}   INR</span> </td>
+                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7; text-align:right"><span style="font-size:10pt"> {{totalclientbalance}}   INR</span> </td>
                                                     <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
                                                 </tr>
                                             </tbody>
@@ -222,9 +222,9 @@
                                                         <td>{{item.projectName}}</td>
                                                         <td>{{item.projectType}}</td>
                                                         <td>{{item.package}}</td>
-                                                        <td>{{item.amount}}</td>
-                                                        <td>{{item.receivedAmount}} </td>
-                                                        <td>{{item.balance}}</td>
+                                                        <td style="text-align:right">{{item.amount}}</td>
+                                                        <td style="text-align:right" >{{item.receivedAmount}} </td>
+                                                        <td  style="text-align:right">{{item.balance}}</td>
                                                         <td>{{item.remark}}</td>
                                                     </tr>
                                                 </tbody>
@@ -238,7 +238,8 @@
                                                         <td></td>
                                                         <td></td>
                                                         <td><span style=" font-family: Arial; font-size: 12pt; color: black;">Remaining balance</span></td>
-                                                        <td> <span style=" font-family: Arial; font-size: 12pt; color: black;"> {{clientbalance}}</span></td>
+                                                        <td style="text-align:right" > <span style=" font-family: Arial; font-size: 12pt; color: black;"> {{clientbalance}}</span></td>
+                                                        
 
                                                     </tr>
                                                 </tfoot>

@@ -1,16 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="ArchManagerDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-  <EntityType Name="tblAmountReceive">
-    <Key>
-      <PropertyRef Name="amountReceiveID" />
-    </Key>
-    <Property Name="amountReceiveID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="clientID" Type="Int32" Nullable="false" />
-    <Property Name="amount" Type="Int32" Nullable="false" />
-    <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="tblClient" Relationship="Self.FK_tblAmountReceive_clientID" FromRole="tblAmountReceive" ToRole="tblClient" />
-  </EntityType>
   <EntityType Name="tblClient">
     <Key>
       <PropertyRef Name="clientID" />
@@ -26,7 +15,6 @@
     <Property Name="emailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="companyID" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="tblAmountReceives" Relationship="Self.FK_tblAmountReceive_clientID" FromRole="tblClient" ToRole="tblAmountReceive" />
     <NavigationProperty Name="tblCompanyProfile" Relationship="Self.FK__tblClient__compa__5EBF139D" FromRole="tblClient" ToRole="tblCompanyProfile" />
     <NavigationProperty Name="tblClientLedgers" Relationship="Self.FK_tblClientLadger_clientID" FromRole="tblClient" ToRole="tblClientLedger" />
     <NavigationProperty Name="tblProjectDetails" Relationship="Self.FK_tblProjectDetail_ClientID" FromRole="tblClient" ToRole="tblProjectDetail" />
@@ -127,6 +115,7 @@
     <Property Name="finalizeAmount" Type="Int64" />
     <NavigationProperty Name="tblProjectUploadFiles" Relationship="ArchManagerDBModel.FK_tblProjectUploadFile_projectID" FromRole="tblProjectDetail" ToRole="tblProjectUploadFile" />
     <NavigationProperty Name="tblTaskAssigns" Relationship="ArchManagerDBModel.FK_tblTaskAssign_projectID" FromRole="tblProjectDetail" ToRole="tblTaskAssign" />
+    <NavigationProperty Name="tblAmountReceives" Relationship="ArchManagerDBModel.FK_tblAmountReceive_projectID" FromRole="tblProjectDetail" ToRole="tblAmountReceive" />
   </EntityType>
   <EntityType Name="tblStaff">
     <Key>
@@ -182,18 +171,6 @@
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="status" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
   </EntityType>
-  <Association Name="FK_tblAmountReceive_clientID">
-    <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
-    <End Role="tblAmountReceive" Type="Self.tblAmountReceive" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tblClient">
-        <PropertyRef Name="clientID" />
-      </Principal>
-      <Dependent Role="tblAmountReceive">
-        <PropertyRef Name="clientID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK__tblClient__compa__5EBF139D">
     <End Role="tblCompanyProfile" Type="Self.tblCompanyProfile" Multiplicity="1" />
     <End Role="tblClient" Type="Self.tblClient" Multiplicity="*" />
@@ -291,7 +268,6 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="ArchManagerDBEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="tblAmountReceives" EntityType="Self.tblAmountReceive" />
     <EntitySet Name="tblClients" EntityType="Self.tblClient" />
     <EntitySet Name="tblClientLedgers" EntityType="Self.tblClientLedger" />
     <EntitySet Name="tblCompanyProfiles" EntityType="Self.tblCompanyProfile" />
@@ -302,10 +278,6 @@
     <EntitySet Name="tblStaffLedgers" EntityType="Self.tblStaffLedger" />
     <EntitySet Name="tblStaffPaids" EntityType="Self.tblStaffPaid" />
     <EntitySet Name="tblStatus" EntityType="Self.tblStatu" />
-    <AssociationSet Name="FK_tblAmountReceive_clientID" Association="Self.FK_tblAmountReceive_clientID">
-      <End Role="tblClient" EntitySet="tblClients" />
-      <End Role="tblAmountReceive" EntitySet="tblAmountReceives" />
-    </AssociationSet>
     <AssociationSet Name="FK__tblClient__compa__5EBF139D" Association="Self.FK__tblClient__compa__5EBF139D">
       <End Role="tblCompanyProfile" EntitySet="tblCompanyProfiles" />
       <End Role="tblClient" EntitySet="tblClients" />
@@ -361,6 +333,12 @@
     <AssociationSet Name="FK_tblTaskAssign_projectID" Association="ArchManagerDBModel.FK_tblTaskAssign_projectID">
       <End Role="tblProjectDetail" EntitySet="tblProjectDetails" />
       <End Role="tblTaskAssign" EntitySet="tblTaskAssigns" />
+    </AssociationSet>
+    <EntitySet Name="tblStates" EntityType="ArchManagerDBModel.tblState" />
+    <EntitySet Name="tblAmountReceives" EntityType="ArchManagerDBModel.tblAmountReceive" />
+    <AssociationSet Name="FK_tblAmountReceive_projectID" Association="ArchManagerDBModel.FK_tblAmountReceive_projectID">
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetails" />
+      <End Role="tblAmountReceive" EntitySet="tblAmountReceives" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="tblProjectManagement">
@@ -477,6 +455,36 @@
         <PropertyRef Name="projectID" />
       </Principal>
       <Dependent Role="tblTaskAssign">
+        <PropertyRef Name="projectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="tblState">
+    <Key>
+      <PropertyRef Name="stateID" />
+    </Key>
+    <Property Name="stateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="stateName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblAmountReceive">
+    <Key>
+      <PropertyRef Name="amountReceiveID" />
+    </Key>
+    <Property Name="amountReceiveID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="amount" Type="Int32" Nullable="false" />
+    <Property Name="remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="projectID" Type="Int64" Nullable="false" />
+    <NavigationProperty Name="tblProjectDetail" Relationship="ArchManagerDBModel.FK_tblAmountReceive_projectID" FromRole="tblAmountReceive" ToRole="tblProjectDetail" />
+  </EntityType>
+  <Association Name="FK_tblAmountReceive_projectID">
+    <End Type="ArchManagerDBModel.tblProjectDetail" Role="tblProjectDetail" Multiplicity="1" />
+    <End Type="ArchManagerDBModel.tblAmountReceive" Role="tblAmountReceive" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProjectDetail">
+        <PropertyRef Name="projectID" />
+      </Principal>
+      <Dependent Role="tblAmountReceive">
         <PropertyRef Name="projectID" />
       </Dependent>
     </ReferentialConstraint>

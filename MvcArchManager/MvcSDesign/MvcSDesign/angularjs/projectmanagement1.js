@@ -3,7 +3,9 @@ app.controller('myController', function ($scope, $http, projectlist, $window) {
     var clientID = 0;
     var projectLevel = "";
     $scope.loading = true;
-    $scope.pdfPreviewWindow = true;
+
+    $scope.loadingMail = false;
+ 
     projectlist.getRecord().then(function (d) {
         $scope.projectquotationlist = d.data;
     },
@@ -50,7 +52,8 @@ app.controller('myController', function ($scope, $http, projectlist, $window) {
             alert("Please enter finalize amount");
             return
         }
-
+        $scope.loading = false;
+        $scope.loadingMail = true;
         $http({
             url: "/Admin/SaveProjectManagement",
             method: 'POST',
@@ -63,7 +66,8 @@ app.controller('myController', function ($scope, $http, projectlist, $window) {
             },
             contentType: 'application/json;charaset=utf-8'
         }).then(function (d) {
-
+            $scope.loading = true;
+            $scope.loadingMail = false;
             if (d.data == "success") {
                 location.reload();
                 return;

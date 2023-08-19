@@ -56,12 +56,9 @@ app.controller("myController", function ($scope, $http, $window) {
     }
 
     $scope.BalanceAdjust = function () {
- 
         $scope.cName = $scope.clientname;
         $scope.balAmount = $scope.clientbalance;
-
     }
-
 
 
     $scope.SaveAdjustBalance = function () {
@@ -205,12 +202,6 @@ app.controller("myController", function ($scope, $http, $window) {
             contentType: "application/json;charaset=utf-8"
         }).then(function (d) {
             $scope.loading = true;
-            //var arr = location.href.split('/');
-            //var url = arr[2] + "/PDF_Files/" + d.data.replace('"', '');
-                       
-            //url = url.replace('"', '');
-            //$window.open(url, '_blank');
-            
             var arr = location.href.split('/');
             var url = "http://" + arr[2] + "/pdf_files/" + d.data.replace('"', '');
             url = url.replace('"', '');
