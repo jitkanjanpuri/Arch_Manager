@@ -27,26 +27,6 @@ namespace MvcSDesign.Controllers
         {
             return View();
         }
-
-         
-        //public string userVarification(string uname, string pwd)
-        //{
-        //    int regID = 0;
-        //    string name = "", usertype = "", profileImage = "", designation = "", description = "";
-        //    string ch = _render.userVarifiction(uname, pwd, ref regID, ref name, ref usertype, ref profileImage, ref designation, ref description);
-        //    if (ch == "")
-        //    {
-        //        Session["username"] = uname;
-        //        Session["regID"] = regID;
-        //        Session["name"] = name;
-        //        Session["profileImage"] = profileImage;
-        //        Session["usertype"] = usertype;
-        //        Session["designation"] = designation;
-        //        Session["description"] = description;
-        //    }
-
-        //    return ch;
-        //}
         public ActionResult operation()
         {
             List<TaskListModel> ta = new List<TaskListModel>();
@@ -94,8 +74,8 @@ namespace MvcSDesign.Controllers
                     ViewBag.uploadmessage = "Please select file for upload";
                     return RedirectToAction("operation");
                 }
-                 
-                ch =  _IUser.UploadDesignerTask(int.Parse(pmid), int.Parse(taskId), fileUpload);
+
+                ch = _IUser.UploadDesignerTask(int.Parse(pmid), int.Parse(taskId), fileUpload);
                 if (ch == "Y")
                     TempData["message"] = "success";
                 else
@@ -154,34 +134,7 @@ namespace MvcSDesign.Controllers
 
             return username;
         }
-        //public JsonResult SalaryGenerate(string mnt, string yr)
-        //{
-
-        //    GeneratePDF objPdf = new GeneratePDF();
-        //    DataTable dt = new DataTable();
-        //    List<clsSalary> sl = new List<clsSalary>();
-        //    try
-        //    {
-        //        string rid = Session["regID"].ToString();
-        //        dt = objPdf.CratePDF(mnt, yr, rid);
-
-        //        foreach (DataRow dr in dt.Rows)
-        //        {
-        //            sl.Add(
-        //                       new clsSalary
-        //                       {
-        //                           sno = dr["sno"].ToString(),
-        //                           fname = dr["fname"].ToString(),
-        //                           fpath = dr["fpath"].ToString()
-        //                       }
-        //                   );
-        //        }
-        //    }
-        //    catch (Exception ex) { }
-        //    return Json(sl, JsonRequestBehavior.AllowGet);
-
-        //}
-
+       
         public FileResult pdfDownload(string projectID, string location)
         {
             string pdfpath = "";// renderDb.DownloadPRF(projectID, location);
@@ -190,143 +143,6 @@ namespace MvcSDesign.Controllers
 
             return File(pdfpath, contentType, filename);
         }
-        //public FileResult Download(string taskID, string projectID, string option, string location, string filename, string type)
-        //{
-        //    string fpath = "";
-        //    string contentType = "application/octet-stream";
-        //    location = location.Replace("http://absit.co.in:89/", "");
-        //    location = location.Replace("http://173.248.151.174:89/", "");
-        //    location = "C://inetpub/wwwroot/DesignLab/" + location;
-
-
-        //    if (filename == "-") return File("", "", "");
-        //    if (type == "plan")
-        //    {
-        //        fpath = location;
-        //    }
-        //    else
-        //    {
-        //        string ch, ftmp;
-        //        ch = Path.GetExtension(location).ToLower();
-        //        ftmp = Path.GetFileName(location);
-
-        //        filename = filename.Trim();
-        //        if ((ch == ".dwg") || (ch == ".zip") || (ch == ".rar"))
-        //        {
-        //            ch = location.Replace("/Plan/" + ftmp, "");
-        //        }
-        //        else
-        //        {
-        //            int l = location.IndexOf("/Plan/");
-        //            ch = location.Substring(0, l);
-        //        }
-        //        if (type == "Elevation")
-        //        {
-        //            fpath = ch + "/" + type + "/" + filename;
-        //            if (!System.IO.File.Exists(fpath)) // check if file  is not available then search in elevation folder
-        //            {
-        //                fpath = ch + "/" + type + "/I/" + filename;
-        //                if (!System.IO.File.Exists(fpath))
-        //                {
-        //                    fpath = ch + "/" + type + "/II/" + filename;
-        //                    if (!System.IO.File.Exists(fpath))
-        //                    {
-        //                        fpath = ch + "/Concept Image/" + filename;
-        //                    }
-        //                }
-
-        //            }
-        //        }
-        //        else if (type == "Supporting Image")
-        //        {
-        //            fpath = ch + "/" + type + "/" + filename;// check if file  is not support image foler then search in concep image folder
-        //            if (!System.IO.File.Exists(fpath))
-        //            {
-        //                fpath = ch + "/Concept Image/" + filename;
-        //            }
-        //        }
-
-        //        else if (type == "Draft")
-        //        {
-        //            fpath = ch + "/Draft View/" + filename;// check if file  is not support image foler then search in concep image folder
-        //            if (!System.IO.File.Exists(fpath))
-        //            {
-        //                fpath = ch + "/Concept Image/" + filename;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            fpath = ch + "/" + type + "/" + filename.Trim();
-        //        }
-
-
-        //    }
-        //    _render.TaskAssignStatusChange(int.Parse(taskID));
-        //    return File(fpath, contentType, filename);
-        //}
-
-        //public JsonResult getThumbnail(string projectID)
-        //{
-        //    var ps = new List<SelectListItem>();
-        //    string uid = renderDb.getUID(projectID);
-        //    string str = "C:/inetpub/wwwroot/DesignLab/ProjectThumbnail/UID_" + uid;
-        //    string physicalPath = HostingEnvironment.MapPath("~/Images/uid/");
-        //    string urlPath = "/Images/uid/";
-        //    try
-        //    {
-        //        string[] files = Directory.GetFiles(str);//.Where(;
-        //        string fname, tmp;
-
-        //        if (files.Length > 20)
-        //        {
-        //            Array.Reverse(files);
-        //        }
-
-        //        foreach (var item in files.Take(20))
-        //        {
-        //            fname = Path.GetFileName(item);
-        //            try
-        //            {
-        //                tmp = physicalPath + fname;
-        //                System.IO.File.Copy(item, tmp);
-        //            }
-        //            catch (Exception ex) { }
-        //            tmp = urlPath + fname;
-        //            ps.Add(
-        //                 new SelectListItem
-        //                 {
-        //                     Text = tmp
-        //                 }
-        //                );
-        //        }
-        //    }
-        //    catch (Exception ex) { }
-
-        //    if (ps.Count == 0)
-        //    {
-        //        urlPath = "/Images/noimage.jpg";
-        //        ps.Add(
-        //                new SelectListItem
-        //                {
-        //                    Text = urlPath
-        //                }
-        //               );
-        //    }
-        //    return Json(ps, JsonRequestBehavior.AllowGet);
-        //}
-
-
-        //public JsonResult fillGraph_Elevation()
-        //{
-        //    int regID = 0;//
-        //    try
-        //    {
-        //        regID = int.Parse(Session["regID"].ToString());
-        //    }
-        //    catch (Exception ex) { }
-        //    return Json(_IUser.fillGraph_Elevation(regID), JsonRequestBehavior.AllowGet);
-        //}
-
         public JsonResult fillMonthlyPerformance()
         {
             int regID = 0;//
@@ -360,7 +176,6 @@ namespace MvcSDesign.Controllers
                 name = Session["name"].ToString();
             }
             catch (Exception ex) { }
-           // return Json(renderDb.getProjectCategoryPerformance(regID, name), JsonRequestBehavior.AllowGet);
             return Json("", JsonRequestBehavior.AllowGet);
         }
 

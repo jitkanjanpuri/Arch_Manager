@@ -25,6 +25,7 @@ app.controller("myController", function ($scope, $http, $window) {
             var arr = location.href.split('/');
             var url = "http://" + arr[2] + "/pdf_files/" + d.data.replace('"', '');
             url = url.replace('"', '');
+            alert("Url " + url);
             $window.open(url, '_blank');
 
 

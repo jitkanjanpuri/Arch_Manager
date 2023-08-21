@@ -377,8 +377,8 @@ namespace MvcSDesign.Controllers
                 obj.dt = DateTime.Today;
                 obj.remark = remark == null ? "" : remark.Trim();
 
-                long pid = IClnt.InsertQuotation(obj);
-                //SendQuotation(obj, pid);
+                long pid =  IClnt.InsertQuotation(obj);
+                //////SendQuotation(obj, pid);
                 ViewBag.Message = " Quotation successfully generated , project ID is " + pid;
             }
             catch (Exception ex) {
@@ -542,6 +542,8 @@ namespace MvcSDesign.Controllers
 
             string pdfname = HostingEnvironment.MapPath("~//PDF_Files//quatation_" + projectID + ".pdf");
             var resProfile = IAdn.GetCompanyProfile();
+
+            IAdn.SaveStatus("pdfName " + pdfname);
             
             if(resProfile ==null)
             {

@@ -521,11 +521,14 @@ namespace MvcSDesign.Controllers
 
         public JsonResult TaskSendToClient(string pmID, string pid, string[] filelist, string gmail, string whatsApp)
         {
-            string uploadedFileName = "",   whatsAppFilepath = "", whatsAppno = "", socialmedia = "";
+            string uploadedFileName = "", whatsAppFilepath = "", whatsAppno = "", socialmedia = "";
+            _IAmn.SaveStatus("Start Task send to Client");
             string ch = _IAmn.SendTaskMailToClien(int.Parse(pmID), int.Parse(pid), filelist, out uploadedFileName, gmail);
-            if ( ch== "Y")
+            if (ch == "Y")
             {
-                ch =  _IAmn.DeleteProjectManagement(int.Parse(pmID),   uploadedFileName);
+                _IAmn.SaveStatus("Start Delete Project Management");
+                ch = _IAmn.DeleteProjectManagement(int.Parse(pmID), uploadedFileName);
+                _IAmn.SaveStatus("Status : " + ch);
 
             }
             List<SelectListItem> para = new List<SelectListItem>();
@@ -543,7 +546,7 @@ namespace MvcSDesign.Controllers
             //        //var request = new RestRequest(Method.GET);
             //        //IRestResponse response = client.Execute(request);
 
-                    
+
 
             //    }
 
@@ -1654,8 +1657,34 @@ namespace MvcSDesign.Controllers
         }
         public ActionResult Test()
         {
-            clientModel obj = new clientModel();
+            ClientInheritanceModel obj = new ClientInheritanceModel();
+            obj.clientName = "Abc";
+            obj.amount = 58;
             return View(obj);
+        }
+        public JsonResult TestData()
+        {
+            List<ClientInheritanceModel> lst = new List<ClientInheritanceModel>();
+            lst.Add(
+                   new ClientInheritanceModel
+                   {
+                       clientName = "Abc",
+                       address = "Gulab vihar",
+                       city = "Rau",
+                       amount = 150000
+                   }
+                 );
+
+            lst.Add(
+                   new ClientInheritanceModel
+                   {
+                       clientName = "Ravi",
+                       address = "Gulab vihar",
+                       city = "Rau",
+                       amount = 200000
+                   }
+                 );
+            return Json(lst, JsonRequestBehavior.AllowGet);
         }
         
         public JsonResult DashBoard_getProjectType()

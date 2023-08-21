@@ -22,7 +22,9 @@ app.controller("myController", function ($scope, $http, cw) {
     $scope.lblNewErr = "";
     $scope.loading = true;
     $scope.loading1 = true;
-
+    $scope.loadingMail = false;
+    $scope.loading2 = true;
+    $scope.loadingSend = false;
 
     var pmID = 0;
 
@@ -150,8 +152,8 @@ app.controller("myController", function ($scope, $http, cw) {
 
         chkGMail = document.getElementById("chkGMail").checked;
         chkWhatsApp = document.getElementById("chkWhatsApp").checked;
-        $scope.loading1 = false;
-
+        $scope.loading2 = false;
+        $scope.loadingSend = true;
         $http({
             url: "/Admin/TaskSendToClient",
             dataType: 'json',
@@ -169,7 +171,8 @@ app.controller("myController", function ($scope, $http, cw) {
 
             var slist = d.data[0];//Massage 
             var ptype = slist.Text;
-            $scope.loading1 = true;
+            $scope.loading2 = true;
+            $scope.loadingSend = false;
             if (ptype == "Y") {
                 $scope.lblError = "File successfully send to client";
             }
@@ -219,7 +222,7 @@ app.controller("myController", function ($scope, $http, cw) {
             return;
         }
 
-        $scope.loading = false;
+        $scope.loading1 = false;
         $http({
             url: '/Admin/AddSearchProject_ClientName',
             dataType: 'json',
@@ -229,12 +232,12 @@ app.controller("myController", function ($scope, $http, cw) {
             },
             contentType: "application/json;charaset=utf-8"
         }).then(function (d) {
-            if (d.data.status == "") {
+            $scope.loading1 = true;
+            if (d.data.status == "request") {
                 $scope.lblNewErr = "Request is pending in Project Management";
                 return false;
             }
-            $scope.txtClient1 = d.data;
-            $scope.loading = true;
+            $scope.txtClient1 = d.data.clientName;
             if (d.data.length == 0) {
                 $scope.lblNewErr = "Project ID is not available";
                 return false;
@@ -280,6 +283,8 @@ app.controller("myController", function ($scope, $http, cw) {
     $scope.SubmitNewProject = function () {
 
         $scope.lblNewErr = "";
+
+
         if (($scope.addPID == undefined) || ($scope.addPID.length == 0)) {
             $scope.lblNewErr = "Please enter project ID";
             return;
@@ -296,7 +301,8 @@ app.controller("myController", function ($scope, $http, cw) {
             $scope.lblNewErr = "Please select designer name";
             return;
         }
-
+        $scope.loading1 = false;
+        $scope.loadingMail = true;
         var obj = new Object();
 
         obj.projectID = $scope.addPID;
@@ -314,6 +320,8 @@ app.controller("myController", function ($scope, $http, cw) {
             contentType: "application/json;charaset=utf-8"
         }).then(function (d) {
             $scope.loading = true;
+            $scope.loadingMail = false;
+            $scope.loading1 = true;
             if (d.data == "") {
                 alert("Record successfully saved")
                 location.reload();

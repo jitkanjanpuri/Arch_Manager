@@ -8,13 +8,15 @@
 <html lang="en">
 
 <head>
-
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="~/angularjs/quotation1.js"></script>
+    @*script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="~/Content/jquery.CongelarFilaColumna.js"></script>
 
-    <script src="~/angularjs/quotation1.js"></script>
-    <link href="~/assets/css/main.css" rel="stylesheet" />
+
+
+
+    <link href="~/assets/css/main.css" rel="stylesheet" />*@
     <script type="text/javascript">
 
         function Validation() {
@@ -41,12 +43,11 @@
                 alert("Please enter amount");
                 return false;
             }
-            //var ch = confirm("Do you want to send quotation to client ?");
-            //document.getElementById("txtQuotation").value = ch;
+
             $("#loadHourHide").show()
             $("#btnSubmit").hide();
 
-            
+
             return true;
 
         }
@@ -238,7 +239,7 @@
 
         function HideFun() {
             $("#loadHourHide").hide();
-            }       
+        }
 
 
     </script>
@@ -286,7 +287,7 @@
     <body onload="HideFun()">
 
         <div ng-app="myApp">
-            <div ng-controller="myController">
+            <div ng-controller="myCtr">
 
                 <div class="page-content">
                     <div class="container-fluid">
@@ -468,7 +469,7 @@
 
                                                                         <div class="col-xl-12 col-md-6">
                                                                             <div class="form-group mb-3">
-                                                                                <label>Comment </label>
+                                                                                <label>Remark </label>
                                                                                 <textarea id="remark" class="form-control" name="remark" rows="2" cols="35"></textarea>
                                                                             </div>
                                                                         </div>

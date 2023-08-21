@@ -1387,6 +1387,8 @@ namespace MvcSDesign.Repository
                         at = new Attachment(tempfilename);
                         at.Name = filename;
                         objMail.Attachments.Add(at);
+
+                        SaveStatus("File : " + filename);
                     }
                 }
 
@@ -1413,23 +1415,25 @@ namespace MvcSDesign.Repository
                     //client.UseDefaultCredentials = false;
                     //client.Credentials = loginInfo;
                     //client.Send(objMail);
-
+                    SaveStatus("Sending mail ");
                     SmtpClient client = new SmtpClient("smtp.hostinger.com");
                     client.EnableSsl = true;
                     client.UseDefaultCredentials = false;
                     client.Credentials = loginInfo;
                     client.Port = 587;// 465;
+                    client.Timeout = 40000;
                     client.Send(objMail);
+                    SaveStatus("Sent mail");
                 }
                 try
                 {
                     filepath = ch + "/I/";
                     Directory.Delete(filepath, true);
                 }
-                catch (Exception ex) { }
+                catch (Exception ex) { SaveStatus("1. Error " + ex.Message); }
                 return "Y";
             }
-            catch (Exception ex) { return ex.Message; }
+            catch (Exception ex) { SaveStatus("2. Error " + ex.Message); return ex.Message; }
 
             return "";
         }

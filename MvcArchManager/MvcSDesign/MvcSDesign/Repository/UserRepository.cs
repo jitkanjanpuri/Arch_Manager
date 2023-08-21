@@ -22,45 +22,6 @@ namespace MvcSDesign.Repository
             _dbContext = db;
             
         }
-
-        //public string userVarifiction(string username, string pwd, ref int regID, ref string name, ref string usertype, ref string profileImage, ref string designation, ref string description)
-        //{
-
-        //    regID = 0;
-        //    name = "";
-        //    usertype = "";
-        //    designation = "";
-        //    try
-        //    {
-        //        var res = _dbContext.tblRegistration.Where(x => ((x.username.ToLower().Trim() == username.ToLower().Trim()) && (x.pwd.ToLower().Trim() == pwd.ToLower().Trim()))).FirstOrDefault();
-        //        if (res == null)
-        //        {
-        //            return "Invalid user name or password";
-        //        }
-        //        else if (res.active == false)
-        //        {
-        //            return "User deactived";
-        //        }
-        //        else if ((res.designerType != "Exterior") || (res.designerDesignation != "3D Designer"))
-        //        {
-        //            return "Invalid login for exterior or their designation";
-        //        }
-
-        //        usertype = res.designerDesignation;
-        //        regID = res.registrationID;
-        //        name = res.name;
-        //        profileImage = res.profileImage == null ? "dummyuser.png" : res.profileImage;
-        //        designation = res.designerDesignation == null ? "-" : res.designerDesignation;
-        //        description = res.description == null ? "-" : res.description;
-
-
-
-        //    }
-        //    catch (Exception ex) { return ex.Message; }
-        //    return "";
-        //}
-
-
         public string ChangeCredential(int staffID, string pwd)
         {
             var res = _dbContext.tblStaffs.Where(x => x.staffID == staffID).FirstOrDefault();
@@ -72,17 +33,6 @@ namespace MvcSDesign.Repository
 
             return "Record successfully updated";
         }
-
-
-        //public void TaskAssignStatusChange(int taskID)
-        //{
-        //    var res = _dbDlabContext.tblDesignerTaskAssigns.Where(x => (x.taskID == taskID)).FirstOrDefault();
-        //    if (res != null)
-        //    {
-        //        res.status = "WRKG";
-        //        _dbDlabContext.SaveChanges();
-        //    }
-        //}
 
         public List<operation> getWeeklyPerformance(int regID)
         {
@@ -230,14 +180,14 @@ namespace MvcSDesign.Repository
                 subcatgory = subcatgory.Replace("Revised", "");
                 location = "~/ProjectLocation/client_" + clientID.ToString() + "/proj_" + pid.ToString() + "/" + category + "/" + subcatgory.Trim()+"/I";
                 ch = HostingEnvironment.MapPath(location);
-
+                SaveStatus("User : 1 " );
                  
                 if (Directory.Exists(ch))
                 {
                     Directory.Delete(ch, true);
                 }
                 Directory.CreateDirectory(ch);
-
+                SaveStatus("User : 2 Delete ");
                 foreach (HttpPostedFileBase item in fileToUpload)
                 {
                     temp = pid +  "_tm"+i.ToString() + Path.GetExtension(item.FileName);
@@ -264,6 +214,8 @@ namespace MvcSDesign.Repository
 
                     item.SaveAs(ch1);
 
+                    SaveStatus("File  : 3 " + temp);
+
                 }
 
                 var res1 = _dbContext.tblTaskAssigns.Where(x => x.taskID == taskID).FirstOrDefault();
@@ -281,6 +233,8 @@ namespace MvcSDesign.Repository
                     res2.projectstatus = "Submit";
                     res2.User_UploadedFileName = uploadfile;
                 }
+
+                SaveStatus("Saved Data  : 4 " );
                 _dbContext.SaveChanges();
             }
             catch (Exception ex) { return ex.Message; }
@@ -288,7 +242,22 @@ namespace MvcSDesign.Repository
         }
 
 
-        
+        void SaveStatus(string ch)
+        {
+            try
+            {
+                tblStatu obj = new tblStatu();
+                obj.status = ch.Trim();
+
+                _dbContext.tblStatus.Add(obj);
+                _dbContext.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
 
 
 
