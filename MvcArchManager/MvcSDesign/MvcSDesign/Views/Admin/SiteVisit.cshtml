@@ -1,17 +1,12 @@
 ﻿ 
 @model MvcSDesign.Models.SiteVisitModel 
-
-
 @{
     ViewBag.Title = "Site Visit";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    Layout = "~/Views/Shared/_NewAdmin.cshtml";
 
 }
 <!doctype html>
 <html lang="en">
-
-
-
 
 <head>
 
@@ -58,212 +53,214 @@
 
         }
 
+        function IsNumber(e) {
+
+            var theEvent = event || window.event;
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+            var regex = /[0-9]|\./;
+
+            if (!regex.test(key)) {
+                theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
+            }
+        }
+
+
+
+
     </script>
 
 </head>
 @using (@Html.BeginForm("SiteVisit","Admin",FormMethod.Post, new {id="frmSiteVisit", enctype = "multipart/form-data",  name = "frmSiteVisit" }))
 {
-    <body>
-        <div ng-app ="myApp" >
-              <div ng-controller = "myController" >
-                   
-                    <div class="page-content">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="form-group">
+<body>
+    <div ng-app="myApp">
+        <div ng-controller="myController">
 
-                                        <a href="@Url.Action("Quotation", "Client")" class="btn btn-primary"><span>Quotation </span></a>
-                                        <a href="@Url.Action("ProjectManagement", "Admin")" class="btn btn-primary"><span>Prj Management </span></a>
-
-                                        <a href="@Url.Action("PRF", "Admin")" class="btn btn-primary"><span>PRF</span></a>
-                                        @*<a href="@Url.Action("Operation", "Admin")" class="btn btn-primary"><span> Operation  </span></a>*@
-                                        <a href="@Url.Action("SiteVisit", "Admin")" class="btn btn-primary"><span>Site Visit </span></a>
-                                        <a href="@Url.Action("CurrentWorking", "Admin")" class="btn btn-primary"><span> Operation </span></a>
-                                        <a href="@Url.Action("Receipt", "Admin")" class="btn btn-primary"><span>Receipt</span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <br />
-                            <!-- start page title -->
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                        <div class="col-xl-2 col-md-2">
-                                            <div class="form-group mb-3">
-                                                <h4 class="mb-sm-0 font-size-18">Site Visit </h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xl-2 col-md-2">
+            <div class="page-content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between mt-4">
+                                <div class="col-xl-2 col-md-2 mt-4">
                                     <div class="form-group mb-3">
-                                        <input type="radio" ng-model="opt" value="projectID" class="form-check-input">
-                                        <label>Project ID </label>
-                                        <input type="text" ng-model="varProjectID" class="form-control" placeholder="Project ID " onkeypress="IsNumber()" />
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-2 col-md-3">
-                                    <div class="form-group mb-3">
-                                        <input type="radio" ng-model="opt" value="name" class="form-check-input">
-                                        <label>Client Name  </label>
-                                        <input type="text" ng-model="varName" class="form-control" placeholder="Name" />
-                                    </div>
-                                </div>
-                                <div class="col-xl-2 col-md-3">
-                                    <div class="form-group mb-3">
-                                        <input type="radio" ng-model="opt" value="projectName" class="form-check-input">
-                                        <label>Project Name  </label>
-                                        <input type="text" ng-model="varProjectName" class="form-control" placeholder="Project Name" />
-                                    </div>
-                                </div>
-                                <div class="col-xl-1 col-md-6">
-                                    <label> . </label>
-                                    <div class="form-group">
-                                        <button type="button" class="btn btn-primary" ng-click="Search()">Search</button>
+                                        <h4 class="mb-sm-0 font-size-18">Site Visit </h4>
                                     </div>
                                 </div>
                             </div>
-                            <div class="text-center" ng-hide="loading">
-                                <button type="button" class="btn btn-dark waves-effect waves-light">
-                                    <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
-                                </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-2 col-md-2">
+                            <div class="form-group mb-3">
+                                <input type="radio" ng-model="opt" value="projectID" class="form-check-input ml-2">
+                                <label><span class="ml-4"> Project ID </span> </label>
+                                <input type="text" ng-model="varProjectID" class="form-control" placeholder="Project ID" onkeypress="return IsNumber();" />
                             </div>
-                            <hr />
+                        </div>
 
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="card">
-                                            <div class="text-center">
-                                                <span style="font-size:14pt;" class="text-danger">{{record}}</span>
-                                            </div>
+                        <div class="col-xl-2 col-md-3">
+                            <div class="form-group mb-3">
+                                <input type="radio" ng-model="opt" value="name" class="form-check-input ml-2">
+                                <label><span class="ml-4">  Client Name  </span></label>
+                                <input type="text" ng-model="varName" class="form-control" placeholder="Name" />
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-3">
+                            <div class="form-group mb-3">
+                                <input type="radio" ng-model="opt" value="projectName" class="form-check-input ml-2">
+                                <label><span class="ml-4"> Project Name </span> </label>
+                                <input type="text" ng-model="varProjectName" class="form-control" placeholder="Project Name" />
+                            </div>
+                        </div>
 
-                                            <div class="table-responsive">
-                                                <table class="table align-middle datatable dt-responsive table-bordered  nowrap" style=" border: 1px solid black; border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
-                                                    <thead class="bg-warning text-white">
-                                                        <tr class="bg-transparent">
-                                                            <th style="">  Sno  </th>
-                                                            <th style="">  Project ID </th>
-                                                            <th>Client Name </th>
-                                                            <th>Project Name</th>
-                                                            <th>Plot size	</th>
-                                                            <th>Level</th>
-                                                            <th>Action</th>
 
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
+                        <div class="col-xl-1 col-md-6">
+                            <label> . </label>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary" ng-click="Search()">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 text-left">
+                            <label> <span class="text-danger font-size-16 font-weight-bold">{{record}}</span> </label>
+                        </div>
+                    </div>
 
-                                                        <tr ng-repeat="item in sitevisitlist">
-                                                            <td>
-                                                                <span style="color:black "> {{$Index+1}} </span>
-                                                            </td>
 
-                                                            <td>
-                                                                <span style="color: black ">  {{item.projectID}}  </span>
-                                                            </td>
+                    <div class="text-center" ng-hide="loading">
+                        <button type="button" class="btn btn-dark waves-effect waves-light">
+                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                        </button>
+                    </div>
+                    <hr />
 
-                                                            <td>
-                                                                <span style="color: black ">  {{item.clientName}}  </span>
-                                                            </td>
-                                                            <td>
-                                                                <span style="color: black ">  {{item.projectName }}  </span>
-                                                            </td>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                @*<div class="text-center">
+                                    <span style="font-size:14pt;" class="text-danger">{{record}}</span>
+                                </div>*@
 
-                                                            <td>
-                                                                <span style="color: black "> {{item.plotSize}} </span>
-                                                            </td>
-                                                            <td>
-                                                                <span style="color: black "> {{item.projectLevel}} </span>
-                                                            </td>
-                                                            <td>
-                                                                <div ng-if="item.status =='request'">
-                                                                    <span style="color: black ">Request is pending in Project Manager </span>
-                                                                </div>
-                                                                <div ng-if="item.status !='request'">
-                                                                    <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="ShowCurrentWorking(item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-confirm">
-                                                                        Action
-                                                                    </button>
-                                                                </div>
-                                                            </td>
+                                <div class="table-responsive">
+                                    <table class="table align-middle datatable dt-responsive table-bordered  nowrap" style=" border: 1px solid black; border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+                                        <thead class="bg-warning text-white">
+                                            <tr class="bg-transparent">
+                                                <th style="">  Sno  </th>
+                                                <th style="">  Project ID </th>
+                                                <th>Client Name </th>
+                                                <th>Project Name</th>
+                                                <th>Plot size	</th>
+                                                <th>Level</th>
+                                                <th>Action</th>
 
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr ng-repeat="item in sitevisitlist">
+                                                <td>
+                                                    <span style="color:black "> {{$Index+1}} </span>
+                                                </td>
+
+                                                <td>
+                                                    <span style="color: black ">  {{item.projectID}}  </span>
+                                                </td>
+
+                                                <td>
+                                                    <span style="color: black ">  {{item.clientName}}  </span>
+                                                </td>
+                                                <td>
+                                                    <span style="color: black ">  {{item.projectName }}  </span>
+                                                </td>
+
+                                                <td>
+                                                    <span style="color: black "> {{item.plotSize}} </span>
+                                                </td>
+                                                <td>
+                                                    <span style="color: black "> {{item.projectLevel}} </span>
+                                                </td>
+                                                <td>
+                                                    <div ng-if="item.status =='request'">
+                                                        <span style="color: black ">Request is pending in Project Manager </span>
+                                                    </div>
+                                                    <div ng-if="item.status !='request'">
+                                                        <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="ShowCurrentWorking(item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-confirm">
+                                                            Action
+                                                        </button>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
+                        </div>
+                    </div>
 
 
 
-                            <div class="modal fade bs-example-modal-confirm" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Site Visit</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <div>
-                                                        <input type="hidden" />
-                                                        <div class="row">
-
-                                                            <div class="col-xl-12 col-md-6">
-                                                                <div class="form-group mb-3">
-                                                                    <label>Project ID </label>
-                                                                    <input type="text" ng-model="projectID" id="projectID" name="projectID" onkeypress="return IsNumber();" class="form-control" placeholder="Project ID" />
-
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div class="col-xl-12 col-md-6">
-                                                                <div class="form-group mb-3">
-                                                                    <label>Site Photo </label>
-                                                                    <input type="file" class="form-control" name="sitevisitPhoto" id="sitevisitPhoto" />
-                                                                    <span style="font-size:8pt; font-family:Arial">Compress multiple files using ZIP/RAR utility. And then upload it.</span>
-
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-12 col-md-12">
-                                                                <div class="form-group mb-3">
-                                                                    <label>Remark </label>
-                                                                    @Html.TextAreaFor(x => x.remark, new { cols = 60, rows = 10 })
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-12 col-md-12">
-                                                                <div class="form-group mb-3">
-                                                                    <label id="lblError" class="form-control text-center text-danger"> </label>
-                                                                </div>
-                                                            </div>
-
-
-                                                        </div>
+                    <div class="modal fade bs-example-modal-confirm" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Site Visit</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                                <div class="col-xl-12 ">
+                                                    <div class="form-group mb-3">
+                                                        <label>Project ID </label>
+                                                        <input type="text" ng-model="projectID" id="projectID" name="projectID" onkeypress="return IsNumber();" class="form-control" placeholder="Project ID" />
 
                                                     </div>
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <input type="submit" class="btn btn-primary waves-effect waves-light" onclick="return Validation()" value="Submit" />
+                                                <div class="col-xl-12">
+                                                    <div class="form-group mb-3">
+                                                        <label>Visitor Name </label>
+                                                        @Html.DropDownListFor(model => model.name, Model.designerList, new { @class = "form-control", placeholder = "Visitor" })
+
+                                                    </div>
                                                 </div>
-                                            </div>
+                                                <div class="col-xl-12 col-md-6">
+                                                    <div class="form-group mb-3">
+                                                        <label>Site Photo </label>
+                                                        <input type="file" class="form-control" name="sitevisitPhoto" id="sitevisitPhoto" multiple/>
+                                                        <span style="font-size:8pt; font-family:Arial">Compress multiple files using ZIP/RAR utility. And then upload it.</span>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-md-12">
+                                                    <div class="form-group mb-3">
+                                                        <label>Remark </label>
+                                                        @Html.TextAreaFor(x => x.remark, new { cols = 50, rows = 10 })
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-12 col-md-12">
+                                                    <div class="form-group mb-3">
+                                                        <label id="lblError" class="text-center text-danger"> </label>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="submit" class="btn btn-primary waves-effect waves-light" onclick="return Validation()" value="Submit" />
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 
-    </body>
+</body>
 }
 
 </html>

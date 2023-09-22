@@ -53,11 +53,7 @@ app.controller("myController", function ($scope, $http, $window ) {
             $scope.clientReceiveList = d.data;
             $scope.loading = true;
             $scope.totalItems = $scope.clientReceiveList.length;
-
             $scope.currentPage = 1;
-
-
-
             if ($scope.clientReceiveList.length == 0) {
                 $scope.recordmsg = "Record is not available";
                 return;
@@ -76,7 +72,7 @@ app.controller("myController", function ($scope, $http, $window ) {
     }
 
     $scope.ReceiptPrint = function (item) {
-        
+        $scope.loading = false;
         $http({
             url: "/Admin/RptClientReceivePrint",
             dataType: 'json',
@@ -90,7 +86,7 @@ app.controller("myController", function ($scope, $http, $window ) {
             var arr = location.href.split('/');
             var url = "http://" + arr[2] + "/pdf_files/" + d.data.replace('"', '');
             url = url.replace('"', '');
-            alert("Domain " + url);
+          
             $window.open(url, '_blank');
  
         }).error(function (err) {

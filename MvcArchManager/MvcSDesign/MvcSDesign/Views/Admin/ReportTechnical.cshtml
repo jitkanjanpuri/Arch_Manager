@@ -1,21 +1,13 @@
 ﻿@{
     ViewBag.Title = "Report Technical";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    Layout = "~/Views/Shared/_NewAdmin.cshtml";
 }
-
-
  
-
-
 <!doctype html>
 <html lang="en">
 
 <head>
-    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet">
-
-    <link href="~/assets/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link href="~/assets/css/font-awesome-all.min.css" rel="stylesheet">
-    <link href="~/assets/css/style.css" rel="stylesheet">
+    
     <script src="~/angularjs/ReportTechnical1.js"></script>
     <script type="text/javascript">
 
@@ -35,7 +27,7 @@
     </script>
 
 </head>
-@using (Html.BeginForm())
+@using (Html.BeginForm("ReportTechnical","Admin",FormMethod.Post))
 {
 
     <body>
@@ -44,70 +36,55 @@
 
                 <div class="page-content">
                     <div class="container-fluid">
-
+                         
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group">
-                                    <a href="@Url.Action("ReportClientLedger", "Admin")" class="btn btn-primary"><span>Client Ledger</span></a>
-                                    <a href="@Url.Action("ReportClientReceive", "Admin")" class="btn btn-primary"><span>Client Receive </span></a>
-                                    <a href="@Url.Action("ReportOutstanding", "Admin")" class="btn btn-primary"><span> Outstanding  </span></a>
-                                    <a href="@Url.Action("ReportTechnical", "Admin")" class="btn btn-primary"><span>Technical</span></a>
-                                    <a href="@Url.Action("ReportQuotation", "Admin")" class="btn btn-primary"><span> Quotation  </span></a>
-                                    @*<a href="@Url.Action("ReportMonthQuotation", "Admin")" class="btn btn-primary"><span> Month Quotation </span></a>*@
-                                    @*<a href="@Url.Action("ReportBalanceAdjust", "Admin")" class="btn btn-primary"><span> Balance Adjust  </span></a>*@
-                                    <a href="@Url.Action("ReportSiteVisit", "Admin")" class="btn btn-primary"><span> Site Visit   </span></a>
-                                    <a href="@Url.Action("ReportProjectHistory", "Admin")" class="btn btn-primary"><span> Project History  </span></a>
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between mt-4">
+                                    <div class="col-xl-3 col-md-2">
+                                        <div class="form-group mb-3 ">
+                                            <h4 class="mb-sm-0 font-size-18 mt-3">Technical Report </h4>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+
+
                         <br />
                         <div class="row">
-                            <div class="col-12">
-                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">Technical Report </h4>
+                            <div class="col-xl-2 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>From Date   </label>
+                                    <div class="input-group">
+                                        <input type="date" id="fromStart" class="form-control" ng-model="fromStart">
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-
-                            <div class="row">
-                                <div class="col-xl-2 col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label>From Date   </label>
-
-                                        <div class="input-group">
-                                            <input type="date" id="fromStart" class="form-control" ng-model="fromStart">
-
-                                        </div>
+                            <div class="col-xl-2 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>To Date   </label>
+                                    <div class="input-group">
+                                        <input type="date" id="toEnd" class="form-control" ng-model="toEnd">
                                     </div>
                                 </div>
-                                <div class="col-xl-2 col-md-6">
-                                    <div class="form-group mb-3">
+                            </div>
 
-                                        <label>To Date   </label>
-
-                                        <div class="input-group">
-                                            <input type="date" id="toEnd" class="form-control" ng-model="toEnd">
-                                        </div>
+                            <div class="col-xl-2 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Desinger name </label>
+                                    <div class="input-group">
+                                        <select class="form-control" ng-model="dname" ng-options="items.Text for items in designerList" style=""></select>
                                     </div>
-                                </div>
 
-                                <div class="col-xl-2 col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label>Desinger name </label>
-                                        <div class="input-group">
-                                            <select class="form-control" ng-model="dname" ng-options="items.Text for items in designerList" style=""></select>
-                                        </div>
-
-                                    </div>
                                 </div>
-                                <div class="col-xl-1 col-md-6">
-                                    <label> . </label>
-                                    <div class="form-group">
-                                        <button type="button" class="btn btn-primary" ng-click="TechGraph()">Search</button>
-                                    </div>
+                            </div>
+                            <div class="col-xl-1 col-md-6">
+                                <label> . </label>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary" ng-click="TechGraph()">Search</button>
                                 </div>
-
                             </div>
                         </div>
                         <div class="row">
@@ -151,10 +128,10 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript" src="~/assets/js/jquery.min.js"></script>
+        @*<script type="text/javascript" src="~/assets/js/jquery.min.js"></script>
         <script type="text/javascript" src="~/assets/js/bootstrap.bundle.min.js"></script>
         <script type="text/javascript" src="~/assets/js/chart.min.js"></script>
-        <script type="text/javascript" src="~/assets/js/circle-progress.min.js"></script>
+        <script type="text/javascript" src="~/assets/js/circle-progress.min.js"></script>*@
     </body>
 }
 

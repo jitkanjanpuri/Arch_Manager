@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ArchManagerDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblAdminSetting">
+          <Key>
+            <PropertyRef Name="adminSettingiD" />
+          </Key>
+          <Property Name="adminSettingiD" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="companyID" Type="int" Nullable="false" />
+          <Property Name="projectID" Type="bigint" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblAmountReceive">
           <Key>
             <PropertyRef Name="amountReceiveID" />
@@ -139,6 +147,7 @@
           <Property Name="projectID" Type="bigint" Nullable="false" />
           <Property Name="sitePhotoFile" Type="varchar" MaxLength="200" />
           <Property Name="remark" Type="varchar(max)" />
+          <Property Name="staffID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="tblProjectUploadFile">
           <Key>
@@ -248,6 +257,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblAdminSetting_companyID">
+          <End Role="tblCompanyProfile" Type="Self.tblCompanyProfile" Multiplicity="1" />
+          <End Role="tblAdminSetting" Type="Self.tblAdminSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCompanyProfile">
+              <PropertyRef Name="companyID" />
+            </Principal>
+            <Dependent Role="tblAdminSetting">
+              <PropertyRef Name="companyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblAmountReceive_projectID">
           <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
           <End Role="tblAmountReceive" Type="Self.tblAmountReceive" Multiplicity="*" />
@@ -332,6 +353,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblProjectSiteVisit_staffID">
+          <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
+          <End Role="tblProjectSiteVisit" Type="Self.tblProjectSiteVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStaff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="tblProjectSiteVisit">
+              <PropertyRef Name="staffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblProjectUploadFile_designerID">
           <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
           <End Role="tblProjectUploadFile" Type="Self.tblProjectUploadFile" Multiplicity="*" />
@@ -393,6 +426,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ArchManagerDBModelStoreContainer">
+          <EntitySet Name="tblAdminSetting" EntityType="Self.tblAdminSetting" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblAmountReceive" EntityType="Self.tblAmountReceive" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblClient" EntityType="Self.tblClient" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblClientLedger" EntityType="Self.tblClientLedger" Schema="dbo" store:Type="Tables" />
@@ -416,6 +450,10 @@
           <AssociationSet Name="FK__tblOperat__proje__5FB337D6" Association="Self.FK__tblOperat__proje__5FB337D6">
             <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
             <End Role="tblOperation" EntitySet="tblOperation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAdminSetting_companyID" Association="Self.FK_tblAdminSetting_companyID">
+            <End Role="tblCompanyProfile" EntitySet="tblCompanyProfile" />
+            <End Role="tblAdminSetting" EntitySet="tblAdminSetting" />
           </AssociationSet>
           <AssociationSet Name="FK_tblAmountReceive_projectID" Association="Self.FK_tblAmountReceive_projectID">
             <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
@@ -443,6 +481,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_tblProjectSiteVisit_projectID" Association="Self.FK_tblProjectSiteVisit_projectID">
             <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+            <End Role="tblProjectSiteVisit" EntitySet="tblProjectSiteVisit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProjectSiteVisit_staffID" Association="Self.FK_tblProjectSiteVisit_staffID">
+            <End Role="tblStaff" EntitySet="tblStaff" />
             <End Role="tblProjectSiteVisit" EntitySet="tblProjectSiteVisit" />
           </AssociationSet>
           <AssociationSet Name="FK_tblProjectUploadFile_designerID" Association="Self.FK_tblProjectUploadFile_designerID">
@@ -522,6 +564,7 @@
           <Property Name="emailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="tblClients" Relationship="Self.FK__tblClient__compa__5EBF139D" FromRole="tblCompanyProfile" ToRole="tblClient" />
           <Property Name="pwd" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblAdminSettings" Relationship="ArchManagerDBModel.FK_tblAdminSetting_companyID" FromRole="tblCompanyProfile" ToRole="tblAdminSetting" />
         </EntityType>
         <EntityType Name="tblOperation">
           <Key>
@@ -608,6 +651,7 @@
           <NavigationProperty Name="tblStaffPaids" Relationship="Self.FK_tblStaffPaid_staffID" FromRole="tblStaff" ToRole="tblStaffPaid" />
           <Property Name="active" Type="Boolean" />
           <NavigationProperty Name="tblProjectUploadFiles" Relationship="ArchManagerDBModel.FK_tblProjectUploadFile_designerID" FromRole="tblStaff" ToRole="tblProjectUploadFile" />
+          <NavigationProperty Name="tblProjectSiteVisits" Relationship="ArchManagerDBModel.FK_tblProjectSiteVisit_staffID" FromRole="tblStaff" ToRole="tblProjectSiteVisit" />
         </EntityType>
         <EntityType Name="tblStaffLedger">
           <Key>
@@ -810,6 +854,15 @@
             <End Role="tblProjectDetail" EntitySet="tblProjectDetails" />
             <End Role="tblAmountReceive" EntitySet="tblAmountReceives" />
           </AssociationSet>
+          <EntitySet Name="tblAdminSettings" EntityType="ArchManagerDBModel.tblAdminSetting" />
+          <AssociationSet Name="FK_tblAdminSetting_companyID" Association="ArchManagerDBModel.FK_tblAdminSetting_companyID">
+            <End Role="tblCompanyProfile" EntitySet="tblCompanyProfiles" />
+            <End Role="tblAdminSetting" EntitySet="tblAdminSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProjectSiteVisit_staffID" Association="ArchManagerDBModel.FK_tblProjectSiteVisit_staffID">
+            <End Role="tblStaff" EntitySet="tblStaffs" />
+            <End Role="tblProjectSiteVisit" EntitySet="tblProjectSiteVisits" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="tblProjectManagement">
           <Key>
@@ -836,6 +889,8 @@
           <Property Name="sitePhotoFile" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="tblProjectDetail" Relationship="ArchManagerDBModel.FK_tblProjectSiteVisit_projectID" FromRole="tblProjectSiteVisit" ToRole="tblProjectDetail" />
+          <Property Name="staffID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblStaff" Relationship="ArchManagerDBModel.FK_tblProjectSiteVisit_staffID" FromRole="tblProjectSiteVisit" ToRole="tblStaff" />
         </EntityType>
         <Association Name="FK_tblProjectManagement_projectID">
           <End Type="ArchManagerDBModel.tblProjectDetail" Role="tblProjectDetail" Multiplicity="1" />
@@ -956,6 +1011,39 @@
             </Principal>
             <Dependent Role="tblAmountReceive">
               <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblAdminSetting">
+          <Key>
+            <PropertyRef Name="adminSettingiD" />
+          </Key>
+          <Property Name="adminSettingiD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="companyID" Type="Int32" Nullable="false" />
+          <Property Name="projectID" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="tblCompanyProfile" Relationship="ArchManagerDBModel.FK_tblAdminSetting_companyID" FromRole="tblAdminSetting" ToRole="tblCompanyProfile" />
+        </EntityType>
+        <Association Name="FK_tblAdminSetting_companyID">
+          <End Type="ArchManagerDBModel.tblCompanyProfile" Role="tblCompanyProfile" Multiplicity="1" />
+          <End Type="ArchManagerDBModel.tblAdminSetting" Role="tblAdminSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCompanyProfile">
+              <PropertyRef Name="companyID" />
+            </Principal>
+            <Dependent Role="tblAdminSetting">
+              <PropertyRef Name="companyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProjectSiteVisit_staffID">
+          <End Type="ArchManagerDBModel.tblStaff" Role="tblStaff" Multiplicity="1" />
+          <End Type="ArchManagerDBModel.tblProjectSiteVisit" Role="tblProjectSiteVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStaff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="tblProjectSiteVisit">
+              <PropertyRef Name="staffID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1142,6 +1230,7 @@
           <EntitySetMapping Name="tblProjectSiteVisits">
             <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectSiteVisit">
               <MappingFragment StoreEntitySet="tblProjectSiteVisit">
+                <ScalarProperty Name="staffID" ColumnName="staffID" />
                 <ScalarProperty Name="remark" ColumnName="remark" />
                 <ScalarProperty Name="sitePhotoFile" ColumnName="sitePhotoFile" />
                 <ScalarProperty Name="projectID" ColumnName="projectID" />
@@ -1197,6 +1286,15 @@
                 <ScalarProperty Name="amount" ColumnName="amount" />
                 <ScalarProperty Name="dt" ColumnName="dt" />
                 <ScalarProperty Name="amountReceiveID" ColumnName="amountReceiveID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblAdminSettings">
+            <EntityTypeMapping TypeName="ArchManagerDBModel.tblAdminSetting">
+              <MappingFragment StoreEntitySet="tblAdminSetting">
+                <ScalarProperty Name="projectID" ColumnName="projectID" />
+                <ScalarProperty Name="companyID" ColumnName="companyID" />
+                <ScalarProperty Name="adminSettingiD" ColumnName="adminSettingiD" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

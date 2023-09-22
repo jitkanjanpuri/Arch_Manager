@@ -18,6 +18,8 @@ namespace MvcSDesign.Repository
         string SaveCompanyProfile(CompanyModel obj);
         CompanyModel GetCompanyProfile();
 
+        long GetStartProjectID();
+        string SaveAdminSetting(AdminSettingModel objAsm);
         string InsertRegistration(StaffModel st);
         IEnumerable<StaffModel> GatAllRegistration();
         string RegistrationUpdate(StaffModel obj);
@@ -51,11 +53,14 @@ namespace MvcSDesign.Repository
         IEnumerable<operation> getProjectAssign();
          
         string SaveProjectAssigned(string projectID, string clientID, string projectCategory, string designerAmount);
-
+        string EmailSend(string emailID);
+        string EmailSend1(string emailID);
+        string EmailSend2(string emailID);
+        string EmailSend3(string emailID);
         string ProjectRollBack(int pmID);
 
         void SaveStatus(string ch);
-       IEnumerable<operation> getDesignerProjectAmount(int designerID);
+        IEnumerable<operation> getDesignerProjectAmount(int designerID);
         string DesignerAmountCancel(int operationID);
         string CompleteCurrentWorking(int operationID);
 
@@ -79,7 +84,7 @@ namespace MvcSDesign.Repository
 
 
         //Site Visit
-        string SaveSiteVisit(int projectID, string fname,  string remark);
+        string SaveSiteVisit(int projectID,int id, string fname,  string remark);
         IEnumerable<operation> SearchSiteVisitByNameOrProjectID(string opt, string projectID, string name, string pname);
         string DownloadSiteVist(int projectID, string filename);
 

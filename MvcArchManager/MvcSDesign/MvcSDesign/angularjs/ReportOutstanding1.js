@@ -2,22 +2,19 @@
 app.controller("myCtrl", function ($scope, $http) {
 
     $scope.loading = true;
-    $scope.totalclientreceive = "0";
 
+    $scope.finaltotal = "0";
+    $scope.total = "0";
+    $scope.bal = "0";
     $scope.fromStart = new Date();
     $scope.toEnd = new Date();
 
     $scope.viewby = 10;
-
-
     $scope.itemsPerPage = $scope.viewby;
     $scope.maxSize = 5; //Number of pager buttons to show
-
     $scope.setPage = function (pageNo) {
         $scope.currentPage = pageNo;
     };
-
-
 
     $scope.pageChanged = function () {
         console.log('Page changed to: ' + $scope.currentPage);
@@ -28,15 +25,12 @@ app.controller("myCtrl", function ($scope, $http) {
         $scope.currentPage = 1; //reset to first page
     }
 
-
-
     $scope.ShowClientReceive = function () {
         var vardt1 = $scope.fromStart;
         var vardt2 = $scope.toEnd;
         var varcname = $scope.txtCName;
 
         $scope.statuslist = null;
-        $scope.totalclientreceive = "0";
         $scope.recordmsg = "";
 
         $scope.finaltotal = "0";
@@ -67,7 +61,7 @@ app.controller("myCtrl", function ($scope, $http) {
                 $scope.recordmsg = "Record is not available";
                 return;
             }
-            var total = 0, finaltotal = 0, bal = 0  ;
+            var total = 0, finaltotal = 0, bal = 0;
             for (i = 0; i < $scope.statuslist.length; i++) {
                 slist = $scope.statuslist[i];
                 total += slist.receivedAmount;

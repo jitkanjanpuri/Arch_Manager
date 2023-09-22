@@ -1,7 +1,7 @@
 ﻿
 @{
-    ViewBag.Title = "ReportClientLadger";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    ViewBag.Title = "Report Client Ledger";
+    Layout = "~/Views/Shared/_NewAdmin.cshtml";
 }
 
 
@@ -37,292 +37,261 @@
 @using (Html.BeginForm())
 {
 
-    <body>
-        <div ng-app="myApp">
-            <div ng-controller="myController">
+<body>
+    <div ng-app="myApp">
+        <div ng-controller="myController">
 
-                <div class="page-content">
-                    <div class="container-fluid">
-
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <a href="@Url.Action("ReportClientLedger", "Admin")" class="btn btn-primary"><span>Client Ledger</span></a>
-                                    <a href="@Url.Action("ReportClientReceive", "Admin")" class="btn btn-primary"><span>Client Receive </span></a>
-                                    <a href="@Url.Action("ReportOutstanding", "Admin")" class="btn btn-primary"><span> Outstanding  </span></a>
-                                    <a href="@Url.Action("ReportTechnical", "Admin")" class="btn btn-primary"><span>Technical</span></a>
-                                    <a href="@Url.Action("ReportQuotation", "Admin")" class="btn btn-primary"><span> Quotation  </span></a>
-                                    @*<a href="@Url.Action("ReportMonthQuotation", "Admin")" class="btn btn-primary"><span> Month Quotation </span></a>*@
-                                    @*<a href="@Url.Action("ReportBalanceAdjust", "Admin")" class="btn btn-primary"><span> Balance Adjust  </span></a>*@
-                                    <a href="@Url.Action("ReportSiteVisit", "Admin")" class="btn btn-primary"><span> Site Visit   </span></a>
-                                    <a href="@Url.Action("ReportProjectHistory", "Admin")" class="btn btn-primary"><span> Project History  </span></a>
+            <div class="page-content">
+                <div class="container-fluid">
+                     
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between mt-4">
+                                <div class="col-xl-3 col-md-2">
+                                    <div class="form-group mb-3 ">
+                                        <h4 class="mb-sm-0 font-size-18 mt-3">Client Ledger Report</h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <br />
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">Client Ledger </h4>
-
-
-                                </div>
-                            </div>
-                        </div> 
-                        <div class="row">
-                             
-                            <div class="row">
-                                <div class="col-xl-2 col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label>From Date   </label>
-                                        <div class="input-group">
-                                            <input type="date" id="fromStart" class="form-control" ng-model="fromStart">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-2 col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label>To Date   </label>
-                                        <div class="input-group">
-                                            <input type="date" id="toEnd" class="form-control" ng-model="toEnd">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-2 col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label>Client name </label>
-                                        <input type="text" ng-model="txtCName" class="form-control" placeholder="Client name" />
-
-                                    </div>
-                                </div>
-                                <div class="col-xl-1 col-md-6">
-                                    <label> . </label>
-                                    <div class="form-group">
-                                        <button type="button" class="btn btn-primary" ng-click="ShowClientLadger()">Search</button>
-                                    </div>
-                                </div>
-                                @*<div class="col-xl-2 col-md-6">
-                                    <br><br>
-                                    <div class="form-group">
-                                        <span style="font-size:14pt"> Total Amount </span>
-                                    </div>
-                                </div>*@
-
-
-                                @*<div class="col-xl-2 col-md-6">
-                                    <br><br>
-                                    <div class="form-group">
-                                        <span style="font-size:14pt">
-                                            : {{totalclientbalance}}
-                                            INR
-                                        </span>
-                                    </div>
-                                </div>*@
-                                <div class="form-group">
-                                    <span class="text-danger text-center font-size:20  " style="font-size: 14pt ">{{searchdmsg}}</span>
-                                </div>
-                            </div>
-                         </div>
                     </div>
-                  
-                    <hr>
-
-                    <div class="text-center" ng-hide="loading">
-                        <button type="button" class="btn btn-dark waves-effect waves-light">
-                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
-                        </button>
-                    </div>
-
+                    <br />
                     <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card">
-                                <div class="card-body">
-                                     
+                        <div class="row col-lg-12">
+                            <div class="col-xl-2 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>From Date   </label>
+                                    <div class="input-group">
+                                        <input type="date" id="fromStart" class="form-control" ng-model="fromStart">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>To Date   </label>
+                                    <div class="input-group">
+                                        <input type="date" id="toEnd" class="form-control" ng-model="toEnd">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Client name </label>
+                                    <input type="text" ng-model="txtCName" class="form-control" placeholder="Client name" />
 
+                                </div>
+                            </div>
+                            <div class="col-xl-1 col-md-6">
+                                <label> . </label>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary" ng-click="ShowClientLadger()">Search</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <span class="text-danger text-center font-size:20  " style="font-size: 14pt ">{{searchdmsg}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="text-center" ng-hide="loading">
+                    <button type="button" class="btn btn-dark waves-effect waves-light">
+                        <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                    </button>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+
+
+                                <div class="table-responsive">
+                                    <table class="table align-middle datatable dt-responsive table-bordered nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+                                        <thead class="bg-warning text-white">
+                                            <tr>
+
+                                                <th style="width: 120px;">#   </th>
+                                                <th> Client Name </th>
+                                                <th> City	 </th>
+                                                <th> State </th>
+                                                <th style="width: 150px;">Balance Amount</th>
+                                                <th style="width: 150px;">Action </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="item in clientLedger ">
+                                                <td>{{$index+1}} </td>
+                                                <td> {{item.clientName}} </td>
+                                                <td> {{item.city}} </td>
+                                                <td> {{item.state}} </td>
+                                                <td style="text-align:right"> {{item.mobile}} </td>
+                                                <td> <input type="button" class="btn btn-info waves-effect waves-light" value="Show" ng-click="ShowLedgerDetail(item.clientID, item.clientName , item.city, item.state )" data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl" /> </td>
+                                            </tr>
+                                            <tr style="font-weight:bold;font-family:Arial;font-size:10pt;">
+                                                <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
+                                                <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
+                                                <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
+                                                <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;">Total </td>
+                                                <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7; text-align:right"><span style="font-size:10pt"> {{totalclientbalance}}   INR</span> </td>
+                                                <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade bs-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="myExtraLargeModalLabel">Client Details </h5>
+                                @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
+                            </div>
+                            <div class="text-center" ng-hide="loading1">
+                                <button type="button" class="btn btn-dark waves-effect waves-light">
+                                    <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col-lg-12">
+                                    <label>Client Name :{{clientname}}  </label>&nbsp;&nbsp;&nbsp;
+                                    <label>Address : {{clientaddress}}  </label>
                                     <div class="table-responsive">
-                                        <table class="table align-middle datatable dt-responsive table-bordered nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
-                                            <thead class="bg-warning text-white">
-                                                <tr>
+                                        <table id="tblClientLedger" class="table table-bordered mb-0">
+                                            <thead>
+                                                <tr class="bg-transparent">
 
-                                                    <th style="width: 120px;">#   </th>
-                                                    <th> Client Name </th>
-                                                    <th> City	 </th>
-                                                    <th> State </th>
-                                                    <th style="width: 150px;">Balance Amount</th>
-                                                    <th style="width: 150px;">Action </th>
+                                                    <th>Project ID   </th>
+                                                    <th> Date </th>
+                                                    <th> Project Name	 </th>
+                                                    <th> Project Type</th>
+                                                    <th> Package </th>
+                                                    <th> Amount </th>
+                                                    <th> Received amount </th>
+                                                    <th> Balance </th>
+                                                    <th> Remark </th>
 
                                                 </tr>
                                             </thead>
+
+
                                             <tbody>
-                                                <tr ng-repeat="item in clientLedger ">
-                                                    <td>{{$index+1}} </td>
-                                                    <td> {{item.clientName}} </td>
-                                                    <td> {{item.city}} </td>
-                                                    <td> {{item.state}} </td>
-                                                    <td style="text-align:right"> {{item.mobile}} </td>
-                                                    <td> <input type="button" class="btn btn-info waves-effect waves-light" value="Show" ng-click="ShowLedgerDetail(item.clientID, item.clientName , item.city, item.state )" data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl" /> </td>
-                                                </tr>
-                                                <tr style="font-weight:bold;font-family:Arial;font-size:10pt;">
-                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
-                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
-                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
-                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;">Total </td>
-                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7; text-align:right"><span style="font-size:10pt"> {{totalclientbalance}}   INR</span> </td>
-                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
+                                                <tr ng-repeat="item in ledgerDeatil ">
+                                                    <td>{{item.projectID}} </td>
+                                                    <td>{{item.status }}</td>
+                                                    <td>{{item.projectName}}</td>
+                                                    <td>{{item.projectType}}</td>
+                                                    <td>{{item.package}}</td>
+                                                    <td style="text-align:right">{{item.amount}}</td>
+                                                    <td style="text-align:right">{{item.receivedAmount}} </td>
+                                                    <td style="text-align:right">{{item.balance}}</td>
+                                                    <td>{{item.remark}}</td>
                                                 </tr>
                                             </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><span style=" font-family: Arial; font-size: 12pt; color: black;">Remaining balance</span></td>
+                                                    <td style="text-align:right"> <span style=" font-family: Arial; font-size: 12pt; color: black;"> {{clientbalance}}</span></td>
+
+
+                                                </tr>
+                                            </tfoot>
                                         </table>
+
+                                    </div>
+                                    <div class="text-center ">
+                                        <span class="text-danger text-center font-size:20  " style="font-size: 14pt ">{{recordMsg}}</span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="modal fade bs-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-xl">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="myExtraLargeModalLabel">Client Details </h5>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary waves-effect waves-light" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                                &nbsp;&nbsp;
+                                <button type="button" class="btn btn-primary waves-effect waves-light" ng-click="ClientPDFReport()">PDF</button>
 
-
-
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="text-center" ng-hide="loading1">
-                                    <button type="button" class="btn btn-dark waves-effect waves-light">
-                                        <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="col-lg-12">
-                                        <label>Client Name :{{clientname}}  </label>&nbsp;&nbsp;&nbsp;
-                                        <label>Address : {{clientaddress}}  </label>
-                                        <div class="table-responsive">
-                                            <table id="tblClientLedger" class="table table-bordered mb-0">
-                                                <thead>
-                                                    <tr class="bg-transparent">
-
-                                                        <th>Project ID   </th>
-                                                        <th> Date </th>
-                                                        <th> Project Name	 </th>
-                                                        <th> Project Type</th>
-                                                        <th> Package </th>
-                                                        <th> Amount </th>
-                                                        <th> Received amount </th>
-                                                        <th> Balance </th>
-                                                        <th> Remark </th>
-
-                                                    </tr>
-                                                </thead>
-
-
-                                                <tbody>
-                                                    <tr ng-repeat="item in ledgerDeatil ">
-                                                        <td>{{item.projectID}} </td>
-                                                        <td>{{item.status }}</td>
-                                                        <td>{{item.projectName}}</td>
-                                                        <td>{{item.projectType}}</td>
-                                                        <td>{{item.package}}</td>
-                                                        <td style="text-align:right">{{item.amount}}</td>
-                                                        <td style="text-align:right" >{{item.receivedAmount}} </td>
-                                                        <td  style="text-align:right">{{item.balance}}</td>
-                                                        <td>{{item.remark}}</td>
-                                                    </tr>
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td><span style=" font-family: Arial; font-size: 12pt; color: black;">Remaining balance</span></td>
-                                                        <td style="text-align:right" > <span style=" font-family: Arial; font-size: 12pt; color: black;"> {{clientbalance}}</span></td>
-                                                        
-
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-
-                                        </div>
-                                        <div class="text-center ">
-                                            <span class="text-danger text-center font-size:20  " style="font-size: 14pt ">{{recordMsg}}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary waves-effect waves-light" ng-click="ClientPDFReport()">PDF</button>
-                                     
-                                </div>
                             </div>
                         </div>
                     </div>
-
-
-                    <div class="modal fade bs-example-modal-center2" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Balance Adjust</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div>
-                                                <form id="pristine-valid-example" novalidate method="post">
-                                                    <input type="hidden" />
-                                                    <div class="row">
-
-                                                        
-                                                        <div class="col-xl-6 col-md-6">
-                                                            <div class="form-group mb-3">
-                                                                <label>Client name	 </label>
-                                                                <input type="text" ng-model="cName" class="form-control" readonly />
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-6 col-md-6">
-                                                            <div class="form-group mb-3">
-                                                                <label>Balance Amount</label>
-                                                                <input type="text" ng-model="balAmount" class="form-control" placeholder="  " readonly />
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-6 col-md-6">
-                                                            <div class="form-group mb-3">
-                                                                <label>Adjust amount</label>
-                                                                <input type="text" ng-model="txtAmount" class="form-control" onkeypress="return IsNumber();" placeholder="Adjust Amount  " />
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-6 col-md-6">
-                                                            <div class="form-group mb-3">
-                                                                <label>Remark</label>
-                                                                <input type="text" ng-model="txtRemark" class="form-control" onkeypress="return IsNumber();" placeholder="Remark  " />
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </form>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="modal-footer">
-                                            <button type="button" ng-click="SaveAdjustBalance()" class="btn btn-primary waves-effect waves-light">Submit</button>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
                 </div>
+
+
+                <div class="modal fade bs-example-modal-center2" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Balance Adjust</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div>
+                                            <form id="pristine-valid-example" novalidate method="post">
+                                                <input type="hidden" />
+                                                <div class="row">
+
+
+                                                    <div class="col-xl-6 col-md-6">
+                                                        <div class="form-group mb-3">
+                                                            <label>Client name	 </label>
+                                                            <input type="text" ng-model="cName" class="form-control" readonly />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6 col-md-6">
+                                                        <div class="form-group mb-3">
+                                                            <label>Balance Amount</label>
+                                                            <input type="text" ng-model="balAmount" class="form-control" placeholder="  " readonly />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6 col-md-6">
+                                                        <div class="form-group mb-3">
+                                                            <label>Adjust amount</label>
+                                                            <input type="text" ng-model="txtAmount" class="form-control" onkeypress="return IsNumber();" placeholder="Adjust Amount  " />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6 col-md-6">
+                                                        <div class="form-group mb-3">
+                                                            <label>Remark</label>
+                                                            <input type="text" ng-model="txtRemark" class="form-control" onkeypress="return IsNumber();" placeholder="Remark  " />
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" ng-click="SaveAdjustBalance()" class="btn btn-primary waves-effect waves-light">Submit</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
-
-    </body>
+    </div>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
 }
 
 </html>

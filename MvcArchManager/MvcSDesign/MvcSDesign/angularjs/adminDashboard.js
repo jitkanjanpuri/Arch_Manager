@@ -13,8 +13,7 @@ app.controller("cntr", function ($scope, $http, $interval) {
         var dts = [];
         var slist, tmpList;
         var arr1 = {};
-        //$scope.bgcolorArr = ["#admin", "#F7CE76", "#E8D6CF", "#8C7386", "#9C9359", "#5CE497"];
-        $scope.bgcolorArr = ["#E8D6CF", "#E8D6CF", "#E8D6CF", "#E8D6CF", "#E8D6CF", "#E8D6CF"];
+        $scope.bgcolorArr = ["#469EFB", "#469EFB", "#469EFB", "#469EFB", "#469EFB", "#469EFB"];
         $scope.staffArr = [];
         $scope.lableArr = [];
         $scope.dataArr = [];
@@ -270,7 +269,7 @@ app.controller("cntr", function ($scope, $http, $interval) {
                 }
                 else {
                     confirmqty++;
-                    confirmamount += qlist.amount;
+                    confirmamount += qlist.finalizeAmount;
                 }
             }
             $scope.quotation = confirmqty + pendingqty;

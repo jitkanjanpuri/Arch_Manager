@@ -12,7 +12,7 @@
     color: #000 !important;
 }
 .sidebar .sidebar-brand {
-    min-height: 350px;
+    min-height: 300px;
 }
 
 @font-face {
@@ -57,15 +57,21 @@ ul.pagination li a:hover, ul.pagination li.active a {
     background-image: -ms-linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
 }
 .card.top-cart-3, .sidebar-brand, .bg-login-image {
+    background-image: -moz-linear-gradient(90deg, #141413 0%, #141413 100%);
+    background-image: -webkit-linear-gradient(90deg, #160a07 0%, #948c8b 100%);
+    background-image: -ms-linear-gradient(90deg, #141413 0%, #141413 100%);
+}
+/*
+.card.top-cart-3, .sidebar-brand, .bg-login-image {
     background-image: -moz-linear-gradient(90deg, #ee0979 0%, #ff6a00 100%);
     background-image: -webkit-linear-gradient(90deg, #ee0979 0%, #ff6a00 100%);
     background-image: -ms-linear-gradient(90deg, #ee0979 0%, #ff6a00 100%);
-}
-.card.top-cart-4 {
+}*/
+/*.card.top-cart-4 {
     background-image: -moz-linear-gradient(90deg, #45b649 0%, #dce35b 100%);
     background-image: -webkit-linear-gradient(90deg, #45b649 0%, #dce35b 100%);
     background-image: -ms-linear-gradient(90deg, #45b649 0%, #dce35b 100%);
-}
+}*/
 .carousel.slide{
 	padding-bottom: 40px;
 }

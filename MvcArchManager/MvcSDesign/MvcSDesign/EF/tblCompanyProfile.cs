@@ -18,6 +18,7 @@ namespace MvcSDesign.EF
         public tblCompanyProfile()
         {
             this.tblClients = new HashSet<tblClient>();
+            this.tblAdminSettings = new HashSet<tblAdminSetting>();
         }
     
         public int companyID { get; set; }
@@ -35,5 +36,7 @@ namespace MvcSDesign.EF
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblClient> tblClients { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblAdminSetting> tblAdminSettings { get; set; }
     }
 }

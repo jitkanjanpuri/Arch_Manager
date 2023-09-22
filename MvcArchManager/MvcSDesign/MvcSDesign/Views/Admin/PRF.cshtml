@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "PRF";
-     Layout = "~/Views/Shared/_Admin.cshtml";
+     Layout = "~/Views/Shared/_NewAdmin.cshtml";
 }
 
 
@@ -267,77 +267,7 @@
     </style>
     <script type="text/javascript">
 
-        //function getRecord() {
-        //    var xmlhttp = new XMLHttpRequest;
-        //    var pid = document.getElementById("txtProjectID_I").value;
-        //    if (pid == "") return;
-        //    var url = "checkProjectType.ashx?pid=" + pid;
-        //    xmlhttp.open("GET", url, false);
-        //    xmlhttp.send();
-
-        //    var ch = xmlhttp.responseText;
-        //    if (ch == "N") {
-        //        document.getElementById("rdCornerPlotYes").disabled = true;
-        //        document.getElementById("rdCornerPlotNo").disabled = true;
-        //    }
-
-
-        //    url = "searchprojecthandler.ashx?pid=" + pid;
-        //    xmlhttp.open("GET", url, false);
-        //    xmlhttp.send();
-        //    url = xmlhttp.responseText;
-        //    if (url != "") {
-        //        var ch = url.split('#');
-        //        document.getElementById("txtWorkingStatus_I").value = ch[0];
-
-        //        if (ch[1].toString() == "Yes")
-        //            document.getElementById("rdSlabDetailYes").checked = true;
-        //        else
-        //            document.getElementById("rdSlabDetailNo").checked = true;
-
-        //        document.getElementById("txtSlabHeight_I").value = ch[2];
-        //        document.getElementById("txtPlinthHeight_I").value = ch[3];
-        //        document.getElementById("txtPorchHeight_I").value = ch[4];
-        //        document.getElementById("ddlElevationPattern").value = ch[5];
-
-
-        //        if (ch[7].toString() == "Yes")
-        //            document.getElementById("rdTowerRoomYes").checked = true;
-        //        else
-        //            document.getElementById("rdTowerRoomNo").checked = true;
-
-        //        if (ch[8].toString() == "Yes")
-        //            document.getElementById("rdCornerPlotYes").checked = true;
-        //        else
-        //            document.getElementById("rdCornerPlotNo").checked = true;
-
-        //        document.getElementById("txtPlotFaceSide_I").value = ch[9];
-
-        //        if (ch[10].toString() == "Yes")
-        //            document.getElementById("rdBoundaryWallDesignYes").checked = true;
-        //        else
-        //            document.getElementById("rdBoundaryWallDesignNo").checked = true;
-
-
-
-        //        document.getElementById("txtAnyOther_I").value = ch[11];
-        //        document.getElementById("txtDoorLintel_I").value = ch[12];
-        //        document.getElementById("txtWindowSill_I").value = ch[13];
-        //        document.getElementById("txtWindowLintel_I").value = ch[14];
-
-        //        if (ch[11].length != 0) {
-        //            document.getElementById("img1").style.display = "block";
-        //            document.getElementById("img1").src = ch[11];
-        //        }
-
-        //        document.getElementById("txtStatus").style.display = "block";
-        //        document.getElementById("txtStatus").value = "Update";
-        //        document.getElementById("txtStatus").style.display = "none";
-        //    }
-        //    else {
-        //        document.getElementById("txtStatus").value = "Save";
-        //    }
-        //}
+        
         $(document).ready(function () {
 
             var current_fs, next_fs, previous_fs; //fieldsets
@@ -589,39 +519,16 @@
 </head>
  
 <body>
-
-
-
-
     <div ng-app="myApp">
         <div ng-controller="myController">
-
-
-
             <div class="page-content">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
-                            <div class="form-group">
-
-                                <a href="@Url.Action("Quotation", "Client")" class="btn btn-primary"><span>Quotation </span></a>
-                                <a href="@Url.Action("ProjectManagement", "Admin")" class="btn btn-primary"><span>Prj Management </span></a>
-                                <a href="@Url.Action("PRF", "Admin")" class="btn btn-primary"><span>PRF</span></a>
-                                @*<a href="@Url.Action("Operation", "Admin")" class="btn btn-primary"><span> Operation  </span></a>*@
-                                <a href="@Url.Action("SiteVisit", "Admin")" class="btn btn-primary"><span>Site Visit </span></a>
-                                <a href="@Url.Action("CurrentWorking", "Admin")" class="btn btn-primary"><span> Operation </span></a>
-                                <a href="@Url.Action("Receipt", "Admin")" class="btn btn-primary"><span>Receipt</span></a>
-                            </div>
-                        </div>
-                    </div>
-                    <br />
-                    <!-- start page title -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between mt-4">
                                 <div class="col-xl-2 col-md-2">
-                                    <div class="form-group mb-3">
-                                        <h4 class="mb-sm-0 font-size-18">PRF </h4>
+                                    <div class="form-group mb-3 ">
+                                        <h4 class="mb-sm-0 font-size-18 mt-3">PRF </h4>
                                     </div>
                                 </div>
                             </div>
@@ -630,23 +537,23 @@
                     <div class="row">
                         <div class="col-xl-2 col-md-2">
                             <div class="form-group mb-3">
-                                <input type="radio" ng-model="opt" value="projectID" class="form-check-input">
-                                <label>Project ID </label>
+                                <input type="radio" ng-model="opt" value="projectID" class="form-check-input ml-2">
+                                <label><span class="ml-4"> Project ID</span> </label>
                                 <input type="text" ng-model="varProjectID" class="form-control" placeholder="Project ID" onkeypress="IsNumber()" />
                             </div>
                         </div>
 
                         <div class="col-xl-2 col-md-3">
                             <div class="form-group mb-3">
-                                <input type="radio" ng-model="opt" value="name" class="form-check-input">
-                                <label>Client Name  </label>
+                                <input type="radio" ng-model="opt" value="name" class="form-check-input ml-2" />
+                                <label><span class="ml-4"> Client Name </span> </label>
                                 <input type="text" ng-model="varName" class="form-control" placeholder="Name" />
                             </div>
                         </div>
                         <div class="col-xl-2 col-md-3">
                             <div class="form-group mb-3">
-                                <input type="radio" ng-model="opt" value="projectName" class="form-check-input">
-                                <label>Project Name  </label>
+                                <input type="radio" ng-model="opt" value="projectName" class="form-check-input ml-2">
+                                <label><span class="ml-4"> Project Name  </span></label>
                                 <input type="text" ng-model="varProjectName" class="form-control" placeholder="Name" />
                             </div>
                         </div>
@@ -662,70 +569,77 @@
                             <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
                         </button>
                     </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 text-left">
+                            <label> <span class="text-danger font-size-16 font-weight-bold">{{record}}</span> </label>
+                        </div>
+                    </div>
+
+
                     <hr />
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
-                                
-                                    
-                                    <div class="text-center">
-                                        <span style="font-size:14pt;" class="text-danger">{{record}}</span>
-                                    </div>
 
-                                    <div class="table-responsive">
-                                        <table class="table align-middle datatable dt-responsive table-bordered  nowrap" style=" border: 1px solid black; border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
-                                            <thead class="bg-warning text-white">
-                                                <tr class="bg-transparent">
-                                                    <th style="">  Sno  </th>
-                                                    <th style="">  Project ID </th>
-                                                    <th>Client Name </th>
-                                                    <th>Project Name</th>
-                                                    <th>Plot size	</th>
-                                                    <th>Level</th>
-                                                    <th>Action</th>
 
-                                                </tr>
-                                            </thead>
-                                            <tbody>
+                                @*<div class="text-center">
+                                    <span style="font-size:14pt;" class="text-danger">{{record}}</span>
+                                </div>*@
 
-                                                <tr ng-repeat="item in sitevisitlist">
-                                                    <td>
-                                                        <span style="color:black "> {{$Index+1}} </span>
-                                                    </td>
+                                <div class="table-responsive">
+                                    <table class="table align-middle datatable dt-responsive table-bordered  nowrap" style=" border: 1px solid black; border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+                                        <thead class="bg-warning text-white">
+                                            <tr class="bg-transparent">
+                                                <th style="">  Sno  </th>
+                                                <th style="">  Project ID </th>
+                                                <th>Client Name </th>
+                                                <th>Project Name</th>
+                                                <th>Plot size	</th>
+                                                <th>Level</th>
+                                                <th>Action</th>
 
-                                                    <td>
-                                                        <span style="color: black ">  {{item.projectID}}  </span>
-                                                    </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                                    <td>
-                                                        <span style="color: black ">  {{item.clientName}}  </span>
-                                                    </td>
-                                                    <td>
-                                                        <span style="color: black ">  {{item.projectName }}  </span>
-                                                    </td>
+                                            <tr ng-repeat="item in sitevisitlist">
+                                                <td>
+                                                    <span style="color:black "> {{$Index+1}} </span>
+                                                </td>
 
-                                                    <td>
-                                                        <span style="color: black "> {{item.plotSize}} </span>
-                                                    </td>
-                                                    <td>
-                                                        <span style="color: black "> {{item.projectLevel}} </span>
-                                                    </td>
-                                                    <td>
-                                                        <div ng-if="item.status =='request'">
-                                                            <span style="color: black ">Request is pending in Project Manager </span>
-                                                        </div>
-                                                        <div ng-if="item.status !='request'">
+                                                <td>
+                                                    <span style="color: black ">  {{item.projectID}}  </span>
+                                                </td>
 
-                                                            <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="ShowCurrentWorking(item)" style="width:40px;"  data-bs-toggle="modal" data-bs-target=".bs-example-modal-confirm">
-                                                                PRF
-                                                            </button>
-                                                        </div>
-                                                    </td>
+                                                <td>
+                                                    <span style="color: black ">  {{item.clientName}}  </span>
+                                                </td>
+                                                <td>
+                                                    <span style="color: black ">  {{item.projectName }}  </span>
+                                                </td>
 
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                     
+                                                <td>
+                                                    <span style="color: black "> {{item.plotSize}} </span>
+                                                </td>
+                                                <td>
+                                                    <span style="color: black "> {{item.projectLevel}} </span>
+                                                </td>
+                                                <td>
+                                                    <div ng-if="item.status =='request'">
+                                                        <span style="color: black ">Request is pending in Project Manager </span>
+                                                    </div>
+                                                    <div ng-if="item.status !='request'">
+
+                                                        <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="ShowCurrentWorking(item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-confirm">
+                                                            PRF
+                                                        </button>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
                                 </div>
                             </div>
                         </div>
@@ -734,13 +648,13 @@
 
 
                     <div class="modal fade bs-example-modal-confirm" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-dialog modal-dialog-centered" style="width:500px;">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">Project Requirement Form</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
                                 </div>
-                                <div class="modal-body">
+                                <div class="modal-body" style="width:480px;">
                                     <div class="row">
                                         <div class="col-lg-12">
 
@@ -748,7 +662,7 @@
                                                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center p-0 mt-3 mb-2">
 
                                                     <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                                                        
+
                                                         <div class="row">
                                                             <div class="col-md-12 mx-0">
                                                                 <form id="form1">
@@ -893,155 +807,10 @@
             </div>
         </div>
     </div>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--<div class="container-fluid" id="grad1" style="background-color:white">
-       
-         
-        <div class="row justify-content-center mt-0">
-            <div class="col-11 col-sm-9 col-md-7 col-lg-6 text-center p-0 mt-3 mb-2">
-                 
-                <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                    <h2><strong>Project Requirement Form</strong></h2>
-                    <div class="row">
-                        <div class="col-md-12 mx-0">
-                            <form id="form1">-->
-                                <!-- progressbar -->
-                                <!--<ul id="progressbar">
-                                    <li class="active" id="account"><strong></strong></li>
-                                    <li id="personal"><strong></strong></li>
-                                    <li id="payment"><strong></strong></li>
-                                    <li id="confirm"><strong></strong></li>
-                                </ul>-->
-                                <!-- fieldsets -->
-                                <!--<fieldset>
-                                    <div class="form-card">
-                                        <h2 class="fs-title"></h2>
-                                        <input type="text" class="form-control" name="txtProjectID" id="txtProjectID" placeholder="Project ID" onkeypress="IsNumber()" />
-                                        <span class="error-msg">This field is required and numeric value only</span>
-                                        <label><span style="color:black">2. Specify the <b>actual working status </b> of the site</span><span class="required">*</span> </label>
-                                        <input type="text" class="form-control" name="txtWorkingStatus" id="txtWorkingStatus" placeholder="" />
-                                        <span class="error-msg">This field is required </span>
-
-                                        <label><span style="color:black">3. Specify the <b>slab height </b> (In feet)</span><span class="required">*</span></label>
-                                        <input type="text" class="form-control" name="txtSlabHeight" id="txtSlabHeight" placeholder="" />
-                                        <span class="error-msg">This field is required </span>
-                                    </div>
-                                    <input type="button" name="next" class="next action-button" value="Next Step" />
-                                </fieldset>
-                                <fieldset>
-                                    <div class="form-card">
-                                        <h2 class="fs-title"></h2>
-                                        <label><span style="color:black">4. Specify the <b>height of the plinth</b> (In Feet)</span></label>
-                                        <input type="text" class="form-control" name="txtPlinthHeight" id="txtPlinthHeight" placeholder=" " />
-                                        <label><span style="color:black">5. Specify the <b> height of porch </b> (In Feet) </span></label>
-                                        <input type="text" class="form-control" name="txtPorchHeigh" id="txtPorchHeigh" placeholder="" />
-                                        <label><span style="color:black">6. Specify the <b> desired design pattern </b> for the elevation</span></label>
-
-                                        <select class="form-control" name="ddlElevationPattern" id="ddlElevationPattern">
-                                            <option selected="selected" value="">Select</option>
-                                            <option value="Traditional">Traditional</option>
-                                            <option value="Modern">Modern</option>
-                                            <option value="Green Façade">Green Façade</option>
-                                            <option value="Geometrical">Geometrical</option>
-                                        </select>
-                                        <label><span style="color:black">7. <b> Door lintel </b> level <i> (In Feet)</i> </span></label>
-                                        <input type="text" class="form-control" name="txtDoorLintel" id="txtDoorLintel" placeholder="" />
-                                    </div>
-                                    <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                    <input type="button" name="next" class="next action-button" value="Next Step" />
-                                </fieldset>
-                                <fieldset>
-                                    <div class="form-card">
-                                        <h2 class="fs-title"></h2>
-
-                                        <label style="color:black">8. <b> Window sill </b> level <i> (In Feet)</i> </label>
-                                        <input type="text" class="form-control" name="txtWindowSill" id="txtWindowSill" placeholder="" />
-                                        <label style="color:black">9. <b>Window lintel </b> level <i> (In Feet)</i> <span class="required">*</span></label>
-                                        <input class="form-control" id="txtWindowLinte" name="txtWindowLinte" type="text" />
-                                        <label style="color:black">10. Is the <b>tower room</b> is executed at Stairs ? <span class="required">*</span></label>
-                                        <div class="radio-group">
-                                            <table style="width:300px;">
-                                                <tr>
-                                                    <td>
-                                                        <label style="color:black; width:70px;"><input id="rdTowerRoomYes" type="radio" name="TowerRoom" value="Yes" style="width:40px;" /> Yes</label>
-                                                    </td>
-                                                    <td>
-                                                        <label style="color:black ; width:70px;"><input id="rdTowerRoomNo" type="radio" name="TowerRoom" value="No" style="width:40px;" checked="checked" /> No</label>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <label style="color:black">11. Do you want <b>side elevations </b>?</label>
-                                        <div class="radio-group" style="width:300px;">
-                                            <table style="width:300px;">
-                                                <tr>
-                                                    <td>
-                                                        <label for="rdCornerPlotYes" style="color: black; width: 70px;"><input id="rdCornerPlotYes" type="radio" name="CornerPlot" value="Yes" style="width:40px;" /> Yes</label>
-                                                    </td>
-                                                    <td>
-                                                        <label for="rdCornerPlotNo" style="color: black; width: 70px;"><input id="rdCornerPlotNo" type="radio" name="CornerPlot" value="No" checked="checked" style="width:40px;" /> No</label>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-
-                                    <input type="button" name="next" class="next action-button" value="Next Step" />
-                                </fieldset>
-                                <fieldset>
-                                    <div class="form-card">
-                                        <h2 class="fs-title"></h2>
-
-                                        <label style="color:black">12. Mention the <b>facing side </b> of the plot  </label>
-                                        <input type="text" class="form-control" name="txtPlotFaceSide" id="txtPlotFaceSide" placeholder="" />
-
-                                        <label style="color:black">13. Do you want <b>boundary wall design </b>? <span class="required">*</span></label>
-                                        <div class="radio-group">
-                                            <table style="width:300px;">
-                                                <tr>
-                                                    <td>
-                                                        <label style="color:black; width:70px;"><input id="rdBoundaryWallDesignYes" type="radio" name="BoundaryWall" value="Yes" style="width:40px;" /> Yes</label>
-                                                    </td>
-                                                    <td>
-                                                        <label style="color:black ; width:70px;"><input id="rdBoundaryWallDesignNo" type="radio" name="BoundaryWall" value="No" style="width:40px;" checked="checked" /> No</label>
-                                                    </td>
-                                                </tr>
-                                            </table>
-
-                                        </div>
-
-                                        <label style="color:black">14. Any Other</label>
-                                        <textarea maxlength="500" id="txtAnyOther" name="txtAnyOther"></textarea>
-                                    </div>
-                                    <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                    <input type="button" onclick="Save()" class="action-button" value="Submit" />
-
-                                </fieldset>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>-->
 </body>
 
 

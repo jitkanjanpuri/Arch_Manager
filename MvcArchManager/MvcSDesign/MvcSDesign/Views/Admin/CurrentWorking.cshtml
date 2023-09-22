@@ -1,6 +1,6 @@
 ﻿ @{
     ViewBag.Title = "Operation";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    Layout = "~/Views/Shared/_NewAdmin.cshtml";
 
 }
  
@@ -37,59 +37,56 @@
 </head>
 @using (@Html.BeginForm())
 {
-    <body>
-        <div ng-app="myApp">
-            <div ng-controller="myController">
+<body>
+    <div ng-app="myApp">
+        <div ng-controller="myController">
 
-                <div class="page-content">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-
-                                    <a href="@Url.Action("Quotation", "Client")" class="btn btn-primary"><span>Quotation </span></a>
-                                    <a href="@Url.Action("ProjectManagement", "Admin")" class="btn btn-primary"><span>Prj Management </span></a>
-                                    <a href="@Url.Action("PRF", "Admin")" class="btn btn-primary"><span>PRF </span></a>
-                                    @*<a href="@Url.Action("Operation", "Admin")" class="btn btn-primary"><span> Operation  </span></a>*@
-                                    <a href="@Url.Action("SiteVisit", "Admin")" class="btn btn-primary"><span>Site Visit </span></a>
-                                    <a href="@Url.Action("CurrentWorking", "Admin")" class="btn btn-primary"><span> Operation </span></a>
-                                    <a href="@Url.Action("Receipt", "Admin")" class="btn btn-primary"><span>Receipt</span></a>
+            <div class="page-content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between mt-4">
+                                <div class="col-xl-2 col-md-2 mt-4">
+                                    <div class="form-group mb-3">
+                                        <h4 class="mb-sm-0 font-size-18">Operation </h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <br />
-                         
-                       <div class="row">
-                         <div class="col-md-6 mb-3">
+                    </div>
+
+                    
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
                             <form>
-                                <br />
                                 <div class="row mb-3">
-                                    <div class="col-lg-4 col-5">
+                                    <div class="col-lg-3 col-5">
                                         <label class="my-1 mr-2 form-lable" style="margin-left:20px;">
                                             Category
                                         </label>
                                     </div>
-                                    <div class="col-lg-8 col-7">
+                                    <div class="col-lg-9 col-7">
                                         <select class="form-control" ng-model="category" ng-options="item for item in projectCategory" style="" ng-change="GetSubcategory()"></select>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col-lg-4 col-5">
+                                    <div class="col-lg-3 col-5">
                                         <label class="my-1 mr-2 form-lable" style="margin-left:20px;">
                                             Subcategory
                                         </label>
                                     </div>
-                                    <div class="col-lg-8 col-7">
+                                    <div class="col-lg-9 col-7">
                                         <select class="form-control" ng-model="subcategoryName" ng-options="item for item in subcategory" style=""></select>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-4 col-5">
+                                    <div class="col-lg-3 col-5">
                                         <label class="my-1 mr-2 form-lable" style="margin-left:20px;">
                                             Designer
                                         </label>
                                     </div>
-                                    <div class="col-lg-8 col-7">
+                                    <div class="col-lg-9 col-7">
                                         <select class="form-control" ng-model="dname" ng-options="items.Text for items in designerList" style=""></select>
 
                                     </div>
@@ -97,30 +94,27 @@
                                 <div class="row mb-3">
                                     <div class="col-lg-4 col-5">
                                         <label class="my-1 mr-2 form-lable">
-
                                         </label>
                                     </div>
                                     <div class="col-lg-8 col-7">
                                         <label class="my-1 mr-2 form-lable" style="color:red">{{lblErr}}</label>
-
-
                                     </div>
                                 </div>
 
 
-                                <div class="row mb-3">
-                                    <div class="col-sm-2 col-2">
-                                        <button type="button" class="btn btn-primary d-block ml-auto mt-3" ng-click="Search()">Search</button>
+                                <div class="row col-lg-12 mb-3">
+                                    <div class="col-sm-3">
                                     </div>
-                                    <div class="col-lg-3 col-4">
-                                        <button type="button" class="btn btn-primary d-block ml-auto mt-3" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center" ng-click="ClearTextValue()">Add New Project </button>
-
-
+                                    <div class="col-sm-2 ">
+                                        <button type="button" class="btn btn-primary d-block " ng-click="Search()">Search</button>
+                                    </div>
+                                    <div class="col-lg-3 ">
+                                        <button type="button" class="btn btn-primary d-block  " data-bs-toggle="modal" data-bs-target=".bs-example-modal-center" ng-click="ClearTextValue()"><i class="mr-2 fas fa-plus"></i> </button>
                                     </div>
                                 </div>
 
                             </form>
-                        </div> 
+                        </div>
                         <div class="col-md-6 align-self-center">
                             <button type="button" class="btn btn-designer mr-2 mb-3">Normal<span class="badge bg-success ms-1">{{normal}}</span></button>
                             <button type="button" class="btn btn-warning mr-2 mb-3">Assigned<span class="badge bg-success ms-1">{{attention}}</span></button>
@@ -133,97 +127,95 @@
                         </button>
                     </div>
                     <div class="col-lg-12">
-                            <div class="card">
-                                    <div class="text-center">
-                                        <span style="font-size:18pt;" class="text-danger">{{record}}</span>
-                                    </div>
+                        <div class="card">
+                            <div class="text-center">
+                                <span style="font-size:18pt;" class="text-danger">{{record}}</span>
+                            </div>
 
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered" id="dataTable">
-                                            <thead class="bg-warning text-white">
-                                                <tr>
-                                                    <th scope="col">Project ID </th>
-                                                    <th scope="col">Name</th>
-                                                    <th scope="col">PRF</th>
-                                                    <th scope="col">Category </th>
-                                                    <th scope="col">Subcategory </th>
-                                                    <th scope="col">Tech Remark</th>
-                                                    <th scope="col">Designer</th>
-                                                    <th scope="col">Status</th>
-                                                    <th scope="col">Download </th>
-                                                    <th scope="col">Action </th>
-                                                    <th scope="col">Roll Back</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr ng-repeat="item in workinglist">
-                                                    <td style="background-color:{{item.rowcolor }}">{{item.projectID}}</td>
-                                                    <td style="background-color:{{item.rowcolor }}">{{item.clientName}}</td>
-                                                    <td style=" background-color:{{item.rowcolor }}">
-                                                        <div ng-if="item.prfFlag =='Y'">
-                                                            <a href="@Url.Action("DownloadPRF","Admin")?projectID={{item.projectID}}&location={{item.projectlocation}}" class="btn btn-sm btn-info" style="width:50px; height:35px;">
-                                                                <span style="font-size:12pt;">   PRF</span>
-                                                            </a>
-                                                        </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable">
+                                    <thead class="bg-warning text-white">
+                                        <tr>
+                                            <th scope="col">Project ID </th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">PRF</th>
+                                            <th scope="col">Category </th>
+                                            <th scope="col">Subcategory </th>
+                                            <th scope="col">Tech Remark</th>
+                                            <th scope="col">Designer</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Download </th>
+                                            <th scope="col">Action </th>
+                                            <th scope="col">Roll Back</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in workinglist">
+                                            <td style="background-color:{{item.rowcolor }}">{{item.projectID}}</td>
+                                            <td style="background-color:{{item.rowcolor }}">{{item.clientName}}</td>
+                                            <td style=" background-color:{{item.rowcolor }}">
+                                                <div ng-if="item.prfFlag =='Y'">
+                                                    <a href="@Url.Action("DownloadPRF","Admin")?projectID={{item.projectID}}&location={{item.projectlocation}}" class="btn btn-sm btn-info" style="width:50px; height:35px;">
+                                                        <span style="font-size:12pt;">   PRF</span>
+                                                    </a>
+                                                </div>
 
-                                                    </td>
+                                            </td>
 
 
 
-                                                    <td style="background-color:{{item.rowcolor }}">{{item.category}}</td>
-                                                    <td style="background-color:{{item.rowcolor }}">{{item.subcategory}}</td>
-                                                    <td style="background-color:{{item.rowcolor }}">{{item.remark}}</td>
+                                            <td style="background-color:{{item.rowcolor }}">{{item.category}}</td>
+                                            <td style="background-color:{{item.rowcolor }}">{{item.subcategory}}</td>
+                                            <td style="background-color:{{item.rowcolor }}">{{item.remark}}</td>
 
-                                                    <td style="background-color:{{item.rowcolor }}">{{item.designerName}}</td>
-                                                    <td style="background-color:{{item.rowcolor }}">{{item.status}}</td>
-                                                    <td style="background-color:{{item.rowcolor }}">
-                                                        <div ng-if="item.uploadFileName.length != 0">
-                                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".bs-example-modal-send" ng-click="ShowFilePopup(item)">
-                                                                <i class="fa fa-download"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                    <td style="background-color:{{item.rowcolor }}">
-                                                        <div ng-if="item.projectStatus=='Normal'">
-                                                            <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="ShowCurrentWorking(item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-Assign">
-                                                                Assign
-                                                            </button>
-                                                        </div>
+                                            <td style="background-color:{{item.rowcolor }}">{{item.designerName}}</td>
+                                            <td style="background-color:{{item.rowcolor }}">{{item.status}}</td>
+                                            <td style="background-color:{{item.rowcolor }}">
+                                                <div ng-if="item.uploadFileName.length != 0">
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".bs-example-modal-send" ng-click="ShowFilePopup(item)">
+                                                        <i class="fa fa-download"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td style="background-color:{{item.rowcolor }}">
+                                                <div ng-if="item.projectStatus=='Normal'">
+                                                    <button type="button" class="btn btn-primary waves-effect waves-light w-sm" ng-click="ShowCurrentWorking(item)" data-bs-toggle="modal" data-bs-target=".bs-example-modal-Assign">
+                                                        Assign
+                                                    </button>
+                                                </div>
 
-                                                    </td>
-                                                    <td style="background-color:{{item.rowcolor }}">
+                                            </td>
+                                            <td style="background-color:{{item.rowcolor }}">
 
-                                                        <div ng-if="item.projectStatus !='Normal'">
-                                                            <button type="button" class="btn btn-primary waves-effect waves-light w-sm" data-bs-toggle="modal" data-bs-target=".bs-example-modal-rollbackPopup" ng-click="RollBack(item)">
-                                                                <i class="fa fa-undo"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="10" style="text-align:center">
-                                                        <span style="font-size:16pt;color:red"> {{lblMsg}}</span>
-                                                    </td>
-                                                </tr>
+                                                <div ng-if="item.projectStatus !='Normal'">
+                                                    <button type="button" class="btn btn-primary waves-effect waves-light w-sm" data-bs-toggle="modal" data-bs-target=".bs-example-modal-rollbackPopup" ng-click="RollBack(item)">
+                                                        <i class="fa fa-undo"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="10" style="text-align:center">
+                                                <span style="font-size:16pt;color:red"> {{lblMsg}}</span>
+                                            </td>
+                                        </tr>
 
-                                            </tbody>
-                                        </table>
-                                </div>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                       <div class="modal fade bs-example-modal-send" tabindex="-1" role="dialog" aria-hidden="true">
-                         <div class="modal-dialog modal-dialog-centered">
+                    </div>
+                    <div class="modal fade bs-example-modal-send" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
 
                                 <div class="modal-body">
 
                                     <div class="modal-header">
                                         <h5 class="modal-title">Click to download the file. Or select the file to send to client</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
                                     </div>
-
-                                    <br />
-                                    <div class="row">
+                                    <div class="row mt-2">
                                         <div class="form-group form-check " ng-repeat="itm in filelist">
                                             <input class="form-check-input check-kbox" type="checkbox" name="remember" ng-model="folder[itm]" id={{itm}}>
                                             <label class="form-check-label" for="terms-check">
@@ -231,43 +223,42 @@
                                                 <div>
                                                     <a href="@Url.Action("DownloadDWG", "Admin")?filename={{itm}}&pmID={{pmID}}&projectID={{projectID}}">{{itm}} </a>
                                                 </div>
-
+                                                 
                                             </label>
+                                           
                                         </div>
-                                        <br /><br />
-
-                                        <div class="form-group">
-                                            <div class="form-group form-check ">
-
-                                                <input class="form-check-input check-kbox" ng-model="chkGMail" type="checkbox" name="chkGMail" id="chkGMail">
-                                                <label class="form-check-label" for="terms-check">
-                                                    <span> Mail</span>
-                                                </label>
-                                            </div>
-                                            <div class="form-group form-check ">
-                                                <input class="form-check-input check-kbox" ng-model="chkWhatsApp" type="checkbox" name="chkWhatsApp" id="chkWhatsApp">
-                                                <label class="form-check-label" for="AttechCNotes">
-                                                    <span> WhatsApp </span>
-                                                </label>
-                                            </div>
-
-                                        </div>
-                                        <div class="text-center" ng-hide="loading2">
-                                            <button type="button" class="btn btn-dark waves-effect waves-light">
-                                                <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
-                                            </button>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-check-label">
-                                                <span style="color:red">{{lblError}}</span>
-                                            </label>
-                                        </div>
-                                         
-                                        <div>
-                                            <input type="button" value="Send to Client" ng-disabled="loadingSend" ng-click="TaskSend()" class="btn btn-primary" />
-                                        </div>
-
                                     </div>
+
+                                    <div class="row">
+                                        <div class="form-group form-check">
+                                            <input class="form-check-input check-kbox" ng-model="chkGMail" type="checkbox" name="chkGMail" id="chkGMail">
+                                            <label class="form-check-label" for="terms-check">
+                                                <span> Mail</span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group form-check ml-3">
+                                            <input class="form-check-input check-kbox" ng-model="chkWhatsApp" type="checkbox" name="chkWhatsApp" id="chkWhatsApp">
+                                            <label class="form-check-label" for="AttechCNotes">
+                                                <span> WhatsApp </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row text-center" ng-hide="loading2">
+                                        <button type="button" class="btn btn-dark waves-effect waves-light">
+                                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                                        </button>
+                                    </div>
+                                    <div class="row form-group">
+                                        <label class="form-check-label">
+                                            <span style="color:red">{{lblError}}</span>
+                                        </label>
+                                    </div>
+                                    <div class="row">
+                                        <button type="button" class="btn btn-secondary waves-effect waves-light" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                                        &nbsp;&nbsp;
+                                        <input type="button" value="Send to Client" ng-disabled="loadingSend" ng-click="TaskSend()" class="btn btn-primary" />
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -280,9 +271,9 @@
 
                                     <div class="modal-header">
                                         <h4 class="modal-title">Project Assign</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
                                     </div>
-                                         
+
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="col-xl-11 col-md-6">
@@ -299,7 +290,7 @@
                                                     <select class="form-control" ng-model="assignDesigner" ng-options="items.Text for items in assignDesignerList" style=""></select>
                                                 </div>
                                             </div>
-                                                
+
                                             <div class="col-11">
                                                 <div class="form-group">
                                                     <label class="lable-text">Tech Remark</label>
@@ -311,9 +302,11 @@
                                                     <span style="color:red; font-size:14pt">{{lblAssinError}}</span>
                                                 </div>
                                             </div>
-                                            <div class="col-2">
+                                            <div class="col-12">
                                                 <div class="form-group">
-                                                    &nbsp;&nbsp; &nbsp;<input type="button" class="btn btn-primary" ng-click="ProjectAssigned()" value="Submit" />
+                                                    <button type="button" class="btn btn-secondary waves-effect waves-light" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                                                    &nbsp;&nbsp;
+                                                    <input type="button" class="btn btn-primary" ng-click="ProjectAssigned()" value="Submit" />
                                                 </div>
                                             </div>
                                         </div>
@@ -322,7 +315,7 @@
                                 </div>
                             </div>
                         </div>
-                     </div>
+                    </div>
 
                     <div class="modal fade bs-example-modal-rollbackPopup" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -332,7 +325,7 @@
 
                                     <div class="modal-header">
                                         <h4 class="modal-title">Roll Back</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
                                     </div>
 
                                     <br /><br />
@@ -350,6 +343,8 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary waves-effect waves-light" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                                            &nbsp;&nbsp;
                                             <button type="button" class="btn btn-primary" ng-click="RollBackConfirm()" onclick="closeRollBack()">Yes</button>
                                         </div>
                                     </div>
@@ -357,13 +352,13 @@
                             </div>
                         </div>
                     </div>
-                         
+
                     <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">Add New Project</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
@@ -387,6 +382,9 @@
 
                                                             </div>
                                                         </div>
+
+
+
                                                         <div class="col-xl-12 col-md-6">
                                                             <div class="form-group mb-3">
                                                                 <label>Client name	 </label>
@@ -429,17 +427,21 @@
                                                 </form>
                                             </div>
                                         </div>
-                                        <div class="text-center" ng-hide="loading1">
-                                            <button type="button" class="btn btn-dark waves-effect waves-light">
-                                                <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
-                                            </button>
+                                        <div class="col-lg-12">
+                                            <div class="text-center" ng-hide="loading1">
+                                                <button type="button" class="btn btn-dark waves-effect waves-light">
+                                                    <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                                                </button>
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary waves-effect waves-light" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                                            &nbsp;&nbsp;
                                             <button type="button" ng-click="SubmitNewProject()" ng-hide="loadingMail" class="btn btn-primary waves-effect waves-light">Submit</button>
                                         </div>
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
 
@@ -539,39 +541,14 @@
                             </div>
                         </div>
                     </div>
-                         
-                    @*<div class="modal fade bs-example-modal-confirm" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-
-                                <div class="modal-body">
-
-                                    <div class="modal-header">
-                                        <h3 class="modal-title">Confirm Project</h3>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-
-                                    <br /><br />
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <span style="font-size:14pt;">  Do you want to complete current working  process of project ID <b>{{confirmprojectID}}</b> ? </span><br><br>
-                                        </div>
-                                        <div class="modal-footer">
 
 
-                                            <button type="button" class="btn btn-success waves-effect waves-light" ng-click="CompleteCurrentWorking()">Yes</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>*@
-                 </div>
-              </div>
-           </div>
-         </div>
-
-    </body>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
 }
 
 </html>

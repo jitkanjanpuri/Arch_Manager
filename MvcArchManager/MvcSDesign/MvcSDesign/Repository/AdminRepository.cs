@@ -85,13 +85,53 @@ namespace MvcSDesign.Repository
             catch (Exception ex) { }
             return "";
         }
+        public long GetStartProjectID()
+        {
+             
+            try
+            {
+                var rec = _dbContext.tblAdminSettings.FirstOrDefault();
+                if (rec == null)
+                    return 0;
+
+                return rec.projectID;
+
+            }
+            catch (Exception ex) { return 0; }
+            
+
+        }
+        public string SaveAdminSetting(AdminSettingModel objAsm)
+        {
+            try
+            {
+
+                var res = _dbContext.tblAdminSettings.FirstOrDefault();
+                if (res == null)
+                {
+                    tblAdminSetting obj = new tblAdminSetting();
+                    obj.companyID = 1;
+                    obj.projectID = objAsm.projectID;
+
+                    _dbContext.tblAdminSettings.Add(obj);
+                }
+                else
+                {
+                   res.projectID= objAsm.projectID;
+                }
+
+                _dbContext.SaveChanges();
+                return "";
+            }
+            catch (Exception ex) { return ex.Message; }
+        }
 
         public CompanyModel GetCompanyProfile()
         {
             CompanyModel obj = new CompanyModel();
             try
             {
-                var rec = _dbContext.tblCompanyProfiles.FirstOrDefault();//.Where(st => (st.username == lgn.username) && (st.password == lgn.pwd)).FirstOrDefault();
+                var rec = _dbContext.tblCompanyProfiles.FirstOrDefault();
                 if (rec == null)
                     return null;
 
@@ -284,66 +324,7 @@ namespace MvcSDesign.Repository
 
         }
 
-        //public string SaveGMail(string gmailID, string pwd)
-        //{
-        //    try
-        //    {
-        //        var rec = _dbcontext.tblGmailAccount.Where(x => x.gmailID == gmailID).FirstOrDefault();
-        //        if(rec ==null)
-        //        {
-        //            tblGmailAccount obj = new tblGmailAccount();
-        //            obj.gmailID = gmailID;
-        //            obj.pwd = pwd;
-        //            _dbcontext.tblGmailAccount.Add(obj);
-        //            _dbcontext.SaveChanges();
-        //        }
-        //        else
-        //        {
-        //            return "This Gmail ID already exist";
-        //        }
-        //    }
-        //    catch (Exception ex) { return ex.Message; }
-
-        //    return "";
-        //}
-        //public List<GMail> getGmail()
-        //{
-        //    List<GMail> obj = new List<GMail>();
-        //    try
-        //    {
-        //        var rec = (from cl in _dbcontext.tblGmailAccount
-        //                   select new GMail
-        //                   {
-        //                       id = cl.id,
-        //                       gmailID = cl.gmailID,
-        //                       pwd = cl.pwd
-        //                   }).ToList();
-        //        obj = rec.ToList();
-        //    }
-        //    catch (Exception ex) { }
-
-        //    return obj;
-        //}
-
-        //public string RemoveGMailAccount(int id)
-        //{
-        //    try
-        //    {
-        //        var rec = _dbcontext.tblGmailAccount.Where(x => x.id == id).FirstOrDefault();
-        //        if (rec != null)
-        //        {
-        //            _dbcontext.tblGmailAccount.Remove(rec);
-        //            _dbcontext.SaveChanges();
-        //        }
-        //        else
-        //        {
-        //            return "No record found";
-        //        }
-        //    }
-        //    catch (Exception ex) { return ex.Message; }
-
-        //    return "success";
-        //}
+        
         public string RegistrationDelete(int staffID)
        {
            try
@@ -607,7 +588,7 @@ namespace MvcSDesign.Repository
 
 
 
-        public string SaveSiteVisit(int projectID, string fname, string remark)
+        public string SaveSiteVisit(int projectID, int id,  string fname, string remark)
         {
             tblProjectSiteVisit obj = new tblProjectSiteVisit();
             try
@@ -615,6 +596,7 @@ namespace MvcSDesign.Repository
                 obj.dt = DateTime.Today.Date;
                 obj.projectID = projectID;
                 obj.sitePhotoFile = fname;
+                obj.staffID = id;
                 obj.remark = remark == null ? "-" : remark.Trim();
 
                 _dbContext.tblProjectSiteVisits.Add(obj);
@@ -1007,9 +989,7 @@ namespace MvcSDesign.Repository
                                      uploadFileName = cw.User_UploadedFileName,
                                      files = cw.User_UploadedFileName,
                                  }).ToList();
-
-
-
+                    
                     int i = 1;
                     string dname1 = "", prfFlag = "N";
                     foreach (var item in query)
@@ -1021,9 +1001,7 @@ namespace MvcSDesign.Repository
                         else
                             color = "#E3FF00";//red;
 
-
                         dname1 = "";
-
 
                         if (item.projetStatus == "Assigned")
                         {
@@ -1229,7 +1207,7 @@ namespace MvcSDesign.Repository
             uploadedFileName = "";
             try
             {
-                string filename = "", plotSize = "",  ch ,str="", fnamesub="";
+                string filename = "", plotSize = "",  ch ,str="", fnamesub="", orgName="";
                 string mainfile = "", gMailAccount, password, clientMailId = "", clientName = "", filepath = "", category ="", subcategory = "";
                 int i, j, clientID=0;
                 string[] arr = new string[10];
@@ -1252,8 +1230,9 @@ namespace MvcSDesign.Repository
                                clientMailID = cl.emailID,
                                plotSize = pd.plotSize,
                                gmailID = cp.emailID,
-                               pwd = cp.pwd
-                           }).ToList();
+                               pwd = cp.pwd,
+                               orgName =cp.orgName
+                            }).ToList();
                 if (res == null)
                 {
                     return "Record not found";
@@ -1269,13 +1248,10 @@ namespace MvcSDesign.Repository
                     plotSize = item.plotSize;
                     gMailAccount = item.gmailID;
                     password = item.pwd;
+                    orgName = item.orgName;
 
                 }
-                var profile = _dbContext.tblCompanyProfiles.FirstOrDefault();
-                if (profile == null)
-                {
-                    return "Company profile is not available";
-                }
+                
                 NetworkCredential loginInfo = new NetworkCredential(gMailAccount, password);
                 MailMessage objMail = new MailMessage();
 
@@ -1297,7 +1273,7 @@ namespace MvcSDesign.Repository
                         objMail.To.Add(new MailAddress(arr[i]));
                     }
                 }
-
+                objMail.CC.Add(gMailAccount);
 
                 CultureInfo CInfo = Thread.CurrentThread.CurrentCulture;
                 TextInfo TInfo = CInfo.TextInfo;
@@ -1406,7 +1382,7 @@ namespace MvcSDesign.Repository
                     str += " <br /> <br /> Thank you for the opportunity to serve you. We look forward for further communication with you.  ";
 
                     str += " <br /> <br /> Best Regards <br /><br /> ";
-                    str += " " + profile.orgName + "   <br /> ";
+                    str += " " + orgName + "   <br /> ";
 
                     str += "<br/> <i>Please note that this is a system generated mail and does not require signature. </i> ";
                     objMail.Body = str;
@@ -1414,16 +1390,34 @@ namespace MvcSDesign.Repository
                     //client.EnableSsl = true;
                     //client.UseDefaultCredentials = false;
                     //client.Credentials = loginInfo;
+                    //client.Port = 587;// 465;
+                    //client.Timeout = 40000;
                     //client.Send(objMail);
-                    SaveStatus("Sending mail ");
-                    SmtpClient client = new SmtpClient("smtp.hostinger.com");
+
+                    SmtpClient client = new SmtpClient("smtp.gmail.com");
                     client.EnableSsl = true;
                     client.UseDefaultCredentials = false;
                     client.Credentials = loginInfo;
                     client.Port = 587;// 465;
-                    client.Timeout = 40000;
-                    client.Send(objMail);
-                    SaveStatus("Sent mail");
+                    client.Timeout = 500000;
+
+                    try
+                    {
+                        client.Send(objMail);
+                    }
+                    catch (Exception ex) { SaveStatus(ex.Message); }
+
+
+                    //SaveStatus("Sending mail ");
+                    //SmtpClient client = new SmtpClient("smtp.hostinger.com");
+                    //client.EnableSsl = true;
+                    //client.UseDefaultCredentials = false;
+                    //client.Credentials = loginInfo;
+                    //client.Port = 587;// 465;
+                    //client.Timeout = 40000;
+                    //client.Send(objMail);
+
+                     
                 }
                 try
                 {
@@ -2309,8 +2303,14 @@ namespace MvcSDesign.Repository
                 {
                     totalRecAmount += item1.amount;
                 }
+                
+               // NetworkCredential loginInfo = new NetworkCredential(resProfile.emailID, resProfile.pwd);
 
-                NetworkCredential loginInfo = new NetworkCredential(resProfile.emailID, resProfile.pwd);
+                //mailAccount = "mail@designlabinternational.com";
+                //pwd = "m6@Osqev";
+
+                NetworkCredential loginInfo = new NetworkCredential("mail@designlabinternational.com", "m6@Osqev");
+
                 MailMessage objMail = new MailMessage();
 
                 if (clientMailId.IndexOf(',') > 0)
@@ -2331,6 +2331,8 @@ namespace MvcSDesign.Repository
                         objMail.To.Add(new MailAddress(arr[i]));
                     }
                 }
+
+                objMail.CC.Add(resProfile.emailID);
 
 
                 CultureInfo CInfo = Thread.CurrentThread.CurrentCulture;
@@ -2639,20 +2641,33 @@ namespace MvcSDesign.Repository
                             "<br  /> Payment for project ID " + projectID + " was successful. Please find attached receipt.<br  /> <br  /> ";
 
                     str += " Best Regards  <br /><br />  ";
-                    str += resProfile.orgName; /*" DesignLAB International, India <br /><br /> ";*/
+                    str += resProfile.orgName; 
 
                     str += "<br /> <br /> <br/> <i>Please note that this is a system generated mail and does not require signature. </i> ";
                     objMail.Subject = "🧾 Receipt_" + projectID;
                     objMail.Body = str;
 
-
+                    //SmtpClient client = new SmtpClient("smtp.gmail.com");
+                    //client.EnableSsl = true;
+                    //client.UseDefaultCredentials = false;
+                    //client.Credentials = loginInfo;
+                    //client.Port = 587;// 465;
+                    //client.Timeout = 500000;
 
                     SmtpClient client = new SmtpClient("smtp.hostinger.com");
                     client.EnableSsl = true;
                     client.UseDefaultCredentials = false;
                     client.Credentials = loginInfo;
                     client.Port = 587;// 465;
-                    client.Send(objMail);
+                    client.Timeout = 40000;
+                  
+
+                    try
+                    {
+                        client.Send(objMail);
+                       // SaveStatus("Sent");
+                    }
+                    catch (Exception ex) { SaveStatus(ex.Message); }
                     return "Y";
                 }
                 else
@@ -3431,7 +3446,7 @@ namespace MvcSDesign.Repository
         public IEnumerable<operation> Dashboard_getMonthQuotation()
         {
             List<operation> rec = new List<operation>();
-            DateTime dt = DateTime.Now.AddDays(-6);
+            DateTime dt = DateTime.Now.AddDays(-10);
 
             try
             {
@@ -3441,7 +3456,7 @@ namespace MvcSDesign.Repository
                            where (pd.dt >= dt)
                            select new operation
                            {
-                               amount = pd.amount,
+                               finalizeAmount =(long) pd.finalizeAmount,
                                status = pd.status
                            }).ToList();
                 rec = prj.ToList();
@@ -3683,12 +3698,15 @@ namespace MvcSDesign.Repository
                                on sv.projectID equals pd.projectID
                                join cl in _dbContext.tblClients
                                on pd.clientID equals cl.clientID
+                               join staff in _dbContext.tblStaffs
+                               on sv.staffID equals staff.staffID
                                where (pd.projectID == pid)
                                select new operation
                                {
                                    dtstr = sv.dt.Day +"-"+ sv.dt.Month +"-"+ sv.dt.Year,
                                    clientID = cl.clientID,
                                    clientName = cl.clientName,
+                                   designerName = staff.name, 
                                    projectID = pd.projectID,
                                    projectName = pd.projectname,
                                    projectType = pd.projectType,
@@ -3696,7 +3714,8 @@ namespace MvcSDesign.Repository
                                    projectLevel = pd.projectLevel,
                                    plotSize = pd.plotSize,
                                    remark = sv.remark,
-                                   filename = sv.sitePhotoFile
+                                   filename = sv.sitePhotoFile,
+                                   //arr = sv.sitePhotoFile.ToString().Split(',')
                                }).ToList();
                 }
                 else if(opt =="name")
@@ -3706,12 +3725,15 @@ namespace MvcSDesign.Repository
                               on sv.projectID equals pd.projectID
                               join cl in _dbContext.tblClients
                               on pd.clientID equals cl.clientID
+                              join staff in _dbContext.tblStaffs
+                              on sv.staffID equals staff.staffID
                               where (cl.clientName.Contains(cname))
                               select new operation
                               {
                                   dtstr = sv.dt.Day + "-" + sv.dt.Month + "-" + sv.dt.Year,
                                   clientID = cl.clientID,
                                   clientName = cl.clientName,
+                                  designerName = staff.name,
                                   projectID = pd.projectID,
                                   projectName = pd.projectname,
                                   projectType = pd.projectType,
@@ -3719,7 +3741,9 @@ namespace MvcSDesign.Repository
                                   projectLevel = pd.projectLevel,
                                   plotSize = pd.plotSize,
                                   remark = sv.remark,
-                                  filename = sv.sitePhotoFile
+                                  filename = sv.sitePhotoFile,
+                                  //arr = sv.sitePhotoFile.ToString().Split(',')
+
                               }).ToList();
                 }
                 else if (opt == "projectName")
@@ -3729,12 +3753,15 @@ namespace MvcSDesign.Repository
                               on sv.projectID equals pd.projectID
                               join cl in _dbContext.tblClients
                               on pd.clientID equals cl.clientID
+                              join staff in _dbContext.tblStaffs
+                              on sv.staffID equals staff.staffID
                               where (pd.projectname.Contains(pname))
                               select new operation
                               {
                                   dtstr = sv.dt.Day + "-" + sv.dt.Month + "-" + sv.dt.Year,
                                   clientID = cl.clientID,
                                   clientName = cl.clientName,
+                                  designerName = staff.name,
                                   projectID = pd.projectID,
                                   projectName = pd.projectname,
                                   projectType = pd.projectType,
@@ -3742,8 +3769,14 @@ namespace MvcSDesign.Repository
                                   projectLevel = pd.projectLevel,
                                   plotSize = pd.plotSize,
                                   remark = sv.remark,
-                                  filename = sv.sitePhotoFile
+                                  filename = sv.sitePhotoFile,
+                                  //arr = sv.sitePhotoFile.ToString().Split(',')
                               }).ToList();
+                }
+
+                foreach(var item in reqlist)
+                {
+                    item.arr = item.filename.ToString().Split(',');
                 }
                     
                   
@@ -4061,21 +4094,363 @@ namespace MvcSDesign.Repository
 
         }
 
-        //public void UpdateGMailPassword(GMail obj)
-        //{
-        //    try
-        //    {
-        //        tblGmailAccount res = _dbContext.tblGmailAccounts.Where(x => x.id == 2).FirstOrDefault();
-        //        if (res != null)
-        //        {
-        //            res.pwd = obj.pwd;
-        //            _dbContext.SaveChanges();
-        //        }
+        public string EmailSend(string emailID)
+        {
+            try
+            {
+                
+                string str =""  ;
+                string[] arr = new string[10];
+                
+                var res = _dbContext.tblStaffs.Where(x => x.emailID == emailID).FirstOrDefault();
+                if (res == null)
+                {
+                    return "Record not found";
+                }
+ 
 
-        //    }
-        //    catch (Exception ex) { }
+                var profile = _dbContext.tblCompanyProfiles.FirstOrDefault();
+                if (profile == null)
+                {
+                    return "Company profile is not available";
+                }
+                // NetworkCredential loginInfo = new NetworkCredential(profile.emailID, profile.pwd);
+                //NetworkCredential loginInfo = new NetworkCredential("info@pragnayinfo.com", "easyway#Info#23");
+                NetworkCredential loginInfo = new NetworkCredential("info@thehillmen.com", "#r6c3Rb91nzZyybgF");
+                MailMessage objMail = new MailMessage();
 
-        //}
+                if (res.emailID.IndexOf(',') > 0)
+                    arr = res.emailID.Split(',');
+                else if (res.emailID.IndexOf(';') > 0)
+                    arr = res.emailID.Split(';');
+                else if (res.emailID.IndexOf('/') > 0)
+                    arr = res.emailID.Split('/');
+                else
+                    str = res.emailID;
+
+                if (str.Length > 0)
+                    objMail.To.Add(new MailAddress(res.emailID));
+                else
+                {
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        objMail.To.Add(new MailAddress(arr[i]));
+                    }
+                }
+
+                CultureInfo CInfo = Thread.CurrentThread.CurrentCulture;
+                TextInfo TInfo = CInfo.TextInfo;
+                string clientName = TInfo.ToTitleCase(res.name);
+
+                clientName = clientName.Replace(" ", "_");
+                str = "Dear " + clientName;
+
+                objMail.From = new MailAddress("info@thehillmen.com");
+                objMail.IsBodyHtml = true;
+                objMail.Priority = MailPriority.High;
+                objMail.Subject = " Password recovery";
+               
+                str += " <br/><br/> Thank you for join Arch Manager.";
+                str += " <br /> <br /> A request was made to send you email and password for your Arch Manager login. We are sending you the original password on your mail id.";
+
+                str += " <br /> <br /> Logon email :   " + res.username;
+                str += " <br />   Password :   " + res.password;  
+
+                str += " <br /> <br /> Best Regards <br /><br /> ";
+                str += " " + profile.orgName + "   <br /> ";
+                objMail.Body = str;
+
+
+               
+                SmtpClient client = new SmtpClient("vmi207282.contaboserver.net");
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = false;
+                client.Credentials = loginInfo;
+                client.Port = 465;// 465;
+                client.Timeout = 40000;
+             
+
+                try
+                {
+                    SaveStatus("1. Start design lab ");
+                    client.Send(objMail);
+                    SaveStatus("Mail sent");
+                }
+                catch (Exception ex) { SaveStatus("Mail Error : " + ex.Message); }
+                 
+                
+            }
+            catch (Exception ex) { return ex.Message; }
+
+            return "";
+        }
+
+        public string EmailSend1(string emailID)
+        {
+            try
+            {
+
+                string str = "";
+                string[] arr = new string[10];
+
+                var res = _dbContext.tblStaffs.Where(x => x.emailID == emailID).FirstOrDefault();
+                if (res == null)
+                {
+                    return "Record not found";
+                }
+
+
+                var profile = _dbContext.tblCompanyProfiles.FirstOrDefault();
+                if (profile == null)
+                {
+                    return "Company profile is not available";
+                }
+                NetworkCredential loginInfo = new NetworkCredential("info@thehillmen.com", "8Z;($)@f=LYe");
+                MailMessage objMail = new MailMessage();
+
+                if (res.emailID.IndexOf(',') > 0)
+                    arr = res.emailID.Split(',');
+                else if (res.emailID.IndexOf(';') > 0)
+                    arr = res.emailID.Split(';');
+                else if (res.emailID.IndexOf('/') > 0)
+                    arr = res.emailID.Split('/');
+                else
+                    str = res.emailID;
+
+                if (str.Length > 0)
+                    objMail.To.Add(new MailAddress(res.emailID));
+                else
+                {
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        objMail.To.Add(new MailAddress(arr[i]));
+                    }
+                }
+
+                CultureInfo CInfo = Thread.CurrentThread.CurrentCulture;
+                TextInfo TInfo = CInfo.TextInfo;
+                string clientName = TInfo.ToTitleCase(res.name);
+
+                clientName = clientName.Replace(" ", "_");
+                str = "Dear " + clientName;
+
+                objMail.From = new MailAddress(profile.emailID);
+                objMail.IsBodyHtml = true;
+                objMail.Priority = MailPriority.High;
+                objMail.Subject = " Password recovery";
+
+                str += " <br/><br/> Thank you for join Arch Manager.";
+                str += " <br /> <br /> A request was made to send you email and password for your Arch Manager login. We are sending you the original password on your mail id.";
+
+                str += " <br /> <br /> Logon email :   " + res.username;
+                str += " <br />   Password :   " + res.password;
+
+                str += " <br /> <br /> Best Regards <br /><br /> ";
+                str += " " + profile.orgName + "   <br /> ";
+                objMail.Body = str;
+
+                SmtpClient client = new SmtpClient("webmail.thehillmen.com");
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = false;
+                client.Credentials = loginInfo;
+                client.Port = 465;// 465;
+                client.Timeout = 20000;
+            
+
+                try
+                {
+                    SaveStatus("2. Start webmail");
+                    client.Send(objMail);
+                    SaveStatus("Mail sent");
+                }
+                catch (Exception ex) { SaveStatus("Mail Error : " + ex.Message); }
+
+
+            }
+            catch (Exception ex) { return ex.Message; }
+
+            return "";
+        }
+
+
+        public string EmailSend2(string emailID)
+        {
+            try
+            {
+
+                string str = "";
+                string[] arr = new string[10];
+
+                var res = _dbContext.tblStaffs.Where(x => x.emailID == emailID).FirstOrDefault();
+                if (res == null)
+                {
+                    return "Record not found";
+                }
+
+
+                var profile = _dbContext.tblCompanyProfiles.FirstOrDefault();
+                if (profile == null)
+                {
+                    return "Company profile is not available";
+                }
+                NetworkCredential loginInfo = new NetworkCredential("info@thehillmen.com", "Info@#123");
+                MailMessage objMail = new MailMessage();
+
+                if (res.emailID.IndexOf(',') > 0)
+                    arr = res.emailID.Split(',');
+                else if (res.emailID.IndexOf(';') > 0)
+                    arr = res.emailID.Split(';');
+                else if (res.emailID.IndexOf('/') > 0)
+                    arr = res.emailID.Split('/');
+                else
+                    str = res.emailID;
+
+                if (str.Length > 0)
+                    objMail.To.Add(new MailAddress(res.emailID));
+                else
+                {
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        objMail.To.Add(new MailAddress(arr[i]));
+                    }
+                }
+
+                CultureInfo CInfo = Thread.CurrentThread.CurrentCulture;
+                TextInfo TInfo = CInfo.TextInfo;
+                string clientName = TInfo.ToTitleCase(res.name);
+
+                clientName = clientName.Replace(" ", "_");
+                str = "Dear " + clientName;
+
+                objMail.From = new MailAddress(profile.emailID);
+                objMail.IsBodyHtml = true;
+                objMail.Priority = MailPriority.High;
+                objMail.Subject = " Password recovery";
+
+                str += " <br/><br/> Thank you for join Arch Manager.";
+                str += " <br /> <br /> A request was made to send you email and password for your Arch Manager login. We are sending you the original password on your mail id.";
+
+                str += " <br /> <br /> Logon email :   " + res.username;
+                str += " <br />   Password :   " + res.password;
+
+                str += " <br /> <br /> Best Regards <br /><br /> ";
+                str += " " + profile.orgName + "   <br /> ";
+                objMail.Body = str;
+
+
+
+                SmtpClient client = new SmtpClient("vmi207282.contaboserver.net");
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = false;
+                client.Credentials = loginInfo;
+                client.Port = 465;// 465;
+                client.Timeout = 40000;
+
+
+                try
+                {
+                    SaveStatus("3. Start vmi207282 ");
+                    client.Send(objMail);
+                    SaveStatus("Mail sent");
+                }
+                catch (Exception ex) { SaveStatus("Mail Error : " + ex.Message); }
+
+
+            }
+            catch (Exception ex) { return ex.Message; }
+
+            return "";
+        }
+
+
+        public string EmailSend3(string emailID)
+        {
+            try
+            {
+
+                string str = "";
+                string[] arr = new string[10];
+
+                var res = _dbContext.tblStaffs.Where(x => x.emailID == emailID).FirstOrDefault();
+                if (res == null)
+                {
+                    return "Record not found";
+                }
+
+
+                var profile = _dbContext.tblCompanyProfiles.FirstOrDefault();
+                if (profile == null)
+                {
+                    return "Company profile is not available";
+                }
+                NetworkCredential loginInfo = new NetworkCredential("info@thehillmen.com", "Thehillmen123#");
+                MailMessage objMail = new MailMessage();
+
+                if (res.emailID.IndexOf(',') > 0)
+                    arr = res.emailID.Split(',');
+                else if (res.emailID.IndexOf(';') > 0)
+                    arr = res.emailID.Split(';');
+                else if (res.emailID.IndexOf('/') > 0)
+                    arr = res.emailID.Split('/');
+                else
+                    str = res.emailID;
+
+                if (str.Length > 0)
+                    objMail.To.Add(new MailAddress(res.emailID));
+                else
+                {
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        objMail.To.Add(new MailAddress(arr[i]));
+                    }
+                }
+
+                CultureInfo CInfo = Thread.CurrentThread.CurrentCulture;
+                TextInfo TInfo = CInfo.TextInfo;
+                string clientName = TInfo.ToTitleCase(res.name);
+
+                clientName = clientName.Replace(" ", "_");
+                str = "Dear " + clientName;
+
+                objMail.From = new MailAddress(profile.emailID);
+                objMail.IsBodyHtml = true;
+                objMail.Priority = MailPriority.High;
+                objMail.Subject = " Password recovery";
+
+                str += " <br/><br/> Thank you for join Arch Manager.";
+                str += " <br /> <br /> A request was made to send you email and password for your Arch Manager login. We are sending you the original password on your mail id.";
+
+                str += " <br /> <br /> Logon email :   " + res.username;
+                str += " <br />   Password :   " + res.password;
+
+                str += " <br /> <br /> Best Regards <br /><br /> ";
+                str += " " + profile.orgName + "   <br /> ";
+                objMail.Body = str;
+
+
+
+                SmtpClient client = new SmtpClient("webmail.thehillmen.com");
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = false;
+                client.Credentials = loginInfo;
+                client.Port = 465;// 465;
+                client.Timeout = 20000;
+
+
+                try
+                {
+                    SaveStatus("4. Start ");
+                    client.Send(objMail);
+                    SaveStatus("Mail sent");
+                }
+                catch (Exception ex) { SaveStatus("Mail Error : " + ex.Message); }
+
+
+            }
+            catch (Exception ex) { return ex.Message; }
+
+            return "";
+        }
 
 
 

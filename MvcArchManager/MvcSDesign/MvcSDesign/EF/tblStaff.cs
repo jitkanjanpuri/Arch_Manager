@@ -21,6 +21,7 @@ namespace MvcSDesign.EF
             this.tblStaffLedgers = new HashSet<tblStaffLedger>();
             this.tblStaffPaids = new HashSet<tblStaffPaid>();
             this.tblProjectUploadFiles = new HashSet<tblProjectUploadFile>();
+            this.tblProjectSiteVisits = new HashSet<tblProjectSiteVisit>();
         }
     
         public int staffID { get; set; }
@@ -45,5 +46,7 @@ namespace MvcSDesign.EF
         public virtual ICollection<tblStaffPaid> tblStaffPaids { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblProjectUploadFile> tblProjectUploadFiles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblProjectSiteVisit> tblProjectSiteVisits { get; set; }
     }
 }

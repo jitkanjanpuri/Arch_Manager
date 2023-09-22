@@ -18,10 +18,12 @@ namespace MvcSDesign.Repository
     public class ClientRepository :IClient
     {
         ArchManagerDBEntities _dbContext;
+        AdminRepository _IAdmn;
 
         public ClientRepository(ArchManagerDBEntities dEntity)
         {
             _dbContext = dEntity;
+            _IAdmn = new AdminRepository(new ArchManagerDBEntities());
         }
 
 
@@ -53,13 +55,7 @@ namespace MvcSDesign.Repository
                 }
                 else
                 {
-                    //var res = _dbContext.tblCompanyProfiles.FirstOrDefault();
-                    //int companyID = 0;
-                    //if (res != null)
-                    //{
-                    //    companyID = res.companyID;
-                    //}
-                    //obj.companyID = companyID;
+                    
 
                     var res = _dbContext.tblClients.Where(x => x.clientID == cnt.clientID).FirstOrDefault();
                     if (res != null)
@@ -111,15 +107,22 @@ namespace MvcSDesign.Repository
          
         public long getProjectID()
         {
-            long projectID = 1000;
+           long projectID = 0;
              
             try
             {
-                projectID = _dbContext.tblProjectDetails.Max(u => u.projectID);
-                projectID++;
+                projectID =  _dbContext.tblProjectDetails.Max(u => u.projectID);
+               
             }
             catch (Exception ex) { }
-
+            if (projectID == 0)
+            {
+                projectID = _IAdmn.GetStartProjectID();
+            }
+            else
+            {
+                projectID++;
+            }
             return projectID;
         }
 

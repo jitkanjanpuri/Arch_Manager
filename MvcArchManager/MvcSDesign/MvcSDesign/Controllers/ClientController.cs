@@ -98,6 +98,8 @@ namespace MvcSDesign.Controllers
             {
                 IClnt.InsertData(obj);
                 ModelState.Clear();
+
+                return RedirectToAction("Index");
             }
 
             obj.statelist = getStateList();
@@ -328,12 +330,19 @@ namespace MvcSDesign.Controllers
         {
             try
             {
-                //string ch = Session["user"].ToString();
-                ViewBag.Message = "";
+                if (Session["quotation"].ToString() == "")
+                {
+                    ViewBag.Message = "";
+                }
+                else
+                {
+                    ViewBag.Message = Session["quotation"].ToString();
+                }
 
             }
             catch (Exception ex)
             {
+                ViewBag.Message = "";
                 //FormsAuthentication.SignOut();
                 //FormsAuthentication.SetAuthCookie("", true);
 
@@ -344,11 +353,11 @@ namespace MvcSDesign.Controllers
 
         [HttpPost]
 
-        public ActionResult Quotation(string txtCID,  string ddlLevel, string txtPlotSize, string txtAmount, string comment, string txtProjectName, string txtExteriorCName, string remark)
+        public ActionResult Quotation(string txtCID,  string ddlLevel, string txtPlotSize, string txtAmount, string comment, string txtProjectName,  string remark)
         {
             try
             {
-                ViewBag.Message = "";
+               
 
             }
             catch (Exception ex)
@@ -361,27 +370,34 @@ namespace MvcSDesign.Controllers
             quotation obj = new quotation();
             try
             {
-                clientModel cl = IClnt.GetClient(int.Parse(txtCID));
+                if (txtCID != "")
+                {
+                    clientModel cl = IClnt.GetClient(int.Parse(txtCID));
 
-                obj.clientID = txtCID;
-                obj.projectType = "-";
-                obj.projectLevel = ddlLevel;
-                obj.package = "-";
-                obj.plotSize = txtPlotSize;
-                obj.amount = int.Parse(txtAmount);
-                obj.emailID = cl.emailID;
-                obj.projectname = txtProjectName.Trim();
-                obj.clientname = cl.clientName;
-                obj.address = cl.address;
-                obj.city = cl.city;
-                obj.dt = DateTime.Today;
-                obj.remark = remark == null ? "" : remark.Trim();
+                    obj.clientID = txtCID;
+                    obj.projectType = "-";
+                    obj.projectLevel = ddlLevel;
+                    obj.package = "-";
+                    obj.plotSize = txtPlotSize;
+                    obj.amount = int.Parse(txtAmount);
+                    obj.emailID = cl.emailID;
+                    obj.projectname = txtProjectName.Trim();
+                    obj.clientname = cl.clientName;
+                    obj.address = cl.address;
+                    obj.city = cl.city;
+                    obj.dt = DateTime.Today;
+                    obj.remark = remark == null ? "" : remark.Trim();
 
-                long pid =  IClnt.InsertQuotation(obj);
-                //////SendQuotation(obj, pid);
-                ViewBag.Message = " Quotation successfully generated , project ID is " + pid;
+                    long pid = IClnt.InsertQuotation(obj);
+                    txtCID = ""; txtPlotSize = ""; txtAmount = ""; comment = ""; txtProjectName = ""; remark = "";
+                    //////SendQuotation(obj, pid);
+                   Session["quotation"] = " Quotation successfully generated , project ID is " + pid;
+
+                    return RedirectToAction("Quotation");
+                }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 ViewBag.Error = ex.Message;
             }
 
@@ -390,37 +406,7 @@ namespace MvcSDesign.Controllers
 
         
          
-        //public string SaveInteriorQuotation(string cid,  string projectname, string area,   string empdata)
-        //{
-        //    operation obj = new operation();
-        //    DataTable dt = new DataTable();
-        //    DateTime todayDt = DateTime.Now;
-        //    clientModel cl = new clientModel();
-        //    int pid = 0;
-        //    string cname = "", emailID = "", citystate = "";
-        //    dt.Columns.Add("projectDetails");
-        //    dt.Columns.Add("particular");
-        //    dt.Columns.Add("unit");
-        //    dt.Columns.Add("amount");
-        //    cl = IClnt.GetClient(int.Parse(cid));
-
-        //    cname = cl.clientName;
-        //    emailID = cl.emailID;
-        //    citystate = cl.city;
-
-        //    obj.clientID = int.Parse(cid);
-        //    obj.clientName = cname;
-        //    obj.emailID = emailID;
-        //    obj.projectName = projectname;
-        //    obj.plotSize = area;
-        //    obj.projectLevel = "-";
-        //    obj.city = citystate; 
-
-        //   // IClnt.InsertInteriorQuotation(obj, empdata, ref pid, ref dt);
-        //    string pdfname = SendInteriorQuotation(obj, emailID, pid, dt, todayDt, citystate);
-        //    ViewBag.Message = " Interior quotation successfully generated , project ID is " + pid;
-        //    return "";
-        //}
+      
 
 
         void SendQuotation(quotation qut, int projectID)

@@ -196,12 +196,7 @@ namespace MvcSDesign.Controllers
                 }
                 catch (Exception ex) { }
 
-                string tmp = @"C:\inetpub\wwwroot\DesignLab\loginImage\" + imgname;
-                try
-                {
-                    System.IO.File.Copy(tmp, pth);
-                }
-                catch (Exception ex) { return ex.Message; };
+               
             }
 
             return "Y";

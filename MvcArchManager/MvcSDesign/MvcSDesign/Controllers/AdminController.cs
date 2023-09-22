@@ -17,7 +17,7 @@ using System.Globalization;
 using System.Web.Hosting;
 using System.Drawing;
 using System.IO;
-//using Org.BouncyCastle.Ocsp;
+ 
 
 namespace MvcSDesign.Controllers
 {
@@ -98,9 +98,42 @@ namespace MvcSDesign.Controllers
              
             return View();
         }
-        
+        public ActionResult AdminSetting()
+        {
+            AdminSettingModel obj = new AdminSettingModel();
+            obj.projectID = GetStartProjectID();
+            ViewBag.message = "";
+            return View(obj);
+        }
+        [HttpPost]
+        public ActionResult AdminSetting(AdminSettingModel obj)
+        {
 
-         public JsonResult GetPRFByPrjectID(string projectID)
+            if (ModelState.IsValid)
+            {
+                string ch = _IAmn.SaveAdminSetting(obj);
+                if (ch == "")
+                {
+                    ViewBag.message = "Record successfully saved";
+                }
+                else
+                    ViewBag.message = ch;
+
+            }
+                
+
+            
+            AdminSettingModel obj1 = new AdminSettingModel();
+            obj1.projectID = GetStartProjectID();
+            return View(obj);
+        }
+       
+        long GetStartProjectID()
+        {
+            return _IAmn.GetStartProjectID();
+
+        }
+        public JsonResult GetPRFByPrjectID(string projectID)
         {
             return Json(_IAmn.GetPRFByPrjectID(int.Parse(projectID)), JsonRequestBehavior.AllowGet);
         }
@@ -129,7 +162,7 @@ namespace MvcSDesign.Controllers
                             {
                                 System.IO.File.Delete(fpth);
                             }
-
+                           
                             string fpath = HostingEnvironment.MapPath("~//Images//logoimage//") +"logo" + Path.GetExtension(logofile.FileName);
                              
                             logofile.SaveAs(fpath);
@@ -143,6 +176,8 @@ namespace MvcSDesign.Controllers
                     {
                         ModelState.Clear();
                         ViewData["result"] = "Data succesfully saved";
+
+                        return RedirectToAction("CompanyProfile");
                     }
 
                 }
@@ -168,54 +203,6 @@ namespace MvcSDesign.Controllers
             var prj = _IAmn.getProjectQuotation();
             return Json(prj, JsonRequestBehavior.AllowGet);
         }
-
-        
-       
-        //public JsonResult getHighestMonthSale()
-        //{
-        //    List<quotation> prjType = new List<quotation>();
-        //    try
-        //    {
-        //        DataTable ds = new DataTable();
-        //        prjType.Add(
-        //                     new quotation
-        //                     {
-        //                         clientname = "Rajiv",
-        //                         targetAmount =100,
-        //                         receiveAmount = 70 ,
-        //                         amount =200,
-        //                         depositAmount = 100,
-        //                         dtstr ="Jan"
-        //                     }
-        //                );
-
-        //        prjType.Add(
-        //                  new quotation
-        //                  {
-        //                      clientname = "Manoj",
-        //                      targetAmount = 150,
-        //                      receiveAmount = 110,
-        //                      amount =200,
-        //                      depositAmount = 100,
-        //                      dtstr = "Jan"
-        //                  }
-        //             );
-        //        prjType.Add(
-        //                 new quotation
-        //                 {
-        //                     clientname = "Sanjiv",
-        //                     targetAmount = 50,
-        //                     receiveAmount = 20,
-        //                     amount = 200,
-        //                     depositAmount = 100,
-        //                     dtstr = "Jan"
-        //                 }
-        //            );
-
-        //    }
-        //    catch (Exception ex) { }
-        //    return Json(prjType, JsonRequestBehavior.AllowGet);
-        //}
 
 
         public JsonResult getQuotation()
@@ -468,30 +455,66 @@ namespace MvcSDesign.Controllers
 
                 //return RedirectToAction("Index", "Login");
             }
-
+            obj.designerList = GetAllStaff();
             return View(obj);
         }
-        [HttpPost]
-        public ActionResult SiteVisit(SiteVisitModel obj,string projectID, HttpPostedFileBase sitevisitPhoto)
+
+        IEnumerable<SelectListItem> GetAllStaff()
         {
+            var obj = new List<SelectListItem>();
+            try
+            {
+                var res = _IAmn.GatAllRegistration();
+                foreach (var item in res)
+                {
+                    obj.Add(
+                        new SelectListItem
+                        {
+                            Text = item.name,
+                            Value = item.staffID.ToString()
+                        });
+                }
+
+            }
+            catch (Exception ex) { }
+
+            return obj;
+
+
+        }
+
+
+
+        [HttpPost]
+        public ActionResult SiteVisit(SiteVisitModel obj,string name ,string projectID, List<HttpPostedFileBase> sitevisitPhoto)
+        {
+            FileCompress fc = new FileCompress();
             try
             {
                 var res = _IAmn.GetProjectInfo(obj.projectID);
-                string fname = "", ext, fpath;
-                if (sitevisitPhoto != null)
-                {
-                    ext = Path.GetExtension(sitevisitPhoto.FileName);
-                    fname = "SitePhoto_" + obj.projectID + "_" + "_" + DateTime.Now.Day + DateTime.Now.Month + DateTime.Now.Year + DateTime.Now.Hour + DateTime.Now.Minute + DateTime.Now.Second;
-                    fpath = HostingEnvironment.MapPath("~/ProjectLocation/client_" + res.clientID + "/proj_" + projectID + "/Site Photo/");
-                    fname = fname + ext;
-                    fpath +=  fname;
-                    sitevisitPhoto.SaveAs(fpath);
+                string fname = "", ext, fpath, filename ="";
 
+                foreach (HttpPostedFileBase item in sitevisitPhoto)
+                {
+                //    if (sitevisitPhoto != null)
+                //{
+                    ext = Path.GetExtension(item.FileName);
+                    fname = "SitePhoto_" + obj.projectID + "_" + "_" + DateTime.Now.Day + DateTime.Now.Month + DateTime.Now.Year + DateTime.Now.Hour + DateTime.Now.Minute + DateTime.Now.Second;
+                    fpath = HostingEnvironment.MapPath("~/ProjectLocation/client_" + res.clientID + "/proj_" + projectID + "/Site Photo/"+ fname + ext);
+                    //fname = fname + ext;
+                    //fpath +=  fname;
+                    //sitevisitPhoto.SaveAs(fpath);
+                   // string f = sitevisitPhoto.
+                    string ch = fc.Save(item, fpath);
+                    if (filename == "")
+                        filename = fname + ext;
+                    else
+                        filename = filename + "," + fname+ ext;
                 }
-                ext =_IAmn.SaveSiteVisit(obj.projectID, fname, obj.remark);
+                ext =_IAmn.SaveSiteVisit(obj.projectID, int.Parse(name), filename, obj.remark);
             }
             catch (Exception ex) { }
-            return View();
+            return RedirectToAction("SiteVisit");
         }
 
         public JsonResult SearchSiteVisitByNameOrProjectID(string opt, string projectID, string cname, string pname)
@@ -522,7 +545,7 @@ namespace MvcSDesign.Controllers
         public JsonResult TaskSendToClient(string pmID, string pid, string[] filelist, string gmail, string whatsApp)
         {
             string uploadedFileName = "", whatsAppFilepath = "", whatsAppno = "", socialmedia = "";
-            _IAmn.SaveStatus("Start Task send to Client");
+            
             string ch = _IAmn.SendTaskMailToClien(int.Parse(pmID), int.Parse(pid), filelist, out uploadedFileName, gmail);
             if (ch == "Y")
             {
@@ -575,7 +598,7 @@ namespace MvcSDesign.Controllers
             return File(pdfpath, contentType, filename);
         }
 
-        public FileResult DownloadSiteVist(string projectID,  string filename)
+        public FileResult DownloadSiteVisit(string projectID,  string filename)
         {
             string pdfpath = _IAmn.DownloadSiteVist(int.Parse(projectID), filename);
             filename = System.IO.Path.GetFileName(pdfpath);
@@ -660,13 +683,13 @@ namespace MvcSDesign.Controllers
              {
                  ViewBag.message = "";
              }
-            obj.designerList = GetDesignerList();
+            obj.designerList = GetDesignerTypeList();
             obj.rollList = GetRollList();
             return View(obj);
         }
 
-
-        IEnumerable<SelectListItem> GetDesignerList()
+      
+        IEnumerable<SelectListItem> GetDesignerTypeList()
         {
             var obj = new List<SelectListItem>();
              
@@ -745,11 +768,12 @@ namespace MvcSDesign.Controllers
                 {
                     ModelState.Clear();
                     ViewBag.message = "";
+                    return RedirectToAction("Registration");
                 }
 
             }
             StaffModel obj = new StaffModel();
-            obj.designerList = GetDesignerList();
+            obj.designerList = GetDesignerTypeList();
             obj.rollList = GetRollList();
             return View(obj);
         }

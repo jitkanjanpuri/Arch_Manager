@@ -19,7 +19,9 @@ namespace MvcSDesign.EF
         public long projectID { get; set; }
         public string sitePhotoFile { get; set; }
         public string remark { get; set; }
+        public int staffID { get; set; }
     
         public virtual tblProjectDetail tblProjectDetail { get; set; }
+        public virtual tblStaff tblStaff { get; set; }
     }
 }

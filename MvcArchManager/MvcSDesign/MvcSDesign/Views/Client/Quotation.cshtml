@@ -1,7 +1,7 @@
 ﻿  
 @{
     ViewBag.Title = "Quotation";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    Layout = "~/Views/Shared/_NewAdmin.cshtml";
 }
 
 <!doctype html>
@@ -284,135 +284,120 @@
 </head>
 @using (@Html.BeginForm("Quotation", "Client", FormMethod.Post))
 {
-    <body onload="HideFun()">
+<body onload="HideFun()">
 
-        <div ng-app="myApp">
-            <div ng-controller="myCtr">
+    <div ng-app="myApp">
+        <div ng-controller="myCtr">
 
-                <div class="page-content">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <a href="@Url.Action("Quotation", "Client")" class="btn btn-primary"><span>Quotation </span></a>
-                                    <a href="@Url.Action("ProjectManagement", "Admin")" class="btn btn-primary"><span>Prj Management </span></a>
-                                    <a href="@Url.Action("PRF", "Admin")" class="btn btn-primary"><span>PRF</span></a>
-                                    @*<a href="@Url.Action("Operation", "Admin")" class="btn btn-primary"><span> Operation  </span></a>*@
-                                    <a href="@Url.Action("SiteVisit", "Admin")" class="btn btn-primary"><span>Site Visit </span></a>
-                                    <a href="@Url.Action("CurrentWorking", "Admin")" class="btn btn-primary"><span> Operation </span></a>
-                                    <a href="@Url.Action("Receipt", "Admin")" class="btn btn-primary"><span>Receipt</span></a>
-
+            <div class="page-content">
+                <div class="container-fluid">
+ 
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between mt-4">
+                                <div class="col-xl-3 col-md-2">
+                                    <div class="form-group mb-3 ">
+                                        <h4 class="mb-sm-0 font-size-18 mt-3">Quotation Generate </h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <br />
+                    </div>
 
-
-
-                        <div class="row">
-                            <div class="col-12">
-
-                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h1 class="h3 my-4 text-gray-800">Quotation Generate</h1>
-
-                                </div>
-
+                  
+                    <div class="row">
+                        <div class="col-xl-4 col-md-6">
+                            <div class="form-group mb-3">
+                                <input type="text" class="form-control" ng-model="txtName" placeholder="Name" required data-pristine-required-message="Please enter a client name" />
                             </div>
                         </div>
-                        <!-- end page title -->
-
-
-                        <div class="row">
-                            <div class="col-xl-4 col-md-6">
-                                <div class="form-group mb-3">
-                                    <input type="text" class="form-control" ng-model="txtName" placeholder="Name" required data-pristine-required-message="Please enter a client name" />
-                                </div>
-                                <div class="form-group mb-3">
-                                    <span class="text-danger">{{err}}</span>
-                                </div>
-                            </div>
-
-                            <div class="col-xl-1 col-md-6">
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-primary" ng-click="Search()">Search</button>
-                                </div>
+                        <div class="col-xl-1 col-md-6">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary" ng-click="Search()">Search</button>
                             </div>
                         </div>
-                        <div class="text-center" ng-hide="loading">
-                            <button type="button" class="btn btn-dark waves-effect waves-light">
-                                <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
-                            </button>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 text-left">
+                            <label> <span class="text-danger font-size-16 font-weight-bold">{{err}}</span> </label>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                        </div>
-                                        <!-- end row -->
+                    </div>
 
-                                        <div class="table-responsive">
-                                            <table class="table align-middle datatable dt-responsive  nowrap table-bordered" style=" border: 1px solid black; border-spacing: 0 8px; width: 100%;">
-                                                <thead class="bg-warning text-white">
-                                                    <tr class="bg-transparent">
+                    <div class="text-center" ng-hide="loading">
+                        <button type="button" class="btn btn-dark waves-effect waves-light">
+                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                        </button>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                    </div>
+                                    <!-- end row -->
 
-                                                        <th style="width: 120px;">CID  </th>
-                                                        <th>Name </th>
-                                                        <th>Mobile Number</th>
-                                                        <th>City  </th>
-                                                        <th>Email </th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                                    <div class="table-responsive">
+                                        <table class="table align-middle datatable dt-responsive  nowrap table-bordered" style=" border: 1px solid black; border-spacing: 0 8px; width: 100%;">
+                                            <thead class="bg-warning text-white">
+                                                <tr class="bg-transparent">
 
-                                                    <tr ng-repeat="item  in recordlist">
-                                                        <td style=""> {{item.clientID}}</td>
-                                                        <td style=""> {{item.clientName}}</td>
-                                                        <td style="">  {{item.mobile}}</td>
-                                                        <td style="">  {{item.city}} </td>
-                                                        <td style="">  {{item.emailID}} </td>
-                                                        <td>
-                                                            <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" ng-click="SetClientID(item.clientID, item.clientName)" data-bs-target=".bs-example-modal-center">Generate</button>
-                                                        </td>
+                                                    <th style="width: 120px;">CID  </th>
+                                                    <th>Name </th>
+                                                    <th>Mobile Number</th>
+                                                    <th>City  </th>
+                                                    <th>Email </th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
 
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">Quotation Generate</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="row">
-                                                            <div class="col-lg-12">
-                                                                <div>
+                                                <tr ng-repeat="item  in recordlist">
+                                                    <td style=""> {{item.clientID}}</td>
+                                                    <td style=""> {{item.clientName}}</td>
+                                                    <td style="">  {{item.mobile}}</td>
+                                                    <td style="">  {{item.city}} </td>
+                                                    <td style="">  {{item.emailID}} </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" ng-click="SetClientID(item.clientID, item.clientName)" data-bs-target=".bs-example-modal-center">Generate</button>
+                                                    </td>
 
-                                                                    <div class="row">
-                                                                        <div class="col-xl-6 col-md-6">
-                                                                            <div class="form-group mb-3">
-                                                                                <label>CID </label><br />
-                                                                                <input type="text" class="form-control" id="txtCID" name="txtCID" readonly />
-                                                                            </div>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Quotation Generate</h5>
+                                                    @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div>
+
+                                                                <div class="row">
+                                                                    <div class="col-xl-6 col-md-6">
+                                                                        <div class="form-group mb-3">
+                                                                            <label>CID </label><br />
+                                                                            <input type="text" class="form-control" id="txtCID" name="txtCID" readonly />
                                                                         </div>
-                                                                        <div class="col-xl-6 col-md-6">
-                                                                            <div class="form-group mb-3">
-                                                                                <label>Client name </label>
-                                                                                <input type="text" class="form-control" id="txtExteriorCName" name="txtExteriorCName" readonly />
-                                                                            </div>
+                                                                    </div>
+                                                                    <div class="col-xl-6 col-md-6">
+                                                                        <div class="form-group mb-3">
+                                                                            <label>Client name </label>
+                                                                            <input type="text" class="form-control" id="txtExteriorCName" name="txtExteriorCName" readonly />
                                                                         </div>
-                                                                        <div class="col-xl-6 col-md-6">
-                                                                            <div class="form-group mb-3">
-                                                                                <label>Project Name </label>
-                                                                                <input type="text" class="form-control" id="txtProjectName" name="txtProjectName" style="" />
-                                                                            </div>
+                                                                    </div>
+                                                                    <div class="col-xl-6 col-md-6">
+                                                                        <div class="form-group mb-3">
+                                                                            <label>Project Name </label>
+                                                                            <input type="text" class="form-control" id="txtProjectName" name="txtProjectName" style="" />
                                                                         </div>
-                                                                        @*<div class="col-xl-6 col-md-6">*@
-                                                                        @*<div class="form-group mb-3">
+                                                                    </div>
+                                                                    @*<div class="col-xl-6 col-md-6">*@
+                                                                    @*<div class="form-group mb-3">
                                                                 <label>Project Type </label>
                                                                 <select class="form-control" id="ddlProjectType" name="ddlProjectType" style="">
                                                                     <option value="Exterior">Exterior</option>
@@ -427,7 +412,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>*@
-                                                                        @*<div class="col-xl-6 col-md-6">
+                                                                    @*<div class="col-xl-6 col-md-6">
                                                             <div class="form-group mb-3">
                                                                 <label>Package  </label>
                                                                 <select class="form-control" id="ddlPackage" name="ddlPackage" style="">
@@ -439,192 +424,51 @@
                                                                 </select>
                                                             </div>
                                                         </div>*@
-                                                                        <div class="col-xl-6 col-md-6">
-                                                                            <div class="form-group mb-3">
-                                                                                <label> Level </label>
-                                                                                <select class="form-control" id="ddlLevel" name="ddlLevel" style="">
-                                                                                    <option value="Ground">Ground</option>
-                                                                                    <option value="G+1">G+1 </option>
-                                                                                    <option value="G+2">G+2</option>
-                                                                                    <option value="G+3">G+3</option>
-                                                                                    <option value="G+4">G+4 </option>
-                                                                                    <option value="G+5">G+5</option>
-                                                                                    <option value="G+6">G+6</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-xl-6 col-md-6">
-                                                                            <div class="form-group mb-3">
-                                                                                <label>Plot size</label>
-                                                                                <input type="text" class="form-control" id="txtPlotSize" name="txtPlotSize" style="" />
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="col-xl-6 col-md-6">
-                                                                            <div class="form-group mb-3">
-                                                                                <label>Amount </label>
-                                                                                <input type="text" class="form-control" id="txtAmount" name="txtAmount" onkeypress="return IsNumber();" style="" />
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="col-xl-12 col-md-6">
-                                                                            <div class="form-group mb-3">
-                                                                                <label>Remark </label>
-                                                                                <textarea id="remark" class="form-control" name="remark" rows="2" cols="35"></textarea>
-                                                                            </div>
+                                                                    <div class="col-xl-6 col-md-6">
+                                                                        <div class="form-group mb-3">
+                                                                            <label> Level </label>
+                                                                            <select class="form-control" id="ddlLevel" name="ddlLevel" style="">
+                                                                                <option value="Ground">Ground</option>
+                                                                                <option value="G+1">G+1 </option>
+                                                                                <option value="G+2">G+2</option>
+                                                                                <option value="G+3">G+3</option>
+                                                                                <option value="G+4">G+4 </option>
+                                                                                <option value="G+5">G+5</option>
+                                                                                <option value="G+6">G+6</option>
+                                                                            </select>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="text-center" id="loadHourHide">
-                                                                        <button type="button" class="btn btn-dark waves-effect waves-light">
-                                                                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
-                                                                        </button>
+                                                                    <div class="col-xl-6 col-md-6">
+                                                                        <div class="form-group mb-3">
+                                                                            <label>Plot size</label>
+                                                                            <input type="text" class="form-control" id="txtPlotSize" name="txtPlotSize" style="" />
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="form-group">
-                                                                        <input type="submit" value="Submit" id="btnSubmit" onclick="return Validation();" class="btn btn-primary" />
+
+                                                                    <div class="col-xl-6 col-md-6">
+                                                                        <div class="form-group mb-3">
+                                                                            <label>Amount </label>
+                                                                            <input type="text" class="form-control" id="txtAmount" name="txtAmount" onkeypress="return IsNumber();" style="" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-xl-12 col-md-6">
+                                                                        <div class="form-group mb-3">
+                                                                            <label>Remark </label>
+                                                                            <textarea id="remark" class="form-control" name="remark" rows="2" cols="35"></textarea>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="exampleModalFullscreen" class="modal fade" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-fullscreen">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalFullscreenLabel">Interior Quotation</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-
-                                                        <div class="row">
-                                                            <div class="col-lg-12">
-                                                                <div>
-                                                                    <input type="hidden" />
-                                                                    <div class="card-body">
-                                                                        <div class="row">
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="row">
-                                                                                <div class="col-lg-2">
-                                                                                    <div>
-                                                                                        <form>
-                                                                                            <div class="row mb-4">
-                                                                                                <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">CID </label>
-                                                                                                <div class="col-sm-7">
-                                                                                                    <input type="text" class="form-control" id="txtInteriorCID" readonly>
-                                                                                                </div>
-                                                                                            </div>
-
-                                                                                        </form>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-lg-2">
-                                                                                    <div>
-                                                                                        <form>
-                                                                                            <div class="row mb-4">
-                                                                                                <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Name </label>
-                                                                                                <div class="col-sm-7">
-                                                                                                    <input type="text" class="form-control" id="txtInteriorName" readonly>
-                                                                                                </div>
-                                                                                            </div>
-
-                                                                                        </form>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-lg-4">
-                                                                                    <div>
-                                                                                        <form>
-                                                                                            <div class="row mb-4">
-                                                                                                <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Project Name </label>
-                                                                                                <div class="col-sm-7">
-                                                                                                    <input type="text" class="form-control" id="txtInteriorProjectName" placeholder="Project Name">
-                                                                                                </div>
-                                                                                            </div>
-
-                                                                                        </form>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-lg-4 ms-lg-auto">
-                                                                                    <div class="mt-4 mt-lg-0">
-
-
-                                                                                        <form>
-                                                                                            <div class="row mb-4">
-                                                                                                <div class="col-sm-3">
-
-                                                                                                </div>
-                                                                                                <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Area in Sq feet  </label>
-                                                                                                <div class="col-sm-6">
-                                                                                                    <input type="text" class="form-control" id="txtArea" value="0" onkeypress="return isNumberKey(event)" placeholder="Area in sq feet">
-                                                                                                </div>
-                                                                                            </div>
-
-                                                                                        </form>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-xl-12">
-                                                                        <div class="card-body">
-                                                                            <div class="table-responsive">
-                                                                                <table class="table mb-0" id="maintable">
-
-                                                                                    <thead class="table-light">
-                                                                                        <tr>
-
-                                                                                            <th>Project Details </th>
-                                                                                            <th>Particular </th>
-                                                                                            <th>Unit/size</th>
-                                                                                            <th>Amount</th>
-
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody>
-                                                                                        <tr class="data-contact-person">
-
-                                                                                            <td style="width:350px;">
-                                                                                                <input type="text" id="projectDetails" name="projectDetails" class="form-control projectDetails" />
-
-                                                                                            </td>
-                                                                                            <td style="width:350px;">
-                                                                                                <select class="form-select particular">
-                                                                                                    <option> 3D View only </option>
-                                                                                                    <option>Interior Wall elevation and 3D view </option>
-                                                                                                </select>
-
-                                                                                            </td>
-                                                                                            <td style="width:350px;">
-                                                                                                <input type="text" id="unit" name="unit" class="form-control unit" />
-                                                                                            </td>
-
-                                                                                            <td style="width:350px;">
-                                                                                                <input type="text" id="amount" name="amount" class="form-control amount" onkeypress="return isNumberKey(event)" />
-                                                                                            </td>
-
-                                                                                            <td>
-                                                                                                <button type="button" id="btnAdd" class="btn btn-primary waves-effect waves-light classAdd"><i class=" bx bx-plus"></i> </button>
-
-
-                                                                                            </td>
-                                                                                        </tr>
-
-                                                                                    </tbody>
-                                                                                </table>
-
-                                                                            </div>
-
-                                                                        </div>
-
-                                                                    </div>
-
+                                                                <div class="text-center" id="loadHourHide">
+                                                                    <button type="button" class="btn btn-dark waves-effect waves-light">
+                                                                        <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                                                                    </button>
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" id="btnInteriorSubmit" class="btn btn-primary waves-effect waves-light">Submit</button>
+                                                                <div class="form-group">
+                                                                    <button type="button" class="btn btn-secondary waves-effect waves-light" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                                                                    &nbsp;&nbsp;
+                                                                    <input type="submit" value="Submit" id="btnSubmit" onclick="return Validation();" class="btn btn-primary" />
                                                                 </div>
-
                                                             </div>
                                                         </div>
                                                     </div>
@@ -632,6 +476,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -639,12 +484,20 @@
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
     if (ViewBag.message != "")
     {
         <script type="text/javascript">
             window.onload = function () {
                 alert("@ViewBag.message");
+                //$("#loadHourHide").hide()
+                //$("#btnSubmit").show();
+
+                window.reload();
             }
         </script>
     }

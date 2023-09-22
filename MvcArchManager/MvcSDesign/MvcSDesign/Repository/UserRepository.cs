@@ -232,9 +232,10 @@ namespace MvcSDesign.Repository
                 {
                     res2.projectstatus = "Submit";
                     res2.User_UploadedFileName = uploadfile;
+                    res2.status = "WF";
                 }
 
-                SaveStatus("Saved Data  : 4 " );
+                
                 _dbContext.SaveChanges();
             }
             catch (Exception ex) { return ex.Message; }

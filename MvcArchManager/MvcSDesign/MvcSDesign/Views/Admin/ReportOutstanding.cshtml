@@ -1,28 +1,18 @@
 ﻿@{
     ViewBag.Title = "Report Outstanding";
 
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    Layout = "~/Views/Shared/_NewAdmin.cshtml";
 }
-
-
 <!doctype html>
 <html lang="en">
 
 <head>
-
-
-
     <script src="~/angularjs/ReportOutstanding.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
     </script>
     <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="~/table2excel/jquery.table2excel.js"></script>
-
-
-
     <script type="text/javascript">
-
-
         function IsNumber(e) {
 
             var theEvent = event || window.event;
@@ -47,92 +37,59 @@
 
                 <div class="page-content">
                     <div class="container-fluid">
-
+                       
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group">
-                                    <a href="@Url.Action("ReportClientLedger", "Admin")" class="btn btn-primary"><span>Client Ledger</span></a>
-                                    <a href="@Url.Action("ReportClientReceive", "Admin")" class="btn btn-primary"><span>Client Receive </span></a>
-                                    <a href="@Url.Action("ReportOutstanding", "Admin")" class="btn btn-primary"><span> Outstanding  </span></a>
-                                    <a href="@Url.Action("ReportTechnical", "Admin")" class="btn btn-primary"><span>Technical</span></a>
-
-                                    <a href="@Url.Action("ReportQuotation", "Admin")" class="btn btn-primary"><span> Quotation  </span></a>
-                                    @*<a href="@Url.Action("ReportMonthQuotation", "Admin")" class="btn btn-primary"><span> Month Quotation </span></a>*@
-                                    @*<a href="@Url.Action("ReportBalanceAdjust", "Admin")" class="btn btn-primary"><span> Balance Adjust  </span></a>*@
-                                    <a href="@Url.Action("ReportSiteVisit", "Admin")" class="btn btn-primary"><span> Site Visit   </span></a>
-                                    <a href="@Url.Action("ReportProjectHistory", "Admin")" class="btn btn-primary"><span> Project History  </span></a>
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between mt-4">
+                                    <div class="col-xl-3 col-md-2">
+                                        <div class="form-group mb-3 ">
+                                            <h4 class="mb-sm-0 font-size-18 mt-3">Quotation Report</h4>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+
                         <br />
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">Client Outstanding </h4>
+                        <div class="row col-lg-12">
+                            <div class="col-xl-2 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>From Date   </label>
+                                    <div class="input-group">
+                                        <input type="date" id="fromStart" class="form-control" ng-model="fromStart">
 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-6">
+                                <div class="form-group mb-3">
+
+                                    <label>To Date   </label>
+
+                                    <div class="input-group">
+                                        <input type="date" id="toEnd" class="form-control" ng-model="toEnd">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-2 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Client name </label>
+                                    <input type="text" ng-model="txtCName" class="form-control" placeholder="Client name" />
 
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-
-                            <div class="row">
-                                <div class="col-xl-2 col-md-6">
-                                    <div class="form-group mb-3">
-
-                                        <label>From Date   </label>
-
-                                        <div class="input-group">
-                                            <input type="date" id="fromStart" class="form-control" ng-model="fromStart">
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-2 col-md-6">
-                                    <div class="form-group mb-3">
-
-                                        <label>To Date   </label>
-
-                                        <div class="input-group">
-                                            <input type="date" id="toEnd" class="form-control" ng-model="toEnd">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-2 col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label>Client name </label>
-                                        <input type="text" ng-model="txtCName" class="form-control" placeholder="Client name" />
-
-                                    </div>
-                                </div>
-                                <div class="col-xl-1 col-md-6">
-                                    <label> . </label>
-                                    <div class="form-group">
-                                        <button type="button" class="btn btn-primary" ng-click="ShowClientReceive()">Search</button>
-                                    </div>
-                                </div>
-                                @*<div class="col-xl-2 col-md-6">
-                                    <br><br>
-                                    <div class="form-group">
-                                        <span style="font-size:14pt"> Total Amount </span>
-                                    </div>
-                                </div>*@
-
-
-                                @*<div class="col-xl-2 col-md-6">
-                                    <br><br>
-                                    <div class="form-group">
-                                        <span style="font-size:14pt">
-                                            : {{totalclientbalance}}
-                                            INR
-                                        </span>
-                                    </div>
-                                </div>*@
+                            <div class="col-xl-1 col-md-6">
+                                <label> . </label>
                                 <div class="form-group">
-                                    <span class="text-danger text-center font-size:20  " style="font-size: 14pt ">{{searchdmsg}}</span>
+                                    <button type="button" class="btn btn-primary" ng-click="ShowClientReceive()">Search</button>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <span class="text-danger text-center font-size:20  " style="font-size: 14pt ">{{searchdmsg}}</span>
+                            </div>
+
                         </div>
                     </div>
 
@@ -162,16 +119,11 @@
                                                     <td>Outstanding</td>
                                                 </tr>
                                             </thead>
-
-
-
                                             <tbody>
-                                                @*<tr ng-repeat="item in statuslist.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage)) ">*@
-
                                                 <tr ng-repeat="item in statuslist.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage))">
                                                     <td>{{item.dtstr}} </td>
                                                     <td>{{item.projectID}}</td>
-                                                    
+
                                                     <td>{{item.projectName}}</td>
                                                     <td>{{item.clientName}}</td>
                                                     <td style="text-align:right">{{item.finalizeAmount}}</td>
@@ -185,10 +137,14 @@
                                                     <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;">Total </td>
                                                     <td style="font-weight: bold; font-family: Arial; font-size: 10pt; height: 30px; background-color: #302B2B; color: #FFFFFF; border: solid 1px #659EC7; text-align:right ">{{finaltotal}} </td>
                                                     <td style="font-weight: bold; font-family: Arial; font-size: 10pt; height: 30px; background-color: #302B2B; color: #FFFFFF; border: solid 1px #659EC7; text-align: right"> {{total}}</td>
-                                                    <td style="font-weight: bold; font-family: Arial; font-size: 10pt; height: 30px; background-color: #302B2B; color: #FFFFFF; border: solid 1px #659EC7; text-align: right" > {{bal}}</td>
+                                                    <td style="font-weight: bold; font-family: Arial; font-size: 10pt; height: 30px; background-color: #302B2B; color: #FFFFFF; border: solid 1px #659EC7; text-align: right"> {{bal}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
+
+                                        <div class="text-center ">
+                                            <span class="text-danger text-center font-size:16  " style="">{{recordmsg}}</span>
+                                        </div>
                                         View <select ng-model="viewby" ng-change="setItemsPerPage(viewby)"><option value="5">5</option><option value="10">10</option><option value="20" selected>20</option><option value="30">30</option><option value="40">40</option><option value="50">50</option></select> records at a time.
 
                                         <pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" class="pagination-sm" items-per-page="itemsPerPage"></pagination>

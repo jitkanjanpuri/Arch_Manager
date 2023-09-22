@@ -3,18 +3,17 @@
 <html lang="en">
 @{
     ViewBag.Title = "Client";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    Layout = "~/Views/Shared/_NewAdmin.cshtml";
 }
 
 <head>
 
     <script src="~/angularjs/client.js"></script>
-
     <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="~/Scripts/jquery-3.6.1.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-    
+     
 
     <style type="text/css">
 
@@ -33,9 +32,6 @@
             border-top-right-radius: .2rem;
             border-bottom-right-radius: .2rem
         }
-
-
-
     </style>
     <script type="text/javascript">
 
@@ -128,9 +124,12 @@
                 theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
             }
         }
-        
+
         function ActiveSubmitBtn() {
             $("#tbnSubmit").removeAttr("disabled")
+        }
+        function CloseWindow() {
+            $("#").hide();
         }
 
     </script>
@@ -144,27 +143,19 @@
         <div ng-controller="myController">
             <div class="page-content">
                 <div class="container-fluid">
+                     
+                   
                     <div class="row">
                         <div class="col-12">
-                            <div class="form-group">
-                                <a href="@Url.Action("CompanyProfile", "Admin")" class="btn btn-primary"><span>Company Profile</span></a>
-                                <a href="@Url.Action("Index", "Client")" class="btn btn-primary"><span>Client</span></a>
-                                @*<a href="@Url.Action("ShowClient", "Client")" class="btn btn-primary"><span>Client Show </span></a>*@
-                                <a href="@Url.Action("Registration", "Admin")" class="btn btn-primary"><span>Staff</span></a>
-                                @*<a href="@Url.Action("Receipt", "Admin")" class="btn btn-primary"><span>Receipt</span></a>*@
-
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between mt-4">
+                                <div class="col-xl-3 col-md-2">
+                                    <div class="form-group mb-3 ">
+                                        <h4 class="mb-sm-0 font-size-18 mt-3">Client Registration </h4>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h1 class="h3 my-4 text-gray-800">Client Registration</h1>
-
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="card">
@@ -317,11 +308,11 @@
                                                     <td> {{item.emailID}} </td>
                                                     <td>
                                                         <button type="button" class="btn btn-danger waves-effect" ng-click="ShowDelete(item.clientID , item.clientName)" style="width:40px;" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center3">
-                                                            <i class="fas fa-trash"></i>  
+                                                            <i class="fas fa-trash"></i>
                                                         </button>
                                                         @*<button type="button" class="btn btn-success btn-circle table-action-btn all-in-dropdown-btn" ng-click="editWindow(item.bankID, item.accountName, item.bankName, item.branch, item.ifsc )">
-                                                            <i class="fas fa-ellipsis-h"></i>
-                                                        </button>*@
+                                                <i class="fas fa-ellipsis-h"></i>
+                                            </button>*@
 
                                                     </td>
                                                     @*<td>
@@ -347,30 +338,6 @@
                         </div>
                     </div>
 
-                    @*<div class="all-in-dropdown-content bg-white border border-rounded">
-
-                        <form action="" method="post" class="w-100 px-4 py-4">
-                            <input type="hidden" class="form-control" id="bankID" placeholder="ID">
-                            <div class="form-group">
-                                <label for="AccountNumber">Account Number</label>
-                                <input type="text" class="form-control" ng-model="accountno" placeholder="Account Number">
-                            </div>
-                            <div class="form-group">
-                                <label for="BankName">Bank</label>
-                                <input type="text" class="form-control" ng-model="bank" id="BankName" placeholder="Bank Name">
-                            </div>
-                            <div class="form-group">
-                                <label for="BankBranch">Branch</label>
-                                <input type="text" class="form-control" ng-model="branch" id="BankBranch" placeholder="Branch">
-                            </div>
-                            <div class="form-group">
-                                <label for="IFSCode">IFSC</label>
-                                <input type="text" class="form-control" ng-model="IFSCode" id="IFSCode" placeholder="IFSC">
-                            </div>
-                            <button type="button" class="float-right btn btn-success ml-2 mb-2" ng-click="Update()">Update</button>
-                            <button type="button" class="float-right btn btn-secondary all-in-dropdown-btn-close">Close</button>
-                        </form>
-                    </div>*@
 
                     <div class="modal fade bs-example-modal-center3" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -378,7 +345,7 @@
                                 <div class="modal-body">
                                     <div class="modal-header">
                                         <h3 class="modal-title">Delete Client</h3>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="width:5px;height:5px;"></button>*@
                                     </div>
 
                                     <br /><br />
@@ -387,6 +354,8 @@
                                             <span style="font-size:14pt;">  Are you want to delete client  <b>{{clientname}}</b> ? </span><br><br>
                                         </div>
                                         <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary waves-effect waves-light" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                                            &nbsp;&nbsp;
                                             <button type="button" class="btn btn-success waves-effect waves-light" ng-click="Delete()">Yes</button>
                                         </div>
 
@@ -399,7 +368,17 @@
             </div>
         </div>
     </div>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 </body>
+
+
+
+
+
+
+
+
 }
 
 </html>

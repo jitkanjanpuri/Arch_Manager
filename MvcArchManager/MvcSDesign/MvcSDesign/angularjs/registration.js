@@ -52,7 +52,7 @@ app.controller('myController', function ($scope, $http, staff) {
 
     $scope.ShowDelete = function (clientID, cname) {
         $scope.clientname = cname;
-        varClientID = clientID;
+        varStaffID = clientID;
 
     }
 
@@ -91,140 +91,10 @@ app.controller('myController', function ($scope, $http, staff) {
 
     }
 
-    //$scope.PayDesigner = function () {
-
-    //    if (($scope.txtAmount == undefined) || ($scope.txtAmount == "0")) {
-    //        $scope.errReceive = " Please enter amount";
-    //        return;
-    //    }
-
-    //    $http({
-    //        url: "/Admin/SavePayDesigner",
-    //        dataType: 'json',
-    //        method: 'POST',
-    //        params: {
-    //            sid: varStaffID,
-    //            amount: $scope.txtAmount,
-    //            remark: $scope.txtRemark
-    //        },
-    //        contentType: "application/json; charaset=utf-8"
-    //    }).then(function (d) {
-    //        if (d.data == "") {
-
-    //            alert("Designer payment successfully saved");
-    //            location.reload();
-    //            return;
-    //        }
-
-    //    }).error(function (err) {
-    //        alert("Error " + err);
-    //    });
-
-
-    //}
-
-    //$scope.ShowPayWindow = function (sid, name) {
-
-    //    $scope.txtDName = "";
-    //    $scope.txtsid = "";
-    //    $scope.txtRemark = "";
-
-    //    $scope.paywindow = false;
-    //    $scope.txtDName = name;
-    //    $scope.txtsid = sid;
-
-    //}
-
-    //$scope.CloseAmountReceiveWindow = function () {
-    //    $scope.paywindow = true;
-    //    $scope.txtDName = "";
-    //    $scope.txtsid = "";
-    //    $scope.txtRemark = "";
-    //}
-    //$scope.CloseAssignWindow = function () {
-    //    Reset();
-    //}
-
-
-    //$scope.Update = function () {
-    //    var varstaffID = $scope.txtStaffID;
-    //    var varname = $scope.txtName;
-    //    var vardesignation = $scope.txtDesination;
-    //    var varaddress = $scope.txtAddress;
-    //    var varcity = $scope.txtCity;
-    //    var varphone = $scope.txtPhone;
-    //    var varmobile = $scope.txtMobile;
-    //    var varemailID = $scope.txtEmailID;
-    //    var varuser = $scope.txtUsername;
-    //    var varpassword = $scope.txtPassword;
-
-    //    if ((varname == "") || (varname == undefined)) {
-    //        alert("Please enter name");
-    //        return false;
-    //    }
-    //    else if ((varcity == "") || (varcity == undefined)) {
-    //        alert("Please enter city");
-    //        return false;
-    //    }
-    //    else if ((varmobile == "") || (varmobile == undefined)) {
-    //        alert("Please enter mobile no");
-    //        return false;
-    //    }
-    //    else if ((varemailID == "") || (varemailID == undefined)) {
-    //        alert("Please enter email ID");
-    //        return false;
-    //    }
-    //    else if ((varuser == "") || (varuser == undefined)) {
-    //        alert("Please enter email ID");
-    //        return false;
-    //    }
-    //    else if (varuser.trim().length < 4) {
-    //        alert("User must be more than 4 character");
-    //        return false;
-    //    }
-    //    else if ((varpassword == "") || (varpassword == undefined)) {
-    //        alert("Please enter email ID");
-    //        return false;
-    //    }
-    //    else if (varpassword.trim().length < 4) {
-    //        alert("Password must be more than 4 character");
-    //        return false;
-    //    }
-
-    //    $http({
-    //        url: "/Admin/RegistrationUpdate",
-    //        dataType: 'json',
-    //        method: 'POST',
-    //        params: {
-    //            staffID: varstaffID,
-    //            name: varname,
-    //            designation: vardesignation,
-    //            address: varaddress,
-    //            city: varcity,
-    //            phone: varphone,
-    //            mobile: varmobile,
-    //            emailID: varemailID,
-    //            user: varuser,
-    //            password: varpassword
-    //        },
-    //        contentType: "application/json; charaset=utf-8"
-    //    }).then(function (d) {
-    //        if (d.data == "") {
-    //            alert("Data successfully updated");
-    //            Reset();
-    //            SearchRegistration();
-
-    //        }
-    //        else {
-    //            alert(d.data);
-    //        }
-
-    //    }).error(function (err) {
-    //        alert("Error : " + err);
-    //    });
-    //}
+    
 
     $scope.RegistrationDelete = function () {
+        alert("Staff ID " + varStaffID);
 
         $http({
             url: "/Admin/RegistrationDelete",

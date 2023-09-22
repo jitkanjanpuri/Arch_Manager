@@ -35,6 +35,9 @@
         <EntityTypeShape EntityType="ArchManagerDBModel.tblState" Width="1.5" PointX="0.75" PointY="3.75" />
         <EntityTypeShape EntityType="ArchManagerDBModel.tblAmountReceive" Width="1.5" PointX="4.75" PointY="2.375" />
         <AssociationConnector Association="ArchManagerDBModel.FK_tblAmountReceive_projectID" />
+        <EntityTypeShape EntityType="ArchManagerDBModel.tblAdminSetting" Width="1.5" PointX="3" PointY="16.75" />
+        <AssociationConnector Association="ArchManagerDBModel.FK_tblAdminSetting_companyID" />
+        <AssociationConnector Association="ArchManagerDBModel.FK_tblProjectSiteVisit_staffID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

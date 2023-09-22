@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Receipt";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    Layout = "~/Views/Shared/_NewAdmin.cshtml";
 
 }
 
@@ -36,224 +36,203 @@
 
 @using (Html.BeginForm("Receipt", "Client", FormMethod.Post))
 {
-    <body>
+<body>
 
-        <div ng-app="myApp">
-            <div ng-controller="myCtr">
-                <div class="page-content">
-                    <div class="container-fluid">
-
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <a href="@Url.Action("Quotation", "Client")" class="btn btn-primary"><span>Quotation </span></a>
-                                    <a href="@Url.Action("ProjectManagement", "Admin")" class="btn btn-primary"><span>Prj Management </span></a>
-                                    <a href="@Url.Action("PRF", "Admin")" class="btn btn-primary"><span>PRF</span></a>
-                                    @*<a href="@Url.Action("Operation", "Admin")" class="btn btn-primary"><span> Operation  </span></a>*@
-                                    <a href="@Url.Action("SiteVisit", "Admin")" class="btn btn-primary"><span>Site Visit </span></a>
-                                    <a href="@Url.Action("CurrentWorking", "Admin")" class="btn btn-primary"><span> Operation </span></a>
-                                    <a href="@Url.Action("Receipt", "Admin")" class="btn btn-primary"><span>Receipt</span></a>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <br />
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">Receipt  </h4>
-
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end page title -->
-
-
-                        <div class="row">
-
-                            <div class="col-xl-2 col-md-6">
-                                <div class="form-group mb-3">
-                                    <input type="radio" ng-model="opt" value="projectID" class="form-check-input">
-                                    <label>Project ID  </label>
-                                    <input type="text" ng-model="txtProjectID" onkeypress="IsNumber()" class="form-control" placeholder="Project ID" />
-                                </div>
-                            </div>
-                            <div class="col-xl-2 col-md-6">
-                                <div class="form-group mb-3">
-                                    <input type="radio" ng-model="opt" value="name" class="form-check-input">
-                                    <label>Client Name </label>
-                                    <input type="text" ng-model="txtName" class="form-control" placeholder="Client Name" />
-                                </div>
-                            </div>
-
-
-                            <div class="col-xl-2 col-md-6">
-                                <div class="form-group mb-3">
-                                    <input type="radio" ng-model="opt" value="projectName" class="form-check-input">
-                                    <label>Project name  </label>
-                                    <input type="text" ng-model="txtProjectName" class="form-control" placeholder="Project name" />
-                                </div>
-                            </div>
-                            <div class="col-xl-1 col-md-6">
-                                <label> . </label>
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-primary" ng-click="Search()">Search</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-xl-12 col-md-12 text-center">
-                                <label> <span class="text-danger font-size-16 font-weight-bold">{{errRecord}}</span> </label>
-                            </div>
-                        </div>
-
-
-                        <div class="text-center" ng-hide="loading">
-                            <button type="button" class="btn btn-dark waves-effect waves-light">
-                                <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
-                            </button>
-                        </div>
-                        <hr />
-                        <div class="row">
-                            <div class="col-xl-12">
-                                <div class="card">
-                                    @*<div class="card-header">
-                                        <h4 class="card-title">
-                                            Search Clients
-                                        </h4>
-
-                                    </div>*@
-                                    <div class="card-body" style="margin-left:-20px; margin-right:-20px;margin-top:-20px">
-
-                                        <div class="table-responsive">
-                                            <table class="table align-middle datatable dt-responsive table-check nowrap" style=" border: 1px solid black; border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
-                                                <thead class="bg-warning text-white">
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Project ID	</th>
-                                                        <th>Client Name</th>
-                                                        <th>Project Name</th>
-                                                        <th>Plot size	</th>
-                                                        <th>Plot level</th>
-                                                        <th style="width:50px;" >Action </th">
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                    <tr ng-repeat="item in receiveList">
-                                                        <th scope="row"> {{$index+1}}</th>
-                                                        <td>{{item.projectID}}</td>
-                                                        <td> {{item.clientName}}</td>
-                                                        <td> {{item.projectName}}</td>
-                                                        <td> {{item.plotSize}}</td>
-                                                        <td> {{item.projectLevel}}</td>
-                                                        <td style="width:50px;">
-                                                            <button type="button" class="btn btn-info waves-effect " style="width:40px;" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2" ng-click="ShowAmountReceive(item)">
-                                                                <i class="fas fa-rupee"></i>
-                                                            </button>
- 
-
-                                                        </td>
-
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="text-center">
-                                            <span class="text-danger font-size-16 font-weight-bold">{{errMessage}}</span>
-                                        </div>
+    <div ng-app="myApp">
+        <div ng-controller="myCtr">
+            <div class="page-content">
+                <div class="container-fluid">
+                   
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between mt-4">
+                                <div class="col-xl-3 col-md-2">
+                                    <div class="form-group mb-3 ">
+                                        <h4 class="mb-sm-0 font-size-18 mt-3">Receipt</h4>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
-
-                        <div class="modal fade bs-example-modal-center2" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Amount Receive</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div>
-                                                    <form id="pristine-valid-example" novalidate method="post">
-                                                        <input type="hidden" />
-                                                        <div class="row">
-
-                                                            <div class="col-xl-12 col-md-12">
-                                                                <div class="form-group mb-3">
-                                                                    <label>Project ID</label>
-
-                                                                    <input type="text" ng-model="txtPID" readonly class="form-control" />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-12 col-md-12">
-                                                                <div class="form-group mb-3">
-                                                                    <label>Name</label>
-
-                                                                    <input type="text" ng-model="txtCName" readonly class="form-control" />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-12 col-md-12">
-                                                                <div class="form-group mb-3">
-                                                                    <label>Amount	 </label>
-                                                                    <input type="text" ng-model="txtAmount" onkeypress="return IsNumber();" class="form-control" />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-12 col-md-12">
-                                                                <div class="form-group mb-3">
-                                                                    <label>Remark</label>
-                                                                    <textarea ng-model="txtRemark" class="form-control" rows="2" cols="20" style=""></textarea>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="form-group form-check ">
-
-                                                    <input class="form-check-input check-kbox" ng-model="chkGMail" type="checkbox" name="chkGMail" id="chkGMail">
-                                                    <label class="form-check-label" for="terms-check">
-                                                        <span> Mail</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-
-
-                                            <div>
-                                                <span class="text-danger text-center" style="font-size:12pt;">{{errReceive}}</span>
-                                            </div>
-                                            <div class="text-center" ng-hide="loadingMail">
-                                                <button type="button" class="btn btn-dark waves-effect waves-light">
-                                                    <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
-                                                </button>
-                                            </div>
-
-
-                                            <div class="modal-footer">
-                                                <button type="button" ng-click="AmountReceiveSave();" ng-disabled="btnHide" class="btn btn-primary waves-effect waves-light">Submit</button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
 
+                    <br />
+                    <div class="row">
+                        <div class="col-xl-2 col-md-6">
+                            <div class="form-group mb-3">
+                                <input type="radio" ng-model="opt" value="projectID" class="form-check-input ml-1">
+                                <label> <span class="ml-4"> Project ID </span>  </label>
+                                <input type="text" ng-model="txtProjectID" onkeypress="IsNumber()" class="form-control" placeholder="Project ID" />
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-6">
+                            <div class="form-group mb-3">
+                                <input type="radio" ng-model="opt" value="name" class="form-check-input ml-1 ">
+                                <label> <span class="ml-4"> Client Name  </span> </label>
+                                <input type="text" ng-model="txtName" class="form-control" placeholder="Client Name" />
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-2 col-md-6">
+                            <div class="form-group mb-3">
+                                <input type="radio" ng-model="opt" value="projectName" class="form-check-input ml-1">
+                                <label> <span class="ml-4"> Project name  </span> </label>
+                                <input type="text" ng-model="txtProjectName" class="form-control" placeholder="Project name" />
+                            </div>
+                        </div>
+                        <div class="col-xl-1 col-md-6">
+                            <label> . </label>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary" ng-click="Search()">Search</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 text-left">
+                            <label> <span class="text-danger font-size-16 font-weight-bold">{{errRecord}}</span> </label>
+                        </div>
+                    </div>
+
+
+                    <div class="text-center" ng-hide="loading">
+                        <button type="button" class="btn btn-dark waves-effect waves-light">
+                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                        </button>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+
+                                <div class="card-body" style="margin-left:-20px; margin-right:-20px;margin-top:-20px">
+
+                                    <div class="table-responsive">
+                                        <table class="table align-middle datatable dt-responsive table-check nowrap" style=" border: 1px solid black; border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+                                            <thead class="bg-warning text-white">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Project ID	</th>
+                                                    <th>Client Name</th>
+                                                    <th>Project Name</th>
+                                                    <th>Plot size	</th>
+                                                    <th>Plot level</th>
+                                                    <th style="width:50px;">Action </th">
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr ng-repeat="item in receiveList">
+                                                    <th scope="row"> {{$index+1}}</th>
+                                                    <td>{{item.projectID}}</td>
+                                                    <td> {{item.clientName}}</td>
+                                                    <td> {{item.projectName}}</td>
+                                                    <td> {{item.plotSize}}</td>
+                                                    <td> {{item.projectLevel}}</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary waves-effect " data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2" ng-click="ShowAmountReceive(item)">
+                                                            Receive
+                                                        </button>
+
+
+                                                    </td>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="text-center">
+                                        <span class="text-danger font-size-16 font-weight-bold">{{errMessage}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="modal fade bs-example-modal-center2" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Amount Receive</h5>
+                                    @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div>
+                                                <form id="pristine-valid-example" novalidate method="post">
+                                                    <input type="hidden" />
+                                                    <div class="row">
+
+                                                        <div class="col-xl-12 col-md-12">
+                                                            <div class="form-group mb-3">
+                                                                <label>Project ID</label>
+
+                                                                <input type="text" ng-model="txtPID" readonly class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12 col-md-12">
+                                                            <div class="form-group mb-3">
+                                                                <label>Name</label>
+
+                                                                <input type="text" ng-model="txtCName" readonly class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12 col-md-12">
+                                                            <div class="form-group mb-3">
+                                                                <label>Amount	 </label>
+                                                                <input type="text" ng-model="txtAmount" onkeypress="return IsNumber();" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12 col-md-12">
+                                                            <div class="form-group mb-3">
+                                                                <label>Remark</label>
+                                                                <textarea ng-model="txtRemark" class="form-control" rows="2" cols="20" style=""></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="form-group form-check ">
+
+                                                <input class="form-check-input check-kbox" ng-model="chkGMail" type="checkbox" name="chkGMail" id="chkGMail">
+                                                <label class="form-check-label" for="terms-check">
+                                                    <span> Mail</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <span class="text-danger text-center" style="font-size:12pt;">{{errReceive}}</span>
+                                        </div>
+                                        <div class="col-lg-12 text-center" ng-hide="loadingMail">
+                                            <button type="button" class="btn btn-dark waves-effect waves-light">
+                                                <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                                            </button>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary waves-effect waves-light" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                                            &nbsp;&nbsp;
+                                            <button type="button" ng-click="AmountReceiveSave();" ng-disabled="btnHide" class="btn btn-primary waves-effect waves-light">Submit</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
 }
 </html>
 

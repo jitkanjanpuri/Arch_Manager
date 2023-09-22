@@ -3,7 +3,7 @@
   
 @{
     ViewBag.Title = "Designer";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    Layout = "~/Views/Shared/_NewAdmin.cshtml";
 
 
 }
@@ -14,7 +14,7 @@
 <head>
 
     <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
-    <script src="~/angularjs/registration.js"></script>
+    <script src="~/angularjs/registration1.js"></script>
     <script type="text/javascript">
 
         function Reset() {
@@ -116,29 +116,18 @@
 
             <div class="page-content">
                 <div class="container-fluid">
-
+                   
                     <div class="row">
                         <div class="col-12">
-                            <div class="form-group">
-                                <a href="@Url.Action("CompanyProfile", "Admin")" class="btn btn-primary"><span>Company Profile</span></a>
-                                <a href="@Url.Action("Index", "Client")" class="btn btn-primary"><span>Client</span></a>
-                                @*<a href="@Url.Action("ShowClient", "Client")" class="btn btn-primary"><span>Client Show </span></a>*@
-                                <a href="@Url.Action("Registration", "Admin")" class="btn btn-primary"><span>Staff</span></a>
-                                @*<a href="@Url.Action("Receipt", "Admin")" class="btn btn-primary"><span>Receipt</span></a>*@
-
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between mt-4">
+                                <div class="col-xl-3 col-md-2">
+                                    <div class="form-group mb-3 ">
+                                        <h4 class="mb-sm-0 font-size-18 mt-3">Staff Registration</h4>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                     
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h1 class="h3 my-4 text-gray-800">Staff</h1>
-
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="card">
@@ -324,7 +313,7 @@
 
                                     <div class="modal-header">
                                         <h3 class="modal-title">Delete Designer</h3>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
                                     </div>
 
                                     <br /><br />
@@ -333,6 +322,8 @@
                                             <span style="font-size:14pt;">  Are you want to delete <b>{{designername}}</b>  ? </span><br><br>
                                         </div>
                                         <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary waves-effect waves-light" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                                            &nbsp;&nbsp;
                                             <button type="button" class="btn btn-success waves-effect waves-light" ng-click="RegistrationDelete()">Yes</button>
                                         </div>
                                     </div>
@@ -340,13 +331,13 @@
                             </div>
                         </div>
                     </div>
-                     
+
                 </div>
 
             </div>
-         </div>
-     </div>
-
+        </div>
+    </div>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     @if (ViewBag.message == "success")
     {
         <script type="text/javascript">

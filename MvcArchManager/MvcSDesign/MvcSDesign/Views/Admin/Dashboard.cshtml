@@ -1,7 +1,7 @@
 ﻿ 
 @{
     ViewBag.Title = "Dashboard";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    Layout = "~/Views/Shared/_NewAdmin.cshtml";
 }
 
 
@@ -16,283 +16,122 @@
         <meta name="description" content="This is an example dashboard created using build-in elements and components.">
         <meta name="msapplication-tap-highlight" content="no">
         <link href="~/assets/css/bootstrap.min.css" rel="stylesheet">
-       
+
         <link href="~/assets/css/dataTables.bootstrap4.min.css" rel="stylesheet">
         <link href="~/assets/css/font-awesome-all.min.css" rel="stylesheet">
         <link href="~/assets/css/style.css" rel="stylesheet">
-        <script src="~/angularjs/adminDashboard1.js"></script>
+        <script src="~/angularjs/adminDashboard.js"></script>
 
     </head>
-    <body>
-       
-        <div ng-app="myApp">
-            <div ng-controller="cntr">
-                <div class="container-fluid mt-3">
-                    <div class="app-main__outer">
-                        <br /><br />
-                        <div class="app-main__inner">
-                            <div class="row">
-                                <div class="col-xl-4 col-md-6">
-                                    <div class="card card-h-100">
-                                        <div class="card-body">
-                                            <div class="row align-items-center">
-                                                <div class="col-6">
-                                                    <span class="text-muted mb-3 lh-1 d-block text-truncate"> Projects Done (last 6 days)</span>
-                                                    <h4 class="mb-3">
-                                                        <span>{{prjDay}}</span>
-                                                    </h4>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div id="mini-chart2" data-colors='["#5156be"]' class="apex-charts mb-2"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 col-md-6">
-                                    <div class="card card-h-100">
-                                        <div class="card-body">
-                                            <div class="row align-items-center">
-                                                <div class="col-6">
-                                                    <span class="text-muted mb-3 lh-1 d-block text-truncate">Sales ( last 6 days) </span>
-                                                    <h4 class="mb-3">
-                                                        <span>{{sales}}</span>
-                                                    </h4>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div id="mini-chart3" data-colors='["#5156be"]' class="apex-charts mb-2"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 col-md-6">
 
-                                    <div class="card card-h-100">
-                                        <!-- card body -->
-                                        <div class="card-body">
-                                            <div class="row align-items-center">
-                                                <div class="col-6">
-                                                    <span class="text-muted mb-3 lh-1 d-block text-truncate"> Quotation (last 6 days) </span>
-                                                    <h4 class="mb-3">
-                                                        <span>{{quotation}}</span>
-                                                    </h4>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div id="mini-chart3" data-colors='["#5156be"]' class="apex-charts mb-2"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
-                            </div>
+    @using (Html.BeginForm("AdminSetting", "Admin", FormMethod.Post, new { name = "frmID" }))
+    {
 
-                            <div class="row">
-                                <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
-                                    <div class="card card-h-100">
-                                        <div class="card-body">
-                                            <div id="carouselExampleIndicators1" class="carousel slide" data-ride="carousel">
+        <body style="background-color:white">
 
-                                                <div class="carousel-inner">
-                                                    <div class="carousel-item active">
-                                                        <div class="card-header">
-                                                            <h3>Operations (Last 3 Days)</h3>
-                                                        </div>
-                                                        <canvas id="chartProjectCount"></canvas>
+            <div ng-app="myApp">
+                <div ng-controller="cntr">
+                    <div class="container-fluid mt-3">
+                        <div class="app-main__outer">
+                            <br /><br />
+                            <div class="app-main__inner">
+                                <div class="row">
+                                    <div class="col-xl-4 col-md-6">
+                                        <div class="card card-h-100">
+                                            <div class="card-body" style="background-color:white">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <span class="text-muted mb-3 lh-1 d-block text-truncate"> Projects Done (last 6 days)</span>
+                                                        <h4 class="mb-3">
+                                                            <span>{{prjDay}}</span>
+                                                        </h4>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div id="mini-chart2" data-colors='["#5156be"]' class="apex-charts mb-2"></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                @*<div class="col-xl-6 col-lg-6 col-md-12 my-3">
-            <div class="card card-h-100">
-                <div class="card-header">
-                    <h3>Top Performers (last 30 days)</h3>
-                </div>
-                <div class="card-body">
-                    <div class="tabs-section">
-                        <div id="carouselExampleIndicators6" class="carousel slide" data-ride="carousel">
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <table class="table table-bordered table-hover table-striped">
-                                        <tbody>
-                                            <tr ng-repeat="item in topperformerslist" style="height:30px">
-                                                <td>{{item.name}}</td>
-                                                <td>{{item.sno}}</td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>*@
-
-                                <!--<div class="col-xl-6 col-lg-6 col-md-12 my-3">
-        <div class="card card-h-100">
-            <div class="card-header">
-                <h3>Quotation (last week)</h3>
-            </div>
-            <div class="card shadow h-100">-->
-                                <!-- Card Header -->
-                                <!--<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <span class="m-0 font-weight-bold text-primary">Total Quotations </span> <span class="ml-auto font-weight-bold text-primary">Total: {{lblquotation}}</span>
-    </div>-->
-                                <!-- Card Body -->
-                                <!--<div class="card-body pb-0">
-                    <div class="chart-pie pt-4 pb-2">
-
-                        <canvas id="quotationPieChart"></canvas>
-                    </div>
-                    <div class="mt-4">
-                        <div class="row">
-                            <div class="col-auto">
-                                <i style="color: #4e73df" class="fas fa-circle text-uppercase"></i> 3D Plans
-                            </div>
-                            <div class="col-auto text-right text-dark ml-auto">
-                                <span class="font-weight-bold">{{lbl3DPlan}}</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-auto">
-                                <i style="color: #1cc88a" class="fas fa-circle text-info text-uppercase"></i> BirdEyeView
-                            </div>
-                            <div class="col-3 text-right text-dark ml-auto">
-                                <span class="font-weight-bold">{{lblBirdEyeView}}</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-auto">
-                                <i style="color: #36b9cc" class="fas fa-circle text-primary text-uppercase"></i> Exterior
-                            </div>
-                            <div class="col-auto text-right text-dark ml-auto">
-                                <span class="font-weight-bold">{{lblExterior}}</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-auto">
-                                <i style="color: #5A6268" class="fas fa-circle text-info text-uppercase"></i> Interior
-                            </div>
-                            <div class="col-auto text-right text-dark ml-auto">
-                                <span class="font-weight-bold">{{lblInterior}}</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-auto">
-                                <i style="color: #FEC22A" class="fas fa-circle text-primary text-uppercase"></i> Planning
-                            </div>
-                            <div class="col-auto text-right text-dark ml-auto">
-                                <span class="font-weight-bold">{{lblPlanning}}</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-auto">
-                                <i style="color: #343A40" class="fas fa-circle text-info text-uppercase"></i> Walkthrough
-                            </div>
-                            <div class="col-3 text-right text-dark ml-auto">
-                                <span class="font-weight-bold">{{lblWalkthrough}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>-->
-                                <!--<div class="col-xl-6 col-lg-6 col-md-12 my-3">
-    <div class="card card-h-100">
-        <div class="card-header">
-            <h3>Quotation (last week)</h3>
-        </div>
-        <div class="card shadow h-100">-->
-                                <!-- Card Header -->
-                                <!--<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <span class="m-0 font-weight-bold text-primary">Total Quotations </span> <span class="ml-auto font-weight-bold text-primary">Total: {{lblquotation}}</span>
-    </div>-->
-                                <!-- Card Body -->
-                                <!--<div class="card-body pb-0">
-                    <div class="chart-pie pt-4 pb-2">
-
-                        <canvas id="quotationPieChart"></canvas>
-                    </div>
-                    <div class="mt-4">
-                        <div class="row">
-                            <div class="col-auto">
-                                <i style="color: #4e73df" class="fas fa-circle text-uppercase"></i> 3D Plans
-                            </div>
-                            <div class="col-auto text-right text-dark ml-auto">
-                                <span class="font-weight-bold">{{lbl3DPlan}}</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-auto">
-                                <i style="color: #1cc88a" class="fas fa-circle text-info text-uppercase"></i> BirdEyeView
-                            </div>
-                            <div class="col-3 text-right text-dark ml-auto">
-                                <span class="font-weight-bold">{{lblBirdEyeView}}</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-auto">
-                                <i style="color: #36b9cc" class="fas fa-circle text-primary text-uppercase"></i> Exterior
-                            </div>
-                            <div class="col-auto text-right text-dark ml-auto">
-                                <span class="font-weight-bold">{{lblExterior}}</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-auto">
-                                <i style="color: #5A6268" class="fas fa-circle text-info text-uppercase"></i> Interior
-                            </div>
-                            <div class="col-auto text-right text-dark ml-auto">
-                                <span class="font-weight-bold">{{lblInterior}}</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-auto">
-                                <i style="color: #FEC22A" class="fas fa-circle text-primary text-uppercase"></i> Planning
-                            </div>
-                            <div class="col-auto text-right text-dark ml-auto">
-                                <span class="font-weight-bold">{{lblPlanning}}</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-auto">
-                                <i style="color: #343A40" class="fas fa-circle text-info text-uppercase"></i> Walkthrough
-                            </div>
-                            <div class="col-3 text-right text-dark ml-auto">
-                                <span class="font-weight-bold">{{lblWalkthrough}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>-->
-
-                                <div class="col-xl-6 col-lg-6 col-md-12 my-3">
-                                    <div class="card card-h-100">
-                                        <div class="card-header">
-                                            <h3>Top Performers (last 30 days)</h3>
+                                    <div class="col-xl-4 col-md-6">
+                                        <div class="card card-h-100">
+                                            <div class="card-body" style="background-color:white">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <span class="text-muted mb-3 lh-1 d-block text-truncate">Sales ( last 6 days) </span>
+                                                        <h4 class="mb-3">
+                                                            <span>{{sales}}</span>
+                                                        </h4>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div id="mini-chart3" data-colors='["#5156be"]' class="apex-charts mb-2"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="card-body">
-                                            <div class="tabs-section">
-                                                <div id="carouselExampleIndicators6" class="carousel slide" data-ride="carousel">
+                                    </div>
+                                    <div class="col-xl-4 col-md-6">
+
+                                        <div class="card card-h-100">
+                                            <!-- card body -->
+                                            <div class="card-body" style="background-color:white">
+                                                <div class="row align-items-center">
+                                                    <div class="col-6">
+                                                        <span class="text-muted mb-3 lh-1 d-block text-truncate"> Quotation (last 6 days) </span>
+                                                        <h4 class="mb-3">
+                                                            <span>{{quotation}}</span>
+                                                        </h4>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div id="mini-chart3" data-colors='["#5156be"]' class="apex-charts mb-2"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
+                                        <div class="card card-h-100">
+                                            <div class="card-body" style="background-color:white">
+                                                <div id="carouselExampleIndicators1" class="carousel slide" data-ride="carousel">
+
                                                     <div class="carousel-inner">
                                                         <div class="carousel-item active">
-                                                            <table class="table table-bordered table-hover table-striped">
-                                                                <tbody>
-                                                                    <tr ng-repeat="item in topperformerslist" style="height:30px">
-                                                                        <td>{{item.name}}</td>
-                                                                        <td>{{item.sno}}</td>
-                                                                    </tr>
+                                                            <div class="card-header">
+                                                                <h3>Operations (Last 3 Days)</h3>
+                                                            </div>
+                                                            <canvas id="chartProjectCount"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                                                </tbody>
-                                                            </table>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 my-3">
+                                        <div class="card card-h-100">
+                                            <div class="card-header" style="background-color:white">
+                                                <h3>Top Performers (last 30 days)</h3>
+                                            </div>
+                                            <div class="card-body" style="background-color:white">
+                                                <div class="tabs-section">
+                                                    <div id="carouselExampleIndicators6" class="carousel slide" data-ride="carousel">
+                                                        <div class="carousel-inner">
+                                                            <div class="carousel-item active">
+                                                                <table class="table table-bordered table-hover table-striped">
+                                                                    <tbody>
+                                                                        <tr ng-repeat="item in topperformerslist" style="height:30px">
+                                                                            <td>{{item.name}}</td>
+                                                                            <td>{{item.sno}}</td>
+                                                                        </tr>
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -301,23 +140,20 @@
                                     </div>
                                 </div>
                             </div>
-
-
-                             
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <script type="text/javascript" src="~/assets/js/jquery.min.js"></script>
-        <script type="text/javascript" src="~/assets/js/bootstrap.bundle.min.js"></script>
-        <script type="text/javascript" src="~/assets/js/chart.min.js"></script>
-        <script type="text/javascript" src="~/assets/js/circle-progress.min.js"></script>
+            <script type="text/javascript" src="~/assets/js/jquery.min.js"></script>
+            <script type="text/javascript" src="~/assets/js/bootstrap.bundle.min.js"></script>
+            <script type="text/javascript" src="~/assets/js/chart.min.js"></script>
+            <script type="text/javascript" src="~/assets/js/circle-progress.min.js"></script>
 
 
 
-    </body>
-</html>
+        </body>
+    }
+    </html>
 
 
 

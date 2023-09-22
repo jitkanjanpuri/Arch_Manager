@@ -1,11 +1,11 @@
 ﻿var app = angular.module("myApp", []);
-app.controller("myController", function ($scope, $http,  $window) {
-     
+app.controller("myController", function ($scope, $http, $window) {
+
     $scope.loading = true;
     $scope.totalAmount = "0";
     $scope.toEnd = new Date();
     $scope.fromStart = new Date();
-     
+
     $scope.PdfOpen = function (varpid, varPType) {
 
         $scope.loading = false;
@@ -19,21 +19,18 @@ app.controller("myController", function ($scope, $http,  $window) {
             },
             contentType: "application/json; charaset=utf-8"
         }).then(function (d) {
-             
-          
             $scope.loading = true;
             var arr = location.href.split('/');
             var url = "http://" + arr[2] + "/pdf_files/" + d.data.replace('"', '');
             url = url.replace('"', '');
             $window.open(url, '_blank');
-            
 
         }).error(function (err) {
             alert("Error " + err);
         });
 
     }
- 
+
 
     $scope.QuotationSend = function (varpid, varPType) {
         $scope.loading = false;
@@ -63,16 +60,17 @@ app.controller("myController", function ($scope, $http,  $window) {
     }
 
 
-     
+
 
 
     $scope.SearchQuotation = function () {
-       // var varPType = $scope.ptype;
+        // var varPType = $scope.ptype;
         var vardt1 = $scope.fromStart;
         var vardt2 = $scope.toEnd;
         var ch = $scope.quotationValue;
         var varProjectID = $scope.txtProjectID;
         var varCName = $scope.txtName;
+        var varPName = $scope.txtProjectName;
 
         $scope.recordmsg = "";
         $scope.searchdmsg = "";
@@ -90,29 +88,35 @@ app.controller("myController", function ($scope, $http,  $window) {
         }
         else if (ch == "projectID") {
             if ((varProjectID == undefined) || (varProjectID == "")) {
-                $scope.searchdmsg ="Please enter project ID";
+                $scope.searchdmsg = "Please enter project ID";
                 return;
             }
         }
         else if (ch == "clientName") {
             if ((varCName == undefined) || (varCName == "")) {
-                $scope.searchdmsg ="Please enter Client name";
+                $scope.searchdmsg = "Please enter Client name";
                 return;
             }
         }
-
+        else if (ch == "projectName") {
+            if ((varPName == undefined) || (varPName == "")) {
+                $scope.searchdmsg = "Please enter Project name";
+                return;
+            }
+        }
         $scope.loading = false;
         $http({
             url: "/Admin/RptQuotation",
             method: "POST",
             dataType: "json",
             params: {
-                
+
                 dt1: vardt1,
                 dt2: vardt2,
                 searchOpt: ch,
                 projectID: varProjectID,
-                cname: varCName
+                cname: varCName,
+                pname: varPName
             },
             contentType: "application/json; charaset = utf-8"
         }).then(function (d) {
@@ -129,12 +133,12 @@ app.controller("myController", function ($scope, $http,  $window) {
             var arr = [];
             for (var i = 0; i < $scope.quotationlist.length; i++) {
                 arr = $scope.quotationlist[i];
-
-                if(arr["status"]=="request")
+                if (arr["status"] == "request") {
                     total = total + arr["amount"];
-                else
+                }
+                else {
                     total = total + arr["finalizeAmount"];
-
+                }
             }
             $scope.totalAmount = total;
 
@@ -145,10 +149,10 @@ app.controller("myController", function ($scope, $http,  $window) {
     }
 
 
-     
 
-     
+
+
 });
 
- 
+
 

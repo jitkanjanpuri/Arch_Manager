@@ -2,7 +2,7 @@
 app.controller("myCtrl", function ($scope, $http) {
 
     $scope.loading = true;
-     
+    $scope.recordmsg = "";
     $scope.finaltotal = "0";
     $scope.total = "0";
     $scope.bal = "0";
@@ -36,7 +36,7 @@ app.controller("myCtrl", function ($scope, $http) {
         var vardt1 = $scope.fromStart;
         var vardt2 = $scope.toEnd;
         var varcname = $scope.txtCName;
-
+        $scope.recordmsg = "";
         $scope.statuslist = null;
         $scope.recordmsg = "";
 

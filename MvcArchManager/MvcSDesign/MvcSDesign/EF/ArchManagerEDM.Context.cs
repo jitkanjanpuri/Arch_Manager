@@ -41,5 +41,6 @@ namespace MvcSDesign.EF
         public virtual DbSet<tblTaskAssign> tblTaskAssigns { get; set; }
         public virtual DbSet<tblState> tblStates { get; set; }
         public virtual DbSet<tblAmountReceive> tblAmountReceives { get; set; }
+        public virtual DbSet<tblAdminSetting> tblAdminSettings { get; set; }
     }
 }

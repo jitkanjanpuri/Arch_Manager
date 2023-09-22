@@ -1,0 +1,114 @@
+﻿
+
+@model MvcSDesign.Models.AdminSettingModel
+
+
+@{
+    ViewBag.Title = "Admin Setting";
+    Layout = "~/Views/Shared/_NewAdmin.cshtml";
+}
+<html lang="en">
+<head>
+
+
+
+    <script type="text/javascript">
+        function SaveValidation() {
+
+            var pid = document.getElementById("projectID").value;
+            document.getElementById("lblErr").innerHTML = "";
+
+            if ((pid == null) || (pid.trim().length == 0) || (pid == "0")) {
+                document.getElementById("lblErr").innerHTML = "Enter project ID start number";
+                document.getElementById("projectID").focus();
+                return false;
+            }
+
+
+            return true;
+        }
+
+        function IsNumber(e) {
+
+            var theEvent = event || window.event;
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+            var regex = /[0-9]|\./;
+
+            if (!regex.test(key)) {
+                theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
+            }
+        }
+
+    </script>
+
+</head>
+
+@using (Html.BeginForm("AdminSetting", "Admin", FormMethod.Post, new { name = "frmID" }))
+{
+    <body>
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <div class="page-content">
+                    <div class="container-fluid">
+                        
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between mt-4">
+                                    <div class="col-xl-3 col-md-2">
+                                        <div class="form-group mb-3 ">
+                                            <h4 class="mb-sm-0 font-size-18 mt-3">Setting </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <form id="pristine-valid-example" novalidate method="post">
+                                            <div>
+                                                <div class="row">
+                                                    <div class="col-xl-6 col-md-6">
+                                                        <div class="form-group mb-3">
+                                                            <label>Project ID start from </label>
+
+                                                            @Html.TextBoxFor(x => x.projectID, new { @class = "form-control", placeholder = "Project ID ", @onkeypress = "return IsNumber()" })
+                                                            @Html.ValidationMessageFor(x => x.projectID, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    <label id="lblErr" class="text-danger"></label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="submit" id="tbnSubmit" onclick="return SaveValidation()" class="btn btn-primary">Save</button>
+                                                </div>
+
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    if (ViewBag.message != "")
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.message");
+            }
+        </script>
+    }
+
+
+}
+
+</html>

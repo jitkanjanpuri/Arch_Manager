@@ -9875,9 +9875,10 @@ a:focus {
 }
 
 .bg-gradient-primary {
-  background-color: #4e73df;
-  background-image: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
-  background-size: cover;
+    background-color: #1d1d1f;
+    /*background-image: linear-gradient(180deg, #4e73df 10%, #224abe 100%);*/
+    background-image: linear-gradient(180deg,#2b2b2e 10%,#202227 100%);
+    background-size: cover;
 }
 
 .bg-gradient-secondary {
@@ -10428,7 +10429,7 @@ a:focus {
   text-transform: uppercase;
   letter-spacing: 0.05rem;
   z-index: 1;
-  background: #fff;
+  background: #3a3b45;
 }
 
 .sidebar .sidebar-brand .sidebar-brand-icon i {

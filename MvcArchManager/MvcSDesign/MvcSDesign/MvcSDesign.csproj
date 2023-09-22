@@ -220,6 +220,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ArchManagerEDM.edmx</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblAdminSetting.cs">
+      <DependentUpon>ArchManagerEDM.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tblAmountReceive.cs">
       <DependentUpon>ArchManagerEDM.tt</DependentUpon>
     </Compile>
@@ -274,10 +277,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\AdminSettingModel.cs" />
     <Compile Include="Models\ClientInheritanceModel.cs" />
     <Compile Include="Models\clientModel.cs" />
     <Compile Include="Models\CompanyModel.cs" />
     <Compile Include="Models\ConvertNumberToWord.cs" />
+    <Compile Include="Models\FileCompress.cs" />
     <Compile Include="Models\GMail.cs" />
     <Compile Include="Models\InteriorProject.cs" />
     <Compile Include="Models\logincls.cs" />
@@ -456,7 +461,6 @@
     <Content Include="assets\images\avatars\8.jpg" />
     <Content Include="assets\images\avatars\9.jpg" />
     <Content Include="assets\images\city.jpg" />
-    <Content Include="assets\images\Designlab Icon.png" />
     <Content Include="assets\images\icon-png.png" />
     <Content Include="assets\images\logo-inverse.png" />
     <Content Include="assets\images\logo.png" />
@@ -1814,6 +1818,7 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
     <Content Include="Images\admin.png" />
+    <Content Include="Images\v1.jpg" />
     <Content Include="Images\logoname.jpeg" />
     <Content Include="Images\sort_asc.png" />
     <Content Include="Images\sort_asc_disabled.png" />
@@ -6573,6 +6578,8 @@
     <Content Include="vendorArch\fontawesome-free\webfonts\fa-solid-900.woff2" />
     <Content Include="vendorArch\jquery\jquery.min.map" />
     <Content Include="vendorArch\jquery\jquery.slim.min.map" />
+    <Content Include="Views\Login\PasswordRecovery.cshtml" />
+    <Content Include="Views\Admin\AdminSetting.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

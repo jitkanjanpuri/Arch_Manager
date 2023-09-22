@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ArchManagerDBModelStoreContainer" CdmEntityContainer="ArchManagerDBEntities">
+    <EntitySetMapping Name="tblClients">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblClient">
+        <MappingFragment StoreEntitySet="tblClient">
+          <ScalarProperty Name="clientID" ColumnName="clientID" />
+          <ScalarProperty Name="clientName" ColumnName="clientName" />
+          <ScalarProperty Name="orgName" ColumnName="orgName" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="mobile" ColumnName="mobile" />
+          <ScalarProperty Name="emailID" ColumnName="emailID" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblClientLedgers">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblClientLedger">
+        <MappingFragment StoreEntitySet="tblClientLedger">
+          <ScalarProperty Name="clientLadgerID" ColumnName="clientLadgerID" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="clientID" ColumnName="clientID" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="prjAmount" ColumnName="prjAmount" />
+          <ScalarProperty Name="receivedAmount" ColumnName="receivedAmount" />
+          <ScalarProperty Name="balance" ColumnName="balance" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="oldBalance" ColumnName="oldBalance" />
+          <ScalarProperty Name="adjustBalance" ColumnName="adjustBalance" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblCompanyProfiles">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblCompanyProfile">
+        <MappingFragment StoreEntitySet="tblCompanyProfile">
+          <ScalarProperty Name="pwd" ColumnName="pwd" />
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="orgName" ColumnName="orgName" />
+          <ScalarProperty Name="gstNo" ColumnName="gstNo" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="pincode" ColumnName="pincode" />
+          <ScalarProperty Name="mobileno" ColumnName="mobileno" />
+          <ScalarProperty Name="phoneno" ColumnName="phoneno" />
+          <ScalarProperty Name="emailID" ColumnName="emailID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblOperations">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblOperation">
+        <MappingFragment StoreEntitySet="tblOperation">
+          <ScalarProperty Name="operationID" ColumnName="operationID" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="staffID" ColumnName="staffID" />
+          <ScalarProperty Name="designerAmount" ColumnName="designerAmount" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="payStatus" ColumnName="payStatus" />
+          <ScalarProperty Name="projectCategory" ColumnName="projectCategory" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblPRFs">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblPRF">
+        <MappingFragment StoreEntitySet="tblPRF">
+          <ScalarProperty Name="prfID" ColumnName="prfID" />
+          <ScalarProperty Name="workingStatus" ColumnName="workingStatus" />
+          <ScalarProperty Name="slabdetail" ColumnName="slabdetail" />
+          <ScalarProperty Name="slabheight" ColumnName="slabheight" />
+          <ScalarProperty Name="plinthheight" ColumnName="plinthheight" />
+          <ScalarProperty Name="porchheight" ColumnName="porchheight" />
+          <ScalarProperty Name="elevationpattern" ColumnName="elevationpattern" />
+          <ScalarProperty Name="towerroom" ColumnName="towerroom" />
+          <ScalarProperty Name="cornerplotplan" ColumnName="cornerplotplan" />
+          <ScalarProperty Name="plotside" ColumnName="plotside" />
+          <ScalarProperty Name="boundrywall" ColumnName="boundrywall" />
+          <ScalarProperty Name="anyother" ColumnName="anyother" />
+          <ScalarProperty Name="doorlintel" ColumnName="doorlintel" />
+          <ScalarProperty Name="windowsill" ColumnName="windowsill" />
+          <ScalarProperty Name="windowlintel" ColumnName="windowlintel" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblProjectDetails">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectDetail">
+        <MappingFragment StoreEntitySet="tblProjectDetail">
+          <ScalarProperty Name="finalizeAmount" ColumnName="finalizeAmount" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="clientID" ColumnName="clientID" />
+          <ScalarProperty Name="projectType" ColumnName="projectType" />
+          <ScalarProperty Name="projectLevel" ColumnName="projectLevel" />
+          <ScalarProperty Name="package" ColumnName="package" />
+          <ScalarProperty Name="plotSize" ColumnName="plotSize" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="projectname" ColumnName="projectname" />
+          <ScalarProperty Name="projectlocation" ColumnName="projectlocation" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblStaffs">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblStaff">
+        <MappingFragment StoreEntitySet="tblStaff">
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="staffID" ColumnName="staffID" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="designation" ColumnName="designation" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="dist" ColumnName="dist" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="mobile" ColumnName="mobile" />
+          <ScalarProperty Name="emailID" ColumnName="emailID" />
+          <ScalarProperty Name="rolltype" ColumnName="rolltype" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="password" ColumnName="password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblStaffLedgers">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblStaffLedger">
+        <MappingFragment StoreEntitySet="tblStaffLedger">
+          <ScalarProperty Name="staffLedgerID" ColumnName="staffLedgerID" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="staffID" ColumnName="staffID" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="prjAmount" ColumnName="prjAmount" />
+          <ScalarProperty Name="paidAmount" ColumnName="paidAmount" />
+          <ScalarProperty Name="balance" ColumnName="balance" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblStaffPaids">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblStaffPaid">
+        <MappingFragment StoreEntitySet="tblStaffPaid">
+          <ScalarProperty Name="staffPaidID" ColumnName="staffPaidID" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="staffID" ColumnName="staffID" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblStatus">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblStatu">
+        <MappingFragment StoreEntitySet="tblStatus">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="status" ColumnName="status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblProjectManagements">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectManagement">
+        <MappingFragment StoreEntitySet="tblProjectManagement">
+          <ScalarProperty Name="User_UploadedFileName" ColumnName="User_UploadedFileName" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="projectstatus" ColumnName="projectstatus" />
+          <ScalarProperty Name="subcategory" ColumnName="subcategory" />
+          <ScalarProperty Name="category" ColumnName="category" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="pmID" ColumnName="pmID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblProjectSiteVisits">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectSiteVisit">
+        <MappingFragment StoreEntitySet="tblProjectSiteVisit">
+          <ScalarProperty Name="staffID" ColumnName="staffID" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="sitePhotoFile" ColumnName="sitePhotoFile" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="sitevisitID" ColumnName="sitevisitID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblProjectUploadFiles">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectUploadFile">
+        <MappingFragment StoreEntitySet="tblProjectUploadFile">
+          <ScalarProperty Name="filename" ColumnName="filename" />
+          <ScalarProperty Name="subcategory" ColumnName="subcategory" />
+          <ScalarProperty Name="category" ColumnName="category" />
+          <ScalarProperty Name="designerID" ColumnName="designerID" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="uploadfileID" ColumnName="uploadfileID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblTaskAssigns">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblTaskAssign">
+        <MappingFragment StoreEntitySet="tblTaskAssign">
+          <ScalarProperty Name="pmID" ColumnName="pmID" />
+          <ScalarProperty Name="submitDesignerID" ColumnName="submitDesignerID" />
+          <ScalarProperty Name="submitTime" ColumnName="submitTime" />
+          <ScalarProperty Name="submitDate" ColumnName="submitDate" />
+          <ScalarProperty Name="techRemark" ColumnName="techRemark" />
+          <ScalarProperty Name="subcatorgy" ColumnName="subcatorgy" />
+          <ScalarProperty Name="category" ColumnName="category" />
+          <ScalarProperty Name="designerID" ColumnName="designerID" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="tm" ColumnName="tm" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="taskID" ColumnName="taskID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblStates">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblState">
+        <MappingFragment StoreEntitySet="tblState">
+          <ScalarProperty Name="stateName" ColumnName="stateName" />
+          <ScalarProperty Name="stateID" ColumnName="stateID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblAmountReceives">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblAmountReceive">
+        <MappingFragment StoreEntitySet="tblAmountReceive">
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="amountReceiveID" ColumnName="amountReceiveID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblAdminSettings">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblAdminSetting">
+        <MappingFragment StoreEntitySet="tblAdminSetting">
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="companyID" ColumnName="companyID" />
+          <ScalarProperty Name="adminSettingiD" ColumnName="adminSettingiD" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
