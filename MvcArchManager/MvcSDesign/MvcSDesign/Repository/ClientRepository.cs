@@ -126,6 +126,137 @@ namespace MvcSDesign.Repository
             return projectID;
         }
 
+        public string SaveQuotation(operation qtn, string empdata, ref long pid)
+        {
+            using (var context = new ArchManagerDBEntities())
+            {
+                using (var dbTransaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        tblProjectDetail obj = new tblProjectDetail();
+                        tblProjectDetailItem objItem;//= new tblProjectDetailItem();
+                         
+                        var serializeData = JsonConvert.DeserializeObject<List<ProjectItemModel>>(empdata);
+
+                        int amount = 0;
+                        foreach (var data in serializeData)
+                        {
+                            if ((data.amount != 0) && (data.amount != null))
+                            {
+                                amount += data.amount;
+                            }
+                        }
+
+
+                        pid = getProjectID();
+                        obj.projectID = pid;
+                        obj.clientID = qtn.clientID;
+                        obj.dt = DateTime.Now;
+                        obj.service = qtn.service.Trim();
+                        obj.projectname = qtn.projectName.Trim();
+                        obj.projectType = "-";
+                        obj.projectLevel = "-";
+                        obj.package = "-";
+                        obj.plotSize = "-";
+                        obj.amount = amount;
+                        obj.finalizeAmount = amount;
+                        obj.status = "request";
+                        obj.remark = qtn.remark;
+
+                        _dbContext.tblProjectDetails.Add(obj);
+                        _dbContext.SaveChanges();
+
+                        foreach (var data in serializeData)
+                        {
+                            objItem = new tblProjectDetailItem();
+
+                            objItem.projectID = pid;
+                            objItem.projectDetail = data.projectDetails.Trim();
+                            objItem.service = data.services.Trim();
+                            objItem.rate = data.rate;
+                            objItem.area = data.area.Trim();
+                            objItem.amount = data.amount;
+
+                            context.tblProjectDetailItems.Add(objItem);
+                            context.SaveChanges();
+                        }
+                        dbTransaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        dbTransaction.Rollback();
+                        return ex.Message;
+                    }
+                }
+
+            }
+            return "";
+        }
+
+        public string UpdateQuotation(operation obj, List<ProjectItemModel> itemlist)
+        {
+            using (var context = new ArchManagerDBEntities())
+            {
+                using (var dbTransaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        tblProjectDetailItem objItem;//= new tblProjectDetailItem();
+                        int amount = 0;
+                        foreach (var item in itemlist)
+                        {
+                            if (item.amount != 0) 
+                            {
+                                amount += item.amount;
+                            }
+                        }
+
+                        var res = context.tblProjectDetails.SingleOrDefault(x => x.projectID == obj.projectID);//.FirstOrDefault();
+                        if (res != null)
+                        {
+                            res.service = obj.service.Trim();
+                            res.projectname = obj.projectName.Trim();
+                            res.amount = amount;
+                            res.finalizeAmount = amount;
+                            context.Entry(res).State = System.Data.Entity.EntityState.Modified;
+                            context.SaveChanges();
+                        }
+
+                        var del = context.tblProjectDetailItems.Where(x => x.projectID == obj.projectID).ToList();
+                        if (del != null)
+                        {
+                            context.tblProjectDetailItems.RemoveRange(del);
+                            context.SaveChanges();
+                        }
+                        foreach (var data in itemlist)
+                        {
+                            objItem = new tblProjectDetailItem();
+                            objItem.projectID = obj.projectID;
+                            objItem.projectDetail = data.projectDetails.Trim();
+                            objItem.service = data.services.Trim();
+                            objItem.rate = data.rate;
+                            objItem.area = data.area.Trim();
+                            objItem.amount = data.amount;
+                            context.tblProjectDetailItems.Add(objItem);
+                            context.SaveChanges();
+                        }
+
+                        dbTransaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        dbTransaction.Rollback();
+                        return ex.Message;
+                    }
+                }
+
+            }
+            return "";
+        }
+
+
+
 
         public bool ClientEmailValidation(string mailID)
         {
@@ -140,72 +271,7 @@ namespace MvcSDesign.Repository
             return flag;
              
         }
-        //public string SendPromoMail(string title, string msg, string[] clientList)
-        //{
-
-        //    string gMailAccount, password, clientname, clientMailId = "",str;
-        //    try
-        //    {
-        //        CultureInfo CInfo = Thread.CurrentThread.CurrentCulture;
-        //        //get gmail account for send mail
-        //        var rec = _dbContext.tblGmailAccount.FirstOrDefault ();
-        //        gMailAccount =  rec.gmailID;
-        //        password =  rec.pwd;
-        //        NetworkCredential loginInfo = new NetworkCredential(gMailAccount, password);
-        //        MailMessage objMail = new MailMessage();
-        //        int i,id;
-        //        clientname = "";
-        //        clientMailId = "";
-
-        //        for (i= 0;i< clientList.Length;i++)
-        //        {
-        //            id = int.Parse(clientList[i]);
-        //            var tmp = _dbContext.tblClient.Where(x => x.clientID == id).FirstOrDefault<tblClient>();
-        //            if(tmp !=null)
-        //            {
-        //                clientname = tmp.clientName;
-        //                clientMailId = tmp.emailID;
-        //            }
-        //        }
-
-        //        objMail.To.Add(new MailAddress(clientMailId));
-            
-        //        TextInfo TInfo = CInfo.TextInfo;
-        //        clientname = TInfo.ToTitleCase(clientname);
-
-        //        objMail.Subject = title;
-
-        //        str = "<br /><br />Dear " + clientname + "  <br /> <br /> <br /> <br />";
-                 
-        //        str +=  msg;
-
-        //        str += "<br /><br /> Thanks & Regards <br /> ";
-
-        //        str += " <br />  Satyam Design "  ;
-        //        str += "<br /><br />    Tel   : +91-731-4977407 , <br /> Cell : +91-96919-06670" +
-        //              "<br /><br />         Email : design.satyam@gmail.com";
-               
-
-              
-        //        objMail.From = new MailAddress(gMailAccount);
-        //        objMail.IsBodyHtml = true;
-        //        objMail.Priority = MailPriority.High;
-
-               
-
-        //        objMail.Body = str;
-
-        //        SmtpClient client = new SmtpClient("smtp.gmail.com");
-        //        client.EnableSsl = true;
-        //        client.UseDefaultCredentials = false;
-        //        client.Credentials = loginInfo;
-        //        client.Send(objMail);
-
-        //    }
-        //    catch (Exception ex) { return ex.Message; }
-        //    return "";
-        //}
-
+       
         public string ClientNameValidation(clientModel obj)
         {
             //string name, string emailID
@@ -656,40 +722,35 @@ namespace MvcSDesign.Repository
                               amount = pd.amount,
                               remark = pd.remark,
                               finalizeAmount = (long) pd.finalizeAmount,
-                              status = pd.status
+                              status = pd.status,
+                              service =pd.service,
                           }).ToList();
-
-
-                 
-                //foreach (var item in prj)
-                //{
-                //    reqlist.Add(new operation
-                //    {
-                //        dt = item.dt,
-                //        clientID = item.clientid,
-                //        clientName = item.clientname,
-                //        emailID = item.emailID,
-                //        designerName = item.address,
-                //        rowcolor = item.city,
-                //        projectID = item.projectID,
-                //        projectName = item.projectname,
-                //        projectType = item.projectType,
-                //        package = item.package,
-                //        projectLevel = item.projectLevel,
-                //        plotSize = item.plotSize,
-                //        amount = item.amount,
-                //        remark = item.remark,
-                //        finalizeAmount = (long)item.finalizeAmount,
-                //        status = it
-                //    });
-
-                //}
 
             }
             catch (Exception ex) { }
             return reqlist;
         }
-         
-      
+        public IEnumerable<ProjectItemModel> GetProjectDetailItem(int projectID)
+        {
+            List<ProjectItemModel> reqlist = new List<ProjectItemModel>();
+            try
+            {
+                reqlist = (from pd in _dbContext.tblProjectDetailItems
+                           where (pd.projectID == projectID)
+                           select new ProjectItemModel
+                           {
+                                projectDetails = pd.projectDetail,
+                                area = pd.area,
+                                amount = (int) pd.amount,
+                                rate = (int) pd.rate,
+                                services = pd.service,
+                           }).ToList();
+
+            }
+            catch (Exception ex) { }
+            return reqlist;
+        }
+
+
     }
 }

@@ -98,6 +98,50 @@ namespace MvcSDesign.Controllers
              
             return View();
         }
+
+
+        public ActionResult Category()
+        {
+            //try
+            //{
+            //     string ch = Session["user"].ToString();
+            //}
+            //catch (Exception ex)
+            //{
+            //    FormsAuthentication.SignOut();
+            //    FormsAuthentication.SetAuthCookie("", true);
+
+            //    return RedirectToAction("Index", "Login");
+            //}
+
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Category(CategoryModel obj)
+        {
+
+            if (obj.categoryID == 0) ModelState.Remove("categoryID");
+            if (ModelState.IsValid)
+            {
+                string ch = _IAmn.SaveCategory(obj);
+                if (ch == "")
+                {
+                    ViewBag.message = "Record successfully saved";
+                }
+                else
+                    ViewBag.message = ch;
+                return RedirectToAction("Category");
+            }
+            // var errors = ModelState.Values.SelectMany(v => v.Errors);
+            var res = ModelState.Values.SelectMany(v => v.Errors);
+            return View();
+        }
+
+        public JsonResult GetAllCategory()
+        {
+            return Json(_IAmn.GetAllCategory(), JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult AdminSetting()
         {
             AdminSettingModel obj = new AdminSettingModel();

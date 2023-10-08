@@ -711,8 +711,8 @@ F:\Development\Web sites\GitHub\Arch Manager\Arch_Manager\MvcArchManager\MvcSDes
 F:\Development\Web sites\GitHub\Arch Manager\Arch_Manager\MvcArchManager\MvcSDesign\MvcSDesign\bin\ru\System.Spatial.resources.dll
 F:\Development\Web sites\GitHub\Arch Manager\Arch_Manager\MvcArchManager\MvcSDesign\MvcSDesign\bin\zh-Hans\System.Spatial.resources.dll
 F:\Development\Web sites\GitHub\Arch Manager\Arch_Manager\MvcArchManager\MvcSDesign\MvcSDesign\bin\zh-Hant\System.Spatial.resources.dll
-F:\Development\Web sites\GitHub\Arch Manager\Arch_Manager\MvcArchManager\MvcSDesign\MvcSDesign\obj\Release\MvcSDesign.csproj.AssemblyReference.cache
 F:\Development\Web sites\GitHub\Arch Manager\Arch_Manager\MvcArchManager\MvcSDesign\MvcSDesign\obj\Release\MvcSDesign.csproj.CoreCompileInputs.cache
 F:\Development\Web sites\GitHub\Arch Manager\Arch_Manager\MvcArchManager\MvcSDesign\MvcSDesign\obj\Release\MvcSDesign.csproj.CopyComplete
 F:\Development\Web sites\GitHub\Arch Manager\Arch_Manager\MvcArchManager\MvcSDesign\MvcSDesign\obj\Release\MvcSDesign.dll
 F:\Development\Web sites\GitHub\Arch Manager\Arch_Manager\MvcArchManager\MvcSDesign\MvcSDesign\obj\Release\MvcSDesign.pdb
+F:\Development\Web sites\GitHub\Arch Manager\Arch_Manager\MvcArchManager\MvcSDesign\MvcSDesign\obj\Release\MvcSDesign.csproj.AssemblyReference.cache

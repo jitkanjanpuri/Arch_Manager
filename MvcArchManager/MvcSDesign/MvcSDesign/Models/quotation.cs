@@ -40,7 +40,7 @@ namespace MvcSDesign.Models
         public string plotSize { get; set; }
         public int amount { get; set; }
         public string status { get; set; }
-
+        public string service { get; set; }
         public int sno { get; set; }
 
         public long finalizeAmount { get; set; }

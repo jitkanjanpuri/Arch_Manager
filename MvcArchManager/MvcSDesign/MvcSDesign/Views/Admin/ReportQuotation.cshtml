@@ -123,8 +123,8 @@
                                                     <th>Project ID</th>
                                                     <th>Client name</th>
                                                     <th>Project Name</th>
-                                                    <th>Plot size</th>
-                                                    <th>Level</th>
+                                                    <th>Service</th>
+                                                    @*<th>Level</th>*@
                                                     <th>Amount</th>
                                                     <th>Remark</th>
                                                     <th>Action </th>
@@ -148,11 +148,11 @@
                                                         <span>  {{item.projectName }}  </span>
                                                     </td>
                                                     <td>
-                                                        <span> {{item.plotSize}} </span>
+                                                        <span> {{item.service}} </span>
                                                     </td>
-                                                    <td>
+                                                    @*<td>
                                                         <span> {{item.projectLevel}} </span>
-                                                    </td>
+                                                    </td>*@
                                                     <td style="text-align:right">
                                                         <div ng-if="item.status =='request'">
                                                             <span> {{item.amount}} </span>
@@ -174,7 +174,7 @@
                                                 <tr style="font-weight:bold;font-family:Arial;font-size:10pt;">
                                                     <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
                                                     <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
-                                                    <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
+                                         
                                                     <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
                                                     <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;"></td>
                                                     <td style="font-weight:bold;font-family:Arial;font-size:10pt;height: 30px; background-color:#302B2B ; color:#FFFFFF ;border: solid 1px #659EC7;">Total </td>

@@ -278,6 +278,60 @@ namespace MvcSDesign.Repository
 
             return lst;
         }
+        public string SaveCategory(CategoryModel st)
+        {
+            try
+            {
+                if (st.categoryID == 0)
+                {
+                    var res = _dbContext.tblCategories.Where(x => x.categoryName == st.categoryName.Trim()).FirstOrDefault();
+                    if (res != null)
+                    {
+                        return "Category already exist";
+                    }
+                   
+                    tblCategory ct = new tblCategory();
+                    ct.categoryName = st.categoryName;
+                    ct.status = true;
+                    _dbContext.tblCategories.Add(ct);
+                }
+                else
+                {
+                    var obj = _dbContext.tblCategories.Where(x => x.categoryID == st.categoryID).FirstOrDefault();
+
+                    obj.categoryName = st.categoryName;
+                    obj.status =  st.status ;
+                    
+                }
+                _dbContext.SaveChanges();
+                return "";
+            }
+            catch (Exception ex) { return ex.Message; }
+        }
+
+          
+        public IEnumerable<CategoryModel> GetAllCategory()
+        {
+            List<CategoryModel> lst = new List<CategoryModel>();
+            try
+            {
+                lst = (from item in _dbContext.tblCategories
+
+                           select new CategoryModel
+                           {
+                               categoryID = item.categoryID,
+                               categoryName = item.categoryName,
+                               status = item.status,
+                               
+                           }).ToList();
+                 
+            }
+            catch (Exception ex)
+            { }
+
+            return lst;
+        }
+
 
 
         public StaffModel getLogin(logincls lgn)
@@ -625,10 +679,11 @@ namespace MvcSDesign.Repository
                                clientName = cl.clientName,
                                projectName = pl.projectname,
                                projectID = pl.projectID,
-                               projectType = pl.projectType,
-                               package = pl.package,
-                               projectLevel = pl.projectLevel,
-                               plotSize = pl.plotSize,
+                               service = pl.service,
+                               //projectType = pl.projectType,
+                               //package = pl.package,
+                               //projectLevel = pl.projectLevel,
+                               //plotSize = pl.plotSize,
                                amount = pl.amount,
                                projectlocation = pl.projectlocation,
                                status = pl.status
@@ -649,10 +704,11 @@ namespace MvcSDesign.Repository
                                clientName = cl.clientName,
                                projectName = pl.projectname,
                                projectID = pl.projectID,
-                               projectType = pl.projectType,
-                               package = pl.package,
-                               projectLevel = pl.projectLevel,
-                               plotSize = pl.plotSize,
+                               service = pl.service,
+                               //projectType = pl.projectType,
+                               //package = pl.package,
+                               //projectLevel = pl.projectLevel,
+                               //plotSize = pl.plotSize,
                                amount = pl.amount,
                                projectlocation = pl.projectlocation,
                                status = pl.status
@@ -673,10 +729,11 @@ namespace MvcSDesign.Repository
                                clientName = cl.clientName,
                                projectName = pl.projectname,
                                projectID = pl.projectID,
-                               projectType = pl.projectType,
-                               package = pl.package,
-                               projectLevel = pl.projectLevel,
-                               plotSize = pl.plotSize,
+                               service = pl.service,
+                               //projectType = pl.projectType,
+                               //package = pl.package,
+                               //projectLevel = pl.projectLevel,
+                               //plotSize = pl.plotSize,
                                amount = pl.amount,
                                projectlocation = pl.projectlocation,
                                status = pl.status
@@ -3538,11 +3595,12 @@ namespace MvcSDesign.Repository
                                   clientid = cl.clientID,
                                   clientname = cl.clientName,
                                   projectID = pd.projectID,
-                                  projectType = pd.projectType,
+                                  //projectType = pd.projectType,
                                   projectName = pd.projectname,
-                                  package = pd.package,
-                                  projectLevel = pd.projectLevel,
-                                  plotSize = pd.plotSize,
+                                  //package = pd.package,
+                                  //projectLevel = pd.projectLevel,
+                                  //plotSize = pd.plotSize,
+                                  service = pd.service,
                                   amount = pd.amount,
                                   remark = pd.remark,
                                   status = pd.status,
@@ -3562,11 +3620,12 @@ namespace MvcSDesign.Repository
                             clientID = item.clientid,
                             projectID = item.projectID,
                             clientName = item.clientname,
-                            projectType = item.projectType,
+                            //projectType = item.projectType,
                             projectName = item.projectName,
-                            package = item.package,
-                            projectLevel = item.projectLevel,
-                            plotSize = item.plotSize,
+                            //package = item.package,
+                            //projectLevel = item.projectLevel,
+                            //plotSize = item.plotSize,
+                            service = item.service,
                             amount = item.amount,
                             remark = item.remark,
                             balance = amt,
@@ -3588,11 +3647,12 @@ namespace MvcSDesign.Repository
                                   clientid = cl.clientID,
                                   clientname = cl.clientName,
                                   projectID = pd.projectID,
-                                  projectType = pd.projectType,
+                                  //projectType = pd.projectType,
                                   projectName = pd.projectname,
-                                  package = pd.package,
-                                  projectLevel = pd.projectLevel,
-                                  plotSize = pd.plotSize,
+                                  //package = pd.package,
+                                  //projectLevel = pd.projectLevel,
+                                  //plotSize = pd.plotSize,
+                                  service = pd.service,
                                   amount = pd.amount,
                                   remark = pd.remark,
                                   status = pd.status,
@@ -3612,12 +3672,13 @@ namespace MvcSDesign.Repository
                             clientID = item.clientid,
                             projectID = item.projectID,
                             clientName = item.clientname,
-                            projectType = item.projectType,
+                            //projectType = item.projectType,
                             projectName = item.projectName,
                             status = item.status,
-                            package = item.package,
-                            projectLevel = item.projectLevel,
-                            plotSize = item.plotSize,
+                            //package = item.package,
+                            //projectLevel = item.projectLevel,
+                            //plotSize = item.plotSize,
+                            service = item.service,
                             amount = item.amount,
                             remark = item.remark,
                             balance = amt,
@@ -3638,11 +3699,12 @@ namespace MvcSDesign.Repository
                                   clientid = cl.clientID,
                                   clientname = cl.clientName,
                                   projectID = pd.projectID,
-                                  projectType = pd.projectType,
+                                  //projectType = pd.projectType,
                                   projectName = pd.projectname,
-                                  package = pd.package,
-                                  projectLevel = pd.projectLevel,
-                                  plotSize = pd.plotSize,
+                                  //package = pd.package,
+                                  //projectLevel = pd.projectLevel,
+                                  //plotSize = pd.plotSize,
+                                  service = pd.service,
                                   amount = pd.amount,
                                   remark = pd.remark,
                                   status = pd.status,
@@ -3662,12 +3724,13 @@ namespace MvcSDesign.Repository
                             clientID = item.clientid,
                             projectID = item.projectID,
                             clientName = item.clientname,
-                            projectType = item.projectType,
+                            //projectType = item.projectType,
                             projectName = item.projectName,
                             status = item.status,
-                            package = item.package,
-                            projectLevel = item.projectLevel,
-                            plotSize = item.plotSize,
+                            //package = item.package,
+                            //projectLevel = item.projectLevel,
+                            //plotSize = item.plotSize,
+                            service = item.service,
                             amount = item.amount,
                             remark = item.remark,
                             balance = amt,
@@ -3709,10 +3772,11 @@ namespace MvcSDesign.Repository
                                    designerName = staff.name, 
                                    projectID = pd.projectID,
                                    projectName = pd.projectname,
-                                   projectType = pd.projectType,
-                                   package = pd.package,
-                                   projectLevel = pd.projectLevel,
-                                   plotSize = pd.plotSize,
+                                   //projectType = pd.projectType,
+                                   //package = pd.package,
+                                   //projectLevel = pd.projectLevel,
+                                   //plotSize = pd.plotSize,
+                                   service = pd.service,
                                    remark = sv.remark,
                                    filename = sv.sitePhotoFile,
                                    //arr = sv.sitePhotoFile.ToString().Split(',')
@@ -3736,10 +3800,11 @@ namespace MvcSDesign.Repository
                                   designerName = staff.name,
                                   projectID = pd.projectID,
                                   projectName = pd.projectname,
-                                  projectType = pd.projectType,
-                                  package = pd.package,
-                                  projectLevel = pd.projectLevel,
-                                  plotSize = pd.plotSize,
+                                  //projectType = pd.projectType,
+                                  //package = pd.package,
+                                  //projectLevel = pd.projectLevel,
+                                  //plotSize = pd.plotSize,
+                                  service = pd.service,
                                   remark = sv.remark,
                                   filename = sv.sitePhotoFile,
                                   //arr = sv.sitePhotoFile.ToString().Split(',')
@@ -3764,10 +3829,11 @@ namespace MvcSDesign.Repository
                                   designerName = staff.name,
                                   projectID = pd.projectID,
                                   projectName = pd.projectname,
-                                  projectType = pd.projectType,
-                                  package = pd.package,
-                                  projectLevel = pd.projectLevel,
-                                  plotSize = pd.plotSize,
+                                  //projectType = pd.projectType,
+                                  //package = pd.package,
+                                  //projectLevel = pd.projectLevel,
+                                  //plotSize = pd.plotSize,
+                                  service = pd.service,
                                   remark = sv.remark,
                                   filename = sv.sitePhotoFile,
                                   //arr = sv.sitePhotoFile.ToString().Split(',')

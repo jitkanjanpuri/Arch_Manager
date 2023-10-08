@@ -1,0 +1,329 @@
+﻿ 
+
+@{
+    ViewBag.Title = "Revised Quotation";
+    Layout = "~/Views/Shared/_NewAdmin.cshtml";
+}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <script src="~/angularjs/revisedquotation.js"></script>
+    <script type="text/javascript">
+        function isNumberKey(e) {
+
+            var theEvent = event || window.event;
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+            var regex = /[0-9]|\./;
+
+            if (!regex.test(key)) {
+                theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
+            }
+        }
+         
+    </script>
+
+
+ 
+
+</head>
+@using (@Html.BeginForm("Quotation", "Client", FormMethod.Post))
+{
+    <body>
+
+        <div ng-app="myApp">
+            <div ng-controller="myCtr">
+
+                <div class="page-content">
+                    <div class="container-fluid">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between mt-4">
+                                    <div class="col-xl-3 col-md-2">
+                                        <div class="form-group mb-3 ">
+                                            <h4 class="mb-sm-0 font-size-18 mt-3">Revised Quotation </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        
+                        <div class="row">
+                            <div class="col-xl-2 col-md-2">
+                                <div class="form-group mb-3">
+                                    <input type="radio" ng-model="opt" value="projectID" class="form-check-input ml-2">
+                                    <label><span class="ml-4"> Project ID</span> </label>
+                                    <input type="text" ng-model="varProjectID" class="form-control" placeholder="Project ID" onkeypress="IsNumber()" />
+                                </div>
+                            </div>
+
+                            <div class="col-xl-2 col-md-3">
+                                <div class="form-group mb-3">
+                                    <input type="radio" ng-model="opt" value="name" class="form-check-input ml-2" />
+                                    <label><span class="ml-4"> Client Name </span> </label>
+                                    <input type="text" ng-model="varName" class="form-control" placeholder="Name" />
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-3">
+                                <div class="form-group mb-3">
+                                    <input type="radio" ng-model="opt" value="projectName" class="form-check-input ml-2">
+                                    <label><span class="ml-4"> Project Name  </span></label>
+                                    <input type="text" ng-model="varProjectName" class="form-control" placeholder="Name" />
+                                </div>
+                            </div>
+                            <div class="col-xl-1 col-md-6">
+                                <label> . </label>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary" ng-click="Search()">Search</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-12 col-md-12 text-left">
+                                <label> <span class="text-danger font-size-16 font-weight-bold">{{err}}</span> </label>
+                            </div>
+                        </div>
+
+                        <div class="text-center" ng-hide="loading">
+                            <button type="button" class="btn btn-dark waves-effect waves-light">
+                                <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                            </button>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+
+                                        <div class="table-responsive">
+                                            <table class="table align-middle datatable dt-responsive  nowrap table-bordered" style=" border: 1px solid black; border-spacing: 0 8px; width: 100%;">
+                                                <thead class="bg-warning text-white">
+                                                    <tr class="bg-transparent">
+
+                                                        <th style="width: 120px;">SNo  </th>
+                                                        <th>Project </th>
+                                                        <th>Client name</th>
+                                                        <th>Project Name  </th>
+                                                        <th>Service </th>
+                                                        <th>Amount</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                   
+                                                    <tr ng-repeat="item in qlist">
+                                                        <td>
+                                                            <span> {{$Index+1}}  </span>
+                                                        </td>
+                                                        <td>
+                                                            <span> {{item.projectID}}  </span>
+                                                        </td>
+
+                                                        <td>
+                                                            <span>  {{item.clientName}}  </span>
+                                                        </td>
+                                                        <td>
+                                                            <span>  {{item.projectName }}  </span>
+                                                        </td>
+                                                        <td>
+                                                            <span> {{item.service}} </span>
+                                                        </td>
+                                                        
+                                                        <td style="text-align:right">
+                                                            <div ng-if="item.status =='request'">
+                                                                <span> {{item.amount}} </span>
+                                                            </div>
+                                                            <div ng-if="item.status !='request'">
+                                                                <span> {{item.finalizeAmount}} </span>
+                                                            </div>
+                                                        </td> 
+                                                        <td>
+
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" ng-click="SetClientID(item)" data-bs-target=".bs-example-modal-center">Revise</button>
+
+                                                        </td>
+                                                    </tr>
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+                                        <div id="exampleModalFullscreen" class="modal fade bs-example-modal-center" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-xl">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalFullscreenLabel">Revised Quotation</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+                                                    </div>
+                                                    <div class="modal-body">
+
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div>
+                                                                    <input type="hidden" />
+                                                                    <div class="card-body">
+
+                                                                        <div class="row">
+                                                                            <div class="col-lg-6">
+                                                                                <div>
+                                                                                    <form>
+                                                                                        <div class="row mb-6">
+                                                                                            <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">CID </label>
+                                                                                            <div class="col-sm-7">
+                                                                                                <input type="text" class="form-control" id="txtCID" readonly>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <div>
+                                                                                    <form>
+                                                                                        <div class="row mb-6">
+                                                                                            <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Name </label>
+                                                                                            <div class="col-sm-7">
+                                                                                                <input type="text" class="form-control" id="txtName" readonly>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <div>
+                                                                                    <form>
+                                                                                        <div class="row mb-6">
+                                                                                            <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Project Name </label>
+                                                                                            <div class="col-sm-7">
+                                                                                                <input type="text" class="form-control" id="txtProjectName" placeholder="Project Name">
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <div>
+                                                                                    <form>
+                                                                                        <div class="row mb-2">
+                                                                                            <label for="horizontal-firstname-input" class="col-sm-3 col-form-label">Services </label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input type="text" class="form-control" id="txtService" placeholder="Services">
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="text-center" ng-hide="loading1">
+                                                                        <button type="button" class="btn btn-dark waves-effect waves-light">
+                                                                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col-xl-12">
+                                                                        <div class="table-responsive">
+                                                                            <table class="table mb-0" id="maintable">
+                                                                                <thead class="table-light">
+                                                                                    <tr>
+                                                                                        <th>Project Description </th>
+                                                                                        <th>Services </th>
+                                                                                        <th>Area Aprox</th>
+                                                                                        <th>Rate/Sq.ft </th>
+                                                                                        <th>Amount</th>
+
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr class="data-contact-person">
+
+                                                                                        <td style="width:350px;">
+                                                                                            <input type="text" id="projectDetails" name="projectDetails" ng-model="projectDetails" class="form-control" />
+
+                                                                                        </td>
+                                                                                        <td style="width:350px;">
+                                                                                            <input type="text" id="services" name="services" ng-model="services" class="form-control" />
+                                                                                        </td>
+                                                                                        <td style="width:200px;">
+                                                                                            <input type="text" id="area" name="area" ng-model="area" class="form-control" />
+                                                                                        </td>
+                                                                                        <td style="width:150px;">
+                                                                                            <input type="text" id="rate" name="rate" ng-model="rate" class="form-control" onkeypress="return isNumberKey(event)" />
+                                                                                        </td>
+                                                                                        <td style="width:150px;">
+                                                                                            <input type="text" id="amount" name="amount" ng-model="amount" class="form-control" onkeypress="return isNumberKey(event)" />
+                                                                                        </td>
+
+                                                                                        <td>
+                                                                                            @*<button type="button" id="btnAdd" class="btn btn-primary waves-effect waves-light classAdd">+ </button>*@
+                                                                                            <button type="button" id="btnAdd" class="btn btn-primary waves-effect waves-light" ng-click="addProductCart()">+ </button>
+                                                                                        </td>
+                                                                                    </tr>
+
+                                                                                    <tr ng-repeat="item in revlist">
+                                                                                        <td>
+                                                                                            <span> {{item.projectDetails}}  </span>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <span> {{item.services}} </span>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <span>  {{item.area}}  </span>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <span>  {{item.rate}}  </span>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <span>  {{item.amount }}  </span>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <button type="button" class="btn btn-danger waves-effect waves-light" ng-click="removeProjectItem(item)">X</button>
+
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" id="btnSubmit" class="btn btn-primary waves-effect waves-light" ng-disabled="btnHide" ng-click="Update()">Update</button>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+    </body>
+    
+}
+</html>
+
+

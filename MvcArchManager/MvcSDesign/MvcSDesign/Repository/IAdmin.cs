@@ -19,6 +19,9 @@ namespace MvcSDesign.Repository
         CompanyModel GetCompanyProfile();
 
         long GetStartProjectID();
+        IEnumerable<CategoryModel> GetAllCategory();
+        string SaveCategory(CategoryModel ct);
+
         string SaveAdminSetting(AdminSettingModel objAsm);
         string InsertRegistration(StaffModel st);
         IEnumerable<StaffModel> GatAllRegistration();

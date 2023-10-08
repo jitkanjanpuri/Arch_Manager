@@ -38,6 +38,11 @@
         <EntityTypeShape EntityType="ArchManagerDBModel.tblAdminSetting" Width="1.5" PointX="3" PointY="16.75" />
         <AssociationConnector Association="ArchManagerDBModel.FK_tblAdminSetting_companyID" />
         <AssociationConnector Association="ArchManagerDBModel.FK_tblProjectSiteVisit_staffID" />
+        <EntityTypeShape EntityType="ArchManagerDBModel.tblProjectDetailItem" Width="1.5" PointX="10.125" PointY="17.125" />
+        <AssociationConnector Association="ArchManagerDBModel.FK__tblProjec__proje__7D439ABD" />
+        <EntityTypeShape EntityType="ArchManagerDBModel.tblCategory" Width="1.5" PointX="14.375" PointY="1" />
+        <EntityTypeShape EntityType="ArchManagerDBModel.tblSubcategory" Width="1.5" PointX="16.625" PointY="0.875" />
+        <AssociationConnector Association="ArchManagerDBModel.FK_tblSubcategory_categoryID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

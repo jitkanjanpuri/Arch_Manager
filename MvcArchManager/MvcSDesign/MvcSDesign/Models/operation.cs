@@ -23,7 +23,7 @@ namespace MvcSDesign.Models
         public string projectType { get; set; }
         public string projectlocation { get; set; }
         public string projectCategory { get; set; }
-
+        public string service { get; set; }
         public string projectStatus { get; set; }
 
         public string prfFlag { get; set; }

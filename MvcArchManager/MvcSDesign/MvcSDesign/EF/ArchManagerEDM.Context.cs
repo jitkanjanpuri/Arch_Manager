@@ -42,5 +42,8 @@ namespace MvcSDesign.EF
         public virtual DbSet<tblState> tblStates { get; set; }
         public virtual DbSet<tblAmountReceive> tblAmountReceives { get; set; }
         public virtual DbSet<tblAdminSetting> tblAdminSettings { get; set; }
+        public virtual DbSet<tblProjectDetailItem> tblProjectDetailItems { get; set; }
+        public virtual DbSet<tblCategory> tblCategories { get; set; }
+        public virtual DbSet<tblSubcategory> tblSubcategories { get; set; }
     }
 }

@@ -180,24 +180,15 @@ namespace MvcSDesign.Controllers
             return Json(IClnt.SearchClientByName(name), JsonRequestBehavior.AllowGet);
         }
 
-        //public JsonResult SearchClientByNameOrPID(string opt, string name, string pid, string pname) 
-        //{
 
-        //    return Json(IClnt.SearchClientByNameOrPID(opt, name, pid, pname), JsonRequestBehavior.AllowGet);
-        //}
-
+       
         public JsonResult AllClient()
         {
             return Json(IClnt.GetAll(), JsonRequestBehavior.AllowGet);
 
         }
 
-        //public JsonResult ClientEmailValidation(string emailID)
-        //{
-        //    bool emailExist = IClnt.ClientEmailValidation(emailID);
-        //    return Json(emailExist, JsonRequestBehavior.AllowGet);
-           
-        //}
+         
 
         public JsonResult UpdateClient(string cid, string name, string orgName , string address, string city ,string state,  string phone , string mobile, string emailID)
         {
@@ -246,6 +237,7 @@ namespace MvcSDesign.Controllers
                     obj1.dt = item.dt;
                     obj1.finalizeAmount = item.finalizeAmount;
                     obj1.status = item.status;
+                    obj1.service = item.service;
                 }
                 pth = CreateQuotationPDF(obj1, int.Parse(pid), ref pth);
                 pth = Path.GetFileName(pth);
@@ -259,7 +251,19 @@ namespace MvcSDesign.Controllers
             return Json(pth, JsonRequestBehavior.AllowGet);
         }
 
+        public string SaveQuotation(string cid, string projectname, string service, string empdata)
+        {
+            operation obj = new operation();
+            DataTable dt = new DataTable();
+            long pid = 0;
+            obj.clientID = int.Parse(cid);
+            obj.projectName = projectname;
+            obj.service = service;
 
+            IClnt.SaveQuotation(obj, empdata, ref pid);
+            ViewBag.Message = " Quotation successfully generated , project ID is " + pid;
+            return "";
+        }
         public JsonResult SendClientQuotation(string pid, string projectType)
         {
             string ch = "";
@@ -343,72 +347,123 @@ namespace MvcSDesign.Controllers
             catch (Exception ex)
             {
                 ViewBag.Message = "";
-                //FormsAuthentication.SignOut();
-                //FormsAuthentication.SetAuthCookie("", true);
-
-                //return RedirectToAction("Index", "Login");
+               
             }
             return View();
         }
 
-        [HttpPost]
 
-        public ActionResult Quotation(string txtCID,  string ddlLevel, string txtPlotSize, string txtAmount, string comment, string txtProjectName,  string remark)
+        public ActionResult RevisedQuotation()
         {
             try
             {
-               
-
+                //if (Session["RevisedQuotation"].ToString() == "")
+                //{
+                //    ViewBag.Message = "";
+                //}
+                //else
+                //{
+                //    ViewBag.Message = Session["RevisedQuotation"].ToString();
+                //}
+                Session["revQuotation"] = null;
             }
             catch (Exception ex)
             {
-                //FormsAuthentication.SignOut();
-                //FormsAuthentication.SetAuthCookie("", true);
+                //ViewBag.Message = "";
 
-                //return RedirectToAction("Index", "Login");
             }
-            quotation obj = new quotation();
-            try
-            {
-                if (txtCID != "")
-                {
-                    clientModel cl = IClnt.GetClient(int.Parse(txtCID));
-
-                    obj.clientID = txtCID;
-                    obj.projectType = "-";
-                    obj.projectLevel = ddlLevel;
-                    obj.package = "-";
-                    obj.plotSize = txtPlotSize;
-                    obj.amount = int.Parse(txtAmount);
-                    obj.emailID = cl.emailID;
-                    obj.projectname = txtProjectName.Trim();
-                    obj.clientname = cl.clientName;
-                    obj.address = cl.address;
-                    obj.city = cl.city;
-                    obj.dt = DateTime.Today;
-                    obj.remark = remark == null ? "" : remark.Trim();
-
-                    long pid = IClnt.InsertQuotation(obj);
-                    txtCID = ""; txtPlotSize = ""; txtAmount = ""; comment = ""; txtProjectName = ""; remark = "";
-                    //////SendQuotation(obj, pid);
-                   Session["quotation"] = " Quotation successfully generated , project ID is " + pid;
-
-                    return RedirectToAction("Quotation");
-                }
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Error = ex.Message;
-            }
-
             return View();
         }
 
-        
-         
-      
+        public JsonResult GetRevisedQuotation(string projectID)
+        {
+
+            var res = IClnt.GetProjectDetailItem(int.Parse(projectID));
+            List <ProjectItemModel> li = new List<ProjectItemModel>();
+            ProjectItemModel obj = new ProjectItemModel();
+
+            foreach (var item in res)
+            {
+                obj = new ProjectItemModel();
+                obj.projectDetails = item.projectDetails;
+                obj.services = item.services;
+                obj.area = item.area;
+                obj.rate = item.rate;
+                obj.amount = item.amount;
+                li.Add(obj);
+               
+            }
+            Session["revQuotation"] = li;
+            return Json(li, JsonRequestBehavior.AllowGet);
+
+            
+        }
+        public JsonResult UpdateQuotation(string projectID, string projectDetail, string service)
+        {
+            List<ProjectItemModel> li = (List<ProjectItemModel>)Session["revQuotation"];
+            operation obj = new operation();
+           
+            obj.projectID = int.Parse(projectID);
+            obj.projectName = projectDetail.Trim();
+            obj.service = service.Trim();
+
+            string ch = IClnt.UpdateQuotation(obj, li );
+            //ViewBag.Message = " Quotation successfully generated , project ID is " + pid;
+            return Json(ch, JsonRequestBehavior.AllowGet);
+        }
 
 
+
+        public JsonResult addProjectItem(string projectDetail, string services, string area,   string rate, string amount)
+        {
+          
+            if (Session["revQuotation"] == null)
+            {
+                List<ProjectItemModel> li = new List<ProjectItemModel>();
+                ProjectItemModel obj = new ProjectItemModel();
+                obj.projectDetails = projectDetail;
+                obj.services = services;
+                obj.area = area;
+                obj.rate = int.Parse(rate);
+                obj.amount = int.Parse(amount);
+                li.Add(obj);
+                Session["revQuotation"] = li;
+                return Json(li, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                List<ProjectItemModel> li = (List<ProjectItemModel>)Session["revQuotation"];
+                var pdt = li.Where(x => ((x.projectDetails == projectDetail) && (x.services == services))).FirstOrDefault();
+                if (pdt == null)
+                {
+                    ProjectItemModel obj = new ProjectItemModel();
+                    obj.projectDetails = projectDetail;
+                    obj.services = services;
+                    obj.area = area;
+                    obj.rate = int.Parse(rate);
+                    obj.amount = int.Parse(amount);
+                    li.Add(obj);
+                    Session["revQuotation"] = li;
+                }
+                return Json(li, JsonRequestBehavior.AllowGet);
+            }
+
+            
+        }
+
+        public JsonResult removeRevQuotationItem(string projectDetail, string service)
+        {
+            List<ProjectItemModel> li = (List<ProjectItemModel>)Session["revQuotation"];
+            var pdt = li.Where(x => ((x.projectDetails == projectDetail) && (x.services == service))).FirstOrDefault();
+            if (pdt != null)
+            {
+                li.Remove(pdt);
+            }
+            return Json(li, JsonRequestBehavior.AllowGet);
+
+
+        }
+          
         void SendQuotation(quotation qut, int projectID)
         {
             string gMailAccount, password, clientMailId = "", str = "", pdfname = "", amountInWord = "";
@@ -529,7 +584,6 @@ namespace MvcSDesign.Controllers
             string pdfname = HostingEnvironment.MapPath("~//PDF_Files//quatation_" + projectID + ".pdf");
             var resProfile = IAdn.GetCompanyProfile();
 
-            IAdn.SaveStatus("pdfName " + pdfname);
             
             if(resProfile ==null)
             {
@@ -575,19 +629,18 @@ namespace MvcSDesign.Controllers
 
             PdfWriter.GetInstance(doc, new FileStream(pdfname, FileMode.Create));
             doc.Open();
-
+            //doc.SetMargins(5f, 5f, 0f, 10f);
             para1.Alignment = Element.ALIGN_LEFT;
             para1.SetLeading(0.0F, 1.0F);
 
             pdfcell = null;
             table1 = new PdfPTable(2);
-            int[] cellWidthPercentage = new int[] {50,50};
+            int[] cellWidthPercentage = new int[] { 50, 50 };
             table1.WidthPercentage = 100;
             table1.HorizontalAlignment = Element.ALIGN_CENTER;
-           
             table1.SetWidths(cellWidthPercentage);
 
-            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 14, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 20, iTextSharp.text.Font.BOLD, BaseColor.RED);
 
             pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
@@ -596,13 +649,13 @@ namespace MvcSDesign.Controllers
             table1.AddCell(pdfcell);
 
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk(resProfile.orgName, fnt)));
+            pdfcell = new PdfPCell(new Phrase(new Chunk("V R ARCHITECTS ", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
             pdfcell.Border = 0;
             table1.AddCell(pdfcell);
 
-            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.NORMAL, BaseColor.BLUE);
 
             pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
@@ -610,54 +663,31 @@ namespace MvcSDesign.Controllers
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
             table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk(resProfile.address, fnt)));
+            pdfcell = new PdfPCell(new Phrase(new Chunk("AN INNOVATIVE DESIGN STUDIO", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
             pdfcell.Border = 0;
             table1.AddCell(pdfcell);
 
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            pdfcell.Border = 0; 
-            table1.AddCell(pdfcell);
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk(resProfile.city + " - "+ resProfile.pincode +" "+ resProfile.state, fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            pdfcell.Border = 0;
-            table1.AddCell(pdfcell);
-
-
-
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 5, iTextSharp.text.Font.NORMAL, BaseColor.BLUE);
             pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
             pdfcell.Border = 0;
             table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk("Tel: " + resProfile.phone + " , Cell : " +resProfile.mobile , fnt))) ;
+            pdfcell = new PdfPCell(new Phrase(new Chunk("ARCHITECTURE INTERIORS PROJECT-MANAGEMENT GRAPHICS", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
             pdfcell.Border = 0;
             table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            pdfcell.Border = 0;
-            table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk(" Email : "+ resProfile.emailID, fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            pdfcell.Border = 0;
-            table1.AddCell(pdfcell);
 
+             
             para1.Add(table1);
 
-           
+            
             table1 = new PdfPTable(2);
             int[] cellWidthPercentage2 = new int[] { 70,30 };
             table1.WidthPercentage = 100;
@@ -665,9 +695,9 @@ namespace MvcSDesign.Controllers
             table1.SetWidths(cellWidthPercentage2);
 
             pdfcell = null;
-            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 9, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(qut.clientname.ToLower()), fnt)));
+            pdfcell = new PdfPCell(new Phrase(new Chunk("Ref. No. ", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
             //pdfcell.Border = 1;
@@ -676,9 +706,6 @@ namespace MvcSDesign.Controllers
             pdfcell.BorderWidthBottom = 0;
            
             table1.AddCell(pdfcell);
-
-            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 9, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
-
             pdfcell = new PdfPCell(new Phrase(new Chunk("Date " + qut.dt.Day + "-" + qut.dt.Month + "-" + qut.dt.Year, fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
@@ -686,295 +713,253 @@ namespace MvcSDesign.Controllers
             pdfcell.BorderWidthLeft = 0;
             pdfcell.BorderWidthRight = 0;
             pdfcell.BorderWidthBottom = 0;
-             
             table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk(qut.city, fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-            pdfcell.Border = 0;
-             
-            table1.AddCell(pdfcell);
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-            pdfcell.Border = 0;
-
-            table1.AddCell(pdfcell);
-             
             para1.Add(table1);
 
-            ph1 = new Phrase(Environment.NewLine);
+
+            table1 = new PdfPTable(1);
+            int[] cellWidthPercentage7 = new int[] { 100 };
+            table1.WidthPercentage = 100;
+            table1.SetWidths(cellWidthPercentage7);
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            pdfcell = new PdfPCell(new Phrase(new Chunk("QUOTATION ", fnt)));
+            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+            pdfcell.Border = 0;
+            table1.AddCell(pdfcell);
+
+            para1.Add(table1);
+
+
+
+            ph1 = new Phrase(Environment.NewLine+ Environment.NewLine);
             para1.Add(ph1);
 
 
-            table1 = new PdfPTable(5);
-            int[] cellWidthPercentage1 = new int[] { 22, 12,15, 30, 15 };
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 9, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            ph1 = new Phrase(new Phrase(new Chunk(  "To : " + qut.clientname.ToUpper() +" " + qut.city, fnt)));
+            para1.Add(ph1);
+            ph1 = new Phrase(Environment.NewLine + Environment.NewLine);
+            para1.Add(ph1);
+
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            ph1 = new Phrase(new Phrase(new Chunk("Quotation No : " + "VRA-"+ projectID, fnt)));
+            para1.Add(ph1);
+
+            ph1 = new Phrase(Environment.NewLine + Environment.NewLine + Environment.NewLine);
+            para1.Add(ph1);
+           
+            ph1 = new Phrase(new Phrase(new Chunk("Dear Sir, ", fnt)));
+            para1.Add(ph1);
+
+            ph1 = new Phrase(Environment.NewLine + Environment.NewLine);
+            para1.Add(ph1);
+
+            ph1 = new Phrase(new Phrase(new Chunk("We are pleased to offer you firm consultancy for architectural and allied services for the following project at fees stated below: ", fnt)));
+            para1.Add(ph1);
+
+            ph1 = new Phrase(Environment.NewLine+ Environment.NewLine + Environment.NewLine);
+            para1.Add(ph1);
+
+            ph1 = new Phrase(new Phrase(new Chunk("Project : "+ qut.projectname, fnt)));
+            para1.Add(ph1);
+
+            ph1 = new Phrase(Environment.NewLine + Environment.NewLine );
+            para1.Add(ph1);
+
+            ph1 = new Phrase(new Phrase(new Chunk("Services :  " + qut.service, fnt)));
+            para1.Add(ph1);
+
+            ph1 = new Phrase(Environment.NewLine + Environment.NewLine);
+            para1.Add(ph1);
+
+            ph1 = new Phrase(new Phrase(new Chunk("Fees : "  , fnt)));
+            para1.Add(ph1);
+
+
+            table1 = new PdfPTable(7);
+            int[] cellWidthPercentage1 = new int[] {5, 10, 25, 25, 15, 12, 12 };
             table1.WidthPercentage = 100;
             table1.HorizontalAlignment = Element.ALIGN_CENTER;
-
             table1.SetWidths(cellWidthPercentage1);
-
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
             pdfcell = null;
-            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.BOLD, BaseColor.WHITE);
-
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk("Project name", fnt)));
+            pdfcell = new PdfPCell(new Phrase(new Chunk("Sno", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.Border = 0;
-            pdfcell.FixedHeight = 20;
-            pdfcell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            pdfcell.BorderWidthLeft = 1;
+            pdfcell.BorderWidthRight = 1;
+            pdfcell.BorderWidthTop = 1;
+            pdfcell.BorderWidthBottom = 1;
+            //pdfcell.FixedHeight = 20;
+            pdfcell.BackgroundColor = BaseColor.YELLOW;
             table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk("Project ID", fnt)));
+            pdfcell = new PdfPCell(new Phrase(new Chunk("Project Code", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.Border = 0;
-            pdfcell.FixedHeight = 20;
-            pdfcell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            //pdfcell.BorderWidthLeft = 1;
+           // pdfcell.BorderWidthRight = 1;
+            pdfcell.BorderWidthTop = 1;
+            pdfcell.BorderWidthBottom = 1;
+          //  pdfcell.FixedHeight = 20;
+            pdfcell.BackgroundColor = BaseColor.YELLOW;
             table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk("Project Level", fnt)));
+             
+
+            pdfcell = new PdfPCell(new Phrase(new Chunk("Project Description", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.Border = 0;
-            pdfcell.FixedHeight = 20;
-            pdfcell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            pdfcell.BorderWidthTop = 1;
+            pdfcell.BorderWidthBottom = 1;
+          //  pdfcell.FixedHeight = 20;
+            pdfcell.BackgroundColor = BaseColor.YELLOW;
             table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk("Plot Size", fnt)));
+            pdfcell = new PdfPCell(new Phrase(new Chunk("Services", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.Border = 0;
-            pdfcell.FixedHeight = 20;
-            pdfcell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            pdfcell.BorderWidthTop = 1;
+            pdfcell.BorderWidthBottom = 1;
+         //   pdfcell.FixedHeight = 20;
+
+            pdfcell.BackgroundColor = BaseColor.YELLOW;
             table1.AddCell(pdfcell);
 
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            pdfcell = new PdfPCell(new Phrase(new Chunk("AREA APPRO. ", fnt)));
+            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+            pdfcell.BorderWidthTop = 1;
+            pdfcell.BorderWidthBottom = 1;
+
+         //   pdfcell.FixedHeight = 20;
+            pdfcell.BackgroundColor = BaseColor.YELLOW;
+            table1.AddCell(pdfcell);
+
+            pdfcell = new PdfPCell(new Phrase(new Chunk("Rate/SQ.FT. ", fnt)));
+            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+            pdfcell.BorderWidthTop = 1;
+            pdfcell.BorderWidthBottom = 1;
+            //pdfcell.FixedHeight = 20;
+            pdfcell.BackgroundColor = BaseColor.YELLOW;
+            table1.AddCell(pdfcell);
+
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
             pdfcell = new PdfPCell(new Phrase(new Chunk("Amount", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.Border = 0;
-            pdfcell.FixedHeight = 20;
-            pdfcell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            pdfcell.BorderWidthTop = 1;
+            pdfcell.BorderWidthBottom = 1;
+            //pdfcell.FixedHeight = 20;
+            pdfcell.BackgroundColor = BaseColor.YELLOW;
             table1.AddCell(pdfcell);
+
+            var resItem = IClnt.GetProjectDetailItem(projectID);
+
+            string sno = "1", varPrj = "VRC-"+ projectID ;
 
             fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk(qut.projectname, fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.Border = 0;
-            pdfcell.FixedHeight = 20;
-            table1.AddCell(pdfcell);
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk(projectID.ToString(), fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.Border = 0;
-            pdfcell.FixedHeight = 20;
-            table1.AddCell(pdfcell);
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk(qut.projectLevel, fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.Border = 0;
-            pdfcell.FixedHeight = 20;
-            table1.AddCell(pdfcell);
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk(qut.plotSize, fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.Border = 0;
-            pdfcell.FixedHeight = 20;
-            table1.AddCell(pdfcell);
-
-
-            if (qut.status.ToLower() == "request")
+            foreach (var item in resItem)
             {
-                pdfcell = new PdfPCell(new Phrase(new Chunk(qut.amount.ToString(), fnt)));
-            }
-            else
-            {
-                pdfcell = new PdfPCell(new Phrase(new Chunk(qut.finalizeAmount.ToString(), fnt)));
-            }
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.Border = 0;
-            pdfcell.FixedHeight = 20;
-            table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.BorderWidthLeft = 0;
-            pdfcell.BorderWidthRight = 0;
-            pdfcell.BorderWidthBottom = 0;
+                pdfcell = new PdfPCell(new Phrase(new Chunk(sno, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                //pdfcell.BorderWidthTop = 1;
+                pdfcell.BorderWidthBottom = 1;
+             //   pdfcell.FixedHeight = 20;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(varPrj, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+               // pdfcell.BorderWidthTop = 1;
+                pdfcell.BorderWidthBottom = 1;
+                pdfcell.FixedHeight = 20;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(item.projectDetails, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+               // pdfcell.BorderWidthTop = 1;
+                pdfcell.BorderWidthBottom = 1;
+            //    pdfcell.FixedHeight = 20;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(item.services, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+               // pdfcell.BorderWidthTop = 1;
+                pdfcell.BorderWidthBottom = 1;
+              //  pdfcell.FixedHeight = 20;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(item.area, fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+               // pdfcell.BorderWidthTop = 1;
+                pdfcell.BorderWidthBottom = 1;
+            //    pdfcell.FixedHeight = 20;
+                table1.AddCell(pdfcell);
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(item.rate.ToString(), fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                pdfcell.BorderWidthBottom = 1;
+                table1.AddCell(pdfcell);
+
+
+                pdfcell = new PdfPCell(new Phrase(new Chunk(item.amount.ToString(), fnt)));
+                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                pdfcell.BorderWidthBottom = 1;
+                table1.AddCell(pdfcell);
+
+                sno = "";
+                varPrj = "";
+
+            }
+
+            para1.Add(table1);
+
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            ph1 = new Phrase(String.Format(    Environment.NewLine + " Govt. taxes shall be paid separately."), fnt);
+            para1.Add(ph1);
+
+            ph1 = new Phrase(String.Format(Environment.NewLine + Environment.NewLine +  Environment.NewLine + "For " + resProfile.orgName.ToUpper()), fnt);
+            para1.Add(ph1);
+
+            ph1 = new Phrase(String.Format(Environment.NewLine+ Environment.NewLine + Environment.NewLine + "Sincerely,"), fnt);
+            para1.Add(ph1);
+
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.BOLD , BaseColor.BLACK);
+            ph1 = new Phrase(String.Format(Environment.NewLine + Environment.NewLine +   resProfile.name), fnt);
+            
+            para1.Add(ph1);
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+
+            ph1 = new Phrase(String.Format(Environment.NewLine + "Architect"), fnt);
+            para1.Add(ph1);
+
              
-            pdfcell.FixedHeight = 20;
-            table1.AddCell(pdfcell);
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.BorderWidthLeft = 0;
-            pdfcell.BorderWidthRight = 0;
-            pdfcell.BorderWidthBottom = 0;
-            pdfcell.FixedHeight = 20;
-            table1.AddCell(pdfcell);
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.BorderWidthLeft = 0;
-            pdfcell.BorderWidthRight = 0;
-            pdfcell.BorderWidthBottom = 0;
-            pdfcell.FixedHeight = 20;
-            table1.AddCell(pdfcell);
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.BorderWidthLeft = 0;
-            pdfcell.BorderWidthRight = 0;
-            pdfcell.BorderWidthBottom = 0;
-            pdfcell.FixedHeight = 20;
-            table1.AddCell(pdfcell);
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.BorderWidthLeft = 0;
-            pdfcell.BorderWidthRight = 0;
-            pdfcell.BorderWidthBottom = 0;
-            pdfcell.FixedHeight = 20;
-            table1.AddCell(pdfcell);
-
-            
-            para1.Add(table1);
-
-
-            table1 = new PdfPTable(3);
-            int[] cellWidthPercentage4 = new int[] {60, 20,20 };
-            table1.WidthPercentage =100;
-            table1.SetWidths(cellWidthPercentage4);
-
-            pdfcell = null;
-            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
-
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.Border = 0;
-            pdfcell.FixedHeight = 20;
-            table1.AddCell(pdfcell);
-
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk("Sub Total", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-            pdfcell.Border = 0;
-            pdfcell.FixedHeight = 20;
-            table1.AddCell(pdfcell);
-
-            //pdfcell = new PdfPCell(new Phrase(new Chunk(qut.amount.ToString(), fnt)));
-
-            if (qut.status.ToLower() == "request")
-            {
-                pdfcell = new PdfPCell(new Phrase(new Chunk(qut.amount.ToString(), fnt)));
-            }
-            else
-            {
-                pdfcell = new PdfPCell(new Phrase(new Chunk(qut.finalizeAmount.ToString(), fnt)));
-            }
-
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            pdfcell.Border = 0;
-            pdfcell.FixedHeight = 20;
-            table1.AddCell(pdfcell);
-
-            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
-            
-            pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.Border = 0;
-            pdfcell.FixedHeight = 20;
-            table1.AddCell(pdfcell);
-
-
-            pdfcell = new PdfPCell(new Phrase(new Chunk("Total", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-            pdfcell.BorderWidthTop = 1;
-            pdfcell.BorderWidthBottom = 1;
-
-            pdfcell.BorderWidthLeft = 0;
-            pdfcell.BorderWidthRight = 0;
-            pdfcell.FixedHeight = 20;
-            table1.AddCell(pdfcell);
-
-            //pdfcell = new PdfPCell(new Phrase(new Chunk(qut.amount.ToString(), fnt)));
-
-            if (qut.status.ToLower() == "request")
-            {
-                pdfcell = new PdfPCell(new Phrase(new Chunk(qut.amount.ToString(), fnt)));
-            }
-            else
-            {
-                pdfcell = new PdfPCell(new Phrase(new Chunk(qut.finalizeAmount.ToString(), fnt)));
-            }
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            pdfcell.BorderWidthTop = 1;
-            pdfcell.BorderWidthBottom = 1;
-            pdfcell.BorderWidthLeft = 0;
-            pdfcell.BorderWidthRight = 0;
-            pdfcell.FixedHeight = 20;
-            table1.AddCell(pdfcell);
-            para1.Add(table1);
-
-            if (qut.status.ToLower() == "request")
-            {
-                amountInWord =  objNTW.ConvertWholeNumber(qut.amount.ToString());
-            }
-            else
-            {
-                amountInWord = objNTW.ConvertWholeNumber(qut.finalizeAmount.ToString());
-            }
-
-
-            IAdn.SaveStatus(pdfname);
-
-
-            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
-            ph1 = new Phrase(String.Format(Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + "     In words :  " + amountInWord + " Rs. Only"), fnt);
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.ITALIC, BaseColor.BLUE);
+            ph1 = new Phrase(String.Format(  Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + "                                              G-2, Nursery Circle, Vaishali Nagar, Jaipur - 302 021. Rajasthan (INDIA) "), fnt);
             para1.Add(ph1);
-
-            ph1 = new Phrase(String.Format(Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + "     For " + resProfile.orgName.ToUpper()), fnt);
-            para1.Add(ph1);
-
-
-            ph1 = new Phrase(String.Format(Environment.NewLine + Environment.NewLine + Environment.NewLine + "         " + resProfile.orgName), fnt);
-            para1.Add(ph1);
-
-
-            ph1 = new Phrase(String.Format(Environment.NewLine + "     Authorized signatory"), fnt);
-            para1.Add(ph1);
-
-            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.ITALIC, BaseColor.BLACK);
-            ph1 = new Phrase(String.Format(Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + "                                                                     Please note that this is a system generated mail and does not require signature."), fnt);
+            fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.ITALIC, BaseColor.BLUE);
+            ph1 = new Phrase(String.Format(Environment.NewLine  +"                            Cont: +91 88888 59911, E - mail : vrarchitects.in @gmail.com, website: www.vrarchitects.in "), fnt);
             para1.Add(ph1);
 
             iTextSharp.text.Image jpg;
             jpg = iTextSharp.text.Image.GetInstance(HostingEnvironment.MapPath("~//Images/logoimage/"+logofile));
 
             jpg.Alignment = iTextSharp.text.Image.ALIGN_RIGHT;
-            jpg.ScaleToFit(90.0F, 90.0F);
-            jpg.SetAbsolutePosition(doc.PageSize.Width-560, 740.0F);
+            jpg.ScaleToFit(70.0F, 70.0F);
+            jpg.SetAbsolutePosition(doc.PageSize.Width-270, 760.0F);
             doc.Add(jpg);
 
             doc.Add(para1);
@@ -986,138 +971,7 @@ namespace MvcSDesign.Controllers
             return pdfname;
         }
 
-        //string SendInteriorQuotation(operation qut, string emailID, int projectID, DataTable dt, DateTime reqDate , string citystate)
-        //{
-        //    string gMailAccount, password, clientMailId = "", str = "", pdfname = "", amountInWord = "" ;
-        //    int i, totalamount = 0; 
-        //    string[] arr = new string[10];
-        //    Document doc = new Document();
-        //    Paragraph para1 = new Paragraph();
-        //    Phrase ph1 = new Phrase();
-           
-        //    DataRow dr;
-
-        //    GMail obj = new GMail();// IAdn.getGMailAccount();
-        //    gMailAccount = obj.gmailID;
-        //    password = obj.pwd;
-
-
-        //    clientMailId = "design.satyam@gmail.com"; // satyam mail id
-        //    try
-        //    {
-        //        NetworkCredential loginInfo = new NetworkCredential(gMailAccount, password);
-        //        MailMessage objMail = new MailMessage();
-
-        //        if (clientMailId.IndexOf(',') > 0)
-        //            arr = clientMailId.Split(',');
-        //        else if (clientMailId.IndexOf(';') > 0)
-        //            arr = clientMailId.Split(';');
-        //        else if (clientMailId.IndexOf('/') > 0)
-        //            arr = clientMailId.Split('/');
-        //        else
-        //            str = clientMailId;
-
-        //        if (str.Length > 0)
-        //            objMail.To.Add(new MailAddress(clientMailId));
-        //        else
-        //        {
-        //            for (i = 0; i < arr.Length; i++)
-        //            {
-        //                objMail.To.Add(new MailAddress(arr[i]));
-        //            }
-        //        }
-
-
-        //        CultureInfo CInfo = Thread.CurrentThread.CurrentCulture;
-        //        TextInfo TInfo = CInfo.TextInfo;
-                 
-        //        objMail.From = new MailAddress(gMailAccount);
-        //        objMail.IsBodyHtml = true;
-        //        objMail.Priority = MailPriority.High;
-
-        //        pdfname = CreateInteriorQuotationPDF(qut,emailID, citystate, projectID, dt, reqDate, ref amountInWord);
-                 
-        //        Attachment at = new Attachment(pdfname);
-        //        objMail.Attachments.Add(at);
-                 
-        //        str = " <br/><br/> <br/> <br/> Date: " + DateTime.Today.Date.ToString("dd/MM/yyyy") +  "<br/> Quotation   <br />" +
-        //              " <br/> To <br/> Dear " + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(qut.clientName.ToLower()) +
-        //              "<br/>" + citystate ;
-
-        //        str += " <br/><br/>       I am pleased to offer you most competitive proposal. I am certain you will find the information " +
-        //              "        in line,<br/> apt to your needs. The proposal covers our amount.";
-                 
-
-        //        str += " <br/> <br/>  <table  border='1'  style ='border-width :thin; width: 300px;'> " +
-        //               " <tr> <td style=''>  Request Date</td>" +
-        //               " <td>" + reqDate.ToString("dd / MM / yyyy") + " </td> </tr> " +
-        //               " <tr> <td style=''> Project ID  </td>" +
-        //               " <td style=''> " + projectID.ToString() + " </td></tr>" +
-        //               " <tr> <td style=''>  Project Name  </td>" +
-        //               " <td style=''>" + qut.projectName + " </td> </tr>" +
-        //               " <tr> <td style=''>Plot Size  </td>" +
-        //               " <td style=''> " + qut.plotSize + " </td></tr>" +
-        //               " <tr> <td style=''>  Level  </td>" +
-        //               " <td style=''>" + qut.projectLevel + " </td> </tr></table> <br /> <br />";
-                 
-        //        str += " <table  border='1'  style ='border-width :thin; width: 550px;'> " +
-        //               " <tr> <th style=''>  Project Details </th>" +
-        //               " <th style=''>  Particular </th>" +
-        //               " <th style=''>  Unit/Size </th>" +
-        //               " <th style=''>  Amount  </th> </tr>";
-                  
-        //        for (i = 0; i < dt.Rows.Count; i++)
-        //        {
-        //            dr = dt.Rows[i];
-        //            str += " <tr> <td>  " + dr["projectDetails"].ToString() +" </td>" +
-        //                    " <td style=''>  " + dr["particular"].ToString() + " </td>" +
-        //                    " <td style=''> " + dr["unit"].ToString() + "</td>" +
-        //                    " <td style=''>  " + dr["amount"].ToString() + "  </td> </tr>";
-                     
-
-        //            totalamount += int.Parse(dr["amount"].ToString());
-        //        }
-        //        str += " <tr>  <td> </td> <td> </td>  <td style='text-align:center'><b> Total <b/> </td> <td style='text-align:center'> <b> " + totalamount.ToString() + " <b/></td></tr> </table>";
-                
-        //        str += "<br/><br/> In words :  " + amountInWord + " Rs. Only";
-                 
-                 
-
-        //        str += "<br/><br/> Thank you for the opportunity to serve you. We look forward for further communication with you, " +
-        //               "<br/> after you have reviewed the proposal.";
-
-        //        str += "<br/><br/> <br/> For  SATYAM DESIGN <br/><br/>" +
-        //               " Satyam Design <br/>" +
-        //               " Authorized signatory ";
-
-        //        str += "<br/><br/><br/> <br/>        Please note that this is a system generated mail and does not require signature.";
-
-        //        str += "<br/><br/><br/> <br/>          Tel   : +91-731-4977407 , <br/> Cell : +91-96919-06670" +
-        //               "<br/>          Email : design.satyam@gmail.com";
-
-                 
-        //        objMail.Subject = "  Quotation for " + qut.projectType + "_" + projectID.ToString();
-        //        objMail.Body = str;
-        //        SmtpClient client = new SmtpClient("smtp.gmail.com");
-        //        client.EnableSsl = true;
-                 
-        //        client.UseDefaultCredentials = false;
-        //        client.Credentials = loginInfo;
-        //        client.Send(objMail);
-        //        client = null;
-        //        objMail.Dispose();
-                
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-                
-        //        return ex.Message;
-        //    }
-
-        //    return "";
-        //}
-
+         
          
         //string CreateInteriorQuotationPDF(operation qut, string emailID,string citystate, int projectID, DataTable dt, DateTime reqDate , ref string amountInword)
         //{

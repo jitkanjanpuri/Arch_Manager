@@ -28,5 +28,11 @@ namespace MvcSDesign.Controllers
 
             return View();
         }
+
+        public ActionResult ShowVideo()
+        {
+            //string Baseurl = "http://192.168.95.1:5555/"
+            return View();
+        }
     }
 }

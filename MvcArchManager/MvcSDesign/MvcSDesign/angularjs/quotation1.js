@@ -39,11 +39,7 @@ app.controller('myCtr', function ($scope, $http) {
 
     $scope.SetClientID = function (id, name) {
         document.getElementById("txtCID").value = id;
-        document.getElementById("txtExteriorCName").value = name;
-
-        //document.getElementById("txtInteriorCID").value = id;
-        //document.getElementById("txtInteriorName").value = name;
-
+        document.getElementById("txtName").value = name;
     }
 
     

@@ -12,7 +12,11 @@ namespace MvcSDesign.Repository
    public interface IClient
     {
         void InsertData(clientModel cnt);
-        long InsertQuotation(quotation qtn);
+        //long InsertQuotation(quotation qtn);
+
+        string SaveQuotation(operation qtn, string empdata, ref long pid);
+        IEnumerable<ProjectItemModel> GetProjectDetailItem(int projectID);
+        string UpdateQuotation(operation op,List<ProjectItemModel> itemlist );
         IEnumerable<clientModel> GetAll();
         IEnumerable<clientModel> SearchClientByName(string name);
 
@@ -20,7 +24,7 @@ namespace MvcSDesign.Repository
 
 
         IEnumerable<tblClient> getByName(string name);
-        //bool ClientEmailValidation(string mailID);
+        
         string ClientNameValidation(clientModel obj);
         string Update(clientModel cnt);
         string DeleteClient(int clientID);

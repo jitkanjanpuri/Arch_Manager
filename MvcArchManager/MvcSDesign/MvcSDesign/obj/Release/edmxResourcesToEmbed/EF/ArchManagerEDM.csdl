@@ -117,6 +117,8 @@
     <NavigationProperty Name="tblProjectUploadFiles" Relationship="ArchManagerDBModel.FK_tblProjectUploadFile_projectID" FromRole="tblProjectDetail" ToRole="tblProjectUploadFile" />
     <NavigationProperty Name="tblTaskAssigns" Relationship="ArchManagerDBModel.FK_tblTaskAssign_projectID" FromRole="tblProjectDetail" ToRole="tblTaskAssign" />
     <NavigationProperty Name="tblAmountReceives" Relationship="ArchManagerDBModel.FK_tblAmountReceive_projectID" FromRole="tblProjectDetail" ToRole="tblAmountReceive" />
+    <Property Name="service" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblProjectDetailItems" Relationship="ArchManagerDBModel.FK__tblProjec__proje__7D439ABD" FromRole="tblProjectDetail" ToRole="tblProjectDetailItem" />
   </EntityType>
   <EntityType Name="tblStaff">
     <Key>
@@ -351,6 +353,17 @@
       <End Role="tblStaff" EntitySet="tblStaffs" />
       <End Role="tblProjectSiteVisit" EntitySet="tblProjectSiteVisits" />
     </AssociationSet>
+    <EntitySet Name="tblProjectDetailItems" EntityType="ArchManagerDBModel.tblProjectDetailItem" />
+    <AssociationSet Name="FK__tblProjec__proje__7D439ABD" Association="ArchManagerDBModel.FK__tblProjec__proje__7D439ABD">
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetails" />
+      <End Role="tblProjectDetailItem" EntitySet="tblProjectDetailItems" />
+    </AssociationSet>
+    <EntitySet Name="tblCategories" EntityType="ArchManagerDBModel.tblCategory" />
+    <EntitySet Name="tblSubcategories" EntityType="ArchManagerDBModel.tblSubcategory" />
+    <AssociationSet Name="FK_tblSubcategory_categoryID" Association="ArchManagerDBModel.FK_tblSubcategory_categoryID">
+      <End Role="tblCategory" EntitySet="tblCategories" />
+      <End Role="tblSubcategory" EntitySet="tblSubcategories" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="tblProjectManagement">
     <Key>
@@ -532,6 +545,62 @@
       </Principal>
       <Dependent Role="tblProjectSiteVisit">
         <PropertyRef Name="staffID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="tblProjectDetailItem">
+    <Key>
+      <PropertyRef Name="projectDetailItemID" />
+    </Key>
+    <Property Name="projectDetailItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="projectID" Type="Int64" Nullable="false" />
+    <Property Name="projectDetail" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="service" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="area" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="rate" Type="Int32" />
+    <Property Name="amount" Type="Int32" />
+    <NavigationProperty Name="tblProjectDetail" Relationship="ArchManagerDBModel.FK__tblProjec__proje__7D439ABD" FromRole="tblProjectDetailItem" ToRole="tblProjectDetail" />
+  </EntityType>
+  <Association Name="FK__tblProjec__proje__7D439ABD">
+    <End Type="ArchManagerDBModel.tblProjectDetail" Role="tblProjectDetail" Multiplicity="1" />
+    <End Type="ArchManagerDBModel.tblProjectDetailItem" Role="tblProjectDetailItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProjectDetail">
+        <PropertyRef Name="projectID" />
+      </Principal>
+      <Dependent Role="tblProjectDetailItem">
+        <PropertyRef Name="projectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="tblCategory">
+    <Key>
+      <PropertyRef Name="categoryID" />
+    </Key>
+    <Property Name="categoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="categoryName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="status" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="tblSubcategories" Relationship="ArchManagerDBModel.FK_tblSubcategory_categoryID" FromRole="tblCategory" ToRole="tblSubcategory" />
+  </EntityType>
+  <EntityType Name="tblSubcategory">
+    <Key>
+      <PropertyRef Name="subcategoryID" />
+    </Key>
+    <Property Name="subcategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="categoryID" Type="Int32" Nullable="false" />
+    <Property Name="subcateroyName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="status" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="tblCategory" Relationship="ArchManagerDBModel.FK_tblSubcategory_categoryID" FromRole="tblSubcategory" ToRole="tblCategory" />
+  </EntityType>
+  <Association Name="FK_tblSubcategory_categoryID">
+    <End Type="ArchManagerDBModel.tblCategory" Role="tblCategory" Multiplicity="1" />
+    <End Type="ArchManagerDBModel.tblSubcategory" Role="tblSubcategory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblCategory">
+        <PropertyRef Name="categoryID" />
+      </Principal>
+      <Dependent Role="tblSubcategory">
+        <PropertyRef Name="categoryID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

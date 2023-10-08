@@ -18,6 +18,14 @@
     <Property Name="remark" Type="varchar" MaxLength="100" />
     <Property Name="projectID" Type="bigint" Nullable="false" />
   </EntityType>
+  <EntityType Name="tblCategory">
+    <Key>
+      <PropertyRef Name="categoryID" />
+    </Key>
+    <Property Name="categoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="categoryName" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="status" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="tblClient">
     <Key>
       <PropertyRef Name="clientID" />
@@ -118,6 +126,19 @@
     <Property Name="projectname" Type="varchar" MaxLength="100" />
     <Property Name="projectlocation" Type="varchar(max)" />
     <Property Name="finalizeAmount" Type="bigint" />
+    <Property Name="service" Type="varchar" MaxLength="300" />
+  </EntityType>
+  <EntityType Name="tblProjectDetailItem">
+    <Key>
+      <PropertyRef Name="projectDetailItemID" />
+    </Key>
+    <Property Name="projectDetailItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="projectID" Type="bigint" Nullable="false" />
+    <Property Name="projectDetail" Type="varchar(max)" />
+    <Property Name="service" Type="varchar(max)" Nullable="false" />
+    <Property Name="area" Type="varchar" MaxLength="500" />
+    <Property Name="rate" Type="int" />
+    <Property Name="amount" Type="int" />
   </EntityType>
   <EntityType Name="tblProjectManagement">
     <Key>
@@ -211,6 +232,15 @@
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="status" Type="varchar" MaxLength="200" Nullable="false" />
   </EntityType>
+  <EntityType Name="tblSubcategory">
+    <Key>
+      <PropertyRef Name="subcategoryID" />
+    </Key>
+    <Property Name="subcategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="categoryID" Type="int" Nullable="false" />
+    <Property Name="subcateroyName" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="status" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="tblTaskAssign">
     <Key>
       <PropertyRef Name="taskID" />
@@ -248,6 +278,18 @@
         <PropertyRef Name="projectID" />
       </Principal>
       <Dependent Role="tblOperation">
+        <PropertyRef Name="projectID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tblProjec__proje__7D439ABD">
+    <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
+    <End Role="tblProjectDetailItem" Type="Self.tblProjectDetailItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProjectDetail">
+        <PropertyRef Name="projectID" />
+      </Principal>
+      <Dependent Role="tblProjectDetailItem">
         <PropertyRef Name="projectID" />
       </Dependent>
     </ReferentialConstraint>
@@ -408,6 +450,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_tblSubcategory_categoryID">
+    <End Role="tblCategory" Type="Self.tblCategory" Multiplicity="1" />
+    <End Role="tblSubcategory" Type="Self.tblSubcategory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblCategory">
+        <PropertyRef Name="categoryID" />
+      </Principal>
+      <Dependent Role="tblSubcategory">
+        <PropertyRef Name="categoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_tblTaskAssign_projectID">
     <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
     <End Role="tblTaskAssign" Type="Self.tblTaskAssign" Multiplicity="*" />
@@ -423,12 +477,14 @@
   <EntityContainer Name="ArchManagerDBModelStoreContainer">
     <EntitySet Name="tblAdminSetting" EntityType="Self.tblAdminSetting" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblAmountReceive" EntityType="Self.tblAmountReceive" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblCategory" EntityType="Self.tblCategory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblClient" EntityType="Self.tblClient" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblClientLedger" EntityType="Self.tblClientLedger" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblCompanyProfile" EntityType="Self.tblCompanyProfile" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblOperation" EntityType="Self.tblOperation" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblPRF" EntityType="Self.tblPRF" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProjectDetail" EntityType="Self.tblProjectDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblProjectDetailItem" EntityType="Self.tblProjectDetailItem" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProjectManagement" EntityType="Self.tblProjectManagement" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProjectSiteVisit" EntityType="Self.tblProjectSiteVisit" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProjectUploadFile" EntityType="Self.tblProjectUploadFile" Schema="dbo" store:Type="Tables" />
@@ -437,6 +493,7 @@
     <EntitySet Name="tblStaffPaid" EntityType="Self.tblStaffPaid" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblState" EntityType="Self.tblState" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblStatus" EntityType="Self.tblStatus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblSubcategory" EntityType="Self.tblSubcategory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblTaskAssign" EntityType="Self.tblTaskAssign" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK__tblClient__compa__5EBF139D" Association="Self.FK__tblClient__compa__5EBF139D">
       <End Role="tblCompanyProfile" EntitySet="tblCompanyProfile" />
@@ -445,6 +502,10 @@
     <AssociationSet Name="FK__tblOperat__proje__5FB337D6" Association="Self.FK__tblOperat__proje__5FB337D6">
       <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
       <End Role="tblOperation" EntitySet="tblOperation" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tblProjec__proje__7D439ABD" Association="Self.FK__tblProjec__proje__7D439ABD">
+      <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
+      <End Role="tblProjectDetailItem" EntitySet="tblProjectDetailItem" />
     </AssociationSet>
     <AssociationSet Name="FK_tblAdminSetting_companyID" Association="Self.FK_tblAdminSetting_companyID">
       <End Role="tblCompanyProfile" EntitySet="tblCompanyProfile" />
@@ -497,6 +558,10 @@
     <AssociationSet Name="FK_tblStaffPaid_staffID" Association="Self.FK_tblStaffPaid_staffID">
       <End Role="tblStaff" EntitySet="tblStaff" />
       <End Role="tblStaffPaid" EntitySet="tblStaffPaid" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblSubcategory_categoryID" Association="Self.FK_tblSubcategory_categoryID">
+      <End Role="tblCategory" EntitySet="tblCategory" />
+      <End Role="tblSubcategory" EntitySet="tblSubcategory" />
     </AssociationSet>
     <AssociationSet Name="FK_tblTaskAssign_projectID" Association="Self.FK_tblTaskAssign_projectID">
       <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />

@@ -92,6 +92,7 @@
     <EntitySetMapping Name="tblProjectDetails">
       <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectDetail">
         <MappingFragment StoreEntitySet="tblProjectDetail">
+          <ScalarProperty Name="service" ColumnName="service" />
           <ScalarProperty Name="finalizeAmount" ColumnName="finalizeAmount" />
           <ScalarProperty Name="projectID" ColumnName="projectID" />
           <ScalarProperty Name="dt" ColumnName="dt" />
@@ -243,6 +244,38 @@
           <ScalarProperty Name="projectID" ColumnName="projectID" />
           <ScalarProperty Name="companyID" ColumnName="companyID" />
           <ScalarProperty Name="adminSettingiD" ColumnName="adminSettingiD" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblProjectDetailItems">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectDetailItem">
+        <MappingFragment StoreEntitySet="tblProjectDetailItem">
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="rate" ColumnName="rate" />
+          <ScalarProperty Name="area" ColumnName="area" />
+          <ScalarProperty Name="service" ColumnName="service" />
+          <ScalarProperty Name="projectDetail" ColumnName="projectDetail" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="projectDetailItemID" ColumnName="projectDetailItemID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblCategories">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblCategory">
+        <MappingFragment StoreEntitySet="tblCategory">
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="categoryName" ColumnName="categoryName" />
+          <ScalarProperty Name="categoryID" ColumnName="categoryID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblSubcategories">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblSubcategory">
+        <MappingFragment StoreEntitySet="tblSubcategory">
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="subcateroyName" ColumnName="subcateroyName" />
+          <ScalarProperty Name="categoryID" ColumnName="categoryID" />
+          <ScalarProperty Name="subcategoryID" ColumnName="subcategoryID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

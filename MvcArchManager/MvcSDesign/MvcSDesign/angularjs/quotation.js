@@ -1,16 +1,9 @@
 ﻿var app = angular.module("myApp", [])
-app.controller('myController', function ($scope, $http) {
+app.controller('myCtr', function ($scope, $http) {
 
-    $scope.arrProjectType = ["All", "Exterior", "Interior", "3D_Floor", "Structure", "Planning", "Gujarat", "Walkthrough", "Bird_Eye_View", "Interactive_View(Exterior)", "Interactive_View(Interior)"];
 
-    $scope.ptype = $scope.arrProjectType[0];
     $scope.loading = true;
     $scope.err = "";
-
-    $scope.pendingquotationamount = 0;
-    $scope.confirmquotationamount = 0;
-    $scope.pendingquotation = 0;
-    $scope.confirmquotation = 0;
 
 
     $scope.Search = function () {
@@ -46,66 +39,49 @@ app.controller('myController', function ($scope, $http) {
 
     $scope.SetClientID = function (id, name) {
         document.getElementById("txtCID").value = id;
-        document.getElementById("txtExteriorCName").value = name;
-
-        document.getElementById("txtInteriorCID").value = id;
-        document.getElementById("txtInteriorName").value = name;
-
+        document.getElementById("txtName").value = name;
     }
 
-    $scope.ShowClient = function (cid, cname, emailID, address, city, state) {
-        $scope.txtCID = cid;
-        $scope.txtCName = cname;
-        $scope.txtEmailID = emailID;
-        $scope.txtAdddress = address;
-        $scope.txtCityState = city + ", " + state;
-
-
-    }
-    $scope.ShowAllQuotation = function () {
-        var varptype = $scope.ptype;
-        var pendingqty = 0;
-        var pendingamount = 0;
-        var confirmqty = 0;
-        var confirmamount = 0;
-        var qlist;
+    function addProuctCart(pid, productName, price, dis, varqty) {
         $http({
-            url: "/Client/getMonthQuotation",
-            dataType: 'json',
-            method: 'POST',
+            url: "/Home/addProductCard",
+            method: "POST",
+            dataType: "json",
             params: {
-                ptype: varptype
+                pid: pid,
+                pname: productName,
+                price: price,
+                discount: dis,
+                qty: varqty,
+                orderType: 'Regular'
             },
-            contentType: "application/json;charaset=utf-8"
+            contentType: "application/json; charaset=utf-8"
         }).then(function (d) {
-            $scope.quotationlist = d.data;
-            if ($scope.quotationlist.length == 0) {
-                alert("Record not available");
-            }
-
-            for (var i = 0; i < $scope.quotationlist.length; i++) {
-                qlist = $scope.quotationlist[i];
-
-                if (qlist.status == "Pending") {
-                    pendingqty++;
-                    pendingamount += qlist.amount;
-                }
-                else {
-                    confirmqty++;
-                    confirmamount += qlist.amount;
-                }
-            }
-
-            $scope.pendingquotationamount = pendingamount;
-            $scope.confirmquotationamount = confirmamount;
-            $scope.pendingquotation = pendingqty;
-            $scope.confirmquotation = confirmqty;
-
+            $scope.cartcount = d.data;
+            viewCart();
         }).error(function (err) {
-            alert(" Error  : " + err);
+            alert("Error " + err);
         });
 
     }
+    $scope.removeCartItem = function (item) {
+        $http({
+            url: "/Home/removeCartItem",
+            method: "POST",
+            dataType: "json",
+            params: {
+                pid: item.productID,
+                pname: item.productName
+            },
+            contentType: "application/json; charaset = utf-8"
+        }).then(function (d) {
+            $scope.viewlist = d.data;
+            $scope.cartcount = $scope.viewlist.length;
 
+            //CalculateProduct();
+        }).error(function (err) {
+
+        });
+    }
 
 });

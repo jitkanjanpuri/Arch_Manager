@@ -24,6 +24,7 @@ namespace MvcSDesign.EF
             this.tblProjectUploadFiles = new HashSet<tblProjectUploadFile>();
             this.tblTaskAssigns = new HashSet<tblTaskAssign>();
             this.tblAmountReceives = new HashSet<tblAmountReceive>();
+            this.tblProjectDetailItems = new HashSet<tblProjectDetailItem>();
         }
     
         public long projectID { get; set; }
@@ -39,6 +40,7 @@ namespace MvcSDesign.EF
         public string projectname { get; set; }
         public string projectlocation { get; set; }
         public Nullable<long> finalizeAmount { get; set; }
+        public string service { get; set; }
     
         public virtual tblClient tblClient { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -55,5 +57,7 @@ namespace MvcSDesign.EF
         public virtual ICollection<tblTaskAssign> tblTaskAssigns { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblAmountReceive> tblAmountReceives { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblProjectDetailItem> tblProjectDetailItems { get; set; }
     }
 }
