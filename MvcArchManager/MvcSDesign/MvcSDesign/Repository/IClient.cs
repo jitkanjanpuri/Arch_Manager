@@ -14,12 +14,16 @@ namespace MvcSDesign.Repository
         void InsertData(clientModel cnt);
         //long InsertQuotation(quotation qtn);
 
-        string SaveQuotation(operation qtn, string empdata, ref long pid);
-        IEnumerable<ProjectItemModel> GetProjectDetailItem(int projectID);
-        string UpdateQuotation(operation op,List<ProjectItemModel> itemlist );
+        string SaveQuotation(operation qtn, List<QuotationItemModel> li, ref int quotationID);
+        IEnumerable<QuotationItemModel> GetQuotationDetailItem(int quID);
+
+        //IEnumerable<ProjectItemModel> GetProjectDetailItem(int projectID);
+        string UpdateQuotation(operation op, List<QuotationItemModel> itemlist);
         IEnumerable<clientModel> GetAll();
         IEnumerable<clientModel> SearchClientByName(string name);
 
+       // string CompeleteDesignerTask(int pmid , int taskID);
+       // string CompeleteDesignerTask(int pmid, int taskID);
         IEnumerable<clientModel> SearchClientByNameOrPID(string opt, string name, string pid, string pname);
 
 
@@ -29,7 +33,10 @@ namespace MvcSDesign.Repository
         string Update(clientModel cnt);
         string DeleteClient(int clientID);
         IEnumerable<operation> getMonthQuotation(string ptype);
-        IEnumerable<operation> getProjectDetail(int projectID);
+      //  operation getProjectDetail(int projectID);
+
+        operation GetQuotationDetail(int quID);
+
         clientModel GetClient(int clientID);
         IEnumerable<clientModel> GetState(); 
         IEnumerable<operation> Dashboard_getMonthQuotation();

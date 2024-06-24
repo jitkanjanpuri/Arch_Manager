@@ -42,7 +42,7 @@ namespace MvcSDesign.Models
         [Required(ErrorMessage = "Please enter password")]
         [StringLength(52, MinimumLength = 1, ErrorMessage = "Enter password between 1 to 10 character")]
         public string password { get; set; }
-
+        public string photo { get; set; }
         public string rolltype { get; set; }
         public bool active { get; set; }
         public int prjAmount { get; set; }

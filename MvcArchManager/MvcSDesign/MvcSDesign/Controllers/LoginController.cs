@@ -56,25 +56,25 @@ namespace MvcSDesign.Controllers
 
             return View();
         }
-        public JsonResult EmailMailSend(string emailID)
-        {
-            return Json(_IAdn.EmailSend(emailID), JsonRequestBehavior.AllowGet);
-        }
+        //public JsonResult EmailMailSend(string emailID)
+        //{
+        //    return Json(_IAdn.EmailSend(emailID), JsonRequestBehavior.AllowGet);
+        //}
 
-        public JsonResult EmailMailSend1(string emailID)
-        {
-            return Json(_IAdn.EmailSend1(emailID), JsonRequestBehavior.AllowGet);
-        }
+        //public JsonResult EmailMailSend1(string emailID)
+        //{
+        //    return Json(_IAdn.EmailSend1(emailID), JsonRequestBehavior.AllowGet);
+        //}
 
-        public JsonResult EmailMailSend2(string emailID)
-        {
-            return Json(_IAdn.EmailSend2(emailID), JsonRequestBehavior.AllowGet);
-        }
+        //public JsonResult EmailMailSend2(string emailID)
+        //{
+        //    return Json(_IAdn.EmailSend2(emailID), JsonRequestBehavior.AllowGet);
+        //}
 
-        public JsonResult EmailMailSend3(string emailID)
-        {
-            return Json(_IAdn.EmailSend3(emailID), JsonRequestBehavior.AllowGet);
-        }
+        //public JsonResult EmailMailSend3(string emailID)
+        //{
+        //    return Json(_IAdn.EmailSend3(emailID), JsonRequestBehavior.AllowGet);
+        //}
 
         public string userVarification(logincls lgn)
         {

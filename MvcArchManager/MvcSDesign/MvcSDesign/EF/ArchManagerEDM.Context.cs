@@ -28,22 +28,22 @@ namespace MvcSDesign.EF
         public virtual DbSet<tblClient> tblClients { get; set; }
         public virtual DbSet<tblClientLedger> tblClientLedgers { get; set; }
         public virtual DbSet<tblCompanyProfile> tblCompanyProfiles { get; set; }
-        public virtual DbSet<tblOperation> tblOperations { get; set; }
-        public virtual DbSet<tblPRF> tblPRFs { get; set; }
-        public virtual DbSet<tblProjectDetail> tblProjectDetails { get; set; }
         public virtual DbSet<tblStaff> tblStaffs { get; set; }
         public virtual DbSet<tblStaffLedger> tblStaffLedgers { get; set; }
         public virtual DbSet<tblStaffPaid> tblStaffPaids { get; set; }
         public virtual DbSet<tblStatu> tblStatus { get; set; }
-        public virtual DbSet<tblProjectManagement> tblProjectManagements { get; set; }
         public virtual DbSet<tblProjectSiteVisit> tblProjectSiteVisits { get; set; }
-        public virtual DbSet<tblProjectUploadFile> tblProjectUploadFiles { get; set; }
-        public virtual DbSet<tblTaskAssign> tblTaskAssigns { get; set; }
         public virtual DbSet<tblState> tblStates { get; set; }
         public virtual DbSet<tblAmountReceive> tblAmountReceives { get; set; }
         public virtual DbSet<tblAdminSetting> tblAdminSettings { get; set; }
-        public virtual DbSet<tblProjectDetailItem> tblProjectDetailItems { get; set; }
         public virtual DbSet<tblCategory> tblCategories { get; set; }
         public virtual DbSet<tblSubcategory> tblSubcategories { get; set; }
+        public virtual DbSet<tblQuotation> tblQuotations { get; set; }
+        public virtual DbSet<tblQuotationItem> tblQuotationItems { get; set; }
+        public virtual DbSet<tblProjectDetail> tblProjectDetails { get; set; }
+        public virtual DbSet<tblPRF> tblPRFs { get; set; }
+        public virtual DbSet<tblProjectManagement> tblProjectManagements { get; set; }
+        public virtual DbSet<tblTaskAssign> tblTaskAssigns { get; set; }
+        public virtual DbSet<tblProjectUploadFile> tblProjectUploadFiles { get; set; }
     }
 }

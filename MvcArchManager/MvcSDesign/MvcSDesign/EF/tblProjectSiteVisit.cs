@@ -21,7 +21,7 @@ namespace MvcSDesign.EF
         public string remark { get; set; }
         public int staffID { get; set; }
     
-        public virtual tblProjectDetail tblProjectDetail { get; set; }
         public virtual tblStaff tblStaff { get; set; }
+        public virtual tblProjectDetail tblProjectDetail { get; set; }
     }
 }

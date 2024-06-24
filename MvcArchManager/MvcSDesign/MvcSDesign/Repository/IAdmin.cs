@@ -18,12 +18,19 @@ namespace MvcSDesign.Repository
         string SaveCompanyProfile(CompanyModel obj);
         CompanyModel GetCompanyProfile();
 
-        long GetStartProjectID();
+        AdminSettingModel GetAdminSetting();
         IEnumerable<CategoryModel> GetAllCategory();
+
+        string DeleteCategory(int id);
         string SaveCategory(CategoryModel ct);
+        IEnumerable<SubcategoryModel> GetAllSubcategory();
+        string SaveSubcategory(SubcategoryModel obj);
+        IEnumerable<SelectListItem> GetSubcategoryDDL(int ch);
+        string DeleteSubcategory(int id);
+
 
         string SaveAdminSetting(AdminSettingModel objAsm);
-        string InsertRegistration(StaffModel st);
+        string InsertRegistration(StaffModel st, ref int staffID);
         IEnumerable<StaffModel> GatAllRegistration();
         string RegistrationUpdate(StaffModel obj);
         string RegistrationDelete(int staffID);
@@ -34,6 +41,9 @@ namespace MvcSDesign.Repository
 
         //Dashboard
         List<operation> DashBoard_getProjectType();
+        IEnumerable<operation> getCurrentClientList();
+        IEnumerable<operation> getCurrentTaskList();
+
         List<StaffModel> getTopPerformers();
         List<quotation> getQuotation();
 
@@ -41,30 +51,33 @@ namespace MvcSDesign.Repository
         IEnumerable<QuotationModel> SearchByProjectIDOrName(string opt, string projectID, string name);
 
         // Quotation
-        IEnumerable<operation> getProjectQuotation();
-        string UpdateQuotation(int pid, int famount, string projectlocation);
+        IEnumerable<operation> getProjectQuotation(string opt, string quotationID, string cname, string pname);
+        //string UpdateQuotation(int pid, int famount, string projectlocation);
         string QuotationDelete(int projectID);
 
         operation GetProjectInfo(int projectID);
 
         //PRF
-        PRFModel GetPRFByPrjectID(int projectID);
+        operation GetPRFByPrjectID(int projectID);
         string SavePRF(PRFModel obj);
 
-        string DownloadPRF(string projectID, string filelocation);
+        string DownloadPRF(int projectID);
         IEnumerable<SelectListItem> getOperationDesigner();
         IEnumerable<operation> getProjectAssign();
+
+        string SaveProject(int qno, int famount, string projectlocation);
+
          
         string SaveProjectAssigned(string projectID, string clientID, string projectCategory, string designerAmount);
-        string EmailSend(string emailID);
-        string EmailSend1(string emailID);
-        string EmailSend2(string emailID);
-        string EmailSend3(string emailID);
+        //string EmailSend(string emailID);
+        //string EmailSend1(string emailID);
+        //string EmailSend2(string emailID);
+        //string EmailSend3(string emailID);
         string ProjectRollBack(int pmID);
 
         void SaveStatus(string ch);
-        IEnumerable<operation> getDesignerProjectAmount(int designerID);
-        string DesignerAmountCancel(int operationID);
+        //IEnumerable<operation> getDesignerProjectAmount(int designerID);
+        //string DesignerAmountCancel(int operationID);
         string CompleteCurrentWorking(int operationID);
 
         string CurrentWorkingRemarkUpdate(int opID, string remark);
@@ -76,19 +89,21 @@ namespace MvcSDesign.Repository
         string DeleteProjectManagement(int pmID, string uploadedFileName);
         string SaveAmountReceive(int cid, int projectID, string amount, string remark, string flagGmail);
         string SendReceipt(int recID, string prfFlag);
-
-        string SavePayDesigner(int sid, int amount, string remark);
+ 
         string ProjectAssigning(operation op);
         operation SearchAddProject(int projectID);
         string SaveNewProject(operation obj);
         StaffModel getLogin(logincls lgn);
-        bool DesignerNameValidation(string name);
-        bool DesignerEmailValidation(string mailID);
+        //bool DesignerNameValidation(string name);
+        //bool DesignerEmailValidation(string mailID);
 
 
         //Site Visit
         string SaveSiteVisit(int projectID,int id, string fname,  string remark);
-        IEnumerable<operation> SearchSiteVisitByNameOrProjectID(string opt, string projectID, string name, string pname);
+        IEnumerable<operation>  SearchSiteVisitByNameOrQuotatioNo(string opt, string qNo, string name, string pname);
+        IEnumerable<operation>  SearchByNameOrProjectID(string opt, string projectID, string name, string pname);
+
+        IEnumerable<operation> GetAllCurrentWorking();
         string DownloadSiteVist(int projectID, string filename);
 
         string DownloadUploadFile(int projectID, int uploafFileID,  string filename);
@@ -103,16 +118,17 @@ namespace MvcSDesign.Repository
         IEnumerable<operation> getDesignerWorkingList(int reg);
 
         IEnumerable<operation> RptQuotation(string dt1, string dt2, string searchOpt, string projectID, string cname, string pname);
+
+
+        //IEnumerable<operation> RptQuotation(string dt1, string dt2, string searchOpt, string projectID, string cname, string pname);
         IEnumerable<operation> RptClientReceive(string cname, string fromDt, string toDt);
 
         IEnumerable<operation> RptSiteVisit(string opt, string projectID, string name, string pname);
 
         IEnumerable<operation> RptProjectHistory(string opt, string projectID, string name, string pname);
 
-        //IEnumerable<operation> SearchSiteVisitByNameOrProjectID(string opt, string projectID, string name, string pname);
-        //IEnumerable<operation> RptSearch(string opt, int projectID, string name, string pname);
         IEnumerable<operation> RptOutstanding(string cname, string fromDt, string toDt);
-        IEnumerable<operation> RptTechnical(string dnama, string fromDt, string toDt);
+        IEnumerable<operation> RptTechnical(string dname, string fromDt, string toDt, string dn);
 
         IEnumerable<operation> ShowBalanceAdjust(string dt1, string dt2, string cname);
 

@@ -17,11 +17,13 @@ namespace MvcSDesign.Controllers
         // GET: /Render/
 
         IUser _IUser;
+        IAdmin _IAdmin;
         // clsTechnicalDB renderDb = new clsTechnicalDB();
 
         public RenderController()
         {
             _IUser = new UserRepository(new ArchManagerDBEntities());
+            _IAdmin = new AdminRepository(new ArchManagerDBEntities());
         }
         public ActionResult Index()
         {
@@ -135,13 +137,27 @@ namespace MvcSDesign.Controllers
             return username;
         }
        
-        public FileResult pdfDownload(string projectID, string location)
+        public ActionResult pdfDownload(string projectID, string location)
         {
             string pdfpath = "";// renderDb.DownloadPRF(projectID, location);
             string filename = System.IO.Path.GetFileName(pdfpath);
             string contentType = "application/pdf";
+            if (!System.IO.File.Exists(pdfpath))
+            {
+                return RedirectToAction("HttpError500");
+            }
 
             return File(pdfpath, contentType, filename);
+        }
+
+        public JsonResult SaveWithoutFile(string pmid, string taskID)
+        {
+            return Json(_IUser.CompeleteDesignerTask(int.Parse(pmid), int.Parse(taskID)),JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult HttpError500()
+        {
+            return View("~/Views/Shared/Error.cshtml");
         }
         public JsonResult fillMonthlyPerformance()
         {

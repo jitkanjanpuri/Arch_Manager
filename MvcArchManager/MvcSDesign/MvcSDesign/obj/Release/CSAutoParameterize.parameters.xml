@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="DefaultConnection-Web.config Connection String" description="DefaultConnection Connection String used in web.config by the application to access the database." defaultValue="Data Source=(LocalDb)\v11.0;Initial Catalog=aspnet-MvcSDesign-20190909140612;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|\aspnet-MvcSDesign-20190909140612.mdf" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="F:\\Development\\Web\ sites\\GitHub\\Arch\ Manager\\Arch_Manager\\MvcArchManager\\MvcSDesign\\MvcSDesign\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+  <parameter name="ArchManagerDBEntities-Web.config Connection String" description="ArchManagerDBEntities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/EF.ArchManagerEDM.csdl|res://*/EF.ArchManagerEDM.ssdl|res://*/EF.ArchManagerEDM.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=173.248.151.174,1533;initial catalog=ArchManagerDB;user id=sa;password=HckO#(1s8aGZ98;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="F:\\Development\\Web\ sites\\GitHub\\Arch\ Manager\\Arch_Manager\\MvcArchManager\\MvcSDesign\\MvcSDesign\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='ArchManagerDBEntities']/@connectionString" />
+  </parameter>
+</parameters>

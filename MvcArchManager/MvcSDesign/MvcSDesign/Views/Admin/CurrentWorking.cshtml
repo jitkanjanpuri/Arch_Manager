@@ -9,7 +9,7 @@
 
 <head>
      
-    <script src="~/angularjs/currentworking.js"></script>
+    <script src="~/angularjs/currentworking1.js"></script>
     <style>
         table, th, td {
             border: 1px solid black;
@@ -32,6 +32,43 @@
                 theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
             }
         }
+
+        function Save() {
+            var projectID = $('#txtProjectID').val();
+            var anyOther = $('#txtAnyOther').val();
+            if (anyOther == "" || anyOther == null ) {
+                alert("Please enter project description ");
+                return;
+            }
+
+            var obj = new Object();
+            obj.projectID = projectID;
+            
+            obj.anyother = anyOther;
+            $.ajax({
+
+                url: "/Admin/SavePRF",
+                type: "POST",
+                dataType: "json",
+                contentType: 'application/json;charaset=utf-8',
+                data: JSON.stringify(obj),
+                success: function (result) {
+                    if (result == "") {
+                        alert("Client requirement form successfully saved ");
+                        window.location.reload();
+                    }
+                },
+                error: function () {
+                    window.location.reload();
+                }
+            });
+
+        }
+
+
+
+
+
     </script>
 
 </head>
@@ -60,14 +97,14 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <form>
-                                <div class="row mb-3">
+                                @*<div class="row mb-3">
                                     <div class="col-lg-3 col-5">
                                         <label class="my-1 mr-2 form-lable" style="margin-left:20px;">
                                             Category
                                         </label>
-                                    </div>
+                                    </div> 
                                     <div class="col-lg-9 col-7">
-                                        <select class="form-control" ng-model="category" ng-options="item for item in projectCategory" style="" ng-change="GetSubcategory()"></select>
+                                        <select class="form-control" ng-model="category" ng-options="item.Text for item in projectCategoryList" style="" ng-change="GetSubcategory()"></select>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -77,7 +114,7 @@
                                         </label>
                                     </div>
                                     <div class="col-lg-9 col-7">
-                                        <select class="form-control" ng-model="subcategoryName" ng-options="item for item in subcategory" style=""></select>
+                                        <select class="form-control" ng-model="subcategoryName" ng-options="item.Text for item in subcategoryList" style=""></select>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -99,17 +136,15 @@
                                     <div class="col-lg-8 col-7">
                                         <label class="my-1 mr-2 form-lable" style="color:red">{{lblErr}}</label>
                                     </div>
-                                </div>
+                                </div>*@
 
 
                                 <div class="row col-lg-12 mb-3">
-                                    <div class="col-sm-3">
-                                    </div>
                                     <div class="col-sm-2 ">
-                                        <button type="button" class="btn btn-primary d-block " ng-click="Search()">Search</button>
+                                          <button type="button" class="btn btn-info d-block  " data-bs-toggle="modal" data-bs-target=".bs-example-modal-center" ng-click="ClearTextValue()"> Add Project </button>
                                     </div>
-                                    <div class="col-lg-3 ">
-                                        <button type="button" class="btn btn-primary d-block  " data-bs-toggle="modal" data-bs-target=".bs-example-modal-center" ng-click="ClearTextValue()"><i class="mr-2 fas fa-plus"></i> </button>
+                                    <div class="col-lg-6 ">
+                                        <button type="button" class="btn btn-info d-block  " data-bs-toggle="modal" data-bs-target=".bs-example-modal-projectdescription" ng-click="ClearProjectDescription()">Project Description </button>
                                     </div>
                                 </div>
 
@@ -131,10 +166,9 @@
                             <div class="text-center">
                                 <span style="font-size:18pt;" class="text-danger">{{record}}</span>
                             </div>
-
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable">
-                                    <thead class="bg-warning text-white">
+                                    <thead class="bg-info text-white">
                                         <tr>
                                             <th scope="col">Project ID </th>
                                             <th scope="col">Name</th>
@@ -155,14 +189,11 @@
                                             <td style="background-color:{{item.rowcolor }}">{{item.clientName}}</td>
                                             <td style=" background-color:{{item.rowcolor }}">
                                                 <div ng-if="item.prfFlag =='Y'">
-                                                    <a href="@Url.Action("DownloadPRF","Admin")?projectID={{item.projectID}}&location={{item.projectlocation}}" class="btn btn-sm btn-info" style="width:50px; height:35px;">
+                                                    <a href="@Url.Action("DownloadPRF","Admin")?projectID={{item.projectID}}" class="btn btn-sm btn-info" style="width:50px; height:35px;">
                                                         <span style="font-size:12pt;">   PRF</span>
                                                     </a>
                                                 </div>
-
                                             </td>
-
-
 
                                             <td style="background-color:{{item.rowcolor }}">{{item.category}}</td>
                                             <td style="background-color:{{item.rowcolor }}">{{item.subcategory}}</td>
@@ -183,7 +214,6 @@
                                                         Assign
                                                     </button>
                                                 </div>
-
                                             </td>
                                             <td style="background-color:{{item.rowcolor }}">
 
@@ -208,27 +238,20 @@
                     <div class="modal fade bs-example-modal-send" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
-
                                 <div class="modal-body">
-
                                     <div class="modal-header">
                                         <h5 class="modal-title">Click to download the file. Or select the file to send to client</h5>
-                                        @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
                                     </div>
                                     <div class="row mt-2">
                                         <div class="form-group form-check " ng-repeat="itm in filelist">
                                             <input class="form-check-input check-kbox" type="checkbox" name="remember" ng-model="folder[itm]" id={{itm}}>
                                             <label class="form-check-label" for="terms-check">
-
                                                 <div>
                                                     <a href="@Url.Action("DownloadDWG", "Admin")?filename={{itm}}&pmID={{pmID}}&projectID={{projectID}}">{{itm}} </a>
                                                 </div>
-                                                 
                                             </label>
-                                           
                                         </div>
                                     </div>
-
                                     <div class="row">
                                         <div class="form-group form-check">
                                             <input class="form-check-input check-kbox" ng-model="chkGMail" type="checkbox" name="chkGMail" id="chkGMail">
@@ -266,14 +289,10 @@
                     <div class="modal fade bs-example-modal-Assign" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
-
                                 <div class="modal-body">
-
                                     <div class="modal-header">
                                         <h4 class="modal-title">Project Assign</h4>
-                                        @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
                                     </div>
-
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="col-xl-11 col-md-6">
@@ -282,15 +301,12 @@
                                                     <input ng-model="assignProjectID" type="text" class="form-control input-control light-bg" id="assignProjectID" readonly>
                                                 </div>
                                             </div>
-
-
                                             <div class="col-xl-11 col-md-6">
                                                 <div class="form-group mb-3">
                                                     <label>Designer </label>
                                                     <select class="form-control" ng-model="assignDesigner" ng-options="items.Text for items in assignDesignerList" style=""></select>
                                                 </div>
                                             </div>
-
                                             <div class="col-11">
                                                 <div class="form-group">
                                                     <label class="lable-text">Tech Remark</label>
@@ -306,7 +322,7 @@
                                                 <div class="form-group">
                                                     <button type="button" class="btn btn-secondary waves-effect waves-light" data-bs-dismiss="modal" aria-label="Close">Close</button>
                                                     &nbsp;&nbsp;
-                                                    <input type="button" class="btn btn-primary" ng-click="ProjectAssigned()" value="Submit" />
+                                                    <input type="button" class="btn btn-info  waves-effect waves-light" ng-click="ProjectAssigned()" value="Submit" />
                                                 </div>
                                             </div>
                                         </div>
@@ -316,30 +332,22 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="modal fade bs-example-modal-rollbackPopup" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
-
                                 <div class="modal-body">
-
                                     <div class="modal-header">
                                         <h4 class="modal-title">Roll Back</h4>
-                                        @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
                                     </div>
-
                                     <br /><br />
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="row">
                                                 <div class="form-group col-md-10">
-
                                                     <label class="form-lable" for="inlineFormCustomSelectPref">
                                                         Do you want to rollback the project  {{rollbackProjectID}}  ?
-
                                                     </label>
                                                 </div>
-
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -358,7 +366,6 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">Add New Project</h5>
-                                    @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
@@ -395,13 +402,13 @@
                                                         <div class="col-xl-12 col-md-6">
                                                             <div class="form-group mb-3">
                                                                 <label>Category </label>
-                                                                <select class="form-control" ng-model="addNewCategory" ng-options="item for item in addNewCategoryList" style="" ng-change="GetAddNewSubcategory()"></select>
+                                                                <select class="form-control" ng-model="addNewCategory" ng-options="item.Text for item in addNewCategoryList" style="" ng-change="GetAddNewSubcategory()"></select>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12">
                                                             <div class="mb-4">
                                                                 <label class="form-label" for="default-input">Subcategory</label>
-                                                                <select class="form-control" ng-model="addNewSubcategory" ng-options="item for item in addNewSubcategoryList" style=""></select>
+                                                                <select class="form-control" ng-model="addNewSubcategory" ng-options="item.Text for item in addNewSubcategoryList" style=""></select>
                                                             </div>
                                                         </div>
 
@@ -417,7 +424,7 @@
                                                                 <textarea class="form-control" ng-model="addNewTechRemark" rows="3" maxlength="200"></textarea>
                                                             </div>
                                                         </div>
-                                                        <div class="col-xl-12 col-md-6">
+                                                        <div class="col-xl-12 col-md-6" ng-hide="showMessage">
                                                             <div class="form-group mb-3">
                                                                 <label> <label class="my-1 mr-2 form-lable" style="color:red">{{lblNewErr}}</label></label>
 
@@ -427,8 +434,8 @@
                                                 </form>
                                             </div>
                                         </div>
-                                        <div class="col-lg-12">
-                                            <div class="text-center" ng-hide="loading1">
+                                        <div class="col-lg-12" ng-hide="loading1">
+                                            <div class="text-center" >
                                                 <button type="button" class="btn btn-dark waves-effect waves-light">
                                                     <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
                                                 </button>
@@ -437,13 +444,82 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary waves-effect waves-light" data-bs-dismiss="modal" aria-label="Close">Close</button>
                                             &nbsp;&nbsp;
-                                            <button type="button" ng-click="SubmitNewProject()" ng-hide="loadingMail" class="btn btn-primary waves-effect waves-light">Submit</button>
+                                            <button type="button" ng-click="SubmitNewProject()" ng-hide="loadingMail" class="btn btn-info waves-effect waves-light">Submit</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="modal fade bs-example-modal-projectdescription" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Project Description</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div>
+                                                <form id="pristine-valid-example" novalidate method="post">
+                                                    <input type="hidden" />
+                                                    <div class="row">
+
+                                                        <div class="col-xl-9 col-md-6">
+                                                            <div class="form-group mb-3">
+                                                                <label>Project ID </label>
+                                                                <input type="text" ng-model="pdID" onkeypress="return IsNumber();" class="form-control" placeholder="Project ID" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-2 col-md-6">
+                                                            <div class="form-group mb-3">
+
+                                                                <label>.</label>
+                                                                <button type="button" class="btn btn-info" ng-click="SearchDescription()">Search</button>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12 col-md-6">
+                                                            <div class="form-group mb-3">
+                                                                <label>Client name	 </label>
+                                                                <input type="text" ng-model="clientNameDescrtion" id="clientNameDescrtion" name="clientNameDescrtion" class="form-control" readonly />
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="form-group">
+                                                                <label class="lable-text">Project Description</label>
+                                                                <textarea cols="80" rows="5" id="projectDescription" class="form-control" ng-model="projectDescription"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12 col-md-6" ng-hide="showMessage">
+                                                            <div class="form-group mb-3">
+                                                                <label> <label class="my-1 mr-2 form-lable" style="color:red">{{lblNewErr}}</label></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12" ng-hide="loading1">
+                                            <div class="text-center" >
+                                                <button type="button" class="btn btn-dark waves-effect waves-light">
+                                                    <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary waves-effect waves-light" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                                            &nbsp;&nbsp;
+                                            <button type="button" ng-click="SavePRF()" ng-hide="loadingMail" class="btn btn-info waves-effect waves-light">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
                     <div class="modal fade bs-example-modal-center2" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -507,11 +583,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->
-
-
-
+                        </div> 
+                    </div> 
+                     
                     <div class="modal fade bs-example-modal-center3" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
@@ -547,7 +621,7 @@
             </div>
         </div>
     </div>
-    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+   
 </body>
 }
 

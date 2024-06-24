@@ -7,6 +7,9 @@
     <Property Name="adminSettingiD" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="companyID" Type="int" Nullable="false" />
     <Property Name="projectID" Type="bigint" Nullable="false" />
+    <Property Name="projectPrefix" Type="varchar" MaxLength="50" />
+    <Property Name="quotationID" Type="int" />
+    <Property Name="quotationPrefix" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="tblAmountReceive">
     <Key>
@@ -74,20 +77,6 @@
     <Property Name="emailID" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="pwd" Type="varchar" MaxLength="40" Nullable="false" />
   </EntityType>
-  <EntityType Name="tblOperation">
-    <Key>
-      <PropertyRef Name="operationID" />
-    </Key>
-    <Property Name="operationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="dt" Type="datetime" Nullable="false" />
-    <Property Name="staffID" Type="int" Nullable="false" />
-    <Property Name="designerAmount" Type="int" />
-    <Property Name="status" Type="varchar" MaxLength="50" />
-    <Property Name="remark" Type="varchar" MaxLength="50" />
-    <Property Name="payStatus" Type="varchar" MaxLength="30" />
-    <Property Name="projectCategory" Type="varchar" MaxLength="80" />
-    <Property Name="projectID" Type="bigint" Nullable="false" />
-  </EntityType>
   <EntityType Name="tblPRF">
     <Key>
       <PropertyRef Name="prfID" />
@@ -103,7 +92,7 @@
     <Property Name="cornerplotplan" Type="nvarchar" MaxLength="50" />
     <Property Name="plotside" Type="nvarchar" MaxLength="100" />
     <Property Name="boundrywall" Type="nvarchar" MaxLength="50" />
-    <Property Name="anyother" Type="nvarchar" MaxLength="500" />
+    <Property Name="anyother" Type="varchar(max)" />
     <Property Name="doorlintel" Type="nvarchar" MaxLength="100" />
     <Property Name="windowsill" Type="nvarchar" MaxLength="100" />
     <Property Name="windowlintel" Type="nvarchar" MaxLength="100" />
@@ -115,30 +104,10 @@
     </Key>
     <Property Name="projectID" Type="bigint" Nullable="false" />
     <Property Name="dt" Type="datetime" Nullable="false" />
-    <Property Name="clientID" Type="int" Nullable="false" />
-    <Property Name="projectType" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="projectLevel" Type="varchar" MaxLength="10" Nullable="false" />
-    <Property Name="package" Type="varchar" MaxLength="30" />
-    <Property Name="plotSize" Type="varchar" MaxLength="50" />
-    <Property Name="amount" Type="int" Nullable="false" />
-    <Property Name="status" Type="varchar" MaxLength="20" />
     <Property Name="remark" Type="varchar" MaxLength="100" />
-    <Property Name="projectname" Type="varchar" MaxLength="100" />
     <Property Name="projectlocation" Type="varchar(max)" />
     <Property Name="finalizeAmount" Type="bigint" />
-    <Property Name="service" Type="varchar" MaxLength="300" />
-  </EntityType>
-  <EntityType Name="tblProjectDetailItem">
-    <Key>
-      <PropertyRef Name="projectDetailItemID" />
-    </Key>
-    <Property Name="projectDetailItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="projectID" Type="bigint" Nullable="false" />
-    <Property Name="projectDetail" Type="varchar(max)" />
-    <Property Name="service" Type="varchar(max)" Nullable="false" />
-    <Property Name="area" Type="varchar" MaxLength="500" />
-    <Property Name="rate" Type="int" />
-    <Property Name="amount" Type="int" />
+    <Property Name="quotationID" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="tblProjectManagement">
     <Key>
@@ -176,6 +145,34 @@
     <Property Name="category" Type="varchar" MaxLength="500" Nullable="false" />
     <Property Name="subcategory" Type="varchar" MaxLength="500" Nullable="false" />
     <Property Name="filename" Type="varchar" MaxLength="500" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblQuotation">
+    <Key>
+      <PropertyRef Name="quotationID" />
+    </Key>
+    <Property Name="quotationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="quotationNo" Type="int" Nullable="false" />
+    <Property Name="dt" Type="datetime" Nullable="false" />
+    <Property Name="projectName" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="services" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="total" Type="int" Nullable="false" />
+    <Property Name="remark" Type="varchar" MaxLength="250" />
+    <Property Name="clientID" Type="int" Nullable="false" />
+    <Property Name="status" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblQuotationItem">
+    <Key>
+      <PropertyRef Name="quotationItemID" />
+    </Key>
+    <Property Name="quotationItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="quotationID" Type="int" Nullable="false" />
+    <Property Name="projectDescription" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="service" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="hsn" Type="varchar" MaxLength="50" />
+    <Property Name="qty" Type="int" Nullable="false" />
+    <Property Name="prjUnit" Type="varchar" MaxLength="80" Nullable="false" />
+    <Property Name="rate" Type="int" Nullable="false" />
+    <Property Name="amount" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="tblStaff">
     <Key>
@@ -270,30 +267,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__tblOperat__proje__5FB337D6">
-    <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
-    <End Role="tblOperation" Type="Self.tblOperation" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tblProjectDetail">
-        <PropertyRef Name="projectID" />
-      </Principal>
-      <Dependent Role="tblOperation">
-        <PropertyRef Name="projectID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__tblProjec__proje__7D439ABD">
-    <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
-    <End Role="tblProjectDetailItem" Type="Self.tblProjectDetailItem" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tblProjectDetail">
-        <PropertyRef Name="projectID" />
-      </Principal>
-      <Dependent Role="tblProjectDetailItem">
-        <PropertyRef Name="projectID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_tblAdminSetting_companyID">
     <End Role="tblCompanyProfile" Type="Self.tblCompanyProfile" Multiplicity="1" />
     <End Role="tblAdminSetting" Type="Self.tblAdminSetting" Multiplicity="*" />
@@ -330,18 +303,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_tblOperation_staffID">
-    <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
-    <End Role="tblOperation" Type="Self.tblOperation" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tblStaff">
-        <PropertyRef Name="staffID" />
-      </Principal>
-      <Dependent Role="tblOperation">
-        <PropertyRef Name="staffID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_tblPRF_projectDetail_projectID">
     <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="1" />
     <End Role="tblPRF" Type="Self.tblPRF" Multiplicity="*" />
@@ -354,15 +315,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_tblProjectDetail_ClientID">
-    <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
+  <Association Name="FK_tblProjectDetail_QuotationID">
+    <End Role="tblQuotation" Type="Self.tblQuotation" Multiplicity="1" />
     <End Role="tblProjectDetail" Type="Self.tblProjectDetail" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="tblClient">
-        <PropertyRef Name="clientID" />
+      <Principal Role="tblQuotation">
+        <PropertyRef Name="quotationID" />
       </Principal>
       <Dependent Role="tblProjectDetail">
-        <PropertyRef Name="clientID" />
+        <PropertyRef Name="quotationID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -426,6 +387,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_tblQuotation_clientID">
+    <End Role="tblClient" Type="Self.tblClient" Multiplicity="1" />
+    <End Role="tblQuotation" Type="Self.tblQuotation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblClient">
+        <PropertyRef Name="clientID" />
+      </Principal>
+      <Dependent Role="tblQuotation">
+        <PropertyRef Name="clientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblQuotationItem_quotationID">
+    <End Role="tblQuotation" Type="Self.tblQuotation" Multiplicity="1" />
+    <End Role="tblQuotationItem" Type="Self.tblQuotationItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblQuotation">
+        <PropertyRef Name="quotationID" />
+      </Principal>
+      <Dependent Role="tblQuotationItem">
+        <PropertyRef Name="quotationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_tblStaffLedger_staffID">
     <End Role="tblStaff" Type="Self.tblStaff" Multiplicity="1" />
     <End Role="tblStaffLedger" Type="Self.tblStaffLedger" Multiplicity="*" />
@@ -481,13 +466,13 @@
     <EntitySet Name="tblClient" EntityType="Self.tblClient" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblClientLedger" EntityType="Self.tblClientLedger" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblCompanyProfile" EntityType="Self.tblCompanyProfile" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="tblOperation" EntityType="Self.tblOperation" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblPRF" EntityType="Self.tblPRF" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProjectDetail" EntityType="Self.tblProjectDetail" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="tblProjectDetailItem" EntityType="Self.tblProjectDetailItem" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProjectManagement" EntityType="Self.tblProjectManagement" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProjectSiteVisit" EntityType="Self.tblProjectSiteVisit" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProjectUploadFile" EntityType="Self.tblProjectUploadFile" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblQuotation" EntityType="Self.tblQuotation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblQuotationItem" EntityType="Self.tblQuotationItem" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblStaff" EntityType="Self.tblStaff" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblStaffLedger" EntityType="Self.tblStaffLedger" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblStaffPaid" EntityType="Self.tblStaffPaid" Schema="dbo" store:Type="Tables" />
@@ -498,14 +483,6 @@
     <AssociationSet Name="FK__tblClient__compa__5EBF139D" Association="Self.FK__tblClient__compa__5EBF139D">
       <End Role="tblCompanyProfile" EntitySet="tblCompanyProfile" />
       <End Role="tblClient" EntitySet="tblClient" />
-    </AssociationSet>
-    <AssociationSet Name="FK__tblOperat__proje__5FB337D6" Association="Self.FK__tblOperat__proje__5FB337D6">
-      <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
-      <End Role="tblOperation" EntitySet="tblOperation" />
-    </AssociationSet>
-    <AssociationSet Name="FK__tblProjec__proje__7D439ABD" Association="Self.FK__tblProjec__proje__7D439ABD">
-      <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
-      <End Role="tblProjectDetailItem" EntitySet="tblProjectDetailItem" />
     </AssociationSet>
     <AssociationSet Name="FK_tblAdminSetting_companyID" Association="Self.FK_tblAdminSetting_companyID">
       <End Role="tblCompanyProfile" EntitySet="tblCompanyProfile" />
@@ -519,16 +496,12 @@
       <End Role="tblClient" EntitySet="tblClient" />
       <End Role="tblClientLedger" EntitySet="tblClientLedger" />
     </AssociationSet>
-    <AssociationSet Name="FK_tblOperation_staffID" Association="Self.FK_tblOperation_staffID">
-      <End Role="tblStaff" EntitySet="tblStaff" />
-      <End Role="tblOperation" EntitySet="tblOperation" />
-    </AssociationSet>
     <AssociationSet Name="FK_tblPRF_projectDetail_projectID" Association="Self.FK_tblPRF_projectDetail_projectID">
       <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
       <End Role="tblPRF" EntitySet="tblPRF" />
     </AssociationSet>
-    <AssociationSet Name="FK_tblProjectDetail_ClientID" Association="Self.FK_tblProjectDetail_ClientID">
-      <End Role="tblClient" EntitySet="tblClient" />
+    <AssociationSet Name="FK_tblProjectDetail_QuotationID" Association="Self.FK_tblProjectDetail_QuotationID">
+      <End Role="tblQuotation" EntitySet="tblQuotation" />
       <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
     </AssociationSet>
     <AssociationSet Name="FK_tblProjectManagement_projectID" Association="Self.FK_tblProjectManagement_projectID">
@@ -550,6 +523,14 @@
     <AssociationSet Name="FK_tblProjectUploadFile_projectID" Association="Self.FK_tblProjectUploadFile_projectID">
       <End Role="tblProjectDetail" EntitySet="tblProjectDetail" />
       <End Role="tblProjectUploadFile" EntitySet="tblProjectUploadFile" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblQuotation_clientID" Association="Self.FK_tblQuotation_clientID">
+      <End Role="tblClient" EntitySet="tblClient" />
+      <End Role="tblQuotation" EntitySet="tblQuotation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblQuotationItem_quotationID" Association="Self.FK_tblQuotationItem_quotationID">
+      <End Role="tblQuotation" EntitySet="tblQuotation" />
+      <End Role="tblQuotationItem" EntitySet="tblQuotationItem" />
     </AssociationSet>
     <AssociationSet Name="FK_tblStaffLedger_staffID" Association="Self.FK_tblStaffLedger_staffID">
       <End Role="tblStaff" EntitySet="tblStaff" />

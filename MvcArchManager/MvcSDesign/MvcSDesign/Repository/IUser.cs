@@ -14,7 +14,8 @@ namespace MvcSDesign.Repository
         //string userVarifiction(string username, string pwd, ref int regID, ref string name);
         List<TaskListModel> GetTaskAssign(int regID);
         string ChangeCredential(int staffID, string pwd);
-
+        string CompeleteDesignerTask(int pmID, int taskID);
+        
         string UploadDesignerTask(int pmID, int taskID, List<HttpPostedFileBase> fileToUpload );
         int fillGraphMonthlyPerformance(int regID);
         List<operation> getWeeklyPerformance(int regID);

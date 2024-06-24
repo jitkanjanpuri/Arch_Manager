@@ -127,6 +127,7 @@ namespace MvcSDesign.Controllers
                 if (ch == "")
                 {
                     ViewBag.message = "Record successfully saved";
+                    ModelState.Clear();
                 }
                 else
                     ViewBag.message = ch;
@@ -137,17 +138,117 @@ namespace MvcSDesign.Controllers
             return View();
         }
 
+       
+        public ActionResult Subcategory()
+        {
+            SubcategoryModel obj = new SubcategoryModel();
+            obj.categoryList = GetCategoryName();
+            return View(obj);
+        }
+
+
+        [HttpPost]
+        public ActionResult Subcategory(SubcategoryModel obj)
+        {
+
+            if (obj.subcategoryID == 0) ModelState.Remove("subcategoryID");
+            if (ModelState.IsValid)
+            {
+                string ch = _IAmn.SaveSubcategory(obj);
+                if (ch == "")
+                {
+                    ViewBag.message = "Record successfully saved";
+                    ModelState.Clear();
+                    return RedirectToAction("Subcategory");
+                }
+                else
+                    ViewBag.message = ch;
+                
+            }
+            // var res = ModelState.Values.SelectMany(v => v.Errors);
+            obj.categoryList = GetCategoryName();
+            return View(obj);
+        }
+
+        IEnumerable<SelectListItem> GetCategoryName()
+        {
+            var lst = new List<SelectListItem>();
+            var res = _IAmn.GetAllCategory();
+
+            foreach(var item in res)
+            {
+                lst.Add(
+                      new SelectListItem
+                      {
+                          Text = item.categoryName,
+                          Value = item.categoryID.ToString()
+                      }
+                     );
+            }
+           
+            return lst; 
+             
+        }
+
+        public JsonResult GetCategoryDDL()
+        {
+            var lst = new List<SelectListItem>();
+            var res = _IAmn.GetAllCategory();
+
+            foreach (var item in res)
+            {
+                lst.Add(
+                      new SelectListItem
+                      {
+                          Text = item.categoryName,
+                          Value = item.categoryID.ToString()
+                      }
+                     );
+            }
+            return Json(lst, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetSubcategoryDDL(string id)
+        {
+            return Json(_IAmn.GetSubcategoryDDL(int.Parse(id)), JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult GetAllCategory()
         {
             return Json(_IAmn.GetAllCategory(), JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetAllSubcategory()
+        {
+            return Json(_IAmn.GetAllSubcategory(), JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult DeleteCategory(string id)
+        {
+            return Json(_IAmn.DeleteCategory(int.Parse(id)), JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult DeleteSubcategory(string id)
+        {
+            return Json(_IAmn.DeleteSubcategory(int.Parse(id)), JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult AdminSetting()
         {
-            AdminSettingModel obj = new AdminSettingModel();
-            obj.projectID = GetStartProjectID();
+           // AdminSettingModel obj = new AdminSettingModel();
+            //obj.projectID =_IAmn.GetStartProjectID();// GetStartProjectID();
+
+            AdminSettingModel rec = new AdminSettingModel();
+            rec = _IAmn.GetAdminSetting();
+            //if(rec !=null)
+            //{
+            //   obj.projectID = rec.projectID ;
+            //   obj.prefixPrejectID  =  rec.prefixPrejectID;
+            //   obj.prefixQuotationID = rec.prefixQuotationID;
+            //   obj.quotationID = rec.quotationID;
+            //}
+
             ViewBag.message = "";
-            return View(obj);
+            return View(rec);
         }
         [HttpPost]
         public ActionResult AdminSetting(AdminSettingModel obj)
@@ -167,18 +268,22 @@ namespace MvcSDesign.Controllers
                 
 
             
-            AdminSettingModel obj1 = new AdminSettingModel();
-            obj1.projectID = GetStartProjectID();
+            AdminSettingModel rec = new AdminSettingModel();
+            rec = _IAmn.GetAdminSetting();
+            if(rec !=null)
+            {
+               obj.projectID = rec.projectID ;
+               obj.prefixPrejectID  =  rec.prefixPrejectID;
+               obj.prefixQuotationID = rec.prefixQuotationID;
+               obj.quotationID = rec.quotationID;
+            }
+
             return View(obj);
         }
-       
-        long GetStartProjectID()
-        {
-            return _IAmn.GetStartProjectID();
-
-        }
+        
         public JsonResult GetPRFByPrjectID(string projectID)
         {
+            
             return Json(_IAmn.GetPRFByPrjectID(int.Parse(projectID)), JsonRequestBehavior.AllowGet);
         }
 
@@ -233,6 +338,7 @@ namespace MvcSDesign.Controllers
 
                 
             }
+
             return RedirectToAction("CompanyProfile");
         }
 
@@ -242,10 +348,10 @@ namespace MvcSDesign.Controllers
         }
 
 
-        public JsonResult getProjectQuotation()
-        {
-            var prj = _IAmn.getProjectQuotation();
-            return Json(prj, JsonRequestBehavior.AllowGet);
+        public JsonResult getProjectQuotation(string opt, string quotationNo, string cname, string pname)
+        { 
+      
+            return Json(_IAmn.getProjectQuotation(opt, quotationNo, cname,  pname), JsonRequestBehavior.AllowGet);
         }
 
 
@@ -253,184 +359,30 @@ namespace MvcSDesign.Controllers
         {
             return Json(_IAmn.getQuotation(), JsonRequestBehavior.AllowGet);
         }
-        public JsonResult SaveProjectManagement(string clientid, string level, string projectID, string finalAmount)
+        public JsonResult SaveProjectManagement(string clientid, string qno, string finalAmount)
         {
             string res = "";
             try
             {
-               
-                    string pth = HostingEnvironment.MapPath("~//ProjectLocation//");
-                    string subfolder = "";
- 
-                    pth = pth + "//client_" + clientid;
-                    //client folder check
-                    if (!Directory.Exists(pth))
-                    {
-                        Directory.CreateDirectory(pth);
-                    }
-                    //project folder create
-                    pth = pth + "//proj_" + projectID;
+
+                string pth = HostingEnvironment.MapPath("~//ProjectLocation//");
+                string subfolder = "";
+
+                pth = pth + "//client_" + clientid;
+                //client folder check
+                if (!Directory.Exists(pth))
+                {
                     Directory.CreateDirectory(pth);
+                }
+                //project folder create
+                pth = pth + "//proj_" + qno;
+                Directory.CreateDirectory(pth);
 
-                    subfolder = pth + "//Site Photo";
-                    Directory.CreateDirectory(subfolder);
-
-                    subfolder = pth + "//Presentation Drawing";
-                    Directory.CreateDirectory(subfolder);
-
-                        string ch = subfolder + "//Presentation Drawing With Furniture Layout Water Tank UG Rain Water Tank";
-                        Directory.CreateDirectory(ch);
-
-                        ch = subfolder + "//Floor Plans Ground To Terrace";
-                        Directory.CreateDirectory(ch);
-
-                    subfolder = pth + "//Structure Drawing";
-                    Directory.CreateDirectory(subfolder);
-
-                        ch = subfolder + "//Center Line Plan";
-                        Directory.CreateDirectory(ch);
-
-                        ch = subfolder + "//Column Footing Column and Footing Design";
-                        Directory.CreateDirectory(ch);
-
-                        ch = subfolder + "//Plinth Beam plan and Design";
-                        Directory.CreateDirectory(ch);
-
-                        ch = subfolder + "//UG Tank Detail Septic Tank Fire Tank Rain Water Tank";
-                        Directory.CreateDirectory(ch);
-
-                    //Ground
-                    subfolder = pth + "//Ground Floor Drawing";
-                    Directory.CreateDirectory(subfolder);
-
-                        ch = subfolder + "//Working Drawing";
-                        Directory.CreateDirectory(ch);
-
-                        ch = subfolder + "//Door and Window Schedule";
-                        Directory.CreateDirectory(ch);
-
-                        ch = subfolder + "//Lintel Beam";
-                        Directory.CreateDirectory(ch);
-
-                        ch = subfolder + "//StairCase Detail Drawing";
-                        Directory.CreateDirectory(ch);
-
-                        ch = subfolder + "//Wall Electrical";
-                        Directory.CreateDirectory(ch);
-
-                        ch = subfolder + "//Roof Electrial";
-                        Directory.CreateDirectory(ch);
-
-                        ch = subfolder + "//Ground Floor Shuttering";
-                        Directory.CreateDirectory(ch);
-
-                        ch = subfolder + "//Ground Floor Beam and Slab Design";
-                        Directory.CreateDirectory(ch);
-
-                        ch = subfolder + "//2D Elevation";
-                        Directory.CreateDirectory(ch);
-
-                        ch = subfolder + "//2D Elevation Electrical";
-                        Directory.CreateDirectory(ch);
-
-                        ch = subfolder + "//Plumbing Drainage and Rain Water Drawing";
-                        Directory.CreateDirectory(ch);
-
-                        ch = subfolder + "//Toilet Plan and Detail Niche and Other Working Drawing";
-                        Directory.CreateDirectory(ch);
-
-                        ch = subfolder + "//Compound Wall";
-                        Directory.CreateDirectory(ch);
-
-                //First Floor
-                if (level == "Ground") goto Here;
-                subfolder = pth + "//First Floor Drawing";
+                subfolder = pth + "//Site Photo";
                 Directory.CreateDirectory(subfolder);
 
-                    ch = subfolder + "//Working Drawing";
-                    Directory.CreateDirectory(ch);
 
-                    ch = subfolder + "//Door and Window Schedule";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//Lintel Beam";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//StairCase Detail Drawing";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//Wall Electrical";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//Roof Electrial";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//First Floor Shuttering";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//First Floor Beam and Slab Design";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//2D Elevation";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//2D Elevation Electrical";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//Plumbing Drainage and Rain Water";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//Toilet Plan and Detail Niche and Other Working Drawing";
-                    Directory.CreateDirectory(ch);
-                 
-
-
-                if (level == "G+1") goto Here;
-                subfolder = pth + "//Second Floor Drawing";
-                Directory.CreateDirectory(subfolder);
-
-                    ch = subfolder + "//Working Drawing";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//Door and Window Schedule";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//Lintel Beam";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//StairCase Detail Drawing";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//Wall Electrical";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//Roof Electrial";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//First Floor Shuttering";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//First Floor Beam and Slab Design";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//2D Elevation";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//2D Elevation Electrical";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//Plumbing Drainage and Rain Water";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//Toilet Plan and Detail Niche and Other Workinge";
-                    Directory.CreateDirectory(ch);
-
-                    ch = subfolder + "//Perapet Wall";
-                    Directory.CreateDirectory(ch);
-
-
-                Here:
-                   res =  _IAmn.UpdateQuotation(int.Parse(projectID), int.Parse(finalAmount), pth);
+                res =  _IAmn.SaveProject(int.Parse(qno), int.Parse(finalAmount), pth);
                
             }
             catch (Exception ex)
@@ -443,12 +395,12 @@ namespace MvcSDesign.Controllers
 
 
 
-        public JsonResult QuotationDelete(string projectID)
+        public JsonResult QuotationDelete(string quoID)
         {
             string ch = "";
             try
             {
-                ch = _IAmn.QuotationDelete(int.Parse(projectID));
+                ch =_IAmn.QuotationDelete(int.Parse(quoID));
             }
             catch (Exception ex) { }
             return Json(ch, JsonRequestBehavior.AllowGet);
@@ -523,8 +475,6 @@ namespace MvcSDesign.Controllers
             catch (Exception ex) { }
 
             return obj;
-
-
         }
 
 
@@ -540,15 +490,9 @@ namespace MvcSDesign.Controllers
 
                 foreach (HttpPostedFileBase item in sitevisitPhoto)
                 {
-                //    if (sitevisitPhoto != null)
-                //{
                     ext = Path.GetExtension(item.FileName);
                     fname = "SitePhoto_" + obj.projectID + "_" + "_" + DateTime.Now.Day + DateTime.Now.Month + DateTime.Now.Year + DateTime.Now.Hour + DateTime.Now.Minute + DateTime.Now.Second;
                     fpath = HostingEnvironment.MapPath("~/ProjectLocation/client_" + res.clientID + "/proj_" + projectID + "/Site Photo/"+ fname + ext);
-                    //fname = fname + ext;
-                    //fpath +=  fname;
-                    //sitevisitPhoto.SaveAs(fpath);
-                   // string f = sitevisitPhoto.
                     string ch = fc.Save(item, fpath);
                     if (filename == "")
                         filename = fname + ext;
@@ -561,10 +505,18 @@ namespace MvcSDesign.Controllers
             return RedirectToAction("SiteVisit");
         }
 
-        public JsonResult SearchSiteVisitByNameOrProjectID(string opt, string projectID, string cname, string pname)
+        public JsonResult SearchSiteVisitByNameOrQuotatioNo(string opt, string qNo, string cname, string pname)
         {
-            return Json(_IAmn.SearchSiteVisitByNameOrProjectID(opt, projectID, cname, pname), JsonRequestBehavior.AllowGet);
+            return Json(_IAmn.SearchSiteVisitByNameOrQuotatioNo(opt, qNo, cname, pname), JsonRequestBehavior.AllowGet);
         }
+
+
+        public JsonResult  SearchByNameOrProjectID(string opt, string pid, string cname, string pname)
+        {
+            return Json(_IAmn.SearchByNameOrProjectID(opt, pid, cname, pname), JsonRequestBehavior.AllowGet);
+        }
+
+
 
         public JsonResult SearchByProjectIDOrName(string opt, string projectID, string cname)
         {
@@ -576,11 +528,16 @@ namespace MvcSDesign.Controllers
         {
             return Json(_IAmn.GetCurrentWorking(dname, category, subcategory), JsonRequestBehavior.AllowGet);
         }
-        public FileResult DownloadDWG(string filename, string pmID, string projectID)
+        public ActionResult DownloadDWG(string filename, string pmID, string projectID)
         {
             string ext = Path.GetExtension(filename);
             string fpath= _IAmn.GetFilePath(int.Parse(pmID),  filename);
             string contentType = "application/octet-stream";
+            if (!System.IO.File.Exists(fpath))
+            {
+                return RedirectToAction("HttpError500");
+            }
+
             return File(fpath, contentType, filename);
         }
 
@@ -593,9 +550,9 @@ namespace MvcSDesign.Controllers
             string ch = _IAmn.SendTaskMailToClien(int.Parse(pmID), int.Parse(pid), filelist, out uploadedFileName, gmail);
             if (ch == "Y")
             {
-                _IAmn.SaveStatus("Start Delete Project Management");
+               ///_IAmn.SaveStatus("Start Delete Project Management");
                 ch = _IAmn.DeleteProjectManagement(int.Parse(pmID), uploadedFileName);
-                _IAmn.SaveStatus("Status : " + ch);
+              // _IAmn.SaveStatus("Status : " + ch);
 
             }
             List<SelectListItem> para = new List<SelectListItem>();
@@ -633,34 +590,46 @@ namespace MvcSDesign.Controllers
         {
             return Json(_IAmn.AddSearchProject_ClientName(int.Parse(pid)), JsonRequestBehavior.AllowGet);
         }
-        public FileResult DownloadPRF(string projectID, string location)
+        public ActionResult DownloadPRF(string projectID)
         {
-            string pdfpath = _IAmn.DownloadPRF(projectID, location);
+            string pdfpath = _IAmn.DownloadPRF(int.Parse(projectID));
             string filename = System.IO.Path.GetFileName(pdfpath);
             string contentType = "application/pdf";
-
+            if (!System.IO.File.Exists(pdfpath))
+            {
+                return RedirectToAction("HttpError500");
+            }
             return File(pdfpath, contentType, filename);
         }
 
-        public FileResult DownloadSiteVisit(string projectID,  string filename)
+        public ActionResult DownloadSiteVisit(string projectID,  string filename)
         {
             string pdfpath = _IAmn.DownloadSiteVist(int.Parse(projectID), filename);
             filename = System.IO.Path.GetFileName(pdfpath);
             string contentType = "application/pdf";
-
+            if (!System.IO.File.Exists(pdfpath))
+            {
+                return RedirectToAction("HttpError500");
+            }
             return File(pdfpath, contentType, filename);
         }
-
-        public FileResult DownloadUploadFile(string projectID, string uploafFileID,string filename)
+        [HandleError]
+        public ActionResult DownloadUploadFile(string projectID, string uploafFileID,string filename)
         {
             string pdfpath = _IAmn.DownloadUploadFile(int.Parse(projectID), int.Parse(uploafFileID), filename);
             filename = System.IO.Path.GetFileName(pdfpath);
             string contentType = "application/pdf";
-
+            if (!System.IO.File.Exists(pdfpath))
+            {
+                return RedirectToAction("HttpError500");
+            }
             return File(pdfpath, contentType, filename);
         }
 
-
+        public ActionResult HttpError500()
+        {
+            return View("~/Views/Shared/Error.cshtml");
+        }
         public ActionResult ReportProjectHistory()
         {
             try
@@ -713,22 +682,14 @@ namespace MvcSDesign.Controllers
             StaffModel obj = new StaffModel();
             try
             {
-                //string ch = Session["user"].ToString();
-                ViewBag.message = "";
+               ViewBag.message = TempData["save"].ToString();
             }
             catch (Exception ex)
             {
-                //FormsAuthentication.SignOut();
-                //FormsAuthentication.SetAuthCookie("", true);
-
-                //return RedirectToAction("Index", "Login");
+                
             }
-            if (ViewBag.message !="success")
-             {
-                 ViewBag.message = "";
-             }
+             
             obj.designerList = GetDesignerTypeList();
-            obj.rollList = GetRollList();
             return View(obj);
         }
 
@@ -786,7 +747,7 @@ namespace MvcSDesign.Controllers
 
 
         [HttpPost]
-        public ActionResult Registration(StaffModel st)
+        public ActionResult Registration(StaffModel st,  HttpPostedFileBase empPhoto)
         {
             try
             {
@@ -799,11 +760,13 @@ namespace MvcSDesign.Controllers
 
                 //return RedirectToAction("Index", "Login");
             }
-            ViewBag.message = "";
             
             if (ModelState.IsValid)
             {
-                string ch = _IAmn.InsertRegistration(st);
+                 
+                int staffID =0;
+                string ch = _IAmn.InsertRegistration(st, ref staffID);
+                        
                 if (ch != "")
                 {
                     ViewBag.message = ch;
@@ -811,41 +774,72 @@ namespace MvcSDesign.Controllers
                 else
                 {
                     ModelState.Clear();
-                    ViewBag.message = "";
+                    TempData["save"] ="success";
+                    if (empPhoto != null)
+                    {
+                        string[] deletepth = Directory.GetFiles(HostingEnvironment.MapPath("~//Images//staffPhotos//"));
+                        string empName = "emp"+staffID;
+                        foreach (string fpth in deletepth)
+                            {
+                            string fname = Path.GetFileNameWithoutExtension(fpth);
+                            if(fname == empName)
+                            { 
+                                fname +=Path.GetExtension(fpth);
+                                string fpath1  =  Directory.GetFiles(HostingEnvironment.MapPath("~//Images//staffPhotos//"))+fname;
+                                System.IO.File.Delete(fpath1);
+                            }
+                        }
+                        string fpath = HostingEnvironment.MapPath("~//Images//staffPhotos//") +"emp"+staffID + Path.GetExtension(empPhoto.FileName);
+                        empPhoto.SaveAs(fpath);
+                    }
                     return RedirectToAction("Registration");
-                }
-
+                 }
             }
             StaffModel obj = new StaffModel();
             obj.designerList = GetDesignerTypeList();
-            obj.rollList = GetRollList();
             return View(obj);
         }
 
-        public JsonResult CheckDesignertNameExists(string name)
-        {
-            bool UserExists = _IAmn.DesignerNameValidation(name);
-            return Json(UserExists, JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult DesignerEmailValidation(string emailID)
-        {
-            bool emailExist =  _IAmn.DesignerEmailValidation(emailID);
-            return Json(emailExist, JsonRequestBehavior.AllowGet);
+        //public JsonResult CheckDesignertNameExists(string name)
+        //{
+        //    bool UserExists = _IAmn.DesignerNameValidation(name);
+        //    return Json(UserExists, JsonRequestBehavior.AllowGet);
+        //}
+        //public JsonResult DesignerEmailValidation(string emailID)
+        //{
+        //    bool emailExist =  _IAmn.DesignerEmailValidation(emailID);
+        //    return Json(emailExist, JsonRequestBehavior.AllowGet);
 
-        }
+        //}
         public JsonResult SearchRegistration(string name)
         {
-            //List<tblStaff> obj = new List<tblStaff>();
-            //if (name == null) name = "";
-            //var lst = .OrderBy(x => x.name);
-
-            
-
             return Json(_IAmn.SearchRegistration(name), JsonRequestBehavior.AllowGet);
         }
         public JsonResult GatAllRegistration()
         {
-            return Json(_IAmn.GatAllRegistration(), JsonRequestBehavior.AllowGet);
+            var res = _IAmn.GatAllRegistration();
+
+            string[] allPhotos = Directory.GetFiles(HostingEnvironment.MapPath("~//Images//staffPhotos//"));
+            foreach(var item in res)
+            {
+                string empName = "emp"+item.staffID;
+                foreach (string fpth in allPhotos)
+                {
+                    string fname = Path.GetFileNameWithoutExtension(fpth);
+                    if(fname == empName)
+                    {  
+                      item.photo = fname +Path.GetExtension(fpth);
+                    }
+                    else
+                    {
+                         item.photo = "dummy.png";
+                    }
+                }
+
+            }
+
+
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult SearchAddProject(string projectID)
@@ -858,9 +852,10 @@ namespace MvcSDesign.Controllers
         public JsonResult SaveNewProject(operation obj)
         {
            return Json(_IAmn.SaveNewProject(obj), JsonRequestBehavior.AllowGet);
+
         }
 
-        public JsonResult RegistrationUpdate(string staffID, string name, string designation, string address, string city, string phone, string mobile, string emailID, string user, string password)
+        public JsonResult RegistrationUpdate(string staffID, string name, string designation, string address, string city, string phone, string mobile, string emailID, string user, string password, HttpPostedFileBase empPhoto)
         {
             obj.staffID = int.Parse(staffID);
             obj.name = name.Trim();
@@ -877,6 +872,25 @@ namespace MvcSDesign.Controllers
             obj.username = user;
             obj.password = password;
             string ch = _IAmn.RegistrationUpdate(obj);
+            if (empPhoto != null)
+            {
+                string[] deletepth = Directory.GetFiles(HostingEnvironment.MapPath("~//Images//staffPhotos//"));
+                string empName = "emp"+staffID;
+                foreach (string fpth in deletepth)
+                    {
+                    string fname = Path.GetFileNameWithoutExtension(fpth);
+                    if(fname == empName)
+                    { 
+                        fname +=Path.GetExtension(fpth);
+                        string fpath1  =  Directory.GetFiles(HostingEnvironment.MapPath("~//Images//staffPhotos//"))+fname;
+                        System.IO.File.Delete(fpath1);
+                    }
+                }
+                string fpath = HostingEnvironment.MapPath("~//Images//staffPhotos//") +"emp"+staffID + Path.GetExtension(empPhoto.FileName);
+                empPhoto.SaveAs(fpath);
+            }
+
+
             return Json(ch, JsonRequestBehavior.AllowGet);
 
         }
@@ -960,13 +974,13 @@ namespace MvcSDesign.Controllers
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
-        //public JsonResult getCurrentWorkingList(string dname)
-        //{
-        //    var lst = _IAmn.getCurrentWorkingList(dname);
-        //    return Json(lst, JsonRequestBehavior.AllowGet);
-        //}
+        public JsonResult GetAllCurrentWorking()
+        {
+          //  var lst = _IAmn.GetAllCurrentWorking();
+            return Json(_IAmn.GetAllCurrentWorking(), JsonRequestBehavior.AllowGet);
+        }
 
-  
+
         public JsonResult CurrentWorkingRemarkUpdate(string opID, string remark)
         {
             string ch = _IAmn.CurrentWorkingRemarkUpdate(int.Parse(opID) ,  remark);
@@ -1012,11 +1026,11 @@ namespace MvcSDesign.Controllers
             return View();
         }
        
-        public JsonResult SavePayDesigner(string sid, string amount,  string remark)
-        {
-            string ch = _IAmn.SavePayDesigner(int.Parse(sid), int.Parse (amount), remark);
-            return Json(ch, JsonRequestBehavior.AllowGet);
-        }
+        //public JsonResult SavePayDesigner(string sid, string amount,  string remark)
+        //{
+        //    string ch = _IAmn.SavePayDesigner(int.Parse(sid), int.Parse (amount), remark);
+        //    return Json(ch, JsonRequestBehavior.AllowGet);
+        //}
 
 
         public JsonResult SaveAmountReceive(string clientID, string projectID, string amount, string remark, string gmail)
@@ -1024,16 +1038,16 @@ namespace MvcSDesign.Controllers
             return Json(_IAmn.SaveAmountReceive(int.Parse(clientID), int.Parse(projectID), amount, remark, gmail), JsonRequestBehavior.AllowGet);  
         }
         
-        public JsonResult getDesignerProjectAmount(string designerID)
-        {
-            var lst = _IAmn.getDesignerProjectAmount(int.Parse(designerID));
-            return Json(lst, JsonRequestBehavior.AllowGet);
-        } 
-        public JsonResult DesignerAmountCancel(string operationID)
-        {
-            obj.name = _IAmn.DesignerAmountCancel(int.Parse(operationID));
-            return Json(obj, JsonRequestBehavior.AllowGet);
-        }
+        //public JsonResult getDesignerProjectAmount(string designerID)
+        //{
+        //    var lst = _IAmn.getDesignerProjectAmount(int.Parse(designerID));
+        //    return Json(lst, JsonRequestBehavior.AllowGet);
+        //} 
+        //public JsonResult DesignerAmountCancel(string operationID)
+        //{
+        //    obj.name = _IAmn.DesignerAmountCancel(int.Parse(operationID));
+        //    return Json(obj, JsonRequestBehavior.AllowGet);
+        //}
 
         public ActionResult PromoMail()
         {
@@ -1130,8 +1144,7 @@ namespace MvcSDesign.Controllers
 
         public JsonResult RptClientReceive(string cname, string fromDt, string toDt)
         {
-            var rep = _IAmn.RptClientReceive(cname, fromDt, toDt );
-            return Json(rep, JsonRequestBehavior.AllowGet);
+            return Json(_IAmn.RptClientReceive(cname, fromDt, toDt ), JsonRequestBehavior.AllowGet);
         }
         public JsonResult RptClientReceivePrint(string recID)
         {
@@ -1146,9 +1159,9 @@ namespace MvcSDesign.Controllers
             return Json(_IAmn.RptOutstanding(cname, fromDt, toDt), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult RptTechnical(string designerID, string fromDt, string toDt)
+        public JsonResult RptTechnical(string designerID, string fromDt, string toDt, string dname)
         {
-            return Json(_IAmn.RptTechnical(designerID, fromDt, toDt), JsonRequestBehavior.AllowGet);
+            return Json(_IAmn.RptTechnical(designerID, fromDt, toDt,dname), JsonRequestBehavior.AllowGet);
         }
         public JsonResult ClientLedgerPDF(string cid, string cname, string addr, string fromDt, string toDt)
         {
@@ -1197,77 +1210,16 @@ namespace MvcSDesign.Controllers
 
             oldBalance = _IAmn.ClientPreviousBalance(cid, fromDt);
             var resProfile = _IAmn.GetCompanyProfile();
-
-
-            PdfWriter.GetInstance(doc, new FileStream(pdfname, FileMode.Create));
+            //PdfWriter.GetInstance(doc, new FileStream(pdfname, FileMode.Create));
+            PdfWriter pw = PdfWriter.GetInstance(doc, new FileStream(pdfname, FileMode.Create));
+            pw.PageEvent = new HeaderFooter();
             doc.Open();
              
 
             para1.Alignment = Element.ALIGN_LEFT;
             para1.SetLeading(0.0F, 1.0F);
 
-            //pdfcell = null;
-            //ph1 = new Phrase(Environment.NewLine);
-            //para1.Add(ph1);
-
-            //fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
-            //table1 = new PdfPTable(2);
-            //int[] cellWidthPercentage = new int[] { 50, 50 };
-            //table1.WidthPercentage = 100;
-            //table1.HorizontalAlignment = Element.ALIGN_CENTER;
-            //table1.SetWidths(cellWidthPercentage);
-
-            //pdfcell = null;
-            //pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
-            //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            //pdfcell.Border = 0;
-            //pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            //table1.AddCell(pdfcell);
-
-            //pdfcell = new PdfPCell(new Phrase(new Chunk("301-H, Pushparatna solintare", fnt)));
-            //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            //pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            //pdfcell.Border = 0;
-            //table1.AddCell(pdfcell);
-
-
-            //pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
-            //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            //pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            //pdfcell.Border = 0;
-            //table1.AddCell(pdfcell);
-
-            //pdfcell = new PdfPCell(new Phrase(new Chunk("New Palasia, AB Road, Indore - 452001 MP", fnt)));
-            //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            //pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            //pdfcell.Border = 0;
-            //table1.AddCell(pdfcell);
-
-            //pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
-            //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            //pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            //pdfcell.Border = 0;
-            //table1.AddCell(pdfcell);
-
-            //pdfcell = new PdfPCell(new Phrase(new Chunk("Tel: +91-731-4977407 , Cell : +91-96919-06670", fnt)));
-            //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            //pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            //pdfcell.Border = 0;
-            //table1.AddCell(pdfcell);
-
-            //pdfcell = new PdfPCell(new Phrase(new Chunk("", fnt)));
-            //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            //pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            //pdfcell.Border = 0;
-            //table1.AddCell(pdfcell);
-
-            //pdfcell = new PdfPCell(new Phrase(new Chunk(" Email : design.satyam@gmail.com ", fnt)));
-            //pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            //pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
-            //pdfcell.Border = 0;
-            //table1.AddCell(pdfcell);
-
-            //para1.Add(table1);
+            
 
             table1 = new PdfPTable(2);
             int[] cellWidthPercentage = new int[] { 50, 50 };
@@ -1416,22 +1368,22 @@ namespace MvcSDesign.Controllers
             pdfcell.Border = 0;
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.BackgroundColor = BaseColor.YELLOW;
+            pdfcell.BackgroundColor = new BaseColor(229, 225, 225);
             table1.AddCell(pdfcell);
 
             pdfcell = new PdfPCell(new Phrase(new Chunk(oldBalance.ToString(), fnt)));
             pdfcell.Border = 0;
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            pdfcell.BackgroundColor = BaseColor.YELLOW;
+            pdfcell.BackgroundColor = new BaseColor(229, 225, 225);
             table1.AddCell(pdfcell);
             para1.Add(table1);
 
             ph1 = new Phrase(Environment.NewLine);
             para1.Add(ph1);
 
-            table1 = new PdfPTable(10);
-            cellWidthPercentage = new int[] { 5, 10,20, 12, 15, 10,10,15,10,10};
+            table1 = new PdfPTable(8);
+            cellWidthPercentage = new int[] { 5, 10,22, 12, 15, 15,10,10};
             table1.WidthPercentage = 100;
             table1.HorizontalAlignment = 0;
             table1.SetWidths(cellWidthPercentage);
@@ -1442,53 +1394,54 @@ namespace MvcSDesign.Controllers
             pdfcell = new PdfPCell(new Phrase(new Chunk("Sno", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+            pdfcell.BackgroundColor = new BaseColor(229, 225, 225);
+            pdfcell.FixedHeight = 20f;
             table1.AddCell(pdfcell);
 
             pdfcell = new PdfPCell(new Phrase(new Chunk("Project ID", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+            pdfcell.BackgroundColor = new BaseColor(229, 225, 225);
             table1.AddCell(pdfcell);
 
             pdfcell = new PdfPCell(new Phrase(new Chunk("Project name", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+            pdfcell.BackgroundColor = new BaseColor(229, 225, 225);
             table1.AddCell(pdfcell);
 
             pdfcell = new PdfPCell(new Phrase(new Chunk("Date", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+            pdfcell.BackgroundColor = new BaseColor(229, 225, 225);
             table1.AddCell(pdfcell);
 
-            pdfcell = new PdfPCell(new Phrase(new Chunk("Project type", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            table1.AddCell(pdfcell);
              
-            pdfcell = new PdfPCell(new Phrase(new Chunk("Package", fnt)));
-            pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-            pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-            table1.AddCell(pdfcell);
 
             pdfcell = new PdfPCell(new Phrase(new Chunk("Amount", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+            pdfcell.BackgroundColor = new BaseColor(229, 225, 225);
             table1.AddCell(pdfcell);
 
 
             pdfcell = new PdfPCell(new Phrase(new Chunk("Amount Receive", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+            pdfcell.BackgroundColor = new BaseColor(229, 225, 225);
             table1.AddCell(pdfcell);
 
             pdfcell = new PdfPCell(new Phrase(new Chunk("Balance", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+            pdfcell.BackgroundColor = new BaseColor(229, 225, 225);
             table1.AddCell(pdfcell);
 
 
             pdfcell = new PdfPCell(new Phrase(new Chunk("Remark", fnt)));
             pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+            pdfcell.BackgroundColor = new BaseColor(229, 225, 225);
             table1.AddCell(pdfcell);
             fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
 
@@ -1500,6 +1453,7 @@ namespace MvcSDesign.Controllers
                 pdfcell = new PdfPCell(new Phrase(new Chunk( cnt.ToString() , fnt)));
                 pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
                 pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                 pdfcell.FixedHeight = 20f;
                 table1.AddCell(pdfcell);
 
                 pdfcell = new PdfPCell(new Phrase(new Chunk(dr["projectID"].ToString(), fnt)));
@@ -1519,18 +1473,7 @@ namespace MvcSDesign.Controllers
                 pdfcell = new PdfPCell(new Phrase(new Chunk(tmpDt, fnt)));
                 pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
                 pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                table1.AddCell(pdfcell);
-
-               
-                pdfcell = new PdfPCell(new Phrase(new Chunk(dr["ptype"].ToString(), fnt)));
-                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                table1.AddCell(pdfcell);
-
-                pdfcell = new PdfPCell(new Phrase(new Chunk(dr["package"].ToString(), fnt)));
-                pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                pdfcell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                table1.AddCell(pdfcell);
+                table1.AddCell(pdfcell); 
 
                 pdfcell = new PdfPCell(new Phrase(new Chunk(dr["amount"].ToString(), fnt)));
                 pdfcell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
@@ -1624,6 +1567,44 @@ namespace MvcSDesign.Controllers
             return fname;
         }
 
+        class HeaderFooter  : PdfPageEventHelper
+        {
+            iTextSharp.text.Font fnt;// = new iTextSharp.text.Font();
+            public override void OnEndPage(PdfWriter writer, Document document)
+            {
+                fnt = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.ITALIC, BaseColor.BLUE);
+        
+                PdfPTable tbFooter = new PdfPTable(1);
+                tbFooter.TotalWidth = document.PageSize.Width - document.LeftMargin - document.RightMargin;
+                tbFooter.DefaultCell.Border =0;
+
+                tbFooter.AddCell(new Paragraph());
+                tbFooter.AddCell(new Paragraph());
+                PdfPCell _cell = new PdfPCell(new Phrase(new Chunk("G-2, Nursery Circle, Vaishali Nagar, Jaipur - 302 021. Rajasthan (INDIA)", fnt)));
+                _cell.HorizontalAlignment =Element.ALIGN_CENTER;
+                _cell.Border =0;
+                tbFooter.AddCell(_cell);
+                tbFooter.AddCell(new Paragraph());
+
+                _cell = new PdfPCell(new Phrase(new Chunk("Cont: +91 88888 59911, E - mail : vrarchitects.in @gmail.com, website: www.vrarchitects.in", fnt)));
+                _cell.HorizontalAlignment =Element.ALIGN_CENTER;
+                _cell.Border =0;
+                tbFooter.AddCell(_cell);
+                tbFooter.AddCell(new Paragraph());
+                 
+                tbFooter.WriteSelectedRows(0,-1,document.LeftMargin + 10, writer.PageSize.GetBottom(document.BottomMargin) +10, writer.DirectContent);
+
+            }
+
+
+
+        }
+
+
+
+
+
+
 
         public JsonResult RptDesignerLedger( string dname)
         {
@@ -1637,7 +1618,7 @@ namespace MvcSDesign.Controllers
             return Json(rep, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult RptQuotation(string dt1 , string dt2 , string searchOpt, string projectID , string cname, string pname)
+        public JsonResult RptQuotation(string dt1, string dt2, string searchOpt, string projectID, string cname, string pname)
         {
             return Json(_IAmn.RptQuotation(dt1, dt2, searchOpt, projectID, cname, pname), JsonRequestBehavior.AllowGet);
         }
@@ -1754,7 +1735,13 @@ namespace MvcSDesign.Controllers
                  );
             return Json(lst, JsonRequestBehavior.AllowGet);
         }
-        
+        public JsonResult DashBoard_GetCompany()
+        {
+            CompanyModel obj = _IAmn.GetCompanyProfile();
+
+            return Json(obj.orgName, JsonRequestBehavior.AllowGet);
+           
+        }
         public JsonResult DashBoard_getProjectType()
         {
             return Json(_IAmn.DashBoard_getProjectType(), JsonRequestBehavior.AllowGet);
@@ -1763,13 +1750,43 @@ namespace MvcSDesign.Controllers
 
         public JsonResult getTopPerformers()
         {
-            return Json(_IAmn.getTopPerformers(), JsonRequestBehavior.AllowGet);
+            try
+            { 
+                var  res= _IAmn.getTopPerformers();
+                string[] allPhotos = Directory.GetFiles(HostingEnvironment.MapPath("~//Images//staffPhotos//"));
+                foreach(var item in res)
+                {
+                   string empName = "emp"+item.staffID;
+                   foreach (string fpth in allPhotos)
+                   {
+                      string fname = Path.GetFileNameWithoutExtension(fpth);
+                      if(fname == empName)
+                       {  
+                        item.photo = fname +Path.GetExtension(fpth);
+                       }
+                      else
+                       {
+                         item.photo = "dummy.png";
+                       }
+                    }
+                }
+               return Json(res, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex) { }
+            return Json("", JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult Dashboard_getMonthQuotation()
         {
             return Json(_IAmn.Dashboard_getMonthQuotation(), JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult getCurrentTaskList()
+        {
+            return Json(_IAmn.getCurrentTaskList(), JsonRequestBehavior.AllowGet);
+        }
+
+
 
         public ActionResult LogOut()
         {

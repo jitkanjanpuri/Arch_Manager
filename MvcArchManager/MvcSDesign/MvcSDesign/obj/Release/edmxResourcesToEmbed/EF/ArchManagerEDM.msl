@@ -52,63 +52,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="tblOperations">
-      <EntityTypeMapping TypeName="ArchManagerDBModel.tblOperation">
-        <MappingFragment StoreEntitySet="tblOperation">
-          <ScalarProperty Name="operationID" ColumnName="operationID" />
-          <ScalarProperty Name="dt" ColumnName="dt" />
-          <ScalarProperty Name="staffID" ColumnName="staffID" />
-          <ScalarProperty Name="designerAmount" ColumnName="designerAmount" />
-          <ScalarProperty Name="status" ColumnName="status" />
-          <ScalarProperty Name="remark" ColumnName="remark" />
-          <ScalarProperty Name="payStatus" ColumnName="payStatus" />
-          <ScalarProperty Name="projectCategory" ColumnName="projectCategory" />
-          <ScalarProperty Name="projectID" ColumnName="projectID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="tblPRFs">
-      <EntityTypeMapping TypeName="ArchManagerDBModel.tblPRF">
-        <MappingFragment StoreEntitySet="tblPRF">
-          <ScalarProperty Name="prfID" ColumnName="prfID" />
-          <ScalarProperty Name="workingStatus" ColumnName="workingStatus" />
-          <ScalarProperty Name="slabdetail" ColumnName="slabdetail" />
-          <ScalarProperty Name="slabheight" ColumnName="slabheight" />
-          <ScalarProperty Name="plinthheight" ColumnName="plinthheight" />
-          <ScalarProperty Name="porchheight" ColumnName="porchheight" />
-          <ScalarProperty Name="elevationpattern" ColumnName="elevationpattern" />
-          <ScalarProperty Name="towerroom" ColumnName="towerroom" />
-          <ScalarProperty Name="cornerplotplan" ColumnName="cornerplotplan" />
-          <ScalarProperty Name="plotside" ColumnName="plotside" />
-          <ScalarProperty Name="boundrywall" ColumnName="boundrywall" />
-          <ScalarProperty Name="anyother" ColumnName="anyother" />
-          <ScalarProperty Name="doorlintel" ColumnName="doorlintel" />
-          <ScalarProperty Name="windowsill" ColumnName="windowsill" />
-          <ScalarProperty Name="windowlintel" ColumnName="windowlintel" />
-          <ScalarProperty Name="projectID" ColumnName="projectID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="tblProjectDetails">
-      <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectDetail">
-        <MappingFragment StoreEntitySet="tblProjectDetail">
-          <ScalarProperty Name="service" ColumnName="service" />
-          <ScalarProperty Name="finalizeAmount" ColumnName="finalizeAmount" />
-          <ScalarProperty Name="projectID" ColumnName="projectID" />
-          <ScalarProperty Name="dt" ColumnName="dt" />
-          <ScalarProperty Name="clientID" ColumnName="clientID" />
-          <ScalarProperty Name="projectType" ColumnName="projectType" />
-          <ScalarProperty Name="projectLevel" ColumnName="projectLevel" />
-          <ScalarProperty Name="package" ColumnName="package" />
-          <ScalarProperty Name="plotSize" ColumnName="plotSize" />
-          <ScalarProperty Name="amount" ColumnName="amount" />
-          <ScalarProperty Name="status" ColumnName="status" />
-          <ScalarProperty Name="remark" ColumnName="remark" />
-          <ScalarProperty Name="projectname" ColumnName="projectname" />
-          <ScalarProperty Name="projectlocation" ColumnName="projectlocation" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="tblStaffs">
       <EntityTypeMapping TypeName="ArchManagerDBModel.tblStaff">
         <MappingFragment StoreEntitySet="tblStaff">
@@ -161,21 +104,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="tblProjectManagements">
-      <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectManagement">
-        <MappingFragment StoreEntitySet="tblProjectManagement">
-          <ScalarProperty Name="User_UploadedFileName" ColumnName="User_UploadedFileName" />
-          <ScalarProperty Name="remark" ColumnName="remark" />
-          <ScalarProperty Name="status" ColumnName="status" />
-          <ScalarProperty Name="projectstatus" ColumnName="projectstatus" />
-          <ScalarProperty Name="subcategory" ColumnName="subcategory" />
-          <ScalarProperty Name="category" ColumnName="category" />
-          <ScalarProperty Name="projectID" ColumnName="projectID" />
-          <ScalarProperty Name="dt" ColumnName="dt" />
-          <ScalarProperty Name="pmID" ColumnName="pmID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="tblProjectSiteVisits">
       <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectSiteVisit">
         <MappingFragment StoreEntitySet="tblProjectSiteVisit">
@@ -185,37 +113,6 @@
           <ScalarProperty Name="projectID" ColumnName="projectID" />
           <ScalarProperty Name="dt" ColumnName="dt" />
           <ScalarProperty Name="sitevisitID" ColumnName="sitevisitID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="tblProjectUploadFiles">
-      <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectUploadFile">
-        <MappingFragment StoreEntitySet="tblProjectUploadFile">
-          <ScalarProperty Name="filename" ColumnName="filename" />
-          <ScalarProperty Name="subcategory" ColumnName="subcategory" />
-          <ScalarProperty Name="category" ColumnName="category" />
-          <ScalarProperty Name="designerID" ColumnName="designerID" />
-          <ScalarProperty Name="projectID" ColumnName="projectID" />
-          <ScalarProperty Name="dt" ColumnName="dt" />
-          <ScalarProperty Name="uploadfileID" ColumnName="uploadfileID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="tblTaskAssigns">
-      <EntityTypeMapping TypeName="ArchManagerDBModel.tblTaskAssign">
-        <MappingFragment StoreEntitySet="tblTaskAssign">
-          <ScalarProperty Name="pmID" ColumnName="pmID" />
-          <ScalarProperty Name="submitDesignerID" ColumnName="submitDesignerID" />
-          <ScalarProperty Name="submitTime" ColumnName="submitTime" />
-          <ScalarProperty Name="submitDate" ColumnName="submitDate" />
-          <ScalarProperty Name="techRemark" ColumnName="techRemark" />
-          <ScalarProperty Name="subcatorgy" ColumnName="subcatorgy" />
-          <ScalarProperty Name="category" ColumnName="category" />
-          <ScalarProperty Name="designerID" ColumnName="designerID" />
-          <ScalarProperty Name="projectID" ColumnName="projectID" />
-          <ScalarProperty Name="tm" ColumnName="tm" />
-          <ScalarProperty Name="dt" ColumnName="dt" />
-          <ScalarProperty Name="taskID" ColumnName="taskID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -241,22 +138,12 @@
     <EntitySetMapping Name="tblAdminSettings">
       <EntityTypeMapping TypeName="ArchManagerDBModel.tblAdminSetting">
         <MappingFragment StoreEntitySet="tblAdminSetting">
+          <ScalarProperty Name="quotationPrefix" ColumnName="quotationPrefix" />
+          <ScalarProperty Name="quotationID" ColumnName="quotationID" />
+          <ScalarProperty Name="projectPrefix" ColumnName="projectPrefix" />
           <ScalarProperty Name="projectID" ColumnName="projectID" />
           <ScalarProperty Name="companyID" ColumnName="companyID" />
           <ScalarProperty Name="adminSettingiD" ColumnName="adminSettingiD" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="tblProjectDetailItems">
-      <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectDetailItem">
-        <MappingFragment StoreEntitySet="tblProjectDetailItem">
-          <ScalarProperty Name="amount" ColumnName="amount" />
-          <ScalarProperty Name="rate" ColumnName="rate" />
-          <ScalarProperty Name="area" ColumnName="area" />
-          <ScalarProperty Name="service" ColumnName="service" />
-          <ScalarProperty Name="projectDetail" ColumnName="projectDetail" />
-          <ScalarProperty Name="projectID" ColumnName="projectID" />
-          <ScalarProperty Name="projectDetailItemID" ColumnName="projectDetailItemID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -276,6 +163,116 @@
           <ScalarProperty Name="subcateroyName" ColumnName="subcateroyName" />
           <ScalarProperty Name="categoryID" ColumnName="categoryID" />
           <ScalarProperty Name="subcategoryID" ColumnName="subcategoryID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblQuotations">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblQuotation">
+        <MappingFragment StoreEntitySet="tblQuotation">
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="clientID" ColumnName="clientID" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="total" ColumnName="total" />
+          <ScalarProperty Name="services" ColumnName="services" />
+          <ScalarProperty Name="projectName" ColumnName="projectName" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="quotationNo" ColumnName="quotationNo" />
+          <ScalarProperty Name="quotationID" ColumnName="quotationID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblQuotationItems">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblQuotationItem">
+        <MappingFragment StoreEntitySet="tblQuotationItem">
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="rate" ColumnName="rate" />
+          <ScalarProperty Name="prjUnit" ColumnName="prjUnit" />
+          <ScalarProperty Name="qty" ColumnName="qty" />
+          <ScalarProperty Name="hsn" ColumnName="hsn" />
+          <ScalarProperty Name="service" ColumnName="service" />
+          <ScalarProperty Name="projectDescription" ColumnName="projectDescription" />
+          <ScalarProperty Name="quotationID" ColumnName="quotationID" />
+          <ScalarProperty Name="quotationItemID" ColumnName="quotationItemID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblProjectDetails">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectDetail">
+        <MappingFragment StoreEntitySet="tblProjectDetail">
+          <ScalarProperty Name="quotationID" ColumnName="quotationID" />
+          <ScalarProperty Name="finalizeAmount" ColumnName="finalizeAmount" />
+          <ScalarProperty Name="projectlocation" ColumnName="projectlocation" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblPRFs">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblPRF">
+        <MappingFragment StoreEntitySet="tblPRF">
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="windowlintel" ColumnName="windowlintel" />
+          <ScalarProperty Name="windowsill" ColumnName="windowsill" />
+          <ScalarProperty Name="doorlintel" ColumnName="doorlintel" />
+          <ScalarProperty Name="anyother" ColumnName="anyother" />
+          <ScalarProperty Name="boundrywall" ColumnName="boundrywall" />
+          <ScalarProperty Name="plotside" ColumnName="plotside" />
+          <ScalarProperty Name="cornerplotplan" ColumnName="cornerplotplan" />
+          <ScalarProperty Name="towerroom" ColumnName="towerroom" />
+          <ScalarProperty Name="elevationpattern" ColumnName="elevationpattern" />
+          <ScalarProperty Name="porchheight" ColumnName="porchheight" />
+          <ScalarProperty Name="plinthheight" ColumnName="plinthheight" />
+          <ScalarProperty Name="slabheight" ColumnName="slabheight" />
+          <ScalarProperty Name="slabdetail" ColumnName="slabdetail" />
+          <ScalarProperty Name="workingStatus" ColumnName="workingStatus" />
+          <ScalarProperty Name="prfID" ColumnName="prfID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblProjectManagements">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectManagement">
+        <MappingFragment StoreEntitySet="tblProjectManagement">
+          <ScalarProperty Name="User_UploadedFileName" ColumnName="User_UploadedFileName" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="projectstatus" ColumnName="projectstatus" />
+          <ScalarProperty Name="subcategory" ColumnName="subcategory" />
+          <ScalarProperty Name="category" ColumnName="category" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="pmID" ColumnName="pmID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblTaskAssigns">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblTaskAssign">
+        <MappingFragment StoreEntitySet="tblTaskAssign">
+          <ScalarProperty Name="pmID" ColumnName="pmID" />
+          <ScalarProperty Name="submitDesignerID" ColumnName="submitDesignerID" />
+          <ScalarProperty Name="submitTime" ColumnName="submitTime" />
+          <ScalarProperty Name="submitDate" ColumnName="submitDate" />
+          <ScalarProperty Name="techRemark" ColumnName="techRemark" />
+          <ScalarProperty Name="subcatorgy" ColumnName="subcatorgy" />
+          <ScalarProperty Name="category" ColumnName="category" />
+          <ScalarProperty Name="designerID" ColumnName="designerID" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="tm" ColumnName="tm" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="taskID" ColumnName="taskID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblProjectUploadFiles">
+      <EntityTypeMapping TypeName="ArchManagerDBModel.tblProjectUploadFile">
+        <MappingFragment StoreEntitySet="tblProjectUploadFile">
+          <ScalarProperty Name="filename" ColumnName="filename" />
+          <ScalarProperty Name="subcategory" ColumnName="subcategory" />
+          <ScalarProperty Name="category" ColumnName="category" />
+          <ScalarProperty Name="designerID" ColumnName="designerID" />
+          <ScalarProperty Name="projectID" ColumnName="projectID" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+          <ScalarProperty Name="uploadfileID" ColumnName="uploadfileID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

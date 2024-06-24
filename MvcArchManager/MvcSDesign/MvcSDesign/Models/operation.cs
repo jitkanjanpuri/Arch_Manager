@@ -16,6 +16,8 @@ namespace MvcSDesign.Models
         public int sno { get; set; }
         public int clientID { get; set; }
         public long projectID { get; set; }
+        public int quotationID { get; set; }
+        public int quotationNo { get; set; }
         public string clientName { get; set; }
         public string address { get; set; }
         public string designerName { get; set; }

@@ -1,0 +1,144 @@
+﻿@{
+    ViewBag.Title = "Report Technical";
+    Layout = "~/Views/Shared/_NewAdmin.cshtml";
+}
+ 
+<!doctype html>
+<html lang="en">
+
+<head>
+    
+    <script src="~/angularjs/ReportTechnical.js"></script>
+      <script type="text/javascript" src="~/assets/js/jquery.min.js"></script>
+            <script type="text/javascript" src="~/assets/js/bootstrap.bundle.min.js"></script>
+            <script type="text/javascript" src="~/assets/js/chart.min.js"></script>
+            <script type="text/javascript" src="~/assets/js/circle-progress.min.js"></script>
+
+    <script type="text/javascript">
+
+
+        function IsNumber(e) {
+
+            var theEvent = event || window.event;
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+            var regex = /[0-9]|\./;
+
+            if (!regex.test(key)) {
+                theEvent.preventDefault ? theEvent.preventDefault() : (theEvent.returnValue = false);
+            }
+        }
+
+    </script>
+
+</head>
+@using (Html.BeginForm("ReportTechnical","Admin",FormMethod.Post))
+{
+
+    <body>
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+
+                <div class="page-content">
+                    <div class="container-fluid">
+                         
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between mt-4">
+                                    <div class="col-xl-3 col-md-2">
+                                        <div class="form-group mb-3 ">
+                                            <h4 class="mb-sm-0 font-size-18 mt-3">Technical Report </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <br />
+                        <div class="row">
+                            <div class="col-xl-2 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>From Date   </label>
+                                    <div class="input-group">
+                                        <input type="date" id="fromStart" class="form-control" ng-model="fromStart">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>To Date   </label>
+                                    <div class="input-group">
+                                        <input type="date" id="toEnd" class="form-control" ng-model="toEnd">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-2 col-md-6">
+                                <div class="form-group mb-3">
+                                    <label>Desinger name </label>
+                                    <div class="input-group">
+                                        <select class="form-control" ng-model="dname" ng-options="items.Text for items in designerList" style=""></select>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-1 col-md-6">
+                                <label> . </label>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-info" ng-click="TechGraph()">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <span class="text-danger text-center font-size:20  " style="font-size: 14pt ">{{searchdmsg}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-center" ng-hide="loading">
+                        <button type="button" class="btn btn-dark waves-effect waves-light">
+                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading
+                        </button>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <div class="col-xl-8 col-lg-8 col-md-8 mb-3">
+                                        <div class="card card-h-200">
+                                            <div class="card-body">
+                                                <div id="carouselExampleIndicators1" class="carousel slide" data-ride="carousel">
+
+                                                    <div class="carousel-inner">
+                                                        <div class="carousel-item active">
+                                                            
+                                                            <canvas id="chartProjectCount"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+
+    </body>
+}
+
+</html>
+
+
+

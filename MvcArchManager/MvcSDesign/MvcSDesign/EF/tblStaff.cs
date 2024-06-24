@@ -17,11 +17,10 @@ namespace MvcSDesign.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tblStaff()
         {
-            this.tblOperations = new HashSet<tblOperation>();
             this.tblStaffLedgers = new HashSet<tblStaffLedger>();
             this.tblStaffPaids = new HashSet<tblStaffPaid>();
-            this.tblProjectUploadFiles = new HashSet<tblProjectUploadFile>();
             this.tblProjectSiteVisits = new HashSet<tblProjectSiteVisit>();
+            this.tblProjectUploadFiles = new HashSet<tblProjectUploadFile>();
         }
     
         public int staffID { get; set; }
@@ -39,14 +38,12 @@ namespace MvcSDesign.EF
         public Nullable<bool> active { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblOperation> tblOperations { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblStaffLedger> tblStaffLedgers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblStaffPaid> tblStaffPaids { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblProjectUploadFile> tblProjectUploadFiles { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblProjectSiteVisit> tblProjectSiteVisits { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblProjectUploadFile> tblProjectUploadFiles { get; set; }
     }
 }

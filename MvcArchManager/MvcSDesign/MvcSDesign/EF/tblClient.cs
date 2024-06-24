@@ -18,7 +18,7 @@ namespace MvcSDesign.EF
         public tblClient()
         {
             this.tblClientLedgers = new HashSet<tblClientLedger>();
-            this.tblProjectDetails = new HashSet<tblProjectDetail>();
+            this.tblQuotations = new HashSet<tblQuotation>();
         }
     
         public int clientID { get; set; }
@@ -37,6 +37,6 @@ namespace MvcSDesign.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblClientLedger> tblClientLedgers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblProjectDetail> tblProjectDetails { get; set; }
+        public virtual ICollection<tblQuotation> tblQuotations { get; set; }
     }
 }

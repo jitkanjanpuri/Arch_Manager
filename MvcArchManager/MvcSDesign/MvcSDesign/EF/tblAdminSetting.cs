@@ -17,6 +17,9 @@ namespace MvcSDesign.EF
         public int adminSettingiD { get; set; }
         public int companyID { get; set; }
         public long projectID { get; set; }
+        public string projectPrefix { get; set; }
+        public Nullable<int> quotationID { get; set; }
+        public string quotationPrefix { get; set; }
     
         public virtual tblCompanyProfile tblCompanyProfile { get; set; }
     }

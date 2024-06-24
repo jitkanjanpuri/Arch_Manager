@@ -42,27 +42,27 @@ namespace MvcSDesign.Repository
             dt2 = System.DateTime.Now;
             try
             {
-                var res = (from up in _dbContext.tblProjectUploadFiles
-                           where ((up.dt >= dt1 && up.dt <= dt2) && (up.designerID == regID))
-                           group up by up.dt into g
-                           select new operation
-                           {
-                               amount = g.Count(),
-                               dt = g.Key
+                //var res = (from up in _dbContext.tblProjectUploadFiles
+                //           where ((up.dt >= dt1 && up.dt <= dt2) && (up.designerID == regID))
+                //           group up by up.dt into g
+                //           select new operation
+                //           {
+                //               amount = g.Count(),
+                //               dt = g.Key
 
-                           }).ToList();
+                //           }).ToList();
 
                   
-                foreach (var item in res)
-                {
-                    dt1 =  item.dt;
-                    obj.Add(
-                        new operation
-                        {
-                            dtstr = dt1.Day + "-" + dt1.Month + "-" + dt1.Year,
-                            amount = item.amount
-                        });
-                }
+                //foreach (var item in res)
+                //{
+                //    dt1 =  item.dt;
+                //    obj.Add(
+                //        new operation
+                //        {
+                //            dtstr = dt1.Day + "-" + dt1.Month + "-" + dt1.Year,
+                //            amount = item.amount
+                //        });
+                //}
             }
             catch (Exception ex) { }
 
@@ -79,17 +79,17 @@ namespace MvcSDesign.Repository
                 System.DateTime dt2 = System.DateTime.Today;
                 System.DateTime dt1 = dt2.AddDays(-30);// 30 days 
                 dt2 = DateTime.Now;
-                var res = (from up in _dbContext.tblProjectUploadFiles
-                           where ((up.dt >= dt1 && up.dt < dt2) && (up.designerID == regID))
-                           group up by up.designerID into g
-                           select new
-                           {
-                               sno = g.Count()
-                           }).ToList();
-                foreach(var item in res)
-                {
-                    qty = item.sno;
-                }
+                //var res = (from up in _dbContext.tblProjectUploadFiles
+                //           where ((up.dt >= dt1 && up.dt < dt2) && (up.designerID == regID))
+                //           group up by up.designerID into g
+                //           select new
+                //           {
+                //               sno = g.Count()
+                //           }).ToList();
+                //foreach(var item in res)
+                //{
+                //    qty = item.sno;
+                //}
 
             }
             catch (System.Exception ex) { }
@@ -106,7 +106,7 @@ namespace MvcSDesign.Repository
                            where (tl.designerID == regID)
                            select new TaskListModel
                            {
-                               pmID = (int) tl.pmID,
+                               pmID = (int)tl.pmID,
                                taskID = tl.taskID,
                                dt = tl.dt.Day.ToString() + "-" + tl.dt.Month.ToString() + "-" + tl.dt.Year.ToString(),
                                tm = tl.tm,
@@ -154,21 +154,19 @@ namespace MvcSDesign.Repository
                 DateTime dt = DateTime.Today.Date;
                 long pid = 0;
                 int clientID = 0, i=1;
-                 
                 tm = DateTime.Now.Hour + ":" + DateTime.Now.Minute;
-
-                 
                 var res = (from pd in _dbContext.tblProjectDetails
+                           join qu in _dbContext.tblQuotations on pd.quotationID equals qu.quotationID
                            join pm in _dbContext.tblProjectManagements on pd.projectID equals pm.projectID
                            where (pm.pmID == pmID)
                            select new
                            {
-                               clientID = pd.clientID,
+                               clientID = qu.clientID,
                                projectID = pm.projectID,
                                category = pm.category,
                                subcategory = pm.subcategory
                            }).ToList();
-                
+
                 foreach (var item in res)
                 {
                     pid = item.projectID;
@@ -178,12 +176,27 @@ namespace MvcSDesign.Repository
                 }
 
                 subcatgory = subcatgory.Replace("Revised", "");
+
+                location = "~/ProjectLocation/client_" + clientID.ToString() + "/proj_" + pid.ToString() + "/" + category;
+                ch = HostingEnvironment.MapPath(location);
+                if (!Directory.Exists(ch))
+                {
+                    //Create category 
+                    Directory.CreateDirectory(ch);
+                }
+                location = "~/ProjectLocation/client_" + clientID.ToString() + "/proj_" + pid.ToString() + "/" + category + "/" + subcatgory.Trim();
+                ch = HostingEnvironment.MapPath(location);
+                if (!Directory.Exists(ch))
+                {
+                    //Create subcategory
+                    Directory.CreateDirectory(ch);
+                }
+                
                 location = "~/ProjectLocation/client_" + clientID.ToString() + "/proj_" + pid.ToString() + "/" + category + "/" + subcatgory.Trim()+"/I";
                 ch = HostingEnvironment.MapPath(location);
-                SaveStatus("User : 1 " );
-                 
                 if (Directory.Exists(ch))
                 {
+                    //Create option folder in subcategory
                     Directory.Delete(ch, true);
                 }
                 Directory.CreateDirectory(ch);
@@ -232,13 +245,81 @@ namespace MvcSDesign.Repository
                 {
                     res2.projectstatus = "Submit";
                     res2.User_UploadedFileName = uploadfile;
-                    res2.status = "WF";
+                    res2.status = "Completed";
                 }
 
-                
+
                 _dbContext.SaveChanges();
             }
             catch (Exception ex) { return ex.Message; }
+            return "Y";
+        }
+        
+        public string CompeleteDesignerTask(int pmID, int taskID)
+        {
+            long projectID=0;
+            string  tm = "",category="",  subcategory="" ;
+            DateTime dt = DateTime.Today.Date;
+            int designerID=0;
+            tm = DateTime.Now.Hour + ":" + DateTime.Now.Minute;
+           
+            using (var context = new ArchManagerDBEntities())
+            { 
+                using(var dbTransaction = context.Database.BeginTransaction())
+                  {
+                    try
+                    {  
+                        var res1 = context.tblTaskAssigns.Where(x => x.taskID == taskID).FirstOrDefault();
+                        if (res1 != null)
+                          {
+                            designerID = res1.designerID;
+                            res1.submitDesignerID = res1.designerID;
+                            res1.designerID = 0;
+                            res1.submitTime = tm;
+                            res1.submitDate = dt;
+                            category = res1.category;
+                            subcategory = res1.subcatorgy;
+                            projectID = res1.projectID;
+                          
+                          }
+                        var del = context.tblProjectManagements.Where(x => (x.pmID == pmID)).FirstOrDefault();
+                        if (del != null)
+                         {
+                             context.tblProjectManagements.Remove(del);
+                             context.SaveChanges();
+                         }
+                        tblProjectUploadFile objFile = new tblProjectUploadFile();
+                        objFile.dt = DateTime.Today.Date;
+                        objFile.projectID = projectID;
+                        objFile.designerID = designerID;
+                        objFile.category = category;
+                        objFile.subcategory = subcategory;
+                        objFile.filename = "";
+
+                        context.tblProjectUploadFiles.Add(objFile);
+                        context.SaveChanges();
+                         
+
+                        dbTransaction.Commit();
+                    }
+                  //catch (Exception ex) { return ex.Message; }
+                 catch (System.Data.Entity.Validation.DbEntityValidationException e)
+                  {
+                    foreach (var eve in e.EntityValidationErrors)
+                    {
+                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                ve.PropertyName, ve.ErrorMessage);
+                        }
+                    }
+                  }
+
+
+                }
+            }
             return "Y";
         }
 
